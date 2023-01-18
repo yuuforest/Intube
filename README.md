@@ -36,4 +36,4 @@
 | 회원 DB 수정 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 ## 목업
-![mokup](/uploads/efe10d866af4bc3557a6f08396d6c77e/mokup.gif)
+
