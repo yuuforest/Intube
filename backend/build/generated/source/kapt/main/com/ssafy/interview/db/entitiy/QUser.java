@@ -21,8 +21,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final BooleanPath authorization = createBoolean("authorization");
-
     public final DatePath<java.util.Date> birth = createDate("birth", java.util.Date.class);
 
     public final StringPath email = createString("email");
@@ -34,6 +32,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath introduction = createString("introduction");
 
+    public final NumberPath<Integer> is_email_authorized = createNumber("is_email_authorized", Integer.class);
+
+    public final NumberPath<Integer> is_phone_authorized = createNumber("is_phone_authorized", Integer.class);
+
     public final StringPath name = createString("name");
 
     public final StringPath nickname = createString("nickname");
@@ -42,11 +44,11 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath phone = createString("phone");
 
-    public final NumberPath<Double> point = createNumber("point", Double.class);
+    public final NumberPath<Integer> point = createNumber("point", Integer.class);
 
     public final StringPath profile_url = createString("profile_url");
 
-    public final NumberPath<Integer> temperature = createNumber("temperature", Integer.class);
+    public final NumberPath<Double> temperature = createNumber("temperature", Double.class);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
