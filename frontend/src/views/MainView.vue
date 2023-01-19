@@ -1,6 +1,7 @@
 <template>
   <div>
     <mian-header></mian-header>
+    <router-view />
   </div>
 </template>
 
