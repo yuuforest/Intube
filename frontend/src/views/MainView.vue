@@ -1,14 +1,9 @@
 <template>
-  <div>
-    <mian-header></mian-header>
-  </div>
+  <div>메인화면입니다</div>
 </template>
 
 <script>
-import mianHeader from "@/views/common/TheHeader.vue";
-export default {
-  components: { mianHeader },
-};
+export default {};
 </script>
 
 <style lang="scss" scoped></style>
