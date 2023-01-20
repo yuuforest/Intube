@@ -20,26 +20,37 @@ public class InterviewLoadDto {
 	@ApiModelProperty(name="Interview ID")
 	Long id;
 
+	@ApiModelProperty(name="Category Name")
 	String category_name;
 
+	@ApiModelProperty(name="Title")
 	String title;
 
+	@ApiModelProperty(name="Description")
 	String description;
 
+	@ApiModelProperty(name="Start Standard Age")
 	int start_standard_age;
 
+	@ApiModelProperty(name="End Standard Age")
 	int end_standard_age;
 
+	@ApiModelProperty(name="Gender")
 	char gender;
 
+	@ApiModelProperty(name="Max People")
 	int max_people;
 
+	@ApiModelProperty(name="Standard Point")
 	int standard_point;
 
+	@ApiModelProperty(name="Apply Start Time")
 	LocalDateTime apply_start_time;
 
+	@ApiModelProperty(name="Apply End Time")
 	Date apply_end_time;
 
+	@ApiModelProperty(name="Interview State")
 	int interview_state;
 
 	@QueryProjection

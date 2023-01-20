@@ -7,9 +7,12 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 유저 모델 정의.
@@ -51,4 +54,9 @@ public class User extends BaseEntity{
     int point;
 
     String profile_url;
+
+    // interview 관계
+    @OneToMany(mappedBy = "user")
+    private List<Interview> interviewList = new ArrayList<>();
+
 }

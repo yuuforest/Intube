@@ -28,8 +28,6 @@ public class QInterview extends EntityPathBase<Interview> {
 
     public final DateTimePath<java.time.LocalDateTime> apply_start_time = createDateTime("apply_start_time", java.time.LocalDateTime.class);
 
-    public final NumberPath<Integer> category_id = createNumber("category_id", Integer.class);
-
     public final StringPath description = createString("description");
 
     public final DatePath<java.util.Date> download_expiration = createDate("download_expiration", java.util.Date.class);
@@ -49,9 +47,9 @@ public class QInterview extends EntityPathBase<Interview> {
 
     public final NumberPath<Integer> interview_state = createNumber("interview_state", Integer.class);
 
-    public final NumberPath<Integer> max_people = createNumber("max_people", Integer.class);
+    public final QInterviewCategory interviewCategory;
 
-    public final NumberPath<Integer> owner_id = createNumber("owner_id", Integer.class);
+    public final NumberPath<Integer> max_people = createNumber("max_people", Integer.class);
 
     public final NumberPath<Integer> standard_point = createNumber("standard_point", Integer.class);
 
@@ -79,6 +77,7 @@ public class QInterview extends EntityPathBase<Interview> {
 
     public QInterview(Class<? extends Interview> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.interviewCategory = inits.isInitialized("interviewCategory") ? new QInterviewCategory(forProperty("interviewCategory")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }
 

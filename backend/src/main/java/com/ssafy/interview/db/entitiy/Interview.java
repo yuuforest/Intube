@@ -18,29 +18,28 @@ import java.util.Date;
 @Setter
 @EntityListeners(value = { AuditingEntityListener.class}) // JPA 내부에서 엔티티 객체가 생성/변경되는 것을 감지하는 역할
 public class Interview extends BaseEntity {
-        int owner_id;
-        int category_id;
         String title;
+
         String description;
+
         String estimated_time;
+
         int start_standard_age;
+
         int end_standard_age;
+
         char gender;
+
         int max_people;
+
         int standard_point;
+
         @CreatedDate // JPA에서 엔티티의 생성 시간을 처리
         @Column(name = "apply_start_time", updatable = false)
-        @Temporal(TemporalType.TIMESTAMP)
         LocalDateTime apply_start_time;
 
         @Temporal(TemporalType.TIMESTAMP)
         Date apply_end_time;
-
-        @Temporal(TemporalType.TIMESTAMP)
-        Date interview_start_time;
-
-        @Temporal(TemporalType.TIMESTAMP)
-        Date interview_end_time;
 
         @Temporal(TemporalType.DATE)
         Date download_expiration;
@@ -50,5 +49,9 @@ public class Interview extends BaseEntity {
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "owner_id")
         private User user;
+
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "category_id")
+        private InterviewCategory interviewCategory;
 
 }

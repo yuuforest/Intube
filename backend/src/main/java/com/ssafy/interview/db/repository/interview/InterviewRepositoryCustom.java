@@ -1,5 +1,6 @@
 package com.ssafy.interview.db.repository.interview;
 
+import com.ssafy.interview.api.response.interview.InterviewLoadDto;
 import com.ssafy.interview.db.entitiy.Interview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,5 +22,5 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      * @param pageable   페이지 정보
      * @return 검색 결과
      */
-    Page<Interview> findInterview(String word, Pageable pageable);
+    Page<InterviewLoadDto> findAllInterview(String category_name, String word, Pageable pageable);
 }
