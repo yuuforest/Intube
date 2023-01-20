@@ -1,25 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainView from "@/views/MainView";
-import InterviewList from "@/views/interview/InterviewList";
-import MyAnnouncement from "@/views/interview/MyAnnouncement  ";
+import InterviewFind from "@/views/InterviewFind";
+import AnnouncementPost from "@/views/AnnouncementPost";
 
 const routes = [
   {
     path: "/",
     name: "main",
     component: MainView,
-    children: [
-      {
-        path: "interview",
-        name: "interview",
-        component: InterviewList,
-      },
-      {
-        path: "announcement",
-        name: "announcement",
-        component: MyAnnouncement,
-      },
-    ],
+    children: [],
+  },
+  {
+    path: "/interview",
+    name: "interview",
+    component: InterviewFind,
+  },
+  {
+    path: "/announcement",
+    name: "announcement",
+    component: AnnouncementPost,
   },
 ];
 

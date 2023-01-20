@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar elevation="2">
-      <v-app-bar-title>
+      <v-app-bar-title @click="moeveMain">
         <v-img src="@/assets/logo.png" width="150"></v-img>
       </v-app-bar-title>
       <div id="nav-bar">
@@ -24,6 +24,9 @@ export default {
     },
     moeveAnnouncement() {
       router.push("announcement");
+    },
+    moeveMain() {
+      router.push("/");
     },
   },
 };

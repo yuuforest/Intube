@@ -27,32 +27,16 @@
       </v-tabs>
     </v-col>
   </v-row>
-  <v-row justify="center">
-    <v-col cols="8">
-      <v-row>
-        <v-col
-          v-for="interview in interviews"
-          :key="interview.id"
-          :interview="interview"
-          cols="4"
-        >
-          <interview-list-item :interview="interview"> </interview-list-item>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-row>
+  <interview-list></interview-list>
 </template>
 
 <script>
-import InterviewListItem from "@/views/interview/InterviewListItem.vue";
-import getList from "@/views/interview/interview_list.json";
+import InterviewList from "@/components/interview/InterviewList.vue";
 export default {
-  name: "InterviewList",
-  components: { InterviewListItem },
+  name: "InterviewFind",
+  components: { InterviewList },
   data() {
-    return {
-      interviews: getList.interview_list,
-    };
+    return {};
   },
 };
 </script>
