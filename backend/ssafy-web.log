@@ -1,143 +1,109 @@
-2023-01-19 10:01:36.500  INFO 20504 --- [main] c.ssafy.interview.InterviewApplication   : Starting InterviewApplication using Java 11.0.15 on DESKTOP-DOGVPUB with PID 20504 (D:\ssafy\workspace\intellij\S08P11A303\backend\out\production\classes started by SSAFY in D:\ssafy\workspace\intellij\S08P11A303\backend)
-2023-01-19 10:01:36.513  INFO 20504 --- [main] c.ssafy.interview.InterviewApplication   : No active profile set, falling back to 1 default profile: "default"
-2023-01-19 10:01:37.610  INFO 20504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2023-01-19 10:01:37.613  INFO 20504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2023-01-19 10:01:37.786  INFO 20504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 157 ms. Found 1 JPA repository interfaces.
-2023-01-19 10:01:37.803  INFO 20504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2023-01-19 10:01:37.805  INFO 20504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2023-01-19 10:01:37.822  INFO 20504 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssafy.interview.db.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2023-01-19 10:01:37.823  INFO 20504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
-2023-01-19 10:01:38.785  INFO 20504 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2023-01-19 10:01:38.796  INFO 20504 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2023-01-19 10:01:38.797  INFO 20504 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.70]
-2023-01-19 10:01:38.949  INFO 20504 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2023-01-19 10:01:38.949  INFO 20504 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2365 ms
-2023-01-19 10:01:39.027 DEBUG 20504 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'commonsRequestLoggingFilter' configured for use
-2023-01-19 10:01:39.174  INFO 20504 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2023-01-19 10:01:39.232  INFO 20504 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.14.Final
-2023-01-19 10:01:39.421  INFO 20504 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2023-01-19 10:01:39.544  INFO 20504 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2023-01-19 10:01:39.895  INFO 20504 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2023-01-19 10:01:39.918  INFO 20504 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
-2023-01-19 10:01:40.683  INFO 20504 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2023-01-19 10:01:40.690  INFO 20504 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2023-01-19 10:01:41.108  WARN 20504 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2023-01-19 10:01:41.629 DEBUG 20504 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 14 mappings in 'requestMappingHandlerMapping'
-2023-01-19 10:01:41.855  INFO 20504 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@63b334fd, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@753248f8, org.springframework.security.web.context.SecurityContextPersistenceFilter@520e6089, org.springframework.security.web.header.HeaderWriterFilter@b7b26c6, org.springframework.web.filter.CorsFilter@71a509c, org.springframework.security.web.authentication.logout.LogoutFilter@14f11a56, com.ssafy.interview.common.auth.JwtAuthenticationFilter@547aa7f4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@59c2bf78, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@11548363, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2e94655a, org.springframework.security.web.session.SessionManagementFilter@3299e315, org.springframework.security.web.access.ExceptionTranslationFilter@2aaed928, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3049dcac]
-2023-01-19 10:01:41.873 DEBUG 20504 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/swagger-ui/] in 'viewControllerHandlerMapping'
-2023-01-19 10:01:41.892 DEBUG 20504 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/resources/**, /swagger-ui.html, /webjars/**, /css/**, /fonts/**, /icons/**, /img/**, /js/**, /swagger-ui/**] in 'resourceHandlerMapping'
-2023-01-19 10:01:41.939 DEBUG 20504 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-2023-01-19 10:01:41.971 DEBUG 20504 --- [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
-2023-01-19 10:01:42.144  INFO 20504 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2023-01-19 10:01:42.369  INFO 20504 --- [main] c.ssafy.interview.InterviewApplication   : Started InterviewApplication in 6.413 seconds (JVM running for 7.052)
-2023-01-19 10:01:59.638  INFO 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2023-01-19 10:01:59.639  INFO 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2023-01-19 10:01:59.639 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
-2023-01-19 10:01:59.639 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
-2023-01-19 10:01:59.639 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
-2023-01-19 10:01:59.640 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@40032b7b
-2023-01-19 10:01:59.641 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@64648af1
-2023-01-19 10:01:59.641 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
-2023-01-19 10:01:59.641  INFO 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2023-01-19 10:01:59.664 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/index.html", parameters={}
-2023-01-19 10:01:59.670 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:01:59.684 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.721 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.css?v=3.0.0", parameters={masked}
-2023-01-19 10:01:59.721 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:01:59.725 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.726 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui.css?v=3.0.0", parameters={masked}
-2023-01-19 10:01:59.728 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:01:59.728 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-bundle.js?v=3.0.0", parameters={masked}
-2023-01-19 10:01:59.728 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:01:59.737 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.738 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-standalone-preset.js?v=3.0.0", parameters={masked}
-2023-01-19 10:01:59.739 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:01:59.757 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.759 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.js?v=3.0.0", parameters={masked}
-2023-01-19 10:01:59.760 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:01:59.768 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.781 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.879 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources/configuration/ui", parameters={}
-2023-01-19 10:01:59.880 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#uiConfiguration()
-2023-01-19 10:01:59.890 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
-2023-01-19 10:01:59.912 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.swagger.web.UiConfiguration@3209c2a8]
-2023-01-19 10:01:59.924 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.929 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources/configuration/security", parameters={}
-2023-01-19 10:01:59.929 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#securityConfiguration()
-2023-01-19 10:01:59.930 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
-2023-01-19 10:01:59.933 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.swagger.web.SecurityConfiguration@bfe76b0]
-2023-01-19 10:01:59.934 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.940 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources", parameters={}
-2023-01-19 10:01:59.941 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#swaggerResources()
-2023-01-19 10:01:59.942 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
-2023-01-19 10:01:59.943 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[springfox.documentation.swagger.web.SwaggerResource@3b5efac7]]
-2023-01-19 10:01:59.946 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:01:59.977 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/v2/api-docs", parameters={}
-2023-01-19 10:01:59.977 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)
-2023-01-19 10:02:00.074 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, */*] and supported [application/json, application/hal+json]
-2023-01-19 10:02:00.076 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.spring.web.json.Json@3eec2772]
-2023-01-19 10:02:00.077 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:10.450 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/auth/login", parameters={}
-2023-01-19 10:02:10.450 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#login(UserLoginPostReq)
-2023-01-19 10:02:10.481 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.ssafy.interview.api.request.UserLoginPostReq@554957fe]
-2023-01-19 10:02:11.447 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:02:11.448 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@5ef3904d]
-2023-01-19 10:02:11.449 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:16.350 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.css?v=3.0.0", parameters={masked}
-2023-01-19 10:02:16.350 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui.css?v=3.0.0", parameters={masked}
-2023-01-19 10:02:16.351 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:02:16.351 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:02:16.353 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:16.356 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:16.536 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-bundle.js.map", parameters={}
-2023-01-19 10:02:16.537 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-standalone-preset.js.map", parameters={}
-2023-01-19 10:02:16.537 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:02:16.537 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.js.map", parameters={}
-2023-01-19 10:02:16.537 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:02:16.538 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:02:16.547 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui.css.map", parameters={}
-2023-01-19 10:02:16.547 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
-2023-01-19 10:02:16.558 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:16.560 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:16.574 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:16.594 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:27.238 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/auth/issue", parameters={}
-2023-01-19 10:02:27.238 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#issue(Cookie)
-2023-01-19 10:02:27.260 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:02:27.260 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@26e0ea20]
-2023-01-19 10:02:27.261 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:02:52.122 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/auth/login", parameters={}
-2023-01-19 10:02:52.123 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#login(UserLoginPostReq)
-2023-01-19 10:02:52.124 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.ssafy.interview.api.request.UserLoginPostReq@7354e157]
-2023-01-19 10:02:52.194 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:02:52.194 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@1deca365]
-2023-01-19 10:02:52.195 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:03:26.027 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : POST "/auth/login", parameters={}
-2023-01-19 10:03:26.028 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#login(UserLoginPostReq)
-2023-01-19 10:03:26.030 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.ssafy.interview.api.request.UserLoginPostReq@43d3b329]
-2023-01-19 10:03:26.103 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:03:26.103 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@4adf498c]
-2023-01-19 10:03:26.104 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:03:57.663 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/auth/issue", parameters={}
-2023-01-19 10:03:57.663 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#issue(Cookie)
-2023-01-19 10:03:57.667 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:03:57.667 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@2a2e7c08]
-2023-01-19 10:03:57.668 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:04:00.004 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/auth/issue", parameters={}
-2023-01-19 10:04:00.004 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#issue(Cookie)
-2023-01-19 10:04:00.008 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:04:00.008 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@3519520b]
-2023-01-19 10:04:00.009 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:04:04.920 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/auth/issue", parameters={}
-2023-01-19 10:04:04.921 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#issue(Cookie)
-2023-01-19 10:04:04.926 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:04:04.926 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@19c633d7]
-2023-01-19 10:04:04.927 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2023-01-19 10:04:43.136 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/auth/issue", parameters={}
-2023-01-19 10:04:43.136 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#issue(Cookie)
-2023-01-19 10:04:43.137 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
-2023-01-19 10:04:43.138 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@26eaa42a]
-2023-01-19 10:04:43.139 DEBUG 20504 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 401 UNAUTHORIZED
-2023-01-19 10:12:19.161  INFO 20504 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-01-19 10:12:19.163  INFO 20504 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2023-01-19 10:12:19.172  INFO 20504 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-01-23 14:44:04.875  INFO 27700 --- [main] c.ssafy.interview.InterviewApplication   : Starting InterviewApplication using Java 11.0.15 on DESKTOP-DOGVPUB with PID 27700 (D:\ssafy\workspace\intellij\S08P12A303\backend\out\production\classes started by SSAFY in D:\ssafy\workspace\intellij\S08P12A303\backend)
+2023-01-23 14:44:04.884  INFO 27700 --- [main] c.ssafy.interview.InterviewApplication   : No active profile set, falling back to 1 default profile: "default"
+2023-01-23 14:44:05.787  INFO 27700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-01-23 14:44:05.789  INFO 27700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-01-23 14:44:05.963  INFO 27700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 157 ms. Found 1 JPA repository interfaces.
+2023-01-23 14:44:05.977  INFO 27700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-01-23 14:44:05.978  INFO 27700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2023-01-23 14:44:05.991  INFO 27700 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ssafy.interview.db.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2023-01-23 14:44:05.992  INFO 27700 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2023-01-23 14:44:06.986  INFO 27700 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-01-23 14:44:06.998  INFO 27700 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-01-23 14:44:06.999  INFO 27700 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.70]
+2023-01-23 14:44:07.158  INFO 27700 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-01-23 14:44:07.158  INFO 27700 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2225 ms
+2023-01-23 14:44:07.237 DEBUG 27700 --- [main] o.s.w.f.CommonsRequestLoggingFilter      : Filter 'commonsRequestLoggingFilter' configured for use
+2023-01-23 14:44:07.400  INFO 27700 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-01-23 14:44:07.473  INFO 27700 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.14.Final
+2023-01-23 14:44:07.687  INFO 27700 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-01-23 14:44:07.814  INFO 27700 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-01-23 14:44:08.153  INFO 27700 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-01-23 14:44:08.181  INFO 27700 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2023-01-23 14:44:08.952  INFO 27700 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-01-23 14:44:08.960  INFO 27700 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-01-23 14:44:09.454  WARN 27700 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-01-23 14:44:10.045 DEBUG 27700 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 15 mappings in 'requestMappingHandlerMapping'
+2023-01-23 14:44:10.324  INFO 27700 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6c65a7fc, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c2f5dc, org.springframework.security.web.context.SecurityContextPersistenceFilter@3eb29382, org.springframework.security.web.header.HeaderWriterFilter@38a3c078, org.springframework.web.filter.CorsFilter@5166fe7a, org.springframework.security.web.authentication.logout.LogoutFilter@3db48e6, com.ssafy.interview.common.auth.JwtAuthenticationFilter@7a925ac4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5e1d3188, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@71dac63f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3b09582d, org.springframework.security.web.session.SessionManagementFilter@3095c449, org.springframework.security.web.access.ExceptionTranslationFilter@3979c6e8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@22495f2f]
+2023-01-23 14:44:10.347 DEBUG 27700 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/swagger-ui/] in 'viewControllerHandlerMapping'
+2023-01-23 14:44:10.371 DEBUG 27700 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/resources/**, /swagger-ui.html, /webjars/**, /css/**, /fonts/**, /icons/**, /img/**, /js/**, /swagger-ui/**] in 'resourceHandlerMapping'
+2023-01-23 14:44:10.409 DEBUG 27700 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-01-23 14:44:10.447 DEBUG 27700 --- [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-01-23 14:44:10.668  INFO 27700 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-01-23 14:44:10.954  INFO 27700 --- [main] c.ssafy.interview.InterviewApplication   : Started InterviewApplication in 6.522 seconds (JVM running for 8.409)
+2023-01-23 14:44:47.388  INFO 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-01-23 14:44:47.388  INFO 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-01-23 14:44:47.389 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2023-01-23 14:44:47.389 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2023-01-23 14:44:47.389 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2023-01-23 14:44:47.390 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@4945cd1f
+2023-01-23 14:44:47.390 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@119f02d2
+2023-01-23 14:44:47.390 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2023-01-23 14:44:47.390  INFO 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-01-23 14:44:47.414 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/index.html", parameters={}
+2023-01-23 14:44:47.421 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2023-01-23 14:44:47.435 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.463 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.css?v=3.0.0", parameters={masked}
+2023-01-23 14:44:47.464 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2023-01-23 14:44:47.465 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui.css?v=3.0.0", parameters={masked}
+2023-01-23 14:44:47.466 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2023-01-23 14:44:47.468 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.470 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-bundle.js?v=3.0.0", parameters={masked}
+2023-01-23 14:44:47.471 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2023-01-23 14:44:47.473 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.475 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/swagger-ui-standalone-preset.js?v=3.0.0", parameters={masked}
+2023-01-23 14:44:47.476 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2023-01-23 14:44:47.493 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.495 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/swagger-ui/springfox.js?v=3.0.0", parameters={masked}
+2023-01-23 14:44:47.496 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/springfox-swagger-ui/]]
+2023-01-23 14:44:47.502 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.517 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.614 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources/configuration/ui", parameters={}
+2023-01-23 14:44:47.615 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#uiConfiguration()
+2023-01-23 14:44:47.624 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2023-01-23 14:44:47.644 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.swagger.web.UiConfiguration@8b77cd0]
+2023-01-23 14:44:47.654 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.658 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources/configuration/security", parameters={}
+2023-01-23 14:44:47.658 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#securityConfiguration()
+2023-01-23 14:44:47.658 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2023-01-23 14:44:47.662 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.swagger.web.SecurityConfiguration@71469e36]
+2023-01-23 14:44:47.663 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.666 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/swagger-resources", parameters={}
+2023-01-23 14:44:47.667 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger.web.ApiResourceController#swaggerResources()
+2023-01-23 14:44:47.668 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2023-01-23 14:44:47.669 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[springfox.documentation.swagger.web.SwaggerResource@5528ffa0]]
+2023-01-23 14:44:47.670 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:44:47.698 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/v2/api-docs", parameters={}
+2023-01-23 14:44:47.698 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)
+2023-01-23 14:44:47.784 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, */*] and supported [application/json, application/hal+json]
+2023-01-23 14:44:47.786 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [springfox.documentation.spring.web.json.Json@1028e860]
+2023-01-23 14:44:47.788 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:45:23.696 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/auth/kakao/callback?code=BabpHujgcJoFoDcTRz9z7O09X0dzRi2U6xEgmrDpb3LW3dyeLreqPnqVFbkz9TY50C_TFworDR8AAAGF3Sjn8w", parameters={masked}
+2023-01-23 14:45:23.697 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#kakaoCallback(String)
+2023-01-23 14:45:23.704  INFO 27700 --- [http-nio-127.0.0.1-8080-exec-1] c.s.i.api.controller.AuthController      : kakaoCallback call!
+2023-01-23 14:45:23.762 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : HTTP POST https://kauth.kakao.com/oauth/token
+2023-01-23 14:45:23.764 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Accept=[text/plain, application/json, application/*+json, */*]
+2023-01-23 14:45:23.765 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Writing [{grant_type=[authorization_code], client_id=[dc6c7559412fd1c77ad3e0a798803e27], redirect_uri=[http://localhost:8080/auth/kakao/callback], code=[BabpHujgcJoFoDcTRz9z7O09X0dzRi2U6xEgmrDpb3LW3dyeLreqPnqVFbkz9TY50C_TFworDR8AAAGF3Sjn8w]}] as "application/x-www-form-urlencoded;charset=utf-8"
+2023-01-23 14:45:23.877 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Response 200 OK
+2023-01-23 14:45:23.878 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Reading to [java.lang.String] as "application/json;charset=utf-8"
+2023-01-23 14:45:23.888  INFO 27700 --- [http-nio-127.0.0.1-8080-exec-1] c.s.i.api.controller.AuthController      : Kakao access token >>> KtHWZabYViGLnnGDRWkRG6oc_ml2kvENAFy9E5EaCioljgAAAYXdKOip
+2023-01-23 14:45:23.891 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : HTTP POST https://kapi.kakao.com/v2/user/me
+2023-01-23 14:45:23.892 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Accept=[text/plain, application/json, application/*+json, */*]
+2023-01-23 14:45:23.989 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Response 200 OK
+2023-01-23 14:45:23.990 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.client.RestTemplate              : Reading to [java.lang.String] as "application/json;charset=UTF-8"
+2023-01-23 14:45:24.156 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;q=0.8', given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, application/signed-exchange;v=b3;q=0.9, */*;q=0.8] and supported [application/json, application/*+json]
+2023-01-23 14:45:24.156 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.KakaoInfoPostRes@ed9d757]
+2023-01-23 14:45:24.157 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:55:12.795 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : POST "/auth/login", parameters={}
+2023-01-23 14:55:12.795 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.AuthController#login(UserLoginPostReq)
+2023-01-23 14:55:12.827 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.ssafy.interview.api.request.UserLoginPostReq@1d715b48]
+2023-01-23 14:55:12.829  INFO 27700 --- [http-nio-127.0.0.1-8080-exec-7] c.s.i.api.controller.AuthController      : login call!
+2023-01-23 14:55:13.659 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
+2023-01-23 14:55:13.659 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserLoginPostRes@38539bec]
+2023-01-23 14:55:13.662 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:55:28.979 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.f.CommonsRequestLoggingFilter      : Before request [GET /api/users/me, client=127.0.0.1, user=slhyj95@naver.com, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"", accept:"application/json;charset=UTF-8", sec-ch-ua-mobile:"?0", authorization:"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzbGh5ajk1QG5hdmVyLmNvbSIsImlzcyI6InNzYWZ5LmNvbSIsImV4cCI6MTY3NDQ1MzM0MiwiaWF0IjoxNjc0NDUzMzEyfQ.-SP89BaZbBzTNm_-PQ1D8K0TL47WvKDOwNuRI889sdSiljlA1eQQ8GW3nkCgUfWZw3uADqLKThns2Fg2zh29Zw", user-agent:"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/index.html", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzbGh5ajk1QG5hdmVyLmNvbSIsImlzcyI6InNzYWZ5LmNvbSIsImV4cCI6MTY3NDQ1MzM3MiwiaWF0IjoxNjc0NDUzMzEyfQ.hc5r7_Aqm5i6yKg1XPAkGXiBIKMl0_MdNcYH7i5TKqPw4lFebmACTHa_TfnSRnDeKHQEj3aMHN45OpL554oOEw"]]
+2023-01-23 14:55:28.979 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/api/users/me", parameters={}
+2023-01-23 14:55:28.979 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.interview.api.controller.UserController#getUserInfo(Authentication)
+2023-01-23 14:55:28.985 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json;charset=UTF-8', given [application/json;charset=UTF-8] and supported [application/json, application/*+json]
+2023-01-23 14:55:28.985 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.ssafy.interview.api.response.UserRes@51ff4cd2]
+2023-01-23 14:55:28.986 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-01-23 14:55:28.987 DEBUG 27700 --- [http-nio-127.0.0.1-8080-exec-8] o.s.w.f.CommonsRequestLoggingFilter      : After request [GET /api/users/me, client=127.0.0.1, user=slhyj95@naver.com, headers=[host:"localhost:8080", connection:"keep-alive", sec-ch-ua:""Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"", accept:"application/json;charset=UTF-8", sec-ch-ua-mobile:"?0", authorization:"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzbGh5ajk1QG5hdmVyLmNvbSIsImlzcyI6InNzYWZ5LmNvbSIsImV4cCI6MTY3NDQ1MzM0MiwiaWF0IjoxNjc0NDUzMzEyfQ.-SP89BaZbBzTNm_-PQ1D8K0TL47WvKDOwNuRI889sdSiljlA1eQQ8GW3nkCgUfWZw3uADqLKThns2Fg2zh29Zw", user-agent:"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36", sec-ch-ua-platform:""Windows"", sec-fetch-site:"same-origin", sec-fetch-mode:"cors", sec-fetch-dest:"empty", referer:"http://localhost:8080/swagger-ui/index.html", accept-encoding:"gzip, deflate, br", accept-language:"ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7", cookie:"refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzbGh5ajk1QG5hdmVyLmNvbSIsImlzcyI6InNzYWZ5LmNvbSIsImV4cCI6MTY3NDQ1MzM3MiwiaWF0IjoxNjc0NDUzMzEyfQ.hc5r7_Aqm5i6yKg1XPAkGXiBIKMl0_MdNcYH7i5TKqPw4lFebmACTHa_TfnSRnDeKHQEj3aMHN45OpL554oOEw"]]

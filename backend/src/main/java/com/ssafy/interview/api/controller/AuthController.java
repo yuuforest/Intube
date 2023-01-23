@@ -1,21 +1,23 @@
 package com.ssafy.interview.api.controller;
 
 import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.interview.api.request.UserLoginPostReq;
+import com.ssafy.interview.api.response.KakaoInfoPostRes;
 import com.ssafy.interview.api.response.UserLoginPostRes;
+import com.ssafy.interview.api.service.AuthService;
 import com.ssafy.interview.api.service.UserService;
-import com.ssafy.interview.common.model.response.BaseResponseBody;
+import com.ssafy.interview.common.model.KakaoUserInfoDto;
 import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.db.entitiy.User;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +31,12 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     UserService userService;
+
+    @Autowired
+    AuthService authService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -47,6 +53,8 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo) {
+        logger.info("login call!");
+
         String email = loginInfo.getEmail();
         String password = loginInfo.getPassword();
 
@@ -107,7 +115,7 @@ public class AuthController {
             }
 
             if (!cookieToken.equals(refreshToken)) {
-                System.out.println("tampered!");
+                System.out.println("Tampered!");
             }
 
             // 토큰 재발행
@@ -116,6 +124,66 @@ public class AuthController {
             return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", new_access_token));
         } catch (NullPointerException e) {
             return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Refresh Token Expired", null));
+        }
+    }
+
+    @GetMapping("/kakao/callback")
+    @ApiOperation(value = "카카오 로그인", notes = "카카오 인가코드를 입력 받아 카카오 유저 정보를 반환하거나 로그인한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> kakaoCallback(@RequestParam String code) {
+        logger.info("kakaoCallback call!");
+        try {
+            // URL에 포함된 code를 이용하여 액세스 토큰 발급
+            String kakaoAccessToken = authService.getKakaoAccessToken(code);
+            logger.info("Kakao access token >>> " + kakaoAccessToken);
+
+            // 토큰으로 카카오 API 호출
+            KakaoUserInfoDto kakaoUserInfoDto = authService.getKakaUserInfo(kakaoAccessToken);
+
+            String email = kakaoUserInfoDto.getKakaoAccount().getEmail();
+            String nickname = null;
+            String profile = null;
+            if (kakaoUserInfoDto.getKakaoProperties() != null) {
+                nickname = kakaoUserInfoDto.getKakaoProperties().getNickname();
+                profile = kakaoUserInfoDto.getKakaoProperties().getProfileImage();
+            }
+            String gender = kakaoUserInfoDto.getKakaoAccount().getGender();
+            User kakaoUser = userService.getUserByEmail(email);
+
+            if (kakaoUser == null) {
+                // 회원가입한 적 없는 유저일 때 email을 반환한다.
+                return ResponseEntity.ok()
+                        .body(KakaoInfoPostRes.of(404, "You need to register!", email, nickname, gender, profile));
+            }
+
+            // jwt 토큰을 만들고 로그인
+            String accessToken = JwtTokenUtil.getAccessToken(email);
+            String refreshToken = JwtTokenUtil.getRefreshToken(email);
+
+            // Refresh Token에 대한 처리
+            // 1. Redis에 저장 - 만료 시간 설정을 통해 자동 삭제 처리
+            redisTemplate.opsForValue().set(email, refreshToken, 60000, TimeUnit.MILLISECONDS);
+            // 2. 쿠키에 저장 - response header 넣어서 보냄
+            ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                    .domain("localhost") // 쿠키 도메인 설정
+                    .maxAge(60)
+                    .path("/")
+                    .secure(true)
+                    .sameSite("None")
+                    .httpOnly(true)
+                    .build();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(UserLoginPostRes.of(200, "Success", accessToken));
+        } catch (NullPointerException e) {
+            // 유효하지 않는 이메일인 경우, 로그인 실패로 응답.
+            return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "Invalid Email", null));
         }
     }
 }
