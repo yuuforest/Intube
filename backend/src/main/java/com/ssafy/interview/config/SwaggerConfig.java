@@ -29,8 +29,8 @@ import static com.google.common.collect.Lists.newArrayList;
 public class SwaggerConfig {
 
     private ApiInfo swaggerInfo() {
-        return new ApiInfoBuilder().title("viewith API")
-                .description("viewith API Docs").build();
+        return new ApiInfoBuilder().title("Intube API")
+                .description("Intube API Docs").build();
     }
 
     @Bean
