@@ -59,6 +59,9 @@ dependencies {
 
 	//Redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+	//Email
+	implementation("org.springframework.boot:spring-boot-starter-mail")
 }
 
 tasks.withType<Test> {
