@@ -25,16 +25,16 @@ public class UserRepositorySupport {
         return Optional.ofNullable(user);
     }
 
-    @Transactional
-    public void updateByEmail(String email, String password, String name, String nickname,
-                              String phone, String gender, Date birth, String introduction,
-                              int temperature, Integer authorization, Double point, String profile_url) {
-        jpaQueryFactory.update(qUser)
-                .set(qUser.password, password).set(qUser.name, name).set(qUser.nickname, nickname)
-                .set(qUser.phone, phone).set(qUser.gender, gender).set(qUser.birth, birth)
-                .set(qUser.introduction, introduction).set(qUser.temperature, temperature)
-//                .set(qUser.authorization, authorization)
-                .set(qUser.point, point).set(qUser.profile_url, profile_url)
-                .where(qUser.email.eq(email)).execute();
-    }
+//    @Transactional
+//    public void updateByEmail(String email, String password, String name, String nickname,
+//                              String phone, String gender, Date birth, String introduction,
+//                              int temperature, Integer authorization, Double point, String profile_url) {
+//        jpaQueryFactory.update(qUser)
+//                .set(qUser.password, password).set(qUser.name, name).set(qUser.nickname, nickname)
+//                .set(qUser.phone, phone).set(qUser.gender, gender).set(qUser.birth, birth)
+//                .set(qUser.introduction, introduction).set(qUser.temperature, temperature)
+////                .set(qUser.authorization, authorization)
+//                .set(qUser.point, point).set(qUser.profile_url, profile_url)
+//                .where(qUser.email.eq(email)).execute();
+//    }
 }

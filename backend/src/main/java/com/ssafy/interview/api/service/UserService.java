@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface UserService {
 	void createUser(UserRegisterPostReq userRegisterInfo);
-	void updateUser(UserModifyReq userModifyInfo);
+//	void updateUser(UserModifyReq userModifyInfo);
 	void deleteUser(String email);
 	Optional<User> testUserByEmail(String email);
 	User getUserByEmail(String email);

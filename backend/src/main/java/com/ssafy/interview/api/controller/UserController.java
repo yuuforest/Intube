@@ -54,7 +54,7 @@ public class UserController {
     })
     public ResponseEntity<? extends BaseResponseBody> modify(
             @RequestBody @ApiParam(value = "회원정보 수정", required = true) UserModifyReq modifyInfo) {
-        userService.updateUser(modifyInfo);
+//        userService.updateUser(modifyInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
