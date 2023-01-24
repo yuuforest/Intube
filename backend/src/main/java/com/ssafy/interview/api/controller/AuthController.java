@@ -2,12 +2,17 @@ package com.ssafy.interview.api.controller;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ssafy.interview.api.request.UserEmailPostReq;
 import com.ssafy.interview.api.request.UserLoginPostReq;
+import com.ssafy.interview.api.request.UserModifyReq;
 import com.ssafy.interview.api.response.KakaoInfoPostRes;
 import com.ssafy.interview.api.response.UserLoginPostRes;
+import com.ssafy.interview.api.response.UserRes;
 import com.ssafy.interview.api.service.AuthService;
+import com.ssafy.interview.api.service.EmailService;
 import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.common.model.KakaoUserInfoDto;
+import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.db.entitiy.User;
 import io.swagger.annotations.*;
@@ -22,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,6 +43,9 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -98,6 +107,7 @@ public class AuthController {
             @ApiResponse(code = 401, message = "Refresh Token 만료")
     })
     public ResponseEntity<UserLoginPostRes> issue(@CookieValue(value = "refreshToken", required = false) Cookie cookie) {
+        logger.info("issue call!");
         try {
             String cookieToken = cookie.getValue();
 
@@ -185,5 +195,55 @@ public class AuthController {
             // 유효하지 않는 이메일인 경우, 로그인 실패로 응답.
             return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "Invalid Email", null));
         }
+    }
+
+    @PostMapping("/send-email")
+    @ApiOperation(value = "이메일 인증 코드 전송", notes = "<strong>회원 email</strong>을 입력 받아 인증코드를 전송한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 400, message = "이메일 형식 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<BaseResponseBody> sendEmail(@RequestBody @ApiParam(value = "회원 email", required = true) UserEmailPostReq email) throws Exception {
+        logger.info("sendEmail call!");
+        try {
+            String confirm = emailService.sendAuthCode(email.getEmail());
+
+            // 인증코드를 redis에 저장
+            redisTemplate.opsForValue().set(email.getEmail() + "-email", confirm, 60000, TimeUnit.MILLISECONDS);
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Addresses"));
+        }
+    }
+
+    @PostMapping("/check-email")
+    @ApiOperation(value = "이메일 인증 코드 확인", notes = "<strong>email과 인증키</strong>를 입력 받아 인증한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "이메일 인증 코드 만료 / 잘못된 인증 코드"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<BaseResponseBody> checkEmail(@RequestBody @ApiParam(value = "이메일 인증 정보", required = true) Map<String, String> map) throws Exception {
+        logger.info("checkEmail call!");
+        String authKey = map.get("authKey");
+        String email = map.get("email");
+
+        // redis에 저장된 인증 코드 가져오기
+        String confirm = redisTemplate.opsForValue().get(email + "-email");
+
+        if (confirm == null) {
+            // 인증 코드가 없으면
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Email Authkey Expired"));
+        }
+
+        if (!authKey.equals(confirm)) {
+            // 잘못된 인증 코드
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Wrong Email Authkey"));
+        }
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+
     }
 }

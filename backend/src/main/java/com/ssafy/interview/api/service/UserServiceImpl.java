@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
-	@Override
-	public void updateUser(UserModifyReq userModifyInfo) {
-		userRepositorySupport.updateByEmail(userModifyInfo.getEmail(),
-				passwordEncoder.encode(userModifyInfo.getPassword()), userModifyInfo.getName(), userModifyInfo.getNickname(),
-				userModifyInfo.getPhone(), userModifyInfo.getGender(), userModifyInfo.getBirth(),
-				userModifyInfo.getIntroduction(), userModifyInfo.getTemperature(), userModifyInfo.getAuthorization(),
-				userModifyInfo.getPoint(), userModifyInfo.getProfile_url());
-	}
+//	@Override
+//	public void updateUser(UserModifyReq userModifyInfo) {
+//		userRepositorySupport.updateByEmail(userModifyInfo.getEmail(),
+//				passwordEncoder.encode(userModifyInfo.getPassword()), userModifyInfo.getName(), userModifyInfo.getNickname(),
+//				userModifyInfo.getPhone(), userModifyInfo.getGender(), userModifyInfo.getBirth(),
+//				userModifyInfo.getIntroduction(), userModifyInfo.getTemperature(), userModifyInfo.getAuthorization(),
+//				userModifyInfo.getPoint(), userModifyInfo.getProfile_url());
+//	}
 
 	@Override
 	public void deleteUser(String email) {
