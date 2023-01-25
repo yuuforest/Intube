@@ -89,7 +89,9 @@ public class ConferenceController {
         // 생성된 Conference 방에 대한 정보 저장
         Conference conference = conferenceService.createConference(registerInfo);
         // Conference가 생성되는 동시에 질문자가 Conference 방에 참여 -> 참여 기록 생성
-        conferenceService.createConferenceHistory(conference.getId(), conference.getOwner_id(), 1);
+        conferenceService.createConferenceHistory(conference.getId(), conference.getOwner_id(), 1, true);
+        
+        // 녹화 해야함
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 

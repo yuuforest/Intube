@@ -10,6 +10,6 @@ public interface ConferenceService {
 
     // Conference History Table
     // 참여자들의 Conference 방 참여 여부와 그에 따른 정보 저장
-    void createConferenceHistory(Long conference_id, Long user_id, int action);
+    void createConferenceHistory(Long conference_id, Long user_id, int action, boolean flag);
 
 }

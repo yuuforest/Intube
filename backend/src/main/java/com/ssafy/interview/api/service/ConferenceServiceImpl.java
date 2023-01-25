@@ -53,14 +53,16 @@ public class ConferenceServiceImpl implements  ConferenceService{
     }
 
     @Override
-    public void createConferenceHistory(Long conference_id, Long user_id, int action) {
+    public void createConferenceHistory(Long conference_id, Long user_id, int action, boolean flag) {
 
         ConferenceHistory conferenceHistory = new ConferenceHistory();
 
         conferenceHistory.setConference_id(conference_id);
         conferenceHistory.setUser_id(user_id);
         conferenceHistory.setAction(action);
-        conferenceHistory.setStart_time(LocalDateTime.now());
+
+        if(flag) conferenceHistory.setStart_time(LocalDateTime.now());
+        else conferenceHistory.setEnd_time(LocalDateTime.now());
 
         conferenceHistoryRepository.save(conferenceHistory);
     }
