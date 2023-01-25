@@ -4,7 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.interview.api.response.interview.InterviewLoadDto;
 import com.ssafy.interview.api.response.interview.QInterviewLoadDto;
-import com.ssafy.interview.db.entitiy.Interview;
 import com.ssafy.interview.db.entitiy.QInterview;
 import com.ssafy.interview.db.entitiy.QInterviewCategory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 유저 모델 관련 디비 쿼리 생성을 위한 구현 정의.

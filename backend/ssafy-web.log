@@ -20,8 +20,8 @@
 2023-01-20 13:42:56.291  INFO 6720 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
 2023-01-20 13:42:56.737  INFO 6720 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
 2023-01-20 13:42:56.775  INFO 6720 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
-2023-01-20 13:42:57.053 ERROR 6720 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.Interview.apply_start_time
-2023-01-20 13:42:57.053  WARN 6720 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.Interview.apply_start_time
+2023-01-20 13:42:57.053 ERROR 6720 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.interview.Interview.apply_start_time
+2023-01-20 13:42:57.053  WARN 6720 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.interview.Interview.apply_start_time
 2023-01-20 13:42:57.054  INFO 6720 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2023-01-20 13:42:57.068  INFO 6720 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
 2023-01-20 13:42:57.070  INFO 6720 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
@@ -30,7 +30,7 @@
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
 2023-01-20 13:42:57.109 ERROR 6720 --- [main] o.s.boot.SpringApplication               : Application run failed
 
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.Interview.apply_start_time
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.interview.Interview.apply_start_time
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804) ~[spring-beans-5.3.24.jar:5.3.24]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.24.jar:5.3.24]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.24.jar:5.3.24]
@@ -48,7 +48,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) ~[spring-boot-2.7.7.jar:2.7.7]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.7.7.jar:2.7.7]
 	at com.ssafy.interview.InterviewApplication.main(InterviewApplication.java:10) ~[classes/:na]
-Caused by: org.hibernate.AnnotationException: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.Interview.apply_start_time
+Caused by: org.hibernate.AnnotationException: @Temporal should only be set on a java.util.Date or java.util.Calendar property: com.ssafy.interview.db.entitiy.interview.Interview.apply_start_time
 	at org.hibernate.cfg.annotations.SimpleValueBinder.setType(SimpleValueBinder.java:188) ~[hibernate-core-5.6.14.Final.jar:5.6.14.Final]
 	at org.hibernate.cfg.annotations.PropertyBinder.makePropertyAndValue(PropertyBinder.java:185) ~[hibernate-core-5.6.14.Final.jar:5.6.14.Final]
 	at org.hibernate.cfg.annotations.PropertyBinder.makePropertyValueAndBind(PropertyBinder.java:205) ~[hibernate-core-5.6.14.Final.jar:5.6.14.Final]

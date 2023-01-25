@@ -1,5 +1,7 @@
-package com.ssafy.interview.db.entitiy;
+package com.ssafy.interview.db.entitiy.interview;
 
+import com.ssafy.interview.db.entitiy.BaseEntity;
+import com.ssafy.interview.db.entitiy.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,7 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *  인터뷰 모델 정의.
@@ -46,6 +50,12 @@ public class Interview extends BaseEntity {
         @ColumnDefault("1")
         int interview_state;
 
+
+        // OneToMany 관계 설정
+        @OneToMany(mappedBy = "interview")
+        private List<InterviewTime> interviewTimeList = new ArrayList<>();
+
+        // ManyToOne 관계 설정
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "owner_id")
         private User user;

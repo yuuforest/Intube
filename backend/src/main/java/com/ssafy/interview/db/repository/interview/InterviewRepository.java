@@ -1,6 +1,6 @@
 package com.ssafy.interview.db.repository.interview;
 
-import com.ssafy.interview.db.entitiy.Interview;
+import com.ssafy.interview.db.entitiy.interview.Interview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

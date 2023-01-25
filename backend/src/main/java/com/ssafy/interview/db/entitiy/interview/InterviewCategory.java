@@ -1,5 +1,6 @@
-package com.ssafy.interview.db.entitiy;
+package com.ssafy.interview.db.entitiy.interview;
 
+import com.ssafy.interview.db.entitiy.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 

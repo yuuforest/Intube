@@ -2,6 +2,7 @@ package com.ssafy.interview.db.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.interview.db.entitiy.interview.Interview;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -55,7 +56,7 @@ public class User extends BaseEntity{
 
     String profile_url;
 
-    // interview 관계
+    // community 부분 추가 목록
     @OneToMany(mappedBy = "user")
     private List<Interview> interviewList = new ArrayList<>();
 

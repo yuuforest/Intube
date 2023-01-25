@@ -1,7 +1,7 @@
 package com.ssafy.interview.api.response.interview;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.interview.db.entitiy.Interview;
+import com.ssafy.interview.db.entitiy.interview.Interview;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
