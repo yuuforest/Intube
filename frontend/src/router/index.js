@@ -6,6 +6,9 @@ import AnnouncementType from "@/components/announcement/AnnouncementType";
 import AnnouncementInfo from "@/components/announcement/AnnouncementInfo";
 import AnnouncementQuestion from "@/components/announcement/AnnouncementQuestion";
 import AnnouncementAlert from "@/components/announcement/AnnouncementAlert";
+import LoginView from "@/views/LoginView"
+import SignupView from "@/views/SignupView"
+import FindIdPasswordView from "@/views/FindIdPasswordView"
 
 const routes = [
   {
@@ -17,6 +20,21 @@ const routes = [
     path: "/interview",
     name: "interview",
     component: InterviewFind,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginView,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignupView,
+  },
+  {
+    path: "/findIdPassword",
+    name: "findIdPassword",
+    component: FindIdPasswordView,
   },
   {
     path: "/announcement",
