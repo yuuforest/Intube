@@ -2,11 +2,9 @@ package com.ssafy.interview.db.entitiy.interview;
 
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
@@ -20,10 +18,12 @@ import java.util.List;
 /**
  *  인터뷰 모델 정의.
  */
-@Entity
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EntityListeners(value = { AuditingEntityListener.class}) // JPA 내부에서 엔티티 객체가 생성/변경되는 것을 감지하는 역할
 public class Interview extends BaseEntity {
         String title;
@@ -51,9 +51,10 @@ public class Interview extends BaseEntity {
 
         @Temporal(TemporalType.DATE)
         Date download_expiration;
-        @ColumnDefault("1")
-        int interview_state;
 
+        //        @ColumnDefault("1")
+        @Builder.Default()
+        int interview_state = 1;
 
         // OneToMany 관계 설정
         @OneToMany(mappedBy = "interview")
@@ -70,8 +71,8 @@ public class Interview extends BaseEntity {
 
         @Builder
         private Interview(String title, String description, String estimated_time, int start_standard_age,
-                         int end_standard_age, char gender, int max_people, int standard_point,
-                         Date apply_end_time, Date download_expiration, User user, InterviewCategory interviewCategory) {
+                          int end_standard_age, char gender, int max_people, int standard_point,
+                          Date apply_end_time, Date download_expiration, User user, InterviewCategory interviewCategory) {
                 Assert.notNull(title, "title must not be empty");
                 Assert.notNull(description, "description must not be empty");
                 Assert.notNull(estimated_time, "estimated_time must not be empty");
@@ -96,3 +97,5 @@ public class Interview extends BaseEntity {
                 this.interviewCategory = interviewCategory;
         }
 }
+
+
