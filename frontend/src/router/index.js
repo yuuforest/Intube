@@ -6,9 +6,6 @@ import AnnouncementType from "@/components/announcement/AnnouncementType";
 import AnnouncementInfo from "@/components/announcement/AnnouncementInfo";
 import AnnouncementQuestion from "@/components/announcement/AnnouncementQuestion";
 import AnnouncementAlert from "@/components/announcement/AnnouncementAlert";
-import MainView from "@/views/MainView";
-import InterviewFind from "@/views/InterviewFind";
-import AnnouncementPost from "@/views/AnnouncementPost";
 import LoginView from "@/views/LoginView"
 import SignupView from "@/views/SignupView"
 import FindIdPasswordView from "@/views/FindIdPasswordView"
