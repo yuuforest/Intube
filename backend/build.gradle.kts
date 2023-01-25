@@ -11,6 +11,10 @@ plugins {
 	kotlin("plugin.jpa") version "1.6.21"
 	// 플러그인 추가
 	kotlin("kapt") version "1.7.10"
+
+	// Openvidu
+	`java-library`
+	`maven-publish`
 }
 
 group = "com.ssafy"
@@ -26,6 +30,11 @@ configurations {
 
 repositories {
 	mavenCentral()
+
+	// Openvidu
+	maven {
+		url = uri("https://repo.maven.apache.org/maven2/")
+	}
 }
 
 
@@ -62,6 +71,10 @@ dependencies {
 
 	//Email
 	implementation("org.springframework.boot:spring-boot-starter-mail")
+
+	// Openvidu
+	api("org.springframework.boot:spring-boot-starter-web:2.7.0")
+	api("io.openvidu:openvidu-java-client:2.25.0")
 }
 
 tasks.withType<Test> {
