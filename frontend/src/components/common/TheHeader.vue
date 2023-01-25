@@ -20,10 +20,10 @@ export default {
   name: "MainHeader",
   methods: {
     moveInterview() {
-      router.push("interview");
+      router.push("/interview");
     },
     moeveAnnouncement() {
-      router.push("announcement");
+      router.push("/announcement/type");
     },
     moeveMain() {
       router.push("/");
