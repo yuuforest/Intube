@@ -6,6 +6,7 @@ import AnnouncementType from "@/components/announcement/AnnouncementType";
 import AnnouncementInfo from "@/components/announcement/AnnouncementInfo";
 import AnnouncementQuestion from "@/components/announcement/AnnouncementQuestion";
 import AnnouncementAlert from "@/components/announcement/AnnouncementAlert";
+import MyPage from "@/views/MyPage";
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     path: "/interview",
     name: "interview",
     component: InterviewFind,
+  },
+  {
+    path: "/mypage",
+    name: "mypage",
+    component: MyPage,
   },
   {
     path: "/announcement",

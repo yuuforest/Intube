@@ -10,7 +10,9 @@
       required
     ></v-text-field>
     <h1 class="float-left font-weight-bold">인터뷰 정보</h1>
-    <div class="float-right font-weight-bold">{{ category_name }} 인터뷰</div>
+    <div class="float-right font-weight-bold">
+      {{ annoucementInfo.category_name }} 인터뷰
+    </div>
     <v-divider class="mt-16 mb-10"></v-divider>
 
     <v-row>
@@ -143,19 +145,22 @@
       </v-col>
     </v-row>
     <v-divider class="mt-2 mb-5"></v-divider>
+
+    <v-row justify="center" class="my-5">
+      <v-btn color="blue-grey" prepend-icon="mdi-arrow-right-bold" size="large">
+        다음
+      </v-btn>
+    </v-row>
   </div>
-  <v-row justify="center" class="my-5">
-    <v-btn color="blue-grey" prepend-icon="mdi-arrow-right-bold" size="large">
-      다음
-    </v-btn>
-  </v-row>
 </template>
 
 <script>
 export default {
-  props: ["category_name"],
+  name: "AnnouncementInfo",
+  props: ["annoucementInfo"],
   data: () => ({
     newAnnouncement: {
+      category_name: "",
       title: "",
       description: "",
       estimated_time: "",
@@ -164,7 +169,6 @@ export default {
       gender: "",
       max_people: "",
       standard_point: "",
-      apply_end_time: "",
       interview_time: [
         {
           date: "",
@@ -172,12 +176,19 @@ export default {
         },
       ],
     },
-    age: [20, 40],
+    age: [],
     inputRules: [
       (v) => !!v || "필수입력입니다",
       (v) => (v && v.length <= 30) || "30자이내로 작성해주세요",
     ],
   }),
+  created() {
+    this.newAnnouncement = this.annoucementInfo;
+    this.age = [
+      this.newAnnouncement.start_standard_age,
+      this.newAnnouncement.end_standard_age,
+    ];
+  },
   methods: {
     addTime() {
       this.newAnnouncement.interview_time.push({
@@ -193,6 +204,13 @@ export default {
     newAnnouncement: {
       handler() {
         this.$emit("announcementInfo", this.newAnnouncement);
+      },
+      deep: true,
+    },
+    age: {
+      handler() {
+        this.newAnnouncement.start_standard_age = this.age[0];
+        this.newAnnouncement.end_standard_age = this.age[1];
       },
       deep: true,
     },

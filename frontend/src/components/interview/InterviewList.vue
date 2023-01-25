@@ -6,7 +6,10 @@
           v-for="interview in interviews"
           :key="interview.id"
           :interview="interview"
-          cols="4"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
         >
           <interview-list-item :interview="interview"> </interview-list-item>
         </v-col>
@@ -17,14 +20,16 @@
 
 <script>
 import InterviewListItem from "@/components/interview/InterviewListItem.vue";
-import getList from "@/components/interview/interview_list.json";
+
 export default {
   name: "InterviewList",
   components: { InterviewListItem },
+  props: ["interviews"],
   data() {
-    return {
-      interviews: getList.interview_list,
-    };
+    return {};
+  },
+  created() {
+    console.log(this.interviews);
   },
 };
 </script>

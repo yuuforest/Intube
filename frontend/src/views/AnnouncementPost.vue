@@ -16,7 +16,7 @@
   <v-row justify="center">
     <v-col cols="8">
       <router-view
-        :category_name="announcement.category_name"
+        :annoucementInfo="announcement"
         @categoryName="categoryNameChange"
         @announcementInfo="announcementChange"
       ></router-view>
@@ -34,13 +34,18 @@ export default {
         title: "",
         description: "",
         estimated_time: "",
-        start_standard_age: "",
-        end_standard_age: "",
+        start_standard_age: 20,
+        end_standard_age: 40,
         gender: "",
         max_people: "",
         standard_point: "",
         apply_end_time: "",
-        interview_time: [],
+        interview_time: [
+          {
+            date: "",
+            time: "",
+          },
+        ],
       },
     };
   },
@@ -61,19 +66,7 @@ export default {
       this.announcement.category_name = categoryName;
     },
     announcementChange(announcementInfo) {
-      this.announcement.title = announcementInfo.title;
-      this.announcement.description = announcementInfo.description;
-      this.announcement.estimated_time = announcementInfo.estimated_time;
-      this.announcement.start_standard_age =
-        announcementInfo.start_standard_age;
-      this.announcement.end_standard_age = announcementInfo.end_standard_age;
-      this.announcement.gender = announcementInfo.gender;
-      this.announcement.max_people = announcementInfo.max_people;
-      this.announcement.standard_point = announcementInfo.standard_point;
-      this.announcement.apply_end_time = announcementInfo.apply_end_time;
-      this.announcement.interview_time = announcementInfo.interview_time;
-      this.announcement.interview_end_time =
-        announcementInfo.interview_end_time;
+      this.announcement = announcementInfo;
       console.log(this.announcement);
     },
   },

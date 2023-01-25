@@ -31,8 +31,12 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "Roboto-Medium";
+  src: url("@/assets/fonts/Roboto-Medium.ttf");
+}
 
 * {
-  font-family: "LINESeedKR-Bd";
+  font-family: "Roboto-Medium, LINESeedKR-Bd";
 }
 </style>

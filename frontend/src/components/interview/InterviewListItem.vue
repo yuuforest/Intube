@@ -2,7 +2,7 @@
   <v-card class="mx-auto" max-width="344" variant="outlined">
     <v-card-item>
       <div>
-        <div class="text-h6 mb-1">{{ this.interview.title }}</div>
+        <h2 class="mb-1">{{ this.interview.title }}</h2>
         <v-divider class="mb-1"></v-divider>
         <div class="text-caption">
           <p>내용 : {{ this.interview.description }}</p>
@@ -22,7 +22,9 @@
     </v-card-item>
 
     <v-card-actions class="float-right">
-      <v-btn variant="outlined"> 상세보기 </v-btn>
+      <v-btn variant="outlined">
+        {{ this.interview.category_name }} 인터뷰</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
