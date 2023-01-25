@@ -5,7 +5,7 @@
         <h1>회원가입</h1>
         
             <p>sns계정으로 간편하게 회원가입</p>
-            <v-img src="@/assets/kakaoLogin.png" width="50" ></v-img>
+            <v-img src="@/assets/kakaoLogin.png" width="50" @click="kakao"></v-img>
             <hr>
         
             <h2>이메일</h2>
@@ -158,7 +158,8 @@ export default {
     }),
 
     methods:{
-      phoneValidate(){
+      kakao(){
+        console.log('hi')
       },
       emailValidate(){
 
