@@ -99,6 +99,9 @@ export default {
     moveMyPage() {
       router.push("/mypage");
     },
+    moveLogin() {
+      router.push("/login");
+    },
     closeSidebar() {
       this.drawer = false;
     },
