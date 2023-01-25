@@ -18,8 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // configuration.addAllowedOrigin("*");
-        configuration.addAllowedOriginPattern("*");
+//         configuration.addAllowedOrigin("*");
+        configuration.addAllowedOriginPattern("http://localhost:8081"); // 클라이언트 port
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
