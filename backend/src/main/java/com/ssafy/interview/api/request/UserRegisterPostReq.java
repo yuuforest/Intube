@@ -33,4 +33,8 @@ public class UserRegisterPostReq {
 	Date birth;
 	@ApiModelProperty(name="유저 introduction", example="안녕하세요 저는 착한 사람입니다.")
 	String introduction;
+	@ApiModelProperty(name="유저 is_email_authorized", example="1")
+	int isEmailAuthorized;
+	@ApiModelProperty(name="유저 profile image", example="http://k.kakaocdn.net/dn/bg5Zwf/btrWR8uR2ya/zswLvQERYQPt7muqsKPBH0/img_640x640.jpg")
+	String profileUrl;
 }

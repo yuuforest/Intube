@@ -2,13 +2,9 @@ package com.ssafy.interview.db.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -17,7 +13,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-public class User extends BaseEntity{
+@NoArgsConstructor
+public class User extends BaseEntity {
 
     String email;
 
@@ -38,17 +35,16 @@ public class User extends BaseEntity{
 
     String introduction;
 
-    @ColumnDefault("36")
     double temperature;
 
-    @ColumnDefault("0")
-    int is_phone_authorized;
-
-    @ColumnDefault("0")
     int is_email_authorized;
 
-    @ColumnDefault("0")
     int point;
 
     String profile_url;
+
+    @PrePersist
+    public void prePersist(){
+        this.temperature = this.temperature == 0.0 ? 36.0 : this.temperature;
+    }
 }

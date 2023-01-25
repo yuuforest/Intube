@@ -2,41 +2,59 @@ package com.ssafy.interview.api.controller;
 
 import com.ssafy.interview.api.request.UserModifyReq;
 import com.ssafy.interview.api.request.UserRegisterPostReq;
+import com.ssafy.interview.api.response.KakaoInfoPostRes;
+import com.ssafy.interview.api.response.UserLoginPostRes;
 import com.ssafy.interview.api.response.UserRes;
 import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.common.auth.SsafyUserDetails;
+import com.ssafy.interview.common.model.KakaoUserInfoDto;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
+import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.repository.UserRepository;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 public class UserController {
-
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping()
-    @ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
+    @ApiOperation(value = "회원 가입", notes = "사용자 정보를 입력 받아 DB에 insert한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 409, message = "이메일 중복"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> register(
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
+        logger.info("register call!");
+
+        if (userRepository.findByEmail(registerInfo.getEmail()).isPresent()){
+            // 이미 회원가입한 회원일 때
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Email"));
+        }
 
         //임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
         userService.createUser(registerInfo);
@@ -45,7 +63,7 @@ public class UserController {
     }
 
     @PutMapping()
-    @ApiOperation(value = "회원 정보 수정", notes = "<strong>수정한 회원 정보</strong>를 받아 회원 정보를 수정 한다.")
+    @ApiOperation(value = "회원 정보 수정", notes = "수정한 회원 정보를 받아 회원 정보를 수정 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -59,7 +77,7 @@ public class UserController {
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "회원 탈퇴", notes = "<strong>아이디인 유저의 이메일</strong>을 통해 회원탈퇴 한다.")
+    @ApiOperation(value = "회원 탈퇴", notes = "아이디인 유저의 이메일을 통해 회원탈퇴 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -111,5 +129,22 @@ public class UserController {
         String email = userDetails.getUsername();
         User user = userService.getUserByEmail(email);
         return ResponseEntity.status(200).body(UserRes.of(user));
+    }
+
+    @GetMapping("/nickname")
+    @ApiOperation(value = "닉네임으로 회원 조회", notes = "닉네임을 입력받아 회원을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 409, message = "닉네임 줌복"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> confirmNickname(@RequestParam String nickname) {
+        logger.info("confirmNickname call!");
+
+        if (userRepository.findByNickname(nickname).isPresent()){
+            // 중복된 닉네임일 때
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Nickname"));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }
