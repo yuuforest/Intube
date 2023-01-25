@@ -2,6 +2,7 @@ package com.ssafy.interview.api.service.interview;
 
 import com.ssafy.interview.api.request.UserModifyReq;
 import com.ssafy.interview.api.request.UserRegisterPostReq;
+import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewLoadDto;
 import com.ssafy.interview.db.entitiy.User;
@@ -15,4 +16,6 @@ import java.util.Optional;
  */
 public interface InterviewService {
 	Page<InterviewLoadDto> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable);
+
+	void createInterview(String email, InterviewSaveReq interviewRegisterInfo) throws Exception;
 }
