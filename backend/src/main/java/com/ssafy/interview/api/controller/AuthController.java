@@ -15,6 +15,7 @@ import com.ssafy.interview.common.model.KakaoUserInfoDto;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.repository.UserRepository;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +53,11 @@ public class AuthController {
 
     @Autowired
     RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/login")
-    @ApiOperation(value = "로그인", notes = "<strong>email, password</strong> 정보를 받아 인증 토큰을 반환한다.")
+    @ApiOperation(value = "로그인", notes = "email, password 정보를 받아 인증 토큰을 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -101,7 +104,7 @@ public class AuthController {
     }
 
     @GetMapping("/issue")
-    @ApiOperation(value = "Token 재발급", notes = "<strong>Refresh Token</strong> 정보를 받아 인증 토큰을 재발급한다.")
+    @ApiOperation(value = "Token 재발급", notes = "Refresh Token 정보를 받아 인증 토큰을 재발급한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
             @ApiResponse(code = 401, message = "Refresh Token 만료")
@@ -198,15 +201,21 @@ public class AuthController {
     }
 
     @PostMapping("/send-email")
-    @ApiOperation(value = "이메일 인증 코드 전송", notes = "<strong>회원 email</strong>을 입력 받아 인증코드를 전송한다.")
+    @ApiOperation(value = "이메일 인증 코드 전송", notes = "회원 email을 입력 받아 인증코드를 전송한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 400, message = "이메일 형식 오류"),
+            @ApiResponse(code = 409, message = "이메일 중복"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<BaseResponseBody> sendEmail(@RequestBody @ApiParam(value = "회원 email", required = true) UserEmailPostReq email) throws Exception {
         logger.info("sendEmail call!");
         try {
+            if (userRepository.findByEmail(email.getEmail()).isPresent()){
+                // 이미 회원가입한 회원일 때
+                return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Email"));
+            }
+
             String confirm = emailService.sendAuthCode(email.getEmail());
 
             // 인증코드를 redis에 저장
@@ -219,7 +228,7 @@ public class AuthController {
     }
 
     @PostMapping("/check-email")
-    @ApiOperation(value = "이메일 인증 코드 확인", notes = "<strong>email과 인증키</strong>를 입력 받아 인증한다.")
+    @ApiOperation(value = "이메일 인증 코드 확인", notes = "email과 인증키를 입력 받아 인증한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "이메일 인증 코드 만료 / 잘못된 인증 코드"),
@@ -227,6 +236,7 @@ public class AuthController {
     })
     public ResponseEntity<BaseResponseBody> checkEmail(@RequestBody @ApiParam(value = "이메일 인증 정보", required = true) Map<String, String> map) throws Exception {
         logger.info("checkEmail call!");
+
         String authKey = map.get("authKey");
         String email = map.get("email");
 
