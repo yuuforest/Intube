@@ -3,9 +3,7 @@
 </template>
 
 <script>
-export default {
-  name: "MainSidebar",
-};
+export default {};
 </script>
 
 <style lang="scss" scoped></style>
