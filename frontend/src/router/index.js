@@ -7,6 +7,9 @@ import AnnouncementInfo from "@/components/announcement/AnnouncementInfo";
 import AnnouncementQuestion from "@/components/announcement/AnnouncementQuestion";
 import AnnouncementAlert from "@/components/announcement/AnnouncementAlert";
 import MyPage from "@/views/MyPage";
+import LoginView from "@/views/LoginView";
+import SignupView from "@/views/SignupView";
+import FindIdPasswordView from "@/views/FindIdPasswordView";
 
 const routes = [
   {
@@ -23,6 +26,21 @@ const routes = [
     path: "/mypage",
     name: "mypage",
     component: MyPage,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginView,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignupView,
+  },
+  {
+    path: "/findIdPassword",
+    name: "findIdPassword",
+    component: FindIdPasswordView,
   },
   {
     path: "/announcement",
