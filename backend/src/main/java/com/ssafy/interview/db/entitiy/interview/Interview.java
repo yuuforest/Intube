@@ -54,11 +54,14 @@ public class Interview extends BaseEntity {
 
         //        @ColumnDefault("1")
         @Builder.Default()
-        int interview_state = 1;
+        int interview_state = 4;
 
         // OneToMany 관계 설정
         @OneToMany(mappedBy = "interview")
         private List<InterviewTime> interviewTimeList = new ArrayList<>();
+
+        @OneToMany(mappedBy = "interview")
+        private List<Question> questionList = new ArrayList<>();
 
         // ManyToOne 관계 설정
         @ManyToOne(fetch = FetchType.LAZY)

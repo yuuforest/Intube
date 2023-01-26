@@ -1,7 +1,6 @@
 package com.ssafy.interview.api.service.interview;
 
-import com.ssafy.interview.api.request.UserModifyReq;
-import com.ssafy.interview.api.request.UserRegisterPostReq;
+
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewLoadDto;
@@ -20,7 +19,15 @@ import java.util.Optional;
 public interface InterviewService {
 	Page<InterviewLoadDto> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable);
 
+	// 인터뷰 생성
 	Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo);
 
+	// 인터뷰 신청 시간생성
 	void createInterviewTime(Interview interview, List<Date> interviewTimeList);
+
+	// 인터뷰관련 질문 생성
+	void createQuestion(Interview interview, List<String> questionContentList);
+
+	// 인터뷰관련 질문 생성
+	void applyInterview(String email, Long interview_time_id);
 }

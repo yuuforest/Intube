@@ -4,13 +4,9 @@ import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewLoadDto;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.entitiy.interview.Interview;
-import com.ssafy.interview.db.entitiy.interview.InterviewCategory;
-import com.ssafy.interview.db.entitiy.interview.InterviewTime;
+import com.ssafy.interview.db.entitiy.interview.*;
 import com.ssafy.interview.db.repository.UserRepository;
-import com.ssafy.interview.db.repository.interview.InterviewCategoryRepository;
-import com.ssafy.interview.db.repository.interview.InterviewRepository;
-import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
+import com.ssafy.interview.db.repository.interview.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +32,10 @@ public class InterviewServiceImpl implements InterviewService {
 	InterviewCategoryRepository interviewCategoryRepository;
 	@Autowired
 	InterviewTimeRepository interviewTimeRepository;
-
+	@Autowired
+	QuestionRepository questionRepository;
+	@Autowired
+	ApplicantRepository applicantRepository;
 	@Autowired
 	UserRepository userRepository;
 
@@ -45,8 +44,9 @@ public class InterviewServiceImpl implements InterviewService {
 		return interviewRepository.findAllInterview(interviewSearchReq.getCategory_name(), interviewSearchReq.getWord(), pageable);
 	}
 
+	// 인터뷰 공고 생성 Method
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional
 	public Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo) {
 		Optional<User> userOptional = userRepository.findByEmail(email);
 		Optional<InterviewCategory> interviewCategoryOptional = interviewCategoryRepository.findByCategoryName(interviewRegisterInfo.getCategoryName());
@@ -66,8 +66,9 @@ public class InterviewServiceImpl implements InterviewService {
 				.download_expiration(interviewRegisterInfo.getDownload_expiration()).user(user).interviewCategory(interviewCategory).build());
 	}
 
+	// 인터뷰 공고 신청 가능 시간 생성 Method
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional
 	public void createInterviewTime(Interview interview, List<Date> interviewTimeList) {
 		List<InterviewTime> interviewTimes = new ArrayList<>();
 
@@ -78,5 +79,37 @@ public class InterviewServiceImpl implements InterviewService {
 		}
 
 		interviewTimeRepository.saveAll(interviewTimes);
+	}
+
+	// 인터뷰 공고관련 질문 생성 Method
+	@Override
+	@Transactional
+	public void createQuestion(Interview interview, List<String> questionContentList) {
+		List<Question> questions = new ArrayList<>();
+
+		for (String content : questionContentList) {
+			Question question = Question.builder().content(content).interview(interview).build();
+
+			questions.add(question);
+		}
+
+		questionRepository.saveAll(questions);
+	}
+
+	@Override
+	@Transactional
+	public void applyInterview(String email, Long interview_time_id) {
+		Optional<User> userOptional = userRepository.findByEmail(email);
+		Optional<InterviewTime> interviewTimeOptional = interviewTimeRepository.findById(interview_time_id);
+		User user = null;
+		InterviewTime interviewTime = null;
+		if(userOptional.isPresent()){
+			user = userOptional.get();
+		}
+		if(interviewTimeOptional.isPresent()){
+			interviewTime = interviewTimeOptional.get();
+		}
+
+		applicantRepository.save(Applicant.builder().user(user).interviewTime(interviewTime).build());
 	}
 }
