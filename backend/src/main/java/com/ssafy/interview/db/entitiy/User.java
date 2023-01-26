@@ -1,8 +1,11 @@
 package com.ssafy.interview.db.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +16,10 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Builder
+@DynamicUpdate
 @NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseEntity {
 
     String email;
@@ -31,20 +37,20 @@ public class User extends BaseEntity {
     String gender;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
     Date birth;
 
     String introduction;
 
-    double temperature;
+    @Builder.Default()
+    double temperature = 36.5;
 
     int is_email_authorized;
 
-    int point;
+    @Builder.Default()
+    int point = 0;
 
-    String profile_url;
+    @Builder.Default()
+    String profile_url = "user.png";
 
-    @PrePersist
-    public void prePersist(){
-        this.temperature = this.temperature == 0.0 ? 36.0 : this.temperature;
-    }
 }
