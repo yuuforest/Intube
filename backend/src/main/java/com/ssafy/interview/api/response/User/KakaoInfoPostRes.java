@@ -1,4 +1,4 @@
-package com.ssafy.interview.api.response;
+package com.ssafy.interview.api.response.User;
 
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import io.swagger.annotations.ApiModel;
