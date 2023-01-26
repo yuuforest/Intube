@@ -1,6 +1,8 @@
 package com.ssafy.interview.api.request.interview;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ssafy.interview.common.util.JsonDateSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -10,10 +12,12 @@ import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
- * 유저 로그인 API ([POST] /api/v1/auth/login) 요청에 필요한 리퀘스트 바디 정의.
+ * 인터뷰 생성 API ([POST] /interviews) 요청에 필요한 리퀘스트 바디 정의.
  */
 @ApiModel("InterviewSaveRequest")
 @Data
@@ -57,4 +61,10 @@ public class InterviewSaveReq {
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
 	@Temporal(TemporalType.DATE)
 	Date download_expiration;
+
+
+	@ApiModelProperty(example = "[2023-02-20 11:00, 2023-02-21 11:00, 2023-02-22 11:00]", value = "인터뷰 신청가능한 시간 리스트")
+	@JsonSerialize(contentUsing = JsonDateSerializer.class)
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
+	List<Date> interviewTimeList = new ArrayList<>();
 }

@@ -6,10 +6,11 @@ import com.ssafy.interview.api.response.interview.InterviewLoadDto;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.interview.Interview;
 import com.ssafy.interview.db.entitiy.interview.InterviewCategory;
+import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import com.ssafy.interview.db.repository.UserRepository;
 import com.ssafy.interview.db.repository.interview.InterviewCategoryRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
-import jdk.jfr.Category;
+import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,9 +32,10 @@ import java.util.Optional;
 public class InterviewServiceImpl implements InterviewService {
 	@Autowired
 	InterviewRepository interviewRepository;
-
 	@Autowired
 	InterviewCategoryRepository interviewCategoryRepository;
+	@Autowired
+	InterviewTimeRepository interviewTimeRepository;
 
 	@Autowired
 	UserRepository userRepository;
@@ -41,8 +46,8 @@ public class InterviewServiceImpl implements InterviewService {
 	}
 
 	@Override
-	@Transactional
-	public void createInterview(String email, InterviewSaveReq interviewRegisterInfo) {
+	@Transactional(readOnly = false)
+	public Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo) {
 		Optional<User> userOptional = userRepository.findByEmail(email);
 		Optional<InterviewCategory> interviewCategoryOptional = interviewCategoryRepository.findByCategoryName(interviewRegisterInfo.getCategoryName());
 		User user = null;
@@ -54,10 +59,24 @@ public class InterviewServiceImpl implements InterviewService {
 			interviewCategory = interviewCategoryOptional.get();
 		}
 
-		interviewRepository.save(Interview.builder().title(interviewRegisterInfo.getTitle()).description(interviewRegisterInfo.getDescription())
+		return interviewRepository.save(Interview.builder().title(interviewRegisterInfo.getTitle()).description(interviewRegisterInfo.getDescription())
 				.estimated_time(interviewRegisterInfo.getEstimated_time()).start_standard_age(interviewRegisterInfo.getStart_standard_age())
 				.end_standard_age(interviewRegisterInfo.getEnd_standard_age()).gender(interviewRegisterInfo.getGender())
 				.max_people(interviewRegisterInfo.getMax_people()).standard_point(interviewRegisterInfo.getStandard_point()).apply_end_time(interviewRegisterInfo.getApply_end_time())
 				.download_expiration(interviewRegisterInfo.getDownload_expiration()).user(user).interviewCategory(interviewCategory).build());
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void createInterviewTime(Interview interview, List<Date> interviewTimeList) {
+		List<InterviewTime> interviewTimes = new ArrayList<>();
+
+		for (Date interview_start_time : interviewTimeList) {
+			InterviewTime interviewTime = InterviewTime.builder().interview_start_time(interview_start_time)
+																.interview(interview).build();
+			interviewTimes.add(interviewTime);
+		}
+
+		interviewTimeRepository.saveAll(interviewTimes);
 	}
 }

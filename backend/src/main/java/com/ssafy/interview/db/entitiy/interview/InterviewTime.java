@@ -1,14 +1,14 @@
 package com.ssafy.interview.db.entitiy.interview;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.interview.db.entitiy.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -17,12 +17,22 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class InterviewTime extends BaseEntity {
 
         @Temporal(TemporalType.TIMESTAMP)
-        Date apply_end_time;
+        @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
+        Date interview_start_time;
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "interview_id")
         private Interview interview;
+
+        @Builder
+        private InterviewTime(Date interview_start_time, Interview interview) {
+                Assert.notNull(interview_start_time, "interview_start_time must not be empty");
+                Assert.notNull(interview, "interview must not be empty");
+                this.interview_start_time = interview_start_time;
+                this.interview = interview;
+        }
 }
