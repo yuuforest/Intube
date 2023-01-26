@@ -9,10 +9,16 @@
 
 <script>
 import TheHeader from "@/components/common/TheHeader.vue";
+import ChatbotService from "@/api/chatbotService";
 export default {
   components: { TheHeader },
   name: "App",
   data: () => ({}),
+  created() {
+    ChatbotService.boot({
+      pluginKey: "ed1fa025-5bce-4243-b9d2-f7d84930428c", //please fill with your plugin key
+    });
+  },
 };
 </script>
 

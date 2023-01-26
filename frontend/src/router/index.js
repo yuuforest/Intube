@@ -10,6 +10,7 @@ import MyPage from "@/views/MyPage";
 import LoginView from "@/views/LoginView";
 import SignupView from "@/views/SignupView";
 import FindIdPasswordView from "@/views/FindIdPasswordView";
+import AnswererView from "@/views/AnswererView";
 
 const routes = [
   {
@@ -21,6 +22,11 @@ const routes = [
     path: "/interview",
     name: "interview",
     component: InterviewFind,
+  },
+  {
+    path: "/answerer",
+    name: "answerer",
+    component: AnswererView,
   },
   {
     path: "/mypage",

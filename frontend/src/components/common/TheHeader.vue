@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="pa-3">
+    <v-row class="pa-3" justify="space-between">
       <v-col cols="4" class="d-flex align-center">
         <v-btn
           icon="mdi-menu"
@@ -14,7 +14,7 @@
           <v-img src="@/assets/logo.png" width="130"></v-img>
         </v-app-bar-title>
       </v-col>
-      <v-col cols="4" align-self="center">
+      <v-col cols="4" align-self="center" class="d-md-flex d-none">
         <v-text-field
           density="comfortable"
           variant="outlined"
@@ -24,12 +24,22 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col cols="4" class="header-menu d-flex">
+      <v-col cols="4" class="header-menu d-sm-flex d-none">
         <v-btn
           icon
           variant="flat"
           size="x-large"
-          class="mr-3"
+          class="mr-3 d-none d-sm-flex d-md-none"
+          @click="moveInterview"
+        >
+          <v-tooltip activator="parent" location="bottom">검색</v-tooltip>
+          <v-icon size="large">mdi-magnify</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          variant="flat"
+          size="x-large"
+          class="mr-1"
           @click="moveInterview"
         >
           <v-tooltip activator="parent" location="bottom"
@@ -41,7 +51,7 @@
           icon
           variant="flat"
           size="x-large"
-          class="mr-3"
+          class="mr-1"
           @click="moeveAnnouncement"
         >
           <v-tooltip activator="parent" location="bottom"
@@ -54,7 +64,7 @@
           icon
           variant="flat"
           size="x-large"
-          class="mr-3"
+          class="mr-1"
           @click="moveMyPage"
         >
           <v-tooltip activator="parent" location="bottom">마이페이지</v-tooltip>
@@ -64,7 +74,7 @@
           icon
           variant="flat"
           size="x-large"
-          class="mr-3"
+          class="mr-1"
           @click="moveLogin"
         >
           <v-tooltip activator="parent" location="bottom">로그인</v-tooltip>

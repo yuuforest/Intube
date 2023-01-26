@@ -78,7 +78,7 @@
           size="x-large"
           class="sidebar-menu pa-0"
           width="100%"
-          @click="moveMatching"
+          @click="moveAnswerer(2)"
         >
           <v-icon
             icon="mdi-handshake-outline"
@@ -96,6 +96,7 @@
           size="x-large"
           class="sidebar-menu pa-0"
           width="100%"
+          @click="moveAnswerer(1)"
         >
           <v-icon
             icon="mdi-file-document-edit-outline"
@@ -209,8 +210,11 @@ export default {
     moveMyPage() {
       router.push("/mypage");
     },
-    moveMatching() {
-      router.push("/interview");
+    moveAnswerer(state) {
+      router.push({
+        name: "answerer",
+        query: { state: state },
+      });
     },
   },
 };
