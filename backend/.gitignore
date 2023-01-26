@@ -207,7 +207,7 @@ gradle-app.setting
 *.hprof
 
 ### application-email.properties
-application-email.properties
+application.properties
 
 ### ssafy-web.log
 ssafy-web.log

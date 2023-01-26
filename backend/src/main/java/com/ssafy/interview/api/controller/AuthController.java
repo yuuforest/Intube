@@ -2,12 +2,11 @@ package com.ssafy.interview.api.controller;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ssafy.interview.api.request.UserEmailPostReq;
-import com.ssafy.interview.api.request.UserLoginPostReq;
-import com.ssafy.interview.api.request.UserModifyReq;
-import com.ssafy.interview.api.response.KakaoInfoPostRes;
-import com.ssafy.interview.api.response.UserLoginPostRes;
-import com.ssafy.interview.api.response.UserRes;
+import com.ssafy.interview.api.request.User.UserAuthkeyPostReq;
+import com.ssafy.interview.api.request.User.UserEmailPostReq;
+import com.ssafy.interview.api.request.User.UserLoginPostReq;
+import com.ssafy.interview.api.response.User.KakaoInfoPostRes;
+import com.ssafy.interview.api.response.User.UserLoginPostRes;
 import com.ssafy.interview.api.service.AuthService;
 import com.ssafy.interview.api.service.EmailService;
 import com.ssafy.interview.api.service.UserService;
@@ -60,7 +59,7 @@ public class AuthController {
     @ApiOperation(value = "로그인", notes = "email, password 정보를 받아 인증 토큰을 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 400, message = "잘못된 비밀번호"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
@@ -96,7 +95,7 @@ public class AuthController {
                         .body(UserLoginPostRes.of(200, "Success", accessToken));
             }
             // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
+            return ResponseEntity.status(400).body(UserLoginPostRes.of(400, "Invalid Password", null));
         } catch (NullPointerException e) {
             // 유효하지 않는 이메일인 경우, 로그인 실패로 응답.
             return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "Invalid Email", null));
@@ -208,18 +207,18 @@ public class AuthController {
             @ApiResponse(code = 409, message = "이메일 중복"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> sendEmail(@RequestBody @ApiParam(value = "회원 email", required = true) UserEmailPostReq email) throws Exception {
+    public ResponseEntity<BaseResponseBody> sendEmail(@RequestBody @ApiParam(value = "회원 email", required = true) UserEmailPostReq emailInfo) throws Exception {
         logger.info("sendEmail call!");
         try {
-            if (userRepository.findByEmail(email.getEmail()).isPresent()){
+            if (userRepository.findByEmail(emailInfo.getEmail()).isPresent()) {
                 // 이미 회원가입한 회원일 때
                 return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Email"));
             }
 
-            String confirm = emailService.sendAuthCode(email.getEmail());
+            String confirm = emailService.sendAuthCode(emailInfo.getEmail());
 
             // 인증코드를 redis에 저장
-            redisTemplate.opsForValue().set(email.getEmail() + "-email", confirm, 60000, TimeUnit.MILLISECONDS);
+            redisTemplate.opsForValue().set(emailInfo.getEmail() + "-email", confirm, 60000, TimeUnit.MILLISECONDS);
 
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
         } catch (IllegalArgumentException e) {
@@ -234,11 +233,11 @@ public class AuthController {
             @ApiResponse(code = 401, message = "이메일 인증 코드 만료 / 잘못된 인증 코드"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> checkEmail(@RequestBody @ApiParam(value = "이메일 인증 정보", required = true) Map<String, String> map) throws Exception {
+    public ResponseEntity<BaseResponseBody> checkEmail(@RequestBody @ApiParam(value = "이메일 인증 정보", required = true) UserAuthkeyPostReq authkeyInfo) throws Exception {
         logger.info("checkEmail call!");
 
-        String authKey = map.get("authKey");
-        String email = map.get("email");
+        String authKey = authkeyInfo.getAuthKey();
+        String email = authkeyInfo.getEmail();
 
         // redis에 저장된 인증 코드 가져오기
         String confirm = redisTemplate.opsForValue().get(email + "-email");

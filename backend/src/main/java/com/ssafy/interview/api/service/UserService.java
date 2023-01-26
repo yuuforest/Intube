@@ -1,7 +1,7 @@
 package com.ssafy.interview.api.service;
 
-import com.ssafy.interview.api.request.UserModifyReq;
-import com.ssafy.interview.api.request.UserRegisterPostReq;
+import com.ssafy.interview.api.request.User.UserModifyPostReq;
+import com.ssafy.interview.api.request.User.UserRegisterPostReq;
 import com.ssafy.interview.db.entitiy.User;
 
 import java.util.Optional;
@@ -11,8 +11,9 @@ import java.util.Optional;
  */
 public interface UserService {
 	void createUser(UserRegisterPostReq userRegisterInfo);
-//	void updateUser(UserModifyReq userModifyInfo);
+	void updateUser(UserModifyPostReq userModifyInfo);
 	void deleteUser(String email);
 	Optional<User> testUserByEmail(String email);
 	User getUserByEmail(String email);
+	void uploadImage(String email, String url);
 }

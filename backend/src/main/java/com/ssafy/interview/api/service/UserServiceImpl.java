@@ -1,7 +1,8 @@
 package com.ssafy.interview.api.service;
 
-import com.ssafy.interview.api.request.UserModifyReq;
-import com.ssafy.interview.api.request.UserRegisterPostReq;
+
+import com.ssafy.interview.api.request.User.UserModifyPostReq;
+import com.ssafy.interview.api.request.User.UserRegisterPostReq;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.repository.UserRepository;
 import com.ssafy.interview.db.repository.UserRepositorySupport;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -36,20 +38,22 @@ public class UserServiceImpl implements UserService {
         user.setBirth(userRegisterInfo.getBirth());
         user.setIntroduction(userRegisterInfo.getIntroduction());
         user.setIs_email_authorized(userRegisterInfo.getIsEmailAuthorized());
-        user.setProfile_url(userRegisterInfo.getProfileUrl());
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
         user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
         userRepository.save(user);
     }
 
-//	@Override
-//	public void updateUser(UserModifyReq userModifyInfo) {
-//		userRepositorySupport.updateByEmail(userModifyInfo.getEmail(),
-//				passwordEncoder.encode(userModifyInfo.getPassword()), userModifyInfo.getName(), userModifyInfo.getNickname(),
-//				userModifyInfo.getPhone(), userModifyInfo.getGender(), userModifyInfo.getBirth(),
-//				userModifyInfo.getIntroduction(), userModifyInfo.getTemperature(), userModifyInfo.getAuthorization(),
-//				userModifyInfo.getPoint(), userModifyInfo.getProfile_url());
-//	}
+    @Transactional
+    @Override
+    public void updateUser(UserModifyPostReq userModifyInfo) {
+        User user = userRepository.findByEmail(userModifyInfo.getEmail()).get();
+        user.setName(userModifyInfo.getName());
+        user.setNickname(userModifyInfo.getNickname());
+        user.setPhone(userModifyInfo.getPhone());
+        user.setGender(userModifyInfo.getGender());
+        user.setBirth(userModifyInfo.getBirth());
+        user.setIntroduction(userModifyInfo.getIntroduction());
+    }
 
     @Override
     public void deleteUser(String email) {
@@ -70,5 +74,12 @@ public class UserServiceImpl implements UserService {
             return user.get();
         }
         return null;
+    }
+
+    @Transactional
+    @Override
+    public void uploadImage(String email, String url) {
+        User user = userRepository.findByEmail(email).get();
+        user.setProfile_url(url);
     }
 }
