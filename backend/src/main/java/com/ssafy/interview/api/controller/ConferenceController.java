@@ -8,7 +8,6 @@ import com.ssafy.interview.api.response.Conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.ConferenceService;
 import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
-import com.ssafy.interview.db.entitiy.Conference;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,7 @@ public class ConferenceController {
         HistoryInfo.setHistory_id(endInfo.getHistory_id());
         HistoryInfo.setAction(4);
         conferenceService.updateConferenceHistory(HistoryInfo);
+
         // 녹화 종료
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));

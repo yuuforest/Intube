@@ -1,6 +1,5 @@
 package com.ssafy.interview.api.service;
 
-import com.ssafy.interview.api.request.Conference.ConferenceEndReq;
 import com.ssafy.interview.api.request.Conference.HistoryCreateReq;
 import com.ssafy.interview.api.request.Conference.ConferenceStartReq;
 import com.ssafy.interview.api.request.Conference.HistoryUpdateReq;
@@ -45,7 +44,6 @@ public class ConferenceServiceImpl implements  ConferenceService{
         conference.setSessionid(generatedString);
 
         conferenceRepository.save(conference);  // Conference 생성
-
         return conference.getId();
     }
 
@@ -59,20 +57,18 @@ public class ConferenceServiceImpl implements  ConferenceService{
 
     @Override
     public Long createConferenceHistory(HistoryCreateReq historyInfo) {
-
+        // [회의방에 대한 참가자들의 입장 기록]
         ConferenceHistory conferenceHistory = new ConferenceHistory();
-
         conferenceHistory.setConference_id(historyInfo.getConference_id());
         conferenceHistory.setUser_id(userRepository.findByEmail(historyInfo.getUser_email()).get().getId());
         conferenceHistory.setAction(historyInfo.getAction());
-
         conferenceHistoryRepository.save(conferenceHistory);
-
         return conferenceHistory.getId();
     }
 
     @Override
     public void updateConferenceHistory(HistoryUpdateReq historyUpdateInfo) {
+        // [회의방에 대한 참가자들의 퇴장 기록]
         ConferenceHistory conferenceHistory
                 = conferenceHistoryRepository.findById(historyUpdateInfo.getHistory_id()).get();
         conferenceHistory.setAction(historyUpdateInfo.getAction());
