@@ -17,5 +17,5 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      * @param pageable   페이지 정보
      * @return 검색 결과
      */
-    Page<InterviewLoadDto> findAllInterview(String category_name, String word, Pageable pageable);
+    Page<InterviewLoadDto> findAllInterview(String categoryName, String word, Pageable pageable);
 }

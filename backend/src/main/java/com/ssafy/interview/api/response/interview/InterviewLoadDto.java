@@ -1,5 +1,6 @@
 package com.ssafy.interview.api.response.interview;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.interview.db.entitiy.interview.Interview;
 import io.swagger.annotations.ApiModel;
@@ -21,7 +22,7 @@ public class InterviewLoadDto {
 	Long id;
 
 	@ApiModelProperty(name="Category Name")
-	String category_name;
+	String categoryName;
 
 	@ApiModelProperty(name="Title")
 	String title;
@@ -45,18 +46,20 @@ public class InterviewLoadDto {
 	int standard_point;
 
 	@ApiModelProperty(name="Apply Start Time")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
 	LocalDateTime apply_start_time;
 
 	@ApiModelProperty(name="Apply End Time")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
 	Date apply_end_time;
 
 	@ApiModelProperty(name="Interview State")
 	int interview_state;
 
 	@QueryProjection
-	public InterviewLoadDto(Interview interview, String category_name) {
+	public InterviewLoadDto(Interview interview) {
 		this.id = interview.getId();
-		this.category_name = category_name;
+		this.categoryName = interview.getInterviewCategory().getCategoryName();
 		this.title = interview.getTitle();
 		this.description = interview.getDescription();
 		this.start_standard_age = interview.getStart_standard_age();

@@ -13,8 +13,8 @@ public class QInterviewLoadDto extends ConstructorExpression<InterviewLoadDto> {
 
     private static final long serialVersionUID = 2143286666L;
 
-    public QInterviewLoadDto(com.querydsl.core.types.Expression<? extends com.ssafy.interview.db.entitiy.interview.Interview> interview, com.querydsl.core.types.Expression<String> category_name) {
-        super(InterviewLoadDto.class, new Class<?>[]{com.ssafy.interview.db.entitiy.interview.Interview.class, String.class}, interview, category_name);
+    public QInterviewLoadDto(com.querydsl.core.types.Expression<? extends com.ssafy.interview.db.entitiy.interview.Interview> interview) {
+        super(InterviewLoadDto.class, new Class<?>[]{com.ssafy.interview.db.entitiy.interview.Interview.class}, interview);
     }
 
 }

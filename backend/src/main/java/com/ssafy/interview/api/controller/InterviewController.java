@@ -74,8 +74,8 @@ public class InterviewController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
-	@GetMapping
-	@ApiOperation(value = "인터뷰 전체 공고 조회", notes = "카테고리와 검색어 그리고 page 넘버를 입력 받는다.")
+	@PostMapping("/search")
+	@ApiOperation(value = "인터뷰 전체 and 카테고리별 공고 조회", notes = "카테고리와 검색어 그리고 page 넘버를 입력 받는다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),

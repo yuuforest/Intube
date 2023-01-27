@@ -14,7 +14,7 @@ import lombok.*;
 @Builder
 public class InterviewSearchReq {
 	@ApiModelProperty(example = "1:1", value = "인터뷰 카테고리")
-	private String category_name;
-	@ApiModelProperty(example = "test", value = "검색어(공고 제목 or 내용)")
+	private String categoryName;
+	@ApiModelProperty(example = "아닙니다", value = "검색어(공고 제목 or 내용)")
 	private String word;
 }

@@ -41,7 +41,7 @@ public class InterviewServiceImpl implements InterviewService {
 
 	@Override
 	public Page<InterviewLoadDto> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable) {
-		return interviewRepository.findAllInterview(interviewSearchReq.getCategory_name(), interviewSearchReq.getWord(), pageable);
+		return interviewRepository.findAllInterview(interviewSearchReq.getCategoryName(), interviewSearchReq.getWord(), pageable);
 	}
 
 	// 인터뷰 공고 생성 Method

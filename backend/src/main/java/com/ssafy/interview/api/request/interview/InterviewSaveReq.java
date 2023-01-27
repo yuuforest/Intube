@@ -28,7 +28,7 @@ public class InterviewSaveReq {
 	@ApiModelProperty(example = "1:1", name = "인터뷰 카테고리")
 	private String categoryName;
 
-	@ApiModelProperty(example = "제목입니다", name = "인터뷰 제목")
+	@ApiModelProperty(example = "아닙니다", name = "인터뷰 제목")
 	String title;
 
 	@ApiModelProperty(example = "설명입니다", name = "인터뷰 설명")
