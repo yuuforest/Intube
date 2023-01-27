@@ -35,7 +35,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .select(new QInterviewLoadDto(qInterview))
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), categoryEq(categoryName), qInterview.interview_state.eq(1))
+                .where(wordEq(word), categoryEq(categoryName), qInterview.interview_state.eq(4))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -44,7 +44,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .select(qInterview)
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), categoryEq(categoryName), qInterview.interview_state.eq(1));
+                .where(wordEq(word), categoryEq(categoryName), qInterview.interview_state.eq(4));
 
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());

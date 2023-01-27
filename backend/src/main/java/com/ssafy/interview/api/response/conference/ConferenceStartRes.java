@@ -1,4 +1,4 @@
-package com.ssafy.interview.api.response.Conference;
+package com.ssafy.interview.api.response.conference;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

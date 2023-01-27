@@ -1,8 +1,9 @@
 package com.ssafy.interview.api.controller;
 
-import com.ssafy.interview.api.response.Conference.ConferenceStartRes;
+import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.ConferenceService;
 import com.ssafy.interview.api.service.UserService;
+import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.Conference;
 import com.ssafy.interview.db.entitiy.ConferenceHistory;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -96,9 +99,13 @@ public class ConferenceController {
     @PostMapping("/{conferenceID}/in")
     @ApiOperation(value = "Conference에 참여자 입장")
     public ResponseEntity<Long> inConference(@PathVariable("conferenceID") Long conferenceID,
-                                             @RequestParam(value="userEmail") String userEmail) {
+                                             @ApiIgnore Authentication authentication) {
+//                                             @RequestParam(value="userEmail") String userEmail) {
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+
         // [Conference History Table]
-        ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userEmail, 2);
+        ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userDetails.getUsername(), 2);
 
         return ResponseEntity.status(200).body(history.getId());
     }
