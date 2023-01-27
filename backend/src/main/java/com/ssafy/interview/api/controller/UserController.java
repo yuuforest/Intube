@@ -1,10 +1,9 @@
 package com.ssafy.interview.api.controller;
 
 
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.ssafy.interview.api.request.User.UserModifyPostReq;
+import com.ssafy.interview.api.request.User.UserFindEmailPostReq;
+import com.ssafy.interview.api.request.User.UserModifyPutReq;
+import com.ssafy.interview.api.request.User.UserPasswordPutReq;
 import com.ssafy.interview.api.request.User.UserRegisterPostReq;
 import com.ssafy.interview.api.response.User.UserRes;
 import com.ssafy.interview.api.service.S3Uploader;
@@ -17,7 +16,6 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,8 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -81,7 +77,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> modify(
-            @RequestBody @ApiParam(value = "프로필 수정 정보", required = true) UserModifyPostReq modifyInfo,
+            @RequestBody @ApiParam(value = "프로필 수정 정보", required = true) UserModifyPutReq modifyInfo,
             @ApiIgnore Authentication authentication) {
         logger.info("modify call!");
 
@@ -164,11 +160,11 @@ public class UserController {
 //    }
 
     @GetMapping("/me")
-    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
+    @ApiOperation(value = "로그인한 회원 정보 조회", notes = "로그인한 회원의 정보를 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
@@ -178,7 +174,8 @@ public class UserController {
          */
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String email = userDetails.getUsername();
-        User user = userService.getUserByEmail(email);
+
+        User user = userRepository.findByEmail(email).get();
         return ResponseEntity.status(200).body(UserRes.of(user));
     }
 
@@ -198,4 +195,59 @@ public class UserController {
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @PutMapping("/password")
+    @ApiOperation(value = "비밂번호 수정", notes = "현재 password, 새로운 password를 입력 받아 DB에 update한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "잘못된 비밀번호"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 403, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> modifyPassword(
+            @RequestBody @ApiParam(value = "비밀번호 정보", required = true) UserPasswordPutReq passwordInfo,
+            @ApiIgnore Authentication authentication) {
+        logger.info("modifyPassword call!");
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        if (!email.equals(passwordInfo.getEmail())) {
+            // 토큰에 저장된 email과 요청을 보낸 email이 다를 때
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "Forbidden"));
+        }
+
+        User user = userRepository.findByEmail(email).get();
+        if (!passwordEncoder.matches(passwordInfo.getPassword(), user.getPassword())) {
+            // 비밀번호가 틀렸을 때
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Password"));
+        }
+
+        userService.updatePassword(passwordInfo);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+//    @PostMapping("/find-email")
+//    @ApiOperation(value = "아이디(email) 찾기", notes = "이름과 인증된 회원 phone을 입력 받아 아이디를 반환한다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<? extends BaseResponseBody> findEmail(
+//            @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserFindEmailPostReq findEmailInfo) {
+//        logger.info("findEmail call!");
+//
+//        if (userRepository.findByEmail(registerInfo.getEmail()).isPresent()) {
+//            // 이미 회원가입한 회원일 때
+//            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Email"));
+//        }
+//
+//        //임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
+//        userService.createUser(registerInfo);
+//
+//        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+//    }
 }

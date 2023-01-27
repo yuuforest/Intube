@@ -1,7 +1,8 @@
 package com.ssafy.interview.api.service;
 
 
-import com.ssafy.interview.api.request.User.UserModifyPostReq;
+import com.ssafy.interview.api.request.User.UserModifyPutReq;
+import com.ssafy.interview.api.request.User.UserPasswordPutReq;
 import com.ssafy.interview.api.request.User.UserRegisterPostReq;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.repository.UserRepository;
@@ -11,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 /**
  * 유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(UserModifyPostReq userModifyInfo) {
+    public void updateUser(UserModifyPutReq userModifyInfo) {
         User user = userRepository.findByEmail(userModifyInfo.getEmail()).get();
         user.setName(userModifyInfo.getName());
         user.setNickname(userModifyInfo.getNickname());
@@ -55,26 +55,34 @@ public class UserServiceImpl implements UserService {
         user.setIntroduction(userModifyInfo.getIntroduction());
     }
 
+    @Transactional
+    @Override
+    public void updatePassword(UserPasswordPutReq passwordInfo) {
+        User user = userRepository.findByEmail(passwordInfo.getEmail()).get();
+        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
+        user.setPassword(passwordEncoder.encode(passwordInfo.getNewPassword()));
+    }
+
     @Override
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).get();
         userRepository.delete(user);
     }
 
-    public Optional<User> testUserByEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user;
-    }
+//    public Optional<User> testUserByEmail(String email) {
+//        Optional<User> user = userRepository.findByEmail(email);
+//        return user;
+//    }
 
-    @Override
-    public User getUserByEmail(String email) {
-        // 디비에 유저 정보 조회 (email 를 통한 조회).
-        Optional<User> user = userRepositorySupport.findUserByEmail(email);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        return null;
-    }
+//    @Override
+//    public User getUserByEmail(String email) {
+//        // 디비에 유저 정보 조회 (email 를 통한 조회).
+//        Optional<User> user = userRepositorySupport.findUserByEmail(email);
+//        if (user.isPresent()) {
+//            return user.get();
+//        }
+//        return null;
+//    }
 
     @Transactional
     @Override

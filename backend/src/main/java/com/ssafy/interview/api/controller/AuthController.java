@@ -5,11 +5,13 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.interview.api.request.User.UserAuthkeyPostReq;
 import com.ssafy.interview.api.request.User.UserEmailPostReq;
 import com.ssafy.interview.api.request.User.UserLoginPostReq;
+import com.ssafy.interview.api.request.User.UserPasswordPostReq;
 import com.ssafy.interview.api.response.User.KakaoInfoPostRes;
 import com.ssafy.interview.api.response.User.UserLoginPostRes;
 import com.ssafy.interview.api.service.AuthService;
 import com.ssafy.interview.api.service.EmailService;
 import com.ssafy.interview.api.service.UserService;
+import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.KakaoUserInfoDto;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.common.util.JwtTokenUtil;
@@ -23,11 +25,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.Cookie;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,7 +72,7 @@ public class AuthController {
         String email = loginInfo.getEmail();
         String password = loginInfo.getPassword();
 
-        User user = userService.getUserByEmail(email);
+        User user = userRepository.findByEmail(email).get();
         try {
             // 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
             if (passwordEncoder.matches(password, user.getPassword())) {
@@ -165,7 +168,7 @@ public class AuthController {
                 profile = kakaoUserInfoDto.getKakaoProperties().getProfileImage();
             }
             String gender = kakaoUserInfoDto.getKakaoAccount().getGender();
-            User kakaoUser = userService.getUserByEmail(email);
+            User kakaoUser = userRepository.findByEmail(email).get();
 
             if (kakaoUser == null) {
                 // 회원가입한 적 없는 유저일 때 email을 반환한다.
@@ -254,5 +257,35 @@ public class AuthController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 
+    }
+
+    @PostMapping("/check-password")
+    @ApiOperation(value = "비밀번호 확인", notes = "password 정보를 받아 비밀번호 일치 여부를 판단한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 403, message = "권한 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<BaseResponseBody> checkPassword(
+            @RequestBody @ApiParam(value = "비밀번호 정보", required = true) UserPasswordPostReq passwordInfo,
+            @ApiIgnore Authentication authentication) throws Exception {
+        logger.info("checkPassword call!");
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        User user = userRepository.findByEmail(email).get();
+        try {
+            // 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
+            if (passwordEncoder.matches(passwordInfo.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+            }
+            // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+            return ResponseEntity.status(400).body(UserLoginPostRes.of(400, "Invalid Password", null));
+        } catch (NullPointerException e) {
+            // 유효하지 않는 이메일인 경우, 로그인 실패로 응답.
+            return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "Invalid Email", null));
+        }
     }
 }

@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,8 +12,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-@ApiModel("UserModifyPostRequest")
-public class UserModifyPostReq {
+@ApiModel("UserModifyPutRequest")
+public class UserModifyPutReq {
 
     @ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
     String email;
