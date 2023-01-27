@@ -49,9 +49,9 @@ public class ConferenceController {
     }
 
     @ApiOperation(value = "Conference 생성")
-    @PostMapping("/{interviewID}/{userEmail}/start")
+    @PostMapping("/{interviewID}/start")
     public ResponseEntity<ConferenceStartRes> startConference(@PathVariable("interviewID") Long interviewID,
-                                                              @PathVariable("userEmail") String userEmail,
+                                                              @RequestParam(value="userEmail") String userEmail,
                                                               @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
 
