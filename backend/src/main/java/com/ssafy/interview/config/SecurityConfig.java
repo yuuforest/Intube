@@ -65,10 +65,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/me").authenticated()
                 .antMatchers("/user/image").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
+                .antMatchers("/interviews/apply").authenticated()
                 .antMatchers("/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers("/user/nickname", "/user/find-email", "user/find-password").permitAll()
-    	        	    .anyRequest().permitAll()
+                .anyRequest().permitAll()
                 .and().cors();
     }
 }

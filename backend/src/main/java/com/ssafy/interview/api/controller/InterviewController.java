@@ -66,7 +66,14 @@ public class InterviewController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<? extends BaseResponseBody> apply(@RequestParam("email") String email, @PathVariable Long interview_time_id) {
+	public ResponseEntity<? extends BaseResponseBody> apply(@RequestParam("email") String email, @PathVariable Long interview_time_id, @ApiIgnore Authentication authentication) {
+		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+		String tokenEmail = userDetails.getUsername();
+
+		if (!tokenEmail.equals(email)) {
+			// 토큰에 저장된 email과 요청을 보낸 email이 다를 때
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "Forbidden"));
+		}
 
 		//유저 email, interview_time_id로 해당 인터뷰를 신청하는 코드
 		interviewService.applyInterview(email, interview_time_id);
@@ -75,7 +82,7 @@ public class InterviewController {
 	}
 
 	@PostMapping("/search")
-	@ApiOperation(value = "인터뷰 전체 and 카테고리별 공고 조회", notes = "카테고리와 검색어 그리고 page 넘버를 입력 받는다.")
+	@ApiOperation(value = "인터뷰 전체 and 카테고리별 공고 조회", notes = "카테고리와 검색어 그리고 pageNumber를 입력 받는다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
