@@ -11,15 +11,17 @@ import lombok.Setter;
 public class ConferenceStartRes {
 
     @ApiModelProperty(name="Conference ID")
-    Long conference_id;
-
+    Long conferenceID;
     @ApiModelProperty(name="ConferenceHistory ID")
-    Long history_id;
+    Long historyID;
+    @ApiModelProperty(name="Session ID")
+    String sessionID;
 
-    public static ConferenceStartRes of(Long conference_id, Long history_id) {
+    public static ConferenceStartRes of(Long conferenceID, Long historyID, String sessionID) {
         ConferenceStartRes res = new ConferenceStartRes();
-        res.setConference_id(conference_id);
-        res.setHistory_id(history_id);
+        res.setConferenceID(conferenceID);
+        res.setHistoryID(historyID);
+        res.setSessionID(sessionID);
         return res;
     }
 }
