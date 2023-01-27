@@ -1,0 +1,158 @@
+{
+  "interview_list": [
+    {
+      "id": "1",
+      "category_name": "1:1",
+      "title": "담배 관련 조사",
+      "description": "현재 담배를 피고 있는 사람",
+      "estimated_time": "2시간",
+      "start_standard_age": "20",
+      "end_standard_age": "65",
+      "gender": "O",
+      "max_people": "20",
+      "point": "1000",
+      "apply_start_time": "2023-01-18",
+      "apply_end_time": "2023-02-15",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-02-31 13:00",
+      "interview_state": "1"
+    },
+    {
+      "id": "2",
+      "category_name": "N:1",
+      "title": "혼수 가전 관련 좌담회",
+      "description": "2022년 결혼을 했거나, 2023년 결혼 예정인 만 20-44세 여성",
+      "estimated_time": "4시간",
+      "start_standard_age": "20",
+      "end_standard_age": "44",
+      "gender": "W",
+      "max_people": "20",
+      "point": "3000",
+      "apply_start_time": "2023-01-18",
+      "apply_end_time": "2023-01-31",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-02-31 13:00",
+      "interview_state": "0"
+    },
+    {
+      "id": "3",
+      "category_name": "N:1",
+      "title": "파파존스 피자 배달 미스터리 쇼퍼",
+      "description": "해당 조사는 파파존스의 공식 주문 채널, 그리고 지정된 지점을 통해서만 주문을 해야 하는 조사입니다.",
+      "estimated_time": "1시간",
+      "start_standard_age": "10",
+      "end_standard_age": "20",
+      "gender": "M",
+      "max_people": "20",
+      "point": "5000",
+      "apply_start_time": "2023-01-18",
+      "apply_end_time": "2023-01-19",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-01-30 13:00",
+      "interview_state": "0"
+    },
+    {
+      "id": "4",
+      "category_name": "아바타",
+      "title": "편의점 제품 구매 관련 좌담회",
+      "description": "없음",
+      "estimated_time": "2시간",
+      "start_standard_age": "10",
+      "end_standard_age": "20",
+      "gender": "W",
+      "max_people": "20",
+      "point": "100",
+      "apply_start_time": "2023-01-18",
+      "apply_end_time": "2023-01-25",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-01-30 13:00",
+      "interview_state": "0"
+    },
+    {
+      "id": "5",
+      "category_name": "N:1",
+      "title": "유아 학습 관련 좌담회",
+      "description": "서울 및 수도권에 거주하는 기혼 여성",
+      "estimated_time": "2시간",
+      "start_standard_age": "30",
+      "end_standard_age": "50",
+      "gender": "W",
+      "max_people": "20",
+      "point": "100",
+      "apply_start_time": "2023-03-18",
+      "apply_end_time": "2023-03-25",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-03-30 13:00",
+      "interview_state": "1"
+    },
+    {
+      "id": "6",
+      "category_name": "1:1",
+      "title": "쿠팡에서 타이어 구매 후 교체하신 분",
+      "description": "서울 및 수도권 거주하는 35-44세 남성 *타이어 교체/구매 이력증 또는 카드내역 또는 영수증 증빙 필수*",
+      "estimated_time": "4시간",
+      "start_standard_age": "35",
+      "end_standard_age": "44",
+      "gender": "M",
+      "max_people": "20",
+      "point": "10000",
+      "apply_start_time": "2023-04-01",
+      "apply_end_time": "2023-04-24",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-04-25 13:00",
+      "interview_state": "1"
+    },
+    {
+      "id": "7",
+      "category_name": "N:1",
+      "title": "SNS에 구매 상품을 포스팅 하시는 분들 좌담회",
+      "description": "본인 SNS(블로그, 유투브, 인스타그램 등)에 본인이 구매하는 제품 후기를 공유하시는 분",
+      "estimated_time": "4시간",
+      "start_standard_age": "20",
+      "end_standard_age": "29",
+      "gender": "O",
+      "max_people": "20",
+      "point": "10000",
+      "apply_start_time": "2023-06-01",
+      "apply_end_time": "2023-06-30",
+      "interview_time": [
+        "2023-06-30 17:00",
+        "2023-06-31 17:00",
+        "2023-06-32 17:00",
+        "2023-06-33 17:00"
+      ],
+      "download_expiration": "2023-07-30 13:00",
+      "interview_state": "1"
+    }
+  ]
+}
