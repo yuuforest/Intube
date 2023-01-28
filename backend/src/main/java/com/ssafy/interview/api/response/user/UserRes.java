@@ -1,6 +1,7 @@
 package com.ssafy.interview.api.response.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,7 +18,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ApiModel("UserResponse")
-public class UserRes{
+public class UserRes extends BaseResponseBody {
 	@ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
 	String email;
 	@ApiModelProperty(name="유저 name", example="이영준")
@@ -45,8 +46,10 @@ public class UserRes{
 	@ApiModelProperty(name="유저 profile_url", example="https://303-intube.s3.ap-northeast-2.amazonaws.com/profile/user.png")
 	String profile_url;
 	
-	public static UserRes of(User user) {
+	public static UserRes of(Integer statusCode, String message, User user) {
 		UserRes res = new UserRes();
+		res.setStatusCode(statusCode);
+		res.setMessage(message);
 		res.setEmail(user.getEmail());
 		res.setName(user.getName());
 		res.setNickname(user.getNickname());
