@@ -24,4 +24,13 @@ public interface UserRepositoryCustom {
      * @return 검색 결과
      */
     Optional<User> findPassword(String name, String email);
+
+    /**
+     * 비밀번호 찾기
+     *
+     * @param email
+     * @param isKakao
+     * @return 검색 결과
+     */
+    Optional<User> findKakaoUser(String email, int isKakao);
 }

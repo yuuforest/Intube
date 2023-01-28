@@ -5,19 +5,17 @@ import com.ssafy.interview.api.request.user.*;
 import com.ssafy.interview.api.response.user.UserEmailPostRes;
 import com.ssafy.interview.api.response.user.UserRes;
 import com.ssafy.interview.api.service.S3Uploader;
+import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.api.service.user.EmailService;
 import com.ssafy.interview.api.service.user.UserService;
-import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.user.UserRepository;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -33,6 +31,10 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    AuthService authService;
+
     @Autowired
     UserService userService;
 
@@ -41,12 +43,6 @@ public class UserController {
 
     @Autowired
     S3Uploader s3Uploader;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     @PostMapping()
     @ApiOperation(value = "회원 가입", notes = "사용자 정보를 입력 받아 DB에 insert한다.")
@@ -59,7 +55,7 @@ public class UserController {
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
         logger.info("register call!");
 
-        if (userRepository.findByEmail(registerInfo.getEmail()).isPresent()) {
+        if (userService.findByEmail(registerInfo.getEmail()).isPresent()) {
             // 이미 회원가입한 회원일 때
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Email"));
         }
@@ -84,16 +80,15 @@ public class UserController {
             @ApiIgnore Authentication authentication) {
         logger.info("modify call!");
 
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String email = userDetails.getUsername();
+        String email = authService.getUserByAuthentication(authentication);
 
         if (!email.equals(modifyInfo.getEmail())) {
             // 토큰에 저장된 email과 요청을 보낸 email이 다를 때
             return ResponseEntity.status(403).body(BaseResponseBody.of(403, "Forbidden"));
         }
 
-        User user = userRepository.findByEmail(email).get();
-        if (!passwordEncoder.matches(modifyInfo.getPassword(), user.getPassword())) {
+        User user = userService.findByEmail(email).get();
+        if (!authService.checkMatches(modifyInfo.getPassword(), user.getPassword())) {
             // 비밀번호가 틀렸을 때
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Password"));
         }
@@ -115,8 +110,7 @@ public class UserController {
             @ApiIgnore Authentication authentication) throws IOException {
         logger.info("uploadImage call!");
 
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String email = userDetails.getUsername();
+        String email = authService.getUserByAuthentication(authentication);
 
         String img = s3Uploader.upload(image, "profile");
         logger.info("url >>> " + img);
@@ -175,10 +169,9 @@ public class UserController {
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String email = userDetails.getUsername();
+        String email = authService.getUserByAuthentication(authentication);
 
-        User user = userRepository.findByEmail(email).get();
+        User user = userService.findByEmail(email).get();
         return ResponseEntity.status(200).body(UserRes.of(user));
     }
 
@@ -192,7 +185,7 @@ public class UserController {
     public ResponseEntity<?> confirmNickname(@RequestParam String nickname) {
         logger.info("confirmNickname call!");
 
-        if (userRepository.findByNickname(nickname).isPresent()) {
+        if (userService.findByNickname(nickname).isPresent()) {
             // 중복된 닉네임일 때
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Nickname"));
         }
@@ -213,16 +206,15 @@ public class UserController {
             @ApiIgnore Authentication authentication) {
         logger.info("modifyPassword call!");
 
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String email = userDetails.getUsername();
+        String email = authService.getUserByAuthentication(authentication);;
 
         if (!email.equals(passwordInfo.getEmail())) {
             // 토큰에 저장된 email과 요청을 보낸 email이 다를 때
             return ResponseEntity.status(403).body(BaseResponseBody.of(403, "Forbidden"));
         }
 
-        User user = userRepository.findByEmail(email).get();
-        if (!passwordEncoder.matches(passwordInfo.getPassword(), user.getPassword())) {
+        User user = userService.findByEmail(email).get();
+        if (!authService.checkMatches(passwordInfo.getPassword(), user.getPassword())) {
             // 비밀번호가 틀렸을 때
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Password"));
         }
@@ -243,7 +235,7 @@ public class UserController {
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserFindEmailPostReq findEmailInfo) {
         logger.info("findEmail call!");
 
-        Optional<User> user = userRepository.findEmail(findEmailInfo.getName(), findEmailInfo.getPhone());
+        Optional<User> user = userService.findEmail(findEmailInfo.getName(), findEmailInfo.getPhone());
 
         if (!user.isPresent()){
             return ResponseEntity.status(404).body(UserEmailPostRes.of(404, "Invalid User", null));
@@ -262,9 +254,8 @@ public class UserController {
     public ResponseEntity<? extends BaseResponseBody> findPassword(
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserFindPwdPostReq findPwdInfo) throws Exception {
         logger.info("findPassword call!");
-
         try {
-            if (!userRepository.findPassword(findPwdInfo.getName(), findPwdInfo.getEmail()).isPresent()) {
+            if (!userService.findPassword(findPwdInfo.getName(), findPwdInfo.getEmail()).isPresent()) {
                 // 맞는 회원이 없을 때
                 return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
             }

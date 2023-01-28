@@ -32,4 +32,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchOne();
         return Optional.ofNullable(user);
     }
+
+    @Override
+    public Optional<User> findKakaoUser(String email, int isKakao) {
+        User user = jpaQueryFactory
+                .select(qUser)
+                .from(qUser)
+                .where(qUser.is_kakao.eq(isKakao), qUser.email.eq(email))
+                .fetchOne();
+        return Optional.ofNullable(user);
+    }
 }

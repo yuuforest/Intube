@@ -2,7 +2,6 @@ package com.ssafy.interview.api.service.user;
 
 
 import com.ssafy.interview.api.request.user.UserModifyPutReq;
-import com.ssafy.interview.api.request.user.UserPasswordPutReq;
 import com.ssafy.interview.api.request.user.UserRegisterPostReq;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -11,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  * 유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setGender(userRegisterInfo.getGender());
         user.setBirth(userRegisterInfo.getBirth());
         user.setIntroduction(userRegisterInfo.getIntroduction());
+        user.setIs_kakao(userRegisterInfo.getIsKakao());
         user.setIs_email_authorized(userRegisterInfo.getIsEmailAuthorized());
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
         user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
@@ -65,25 +66,30 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-//    public Optional<User> testUserByEmail(String email) {
-//        Optional<User> user = userRepository.findByEmail(email);
-//        return user;
-//    }
-
-//    @Override
-//    public User getUserByEmail(String email) {
-//        // 디비에 유저 정보 조회 (email 를 통한 조회).
-//        Optional<User> user = userRepositorySupport.findUserByEmail(email);
-//        if (user.isPresent()) {
-//            return user.get();
-//        }
-//        return null;
-//    }
-
     @Transactional
     @Override
     public void uploadImage(String email, String url) {
         User user = userRepository.findByEmail(email).get();
         user.setProfile_url(url);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname);
+    }
+
+    @Override
+    public Optional<User> findEmail(String name, String phone) {
+        return userRepository.findEmail(name, phone);
+    }
+
+    @Override
+    public Optional<User> findPassword(String name, String email) {
+        return userRepository.findEmail(name, email);
     }
 }
