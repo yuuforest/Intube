@@ -1,4 +1,4 @@
-package com.ssafy.interview.api.request.User;
+package com.ssafy.interview.api.request.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;

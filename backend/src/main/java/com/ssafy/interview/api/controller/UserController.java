@@ -1,17 +1,16 @@
 package com.ssafy.interview.api.controller;
 
 
-import com.ssafy.interview.api.request.User.UserFindEmailPostReq;
-import com.ssafy.interview.api.request.User.UserModifyPutReq;
-import com.ssafy.interview.api.request.User.UserPasswordPutReq;
-import com.ssafy.interview.api.request.User.UserRegisterPostReq;
-import com.ssafy.interview.api.response.User.UserRes;
+import com.ssafy.interview.api.request.user.*;
+import com.ssafy.interview.api.response.user.UserEmailPostRes;
+import com.ssafy.interview.api.response.user.UserRes;
 import com.ssafy.interview.api.service.S3Uploader;
-import com.ssafy.interview.api.service.UserService;
+import com.ssafy.interview.api.service.user.EmailService;
+import com.ssafy.interview.api.service.user.UserService;
 import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -35,6 +35,9 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     S3Uploader s3Uploader;
@@ -224,30 +227,56 @@ public class UserController {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Password"));
         }
 
-        userService.updatePassword(passwordInfo);
+        userService.updatePassword(passwordInfo.getEmail(), passwordInfo.getNewPassword());
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-//    @PostMapping("/find-email")
-//    @ApiOperation(value = "아이디(email) 찾기", notes = "이름과 인증된 회원 phone을 입력 받아 아이디를 반환한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공"),
-//            @ApiResponse(code = 404, message = "사용자 없음"),
-//            @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//    public ResponseEntity<? extends BaseResponseBody> findEmail(
-//            @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserFindEmailPostReq findEmailInfo) {
-//        logger.info("findEmail call!");
-//
-//        if (userRepository.findByEmail(registerInfo.getEmail()).isPresent()) {
-//            // 이미 회원가입한 회원일 때
-//            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "Duplicated Email"));
-//        }
-//
-//        //임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-//        userService.createUser(registerInfo);
-//
-//        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-//    }
+    @PostMapping("/find-email")
+    @ApiOperation(value = "아이디(email) 찾기", notes = "이름과 인증된 회원 phone을 입력 받아 아이디를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<UserEmailPostRes> findEmail(
+            @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserFindEmailPostReq findEmailInfo) {
+        logger.info("findEmail call!");
+
+        Optional<User> user = userRepository.findEmail(findEmailInfo.getName(), findEmailInfo.getPhone());
+
+        if (!user.isPresent()){
+            return ResponseEntity.status(404).body(UserEmailPostRes.of(404, "Invalid User", null));
+        }
+
+        return ResponseEntity.status(200).body(UserEmailPostRes.of(200, "Success", user.get().getEmail()));
+    }
+
+    @PostMapping("/find-password")
+    @ApiOperation(value = "비밀번호 찾기", notes = "이름과 email을 입력 받아 랜덤 비밀번호를 생성하여 이메일로 전송한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> findPassword(
+            @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserFindPwdPostReq findPwdInfo) throws Exception {
+        logger.info("findPassword call!");
+
+        try {
+            if (!userRepository.findPassword(findPwdInfo.getName(), findPwdInfo.getEmail()).isPresent()) {
+                // 맞는 회원이 없을 때
+                return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
+            }
+
+            String confirm = emailService.sendRandomPassword(findPwdInfo.getEmail());
+
+            // 랜덤 비밀번호를 db에 update
+            userService.updatePassword(findPwdInfo.getEmail(), confirm);
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Addresses"));
+        }
+    }
 }

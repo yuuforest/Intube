@@ -1,4 +1,4 @@
-package com.ssafy.interview.api.service;
+package com.ssafy.interview.api.service.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

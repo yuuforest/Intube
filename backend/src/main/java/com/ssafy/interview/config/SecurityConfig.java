@@ -2,7 +2,7 @@ package com.ssafy.interview.config;
 
 import com.ssafy.interview.common.auth.JwtAuthenticationFilter;
 import com.ssafy.interview.common.auth.SsafyUserDetailService;
-import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

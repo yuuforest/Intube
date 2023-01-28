@@ -2,11 +2,10 @@ package com.ssafy.interview.common.auth;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.common.util.ResponseBodyWriteUtil;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package com.ssafy.interview.api.response.User;
+package com.ssafy.interview.api.response.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -2,21 +2,21 @@ package com.ssafy.interview.api.controller;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ssafy.interview.api.request.User.UserAuthkeyPostReq;
-import com.ssafy.interview.api.request.User.UserEmailPostReq;
-import com.ssafy.interview.api.request.User.UserLoginPostReq;
-import com.ssafy.interview.api.request.User.UserPasswordPostReq;
-import com.ssafy.interview.api.response.User.KakaoInfoPostRes;
-import com.ssafy.interview.api.response.User.UserLoginPostRes;
-import com.ssafy.interview.api.service.AuthService;
-import com.ssafy.interview.api.service.EmailService;
-import com.ssafy.interview.api.service.UserService;
+import com.ssafy.interview.api.request.user.UserAuthkeyPostReq;
+import com.ssafy.interview.api.request.user.UserEmailPostReq;
+import com.ssafy.interview.api.request.user.UserLoginPostReq;
+import com.ssafy.interview.api.request.user.UserPasswordPostReq;
+import com.ssafy.interview.api.response.user.KakaoInfoPostRes;
+import com.ssafy.interview.api.response.user.UserLoginPostRes;
+import com.ssafy.interview.api.service.user.AuthService;
+import com.ssafy.interview.api.service.user.EmailService;
+import com.ssafy.interview.api.service.user.UserService;
 import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.KakaoUserInfoDto;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-@Api(value = "인증 API", tags = {"Auth."})
+@Api(value = "인증 API", tags = {"Auth"})
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

@@ -1,7 +1,7 @@
 package com.ssafy.interview.common.auth;
 
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

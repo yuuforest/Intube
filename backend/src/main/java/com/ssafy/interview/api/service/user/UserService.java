@@ -1,8 +1,8 @@
-package com.ssafy.interview.api.service;
+package com.ssafy.interview.api.service.user;
 
-import com.ssafy.interview.api.request.User.UserModifyPutReq;
-import com.ssafy.interview.api.request.User.UserPasswordPutReq;
-import com.ssafy.interview.api.request.User.UserRegisterPostReq;
+import com.ssafy.interview.api.request.user.UserModifyPutReq;
+import com.ssafy.interview.api.request.user.UserPasswordPutReq;
+import com.ssafy.interview.api.request.user.UserRegisterPostReq;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
@@ -10,7 +10,7 @@ import com.ssafy.interview.api.request.User.UserRegisterPostReq;
 public interface UserService {
 	void createUser(UserRegisterPostReq userRegisterInfo);
 	void updateUser(UserModifyPutReq userModifyInfo);
-	void updatePassword(UserPasswordPutReq passwordInfo);
+	void updatePassword(String email, String newPassword);
 	void deleteUser(String email);
 //	Optional<User> testUserByEmail(String email);
 //	User getUserByEmail(String email);

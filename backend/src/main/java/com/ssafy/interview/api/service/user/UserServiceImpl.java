@@ -1,12 +1,11 @@
-package com.ssafy.interview.api.service;
+package com.ssafy.interview.api.service.user;
 
 
-import com.ssafy.interview.api.request.User.UserModifyPutReq;
-import com.ssafy.interview.api.request.User.UserPasswordPutReq;
-import com.ssafy.interview.api.request.User.UserRegisterPostReq;
+import com.ssafy.interview.api.request.user.UserModifyPutReq;
+import com.ssafy.interview.api.request.user.UserPasswordPutReq;
+import com.ssafy.interview.api.request.user.UserRegisterPostReq;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.UserRepository;
-import com.ssafy.interview.db.repository.UserRepositorySupport;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,9 +19,6 @@ import javax.transaction.Transactional;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserRepositorySupport userRepositorySupport;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -57,10 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updatePassword(UserPasswordPutReq passwordInfo) {
-        User user = userRepository.findByEmail(passwordInfo.getEmail()).get();
+    public void updatePassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email).get();
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-        user.setPassword(passwordEncoder.encode(passwordInfo.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
 
     @Override
