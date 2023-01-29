@@ -5,6 +5,7 @@ import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.repository.ConferenceHistoryRepository;
 import com.ssafy.interview.db.repository.ConferenceRepository;
 import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,17 @@ public class ConferenceServiceImpl implements  ConferenceService{
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    InterviewRepository interviewRepository;
 
     @Override
     public Conference startConference(Long interviewID, String user_email, String sessionID) {
         // [회의방 생성]
         Conference conference = new Conference();
 
-        conference.setOwner_id(userRepository.findByEmail(user_email).get().getId());
-        conference.setInterview_id(interviewID);
+        conference.setUser(userRepository.findByEmail(user_email).get());
+//        conference.setInterview_id(interviewID);
+        conference.setInterview(interviewRepository.findById(interviewID).get());
         conference.setIs_active(1); // Conference 방 시작 (1)
         conference.setSessionid(sessionID);
 
@@ -46,8 +50,8 @@ public class ConferenceServiceImpl implements  ConferenceService{
         // [회의방에 대한 참가자들의 입장 기록]
         ConferenceHistory conferenceHistory = new ConferenceHistory();
 
-        conferenceHistory.setConference_id(conferenceID);
-        conferenceHistory.setUser_id(userRepository.findByEmail(userEmail).get().getId());
+        conferenceHistory.setConference(conferenceRepository.findById(conferenceID).get());
+        conferenceHistory.setUser(userRepository.findByEmail(userEmail).get());
         conferenceHistory.setAction(action);
 
         conferenceHistoryRepository.save(conferenceHistory);

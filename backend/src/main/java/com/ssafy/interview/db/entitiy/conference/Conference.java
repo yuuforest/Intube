@@ -2,6 +2,7 @@ package com.ssafy.interview.db.entitiy.conference;
 
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.entitiy.interview.Interview;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,8 +18,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Conference extends BaseEntity {
 
-    Long owner_id;
-    Long interview_id;
+//    Long interview_id;
     @CreatedDate
     LocalDateTime call_start_time;
     @LastModifiedDate
@@ -27,7 +27,11 @@ public class Conference extends BaseEntity {
     @Column(unique = true)
     String sessionid;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "owner_id")
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "interview_id")
+    private Interview interview;
+
 }
