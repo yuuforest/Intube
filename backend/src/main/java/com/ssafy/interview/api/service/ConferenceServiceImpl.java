@@ -1,7 +1,7 @@
 package com.ssafy.interview.api.service;
 
-import com.ssafy.interview.db.entitiy.Conference;
-import com.ssafy.interview.db.entitiy.ConferenceHistory;
+import com.ssafy.interview.db.entitiy.conference.Conference;
+import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.repository.ConferenceHistoryRepository;
 import com.ssafy.interview.db.repository.ConferenceRepository;
 import com.ssafy.interview.db.repository.UserRepository;
@@ -23,7 +23,7 @@ public class ConferenceServiceImpl implements  ConferenceService{
     public Conference startConference(Long interviewID, String user_email, String sessionID) {
         // [회의방 생성]
         Conference conference = new Conference();
-        
+
         conference.setOwner_id(userRepository.findByEmail(user_email).get().getId());
         conference.setInterview_id(interviewID);
         conference.setIs_active(1); // Conference 방 시작 (1)

@@ -1,7 +1,7 @@
 package com.ssafy.interview.api.service;
 
-import com.ssafy.interview.db.entitiy.Conference;
-import com.ssafy.interview.db.entitiy.ConferenceHistory;
+import com.ssafy.interview.db.entitiy.conference.Conference;
+import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 
 public interface ConferenceService {
 
