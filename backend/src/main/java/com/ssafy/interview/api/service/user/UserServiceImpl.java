@@ -1,11 +1,10 @@
-package com.ssafy.interview.api.service;
+package com.ssafy.interview.api.service.user;
 
 
-import com.ssafy.interview.api.request.User.UserModifyPostReq;
-import com.ssafy.interview.api.request.User.UserRegisterPostReq;
+import com.ssafy.interview.api.request.user.UserModifyPutReq;
+import com.ssafy.interview.api.request.user.UserRegisterPostReq;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.repository.UserRepository;
-import com.ssafy.interview.db.repository.UserRepositorySupport;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,6 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserRepositorySupport userRepositorySupport;
-
-    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
@@ -37,6 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setGender(userRegisterInfo.getGender());
         user.setBirth(userRegisterInfo.getBirth());
         user.setIntroduction(userRegisterInfo.getIntroduction());
+        user.setIs_kakao(userRegisterInfo.getIsKakao());
         user.setIs_email_authorized(userRegisterInfo.getIsEmailAuthorized());
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
         user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
@@ -45,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(UserModifyPostReq userModifyInfo) {
+    public void updateUser(UserModifyPutReq userModifyInfo) {
         User user = userRepository.findByEmail(userModifyInfo.getEmail()).get();
         user.setName(userModifyInfo.getName());
         user.setNickname(userModifyInfo.getNickname());
@@ -55,25 +52,18 @@ public class UserServiceImpl implements UserService {
         user.setIntroduction(userModifyInfo.getIntroduction());
     }
 
+    @Transactional
+    @Override
+    public void updatePassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email).get();
+        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
+        user.setPassword(passwordEncoder.encode(newPassword));
+    }
+
     @Override
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).get();
         userRepository.delete(user);
-    }
-
-    public Optional<User> testUserByEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user;
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        // 디비에 유저 정보 조회 (email 를 통한 조회).
-        Optional<User> user = userRepositorySupport.findUserByEmail(email);
-        if (user.isPresent()) {
-            return user.get();
-        }
-        return null;
     }
 
     @Transactional
@@ -81,5 +71,25 @@ public class UserServiceImpl implements UserService {
     public void uploadImage(String email, String url) {
         User user = userRepository.findByEmail(email).get();
         user.setProfile_url(url);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname);
+    }
+
+    @Override
+    public Optional<User> findEmail(String name, String phone) {
+        return userRepository.findEmail(name, phone);
+    }
+
+    @Override
+    public Optional<User> findPassword(String name, String email) {
+        return userRepository.findEmail(name, email);
     }
 }

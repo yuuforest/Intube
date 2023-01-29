@@ -1,8 +1,8 @@
 package com.ssafy.interview.config;
 
-import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.common.auth.JwtAuthenticationFilter;
 import com.ssafy.interview.common.auth.SsafyUserDetailService;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SsafyUserDetailService ssafyUserDetailService;
     
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     
     // Password 인코딩 방식에 BCrypt 암호화 방식 사용
     @Bean
@@ -59,12 +59,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userRepository)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
                 //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .antMatchers("/user/me").authenticated()
                 .antMatchers("/user/image").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
+                .antMatchers(HttpMethod.PUT, "/user/password").authenticated()
+                .antMatchers(HttpMethod.POST, "/auth/check-password").authenticated()
                 .antMatchers("/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers("/user/nickname", "/user/find-email", "user/find-password").permitAll()

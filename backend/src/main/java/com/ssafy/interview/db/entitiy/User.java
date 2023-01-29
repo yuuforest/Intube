@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -44,6 +43,8 @@ public class User extends BaseEntity {
 
     @Builder.Default()
     double temperature = 36.5;
+
+    int is_kakao;
 
     int is_email_authorized;
 
