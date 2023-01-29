@@ -250,4 +250,60 @@ public class UserController {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Addresses"));
         }
     }
+
+    @PutMapping("/point")
+    @ApiOperation(value = "회원 포인트 수정", notes = "회원 정보와 포인트 값을 입력 받아 DB에 update한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> modifyPoint(
+            @RequestBody @ApiParam(value = "포인트 정보", required = true) UserPointPutReq pointInfo) {
+        logger.info("modifyPoint call!");
+
+        Optional<User> user = userService.findByEmail(pointInfo.getEmail());
+        if (!user.isPresent()) {
+            // 맞는 회원이 없을 때
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
+        }
+
+        if (pointInfo.getKey() == 1) {
+            // 증가
+            userService.updatePoint(pointInfo.getEmail(), pointInfo.getPoint());
+        } else {
+            // 감소
+            userService.updatePoint(pointInfo.getEmail(), -1 * pointInfo.getPoint());
+        }
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PutMapping("/temperature")
+    @ApiOperation(value = "회원 온도 수정", notes = "회원 정보와 포인트 값을 입력 받아 DB에 update한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> modifyTemperature(
+            @RequestBody @ApiParam(value = "회원 온도 정보", required = true) UserTemperaturePutReq temperatureInfo) {
+        logger.info("modifyTemperature call!");
+
+        Optional<User> user = userService.findByEmail(temperatureInfo.getEmail());
+        if (!user.isPresent()) {
+            // 맞는 회원이 없을 때
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
+        }
+
+        if (temperatureInfo.getKey() == 1) {
+            // 증가
+            userService.updateTemperature(temperatureInfo.getEmail(), temperatureInfo.getTemperature());
+        } else {
+            // 감소
+            userService.updateTemperature(temperatureInfo.getEmail(), -1 * temperatureInfo.getTemperature());
+        }
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
 }
