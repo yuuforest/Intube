@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/me").authenticated()
                 .antMatchers("/user/image").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
+                .antMatchers("/conference").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/password").authenticated()
                 .antMatchers(HttpMethod.POST, "/auth/check-password").authenticated()
                 .antMatchers("/auth").permitAll()
