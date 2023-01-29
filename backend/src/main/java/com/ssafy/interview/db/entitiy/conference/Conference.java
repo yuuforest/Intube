@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Conference extends BaseEntity {
 
-//    Long interview_id;
     @CreatedDate
     LocalDateTime call_start_time;
     @LastModifiedDate

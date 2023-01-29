@@ -1,5 +1,6 @@
 package com.ssafy.interview.api.service;
 
+import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.repository.ConferenceHistoryRepository;
@@ -8,6 +9,9 @@ import com.ssafy.interview.db.repository.UserRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("ConferenceService")
 public class ConferenceServiceImpl implements  ConferenceService{
@@ -28,7 +32,6 @@ public class ConferenceServiceImpl implements  ConferenceService{
         Conference conference = new Conference();
 
         conference.setUser(userRepository.findByEmail(user_email).get());
-//        conference.setInterview_id(interviewID);
         conference.setInterview(interviewRepository.findById(interviewID).get());
         conference.setIs_active(1); // Conference 방 시작 (1)
         conference.setSessionid(sessionID);
@@ -64,5 +67,17 @@ public class ConferenceServiceImpl implements  ConferenceService{
         ConferenceHistory conferenceHistory = conferenceHistoryRepository.findById(historyID).get();
         conferenceHistory.setAction(action);
         conferenceHistoryRepository.save(conferenceHistory);
+    }
+
+    @Override
+    public List<User> userInConference(Long conferenceID) {
+        // [현재 Conference에 참여중인 User 목록 반환]
+        List<User> users = new ArrayList<>();
+
+        List<ConferenceHistory> histories = conferenceHistoryRepository.findByConference_idAndAction(conferenceID, 2);
+        for (ConferenceHistory history : histories) {
+            users.add(history.getUser());
+        }
+        return users;
     }
 }

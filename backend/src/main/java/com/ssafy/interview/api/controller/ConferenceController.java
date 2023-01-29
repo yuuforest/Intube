@@ -5,6 +5,7 @@ import com.ssafy.interview.api.service.ConferenceService;
 import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
+import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import io.swagger.annotations.Api;
@@ -14,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Api(value = "인증 API", tags = {"Conference"})
@@ -80,13 +84,26 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-//    @GetMapping("/info")
-//    @ApiOperation(value = "Conference 방에 대한 정보 호출")
-//    public ResponseEntity<? extends BaseResponseBody> getInterviewInfo(@RequestParam(value="interviewID") Long interviewID,
-//                                                                       @RequestParam(value="conferenceID") Long conferenceID) {
-//        // [Conference History Table]
-//        conferenceService.updateConferenceHistory(historyID, 3);
-//
-//        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-//    }
+    @GetMapping("/info")
+    @ApiOperation(value = "Conference 방에 대한 정보 호출")
+    public ResponseEntity<? extends BaseResponseBody> getInterviewInfo(@RequestParam(value="interviewID") Long interviewID,
+                                                                       @RequestParam(value="conferenceID") Long conferenceID) {
+        // [Interview Table]
+        // [Conference Table]
+        // [User table]
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/user")
+    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
+    public ResponseEntity<List<String>> getUserInConference(@RequestParam(value="conferenceID") Long conferenceID) {
+        // [Conference History Table]
+        List<User> users = conferenceService.userInConference(conferenceID);
+
+        List<String> username = new ArrayList<>();
+        for (User user : users) { username.add(user.getName()); }
+
+        return ResponseEntity.status(200).body(username);
+    }
 }
