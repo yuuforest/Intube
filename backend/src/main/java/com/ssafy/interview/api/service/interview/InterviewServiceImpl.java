@@ -5,7 +5,7 @@ import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewLoadDto;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.interview.*;
-import com.ssafy.interview.db.repository.UserRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.db.repository.interview.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

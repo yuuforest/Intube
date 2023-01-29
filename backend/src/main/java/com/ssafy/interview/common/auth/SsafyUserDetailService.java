@@ -1,7 +1,7 @@
 package com.ssafy.interview.common.auth;
 
-import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SsafyUserDetailService implements UserDetailsService{
 	@Autowired
-	UserService userService;
+	UserRepository userRepository;
 	
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    		User user = userService.getUserByEmail(username);
+    		User user = userRepository.findByEmail(username).get();
     		if(user != null) {
     			SsafyUserDetails userDetails = new SsafyUserDetails(user);
     			return userDetails;

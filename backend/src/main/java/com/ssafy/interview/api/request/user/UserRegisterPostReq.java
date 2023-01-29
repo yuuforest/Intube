@@ -1,4 +1,4 @@
-package com.ssafy.interview.api.request.User;
+package com.ssafy.interview.api.request.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -35,6 +35,8 @@ public class UserRegisterPostReq {
 	Date birth;
 	@ApiModelProperty(name="유저 introduction", example="안녕하세요 저는 착한 사람입니다.")
 	String introduction;
+	@ApiModelProperty(name="유저 is_kakao", example="0")
+	int isKakao;
 	@ApiModelProperty(name="유저 is_email_authorized", example="1")
 	int isEmailAuthorized;
 }

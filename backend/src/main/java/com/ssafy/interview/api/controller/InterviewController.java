@@ -2,11 +2,8 @@ package com.ssafy.interview.api.controller;
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewLoadDto;
-import com.ssafy.interview.api.service.UserService;
 import com.ssafy.interview.api.service.interview.InterviewService;
-import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
-import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.interview.Interview;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
