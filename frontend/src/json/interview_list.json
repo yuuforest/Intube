@@ -20,7 +20,11 @@
         "2023-06-33 17:00"
       ],
       "download_expiration": "2023-02-31 13:00",
-      "interview_state": "1"
+      "owner_id": "1",
+      "owner_email": "ssafy@ssafy.com",
+      "owner_name": "홍길동",
+      "owner_phone": "010-9937-3604",
+      "applicant_state": "0"
     },
     {
       "id": "2",
@@ -42,7 +46,11 @@
         "2023-06-33 17:00"
       ],
       "download_expiration": "2023-02-31 13:00",
-      "interview_state": "0"
+      "owner_id": "1",
+      "owner_email": "ssafy@ssafy.com",
+      "owner_name": "홍길동",
+      "owner_phone": "010-9937-3604",
+      "applicant_state": "0"
     },
     {
       "id": "3",
@@ -64,7 +72,11 @@
         "2023-06-33 17:00"
       ],
       "download_expiration": "2023-01-30 13:00",
-      "interview_state": "0"
+      "owner_id": "1",
+      "owner_email": "ssafy@ssafy.com",
+      "owner_name": "홍길동",
+      "owner_phone": "010-9937-3604",
+      "applicant_state": "0"
     },
     {
       "id": "4",
@@ -86,7 +98,11 @@
         "2023-06-33 17:00"
       ],
       "download_expiration": "2023-01-30 13:00",
-      "interview_state": "0"
+      "owner_id": "1",
+      "owner_email": "ssafy@ssafy.com",
+      "owner_name": "홍길동",
+      "owner_phone": "010-9937-3604",
+      "applicant_state": "2"
     },
     {
       "id": "5",
@@ -108,51 +124,11 @@
         "2023-06-33 17:00"
       ],
       "download_expiration": "2023-03-30 13:00",
-      "interview_state": "1"
-    },
-    {
-      "id": "6",
-      "category_name": "1:1",
-      "title": "쿠팡에서 타이어 구매 후 교체하신 분",
-      "description": "서울 및 수도권 거주하는 35-44세 남성 *타이어 교체/구매 이력증 또는 카드내역 또는 영수증 증빙 필수*",
-      "estimated_time": "4시간",
-      "start_standard_age": "35",
-      "end_standard_age": "44",
-      "gender": "M",
-      "max_people": "20",
-      "point": "10000",
-      "apply_start_time": "2023-04-01",
-      "apply_end_time": "2023-04-24",
-      "interview_time": [
-        "2023-06-30 17:00",
-        "2023-06-31 17:00",
-        "2023-06-32 17:00",
-        "2023-06-33 17:00"
-      ],
-      "download_expiration": "2023-04-25 13:00",
-      "interview_state": "1"
-    },
-    {
-      "id": "7",
-      "category_name": "N:1",
-      "title": "SNS에 구매 상품을 포스팅 하시는 분들 좌담회",
-      "description": "본인 SNS(블로그, 유투브, 인스타그램 등)에 본인이 구매하는 제품 후기를 공유하시는 분",
-      "estimated_time": "4시간",
-      "start_standard_age": "20",
-      "end_standard_age": "29",
-      "gender": "O",
-      "max_people": "20",
-      "point": "10000",
-      "apply_start_time": "2023-06-01",
-      "apply_end_time": "2023-06-30",
-      "interview_time": [
-        "2023-06-30 17:00",
-        "2023-06-31 17:00",
-        "2023-06-32 17:00",
-        "2023-06-33 17:00"
-      ],
-      "download_expiration": "2023-07-30 13:00",
-      "interview_state": "1"
+      "owner_id": "1",
+      "owner_email": "ssafy@ssafy.com",
+      "owner_name": "홍길동",
+      "owner_phone": "010-9937-3604",
+      "applicant_state": "1"
     }
   ]
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -11,14 +11,34 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ContentPasteRoundedIcon from "@mui/icons-material/ContentPasteRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
+import InterviewListItemDetail from "./InterviewListItemDetail";
+import InterviewListItemTag from "./InterviewListItemTag";
+import "./InterviewListItem.css";
 
-export default function interviewListItem(props) {
+export default function InterviewListItem(props) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => () => {
+    setOpen(true);
+  };
+
   return (
     <div>
-      <Card sx={{ minHeight: 300 }}>
+      <Card sx={{ minHeight: 340 }} onClick={handleClickOpen()}>
         <CardContent>
-          <Typography align="left" gutterBottom variant="h5" component="div">
-            {props.interview.title}
+          <InterviewListItemTag
+            interview={props.interview}
+          ></InterviewListItemTag>
+          <Typography
+            align="left"
+            gutterBottom
+            variant="h5"
+            component="div"
+            className="title"
+          >
+            <div className="interview-list-item-title">
+              {props.interview.title}
+            </div>
           </Typography>
 
           <Divider />
@@ -28,7 +48,10 @@ export default function interviewListItem(props) {
               <ListItemIcon>
                 <ContentPasteRoundedIcon />
               </ListItemIcon>
-              <ListItemText primary={props.interview.description} />
+              <ListItemText
+                primary={props.interview.description}
+                className="interview-list-item-description"
+              />
             </ListItem>
             <ListItem disablePadding>
               <ListItemIcon>
@@ -60,6 +83,12 @@ export default function interviewListItem(props) {
           </List>
         </CardContent>
       </Card>
+
+      <InterviewListItemDetail
+        open={open}
+        setOpen={setOpen}
+        interview={props.interview}
+      />
     </div>
   );
 }

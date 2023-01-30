@@ -32,12 +32,6 @@ export default function DenseAppBar() {
     left: false,
   });
   const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
     setState({ ...state, left: open });
   };
 

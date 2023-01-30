@@ -19,20 +19,45 @@ import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import VideoFileOutlinedIcon from "@mui/icons-material/VideoFileOutlined";
+import { useNavigate } from "react-router-dom";
 import "./Common.css";
 
-export default function sidebar({ toggleDrawer }) {
+export default function Sidebar({ toggleDrawer }) {
   const menu = [
     { text: "마이페이지", icon: <PersonOutlineRoundedIcon /> },
-    { text: "인터뷰찾기", icon: <ContentPasteSearchOutlinedIcon /> },
-    { text: "공고올리기", icon: <CampaignOutlinedIcon /> },
-    { text: "매칭인터뷰", icon: <HandshakeOutlinedIcon /> },
-    { text: "신청인터뷰", icon: <ContentPasteGoOutlinedIcon /> },
+    {
+      text: "인터뷰찾기",
+      icon: <ContentPasteSearchOutlinedIcon />,
+      state: "0",
+      link: "/interview",
+    },
+    { text: "공고올리기", icon: <CampaignOutlinedIcon />, link: "/post" },
+    {
+      text: "매칭인터뷰",
+      icon: <HandshakeOutlinedIcon />,
+      state: "2",
+      link: "/interview",
+    },
+    {
+      text: "신청인터뷰",
+      icon: <ContentPasteGoOutlinedIcon />,
+      state: "1",
+      link: "/interview",
+    },
     { text: "완료인터뷰", icon: <InventoryOutlinedIcon /> },
     { text: "인터뷰진행", icon: <VideocamOutlinedIcon /> },
     { text: "인터뷰모집", icon: <GroupAddOutlinedIcon /> },
     { text: "인터뷰결과", icon: <VideoFileOutlinedIcon /> },
   ];
+
+  const navigate = useNavigate();
+
+  function handlePage(e, state, link) {
+    console.log(link);
+    navigate(link, {
+      state: state,
+    });
+  }
 
   return (
     <div>
@@ -57,7 +82,7 @@ export default function sidebar({ toggleDrawer }) {
         <List>
           {menu.map((item, index) => (
             <div key={index}>
-              <ListItem>
+              <ListItem onClick={(e) => handlePage(e, item.state, item.link)}>
                 <ListItemButton>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />

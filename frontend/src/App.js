@@ -1,13 +1,23 @@
-import InterviewList from "./components/InterviewList";
+import InterviewList from "components/Interview/InterviewList";
+import Main from "pages/Main";
+import PostAnnouncement from "pages/PostAnnouncement";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./common/Header";
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <BrowserRouter>
       <Header />
-      <InterviewList />
-    </div>
+      <Routes>
+        <Route path={"/interview"} element={<InterviewList />}></Route>
+        <Route
+          path={"/post"}
+          element={<PostAnnouncement></PostAnnouncement>}
+        ></Route>
+        <Route path={"/"} element={<Main />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
