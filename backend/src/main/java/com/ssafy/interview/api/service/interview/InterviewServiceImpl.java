@@ -2,7 +2,8 @@ package com.ssafy.interview.api.service.interview;
 
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
-import com.ssafy.interview.api.response.interview.InterviewLoadDto;
+import com.ssafy.interview.api.response.interview.InterviewDetailRes;
+import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.interview.*;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -39,8 +40,10 @@ public class InterviewServiceImpl implements InterviewService {
 	@Autowired
 	UserRepository userRepository;
 
+
+	// 인터뷰 전체 및 카테고리별 조회
 	@Override
-	public Page<InterviewLoadDto> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable) {
+	public Page<InterviewLoadRes> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable) {
 		return interviewRepository.findAllInterview(interviewSearchReq.getCategoryName(), interviewSearchReq.getWord(), pageable);
 	}
 
@@ -96,6 +99,7 @@ public class InterviewServiceImpl implements InterviewService {
 		questionRepository.saveAll(questions);
 	}
 
+	// 인터뷰 신청 Method
 	@Override
 	@Transactional
 	public void applyInterview(String email, Long interview_time_id) {
@@ -111,5 +115,33 @@ public class InterviewServiceImpl implements InterviewService {
 		}
 
 		applicantRepository.save(Applicant.builder().user(user).interviewTime(interviewTime).build());
+	}
+
+
+	@Override
+	@Transactional
+	public InterviewDetailRes detailInterview(String email, Long interview_id) {
+		Optional<User> userOptional = userRepository.findByEmail(email);
+		User user = null;
+		if(userOptional.isPresent()){
+			user = userOptional.get();
+		}
+		Long user_id = user.getId();
+		InterviewDetailRes interviewDetailRes = interviewRepository.findDetailInterview(user_id, interview_id);
+
+		// interviewTimeList 가져오기
+		List<Date> interviewTimeList = interviewTimeRepository.findAllInterviewTime(interview_id);
+		interviewDetailRes.setInterviewTimeList(interviewTimeList);
+
+		// Applicant 정보 가져오기
+		Optional<Applicant> applicantOptional = applicantRepository.findByUserIdAndInterviewId(user_id, interview_id);
+		if(applicantOptional.isPresent()){
+			Applicant applicant = applicantOptional.get();
+			interviewDetailRes.setApplicant_state(applicant.getApplicantState());
+		}else{
+			interviewDetailRes.setApplicant_state(0);
+		}
+
+		return interviewDetailRes;
 	}
 }

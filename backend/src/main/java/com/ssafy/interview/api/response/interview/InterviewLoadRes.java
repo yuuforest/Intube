@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel("InterviewResponse")
-public class InterviewLoadDto {
+public class InterviewLoadRes {
 	@ApiModelProperty(name="Interview ID")
 	Long id;
 
@@ -57,7 +57,7 @@ public class InterviewLoadDto {
 	int interview_state;
 
 	@QueryProjection
-	public InterviewLoadDto(Interview interview) {
+	public InterviewLoadRes(Interview interview) {
 		this.id = interview.getId();
 		this.categoryName = interview.getInterviewCategory().getCategoryName();
 		this.title = interview.getTitle();

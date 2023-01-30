@@ -1,8 +1,10 @@
 package com.ssafy.interview.api.controller;
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
-import com.ssafy.interview.api.response.interview.InterviewLoadDto;
+import com.ssafy.interview.api.response.interview.InterviewDetailRes;
+import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.api.service.interview.InterviewService;
+import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.interview.Interview;
 import io.swagger.annotations.*;
@@ -11,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -81,10 +85,23 @@ public class InterviewController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<Page<InterviewLoadDto>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchReq interviewSearchReq, @PageableDefault(size = 2) Pageable pageable) {
+	public ResponseEntity<Page<InterviewLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchReq interviewSearchReq, @PageableDefault(size = 2) Pageable pageable) {
 		/**
 		 *
 		 */
 		return ResponseEntity.status(200).body(interviewService.findAllInterview(interviewSearchReq, pageable));
+	}
+
+	@GetMapping("/search/{interview_id}")
+	@ApiOperation(value = "인터뷰 공고 상세정보 조회", notes = "로그인된 유저 email과 해당 인터뷰 공고 ID를 입력받는다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<InterviewDetailRes> findInterviewDetail(@RequestParam("email") String email, @PathVariable Long interview_id) {
+
+		return ResponseEntity.status(200).body(interviewService.detailInterview(email, interview_id));
 	}
 }
