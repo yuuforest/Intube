@@ -19,4 +19,6 @@ public interface UserService {
 	Optional<User> findByNickname(String nickname);
 	Optional<User> findEmail(String name, String phone);
 	Optional<User> findPassword(String name, String email);
+	void updatePoint(String email, int point);
+	void updateTemperature(String email, double temperature);
 }
