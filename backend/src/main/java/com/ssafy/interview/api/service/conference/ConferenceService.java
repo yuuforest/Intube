@@ -1,14 +1,12 @@
 package com.ssafy.interview.api.service.conference;
 
-import com.ssafy.interview.api.request.conference.markCreateInReq;
-import com.ssafy.interview.api.request.conference.questionCreateInReq;
-import com.ssafy.interview.api.request.conference.recordQuestionInReq;
+import com.ssafy.interview.api.request.conference.*;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
+import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Question;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ConferenceService {
@@ -31,5 +29,7 @@ public interface ConferenceService {
 
     // [Dialog Table]
     void recordQuestionInConference(recordQuestionInReq questionInfo);
+    void recordPreviousInConference(Long dialogID, String content);
+    Dialog recordNowInConference(recordDialogInReq dialogInfo);
 
 }

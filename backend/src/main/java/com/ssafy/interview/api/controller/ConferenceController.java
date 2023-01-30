@@ -1,8 +1,6 @@
 package com.ssafy.interview.api.controller;
 
-import com.ssafy.interview.api.request.conference.recordQuestionInReq;
-import com.ssafy.interview.api.request.conference.markCreateInReq;
-import com.ssafy.interview.api.request.conference.questionCreateInReq;
+import com.ssafy.interview.api.request.conference.*;
 import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
 import com.ssafy.interview.api.service.user.UserService;
@@ -11,6 +9,7 @@ import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
+import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -131,11 +130,22 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @PostMapping("/dialog")
+    @PostMapping("/dialog/question")
     @ApiOperation(value = "Conference 진행 중 질문 시작 시간 저장")
     public ResponseEntity<? extends BaseResponseBody> recordQuestionInConference(@RequestBody recordQuestionInReq questionInfo) {
         // [Dialog Table]
         conferenceService.recordQuestionInConference(questionInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PostMapping("/dialog/user")
+    @ApiOperation(value = "Conference 진행 중 이전 발언 내용 저장, 현재 발언자 정보 저장")
+    public ResponseEntity<Long> recordDialogInConference(@RequestBody recordDialogInReq dialogInfo) {
+        // [Dialog Table]
+        if(dialogInfo.getDialogID() != null) {
+            conferenceService.recordPreviousInConference(dialogInfo.getDialogID(), dialogInfo.getContent());     // 이전 발언자
+        }
+        Dialog dialog = conferenceService.recordNowInConference(dialogInfo);       // 현재 발언자
+        return ResponseEntity.status(200).body(dialog.getId());
     }
 }
