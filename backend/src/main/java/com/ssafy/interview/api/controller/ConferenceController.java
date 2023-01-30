@@ -1,8 +1,8 @@
 package com.ssafy.interview.api.controller;
 
+import com.ssafy.interview.api.request.conference.recordQuestionInReq;
 import com.ssafy.interview.api.request.conference.markCreateInReq;
 import com.ssafy.interview.api.request.conference.questionCreateInReq;
-import com.ssafy.interview.api.request.user.UserModifyPutReq;
 import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
 import com.ssafy.interview.api.service.user.UserService;
@@ -14,7 +14,6 @@ import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -129,6 +128,14 @@ public class ConferenceController {
     public ResponseEntity<? extends BaseResponseBody> createMarkInConference(@RequestBody markCreateInReq markInfo) {
         // [Mark Table]
         conferenceService.createMarkInConference(markInfo);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PostMapping("/dialog")
+    @ApiOperation(value = "Conference 진행 중 질문 시작 시간 저장")
+    public ResponseEntity<? extends BaseResponseBody> recordQuestionInConference(@RequestBody recordQuestionInReq questionInfo) {
+        // [Dialog Table]
+        conferenceService.recordQuestionInConference(questionInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }

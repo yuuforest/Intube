@@ -2,14 +2,17 @@ package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.markCreateInReq;
 import com.ssafy.interview.api.request.conference.questionCreateInReq;
+import com.ssafy.interview.api.request.conference.recordQuestionInReq;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
+import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.conference.Mark;
 import com.ssafy.interview.db.entitiy.interview.Interview;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.ConferenceHistoryRepository;
 import com.ssafy.interview.db.repository.conference.ConferenceRepository;
+import com.ssafy.interview.db.repository.conference.DialogRepository;
 import com.ssafy.interview.db.repository.conference.MarkRepository;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -35,6 +38,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     QuestionRepository questionRepository;
     @Autowired
     MarkRepository markRepository;
+    @Autowired
+    DialogRepository dialogRepository;
 
     @Override
     public Conference startConference(Long interviewID, String user_email, String sessionID) {
@@ -106,5 +111,16 @@ public class ConferenceServiceImpl implements ConferenceService {
         mark.setConference(conferenceRepository.findById(markInfo.getConferenceID()).get());
         mark.setMark_time(markInfo.getMarkTime());
         markRepository.save(mark);
+    }
+
+    @Override
+    public void recordQuestionInConference(recordQuestionInReq questionInfo) {
+        Dialog dialog = new Dialog();
+        dialog.setConference(conferenceRepository.findById(questionInfo.getConferenceID()).get());
+        dialog.setQuestion(questionRepository.findById(questionInfo.getQuestionID()).get());
+        dialog.setTimestamp(questionInfo.getTimestamp());
+        dialog.setUser(null);
+        dialog.setContent(null);
+        dialogRepository.save(dialog);
     }
 }

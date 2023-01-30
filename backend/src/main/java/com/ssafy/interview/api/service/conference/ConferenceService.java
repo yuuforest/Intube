@@ -2,6 +2,7 @@ package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.markCreateInReq;
 import com.ssafy.interview.api.request.conference.questionCreateInReq;
+import com.ssafy.interview.api.request.conference.recordQuestionInReq;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
@@ -27,4 +28,8 @@ public interface ConferenceService {
 
     // [Mark Table]
     void createMarkInConference(markCreateInReq markInfo);
+
+    // [Dialog Table]
+    void recordQuestionInConference(recordQuestionInReq questionInfo);
+
 }
