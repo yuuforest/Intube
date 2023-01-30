@@ -1,4 +1,4 @@
-package com.ssafy.interview.db.repository;
+package com.ssafy.interview.db.repository.conference;
 
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
