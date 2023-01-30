@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
     }
 
+    @Transactional
     @Override
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).get();
