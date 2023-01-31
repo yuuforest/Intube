@@ -9,7 +9,6 @@ import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
-import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,11 +49,10 @@ public class ConferenceController {
 
     @PostMapping("/end")
     @ApiOperation(value = "Conference 방 종료")
-    public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "conferenceID") Long conferenceID,
-                                                                    @RequestParam(value = "historyID") Long historyID,
+    public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "historyID") Long historyID,
                                                                     @RequestBody recordDialogInReq dialogInfo) {
         // [Conference Table]
-        conferenceService.endConference(conferenceID);
+        conferenceService.endConference(dialogInfo.getConferenceID());
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 4);
         // [Dialog Table]

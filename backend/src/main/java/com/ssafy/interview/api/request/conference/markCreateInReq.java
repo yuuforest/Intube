@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("questionCreateInReq")
+@ApiModel("markCreateInReq")
 public class markCreateInReq {
 
     @ApiModelProperty(name="conference ID")
