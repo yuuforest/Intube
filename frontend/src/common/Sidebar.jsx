@@ -16,22 +16,20 @@ import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
 import ContentPasteGoOutlinedIcon from "@mui/icons-material/ContentPasteGoOutlined";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
-import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
-import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import VideoFileOutlinedIcon from "@mui/icons-material/VideoFileOutlined";
 import { useNavigate } from "react-router-dom";
 import "./Common.css";
 
 export default function Sidebar({ toggleDrawer }) {
   const menu = [
-    { text: "마이페이지", icon: <PersonOutlineRoundedIcon /> },
+    { text: "마이페이지", icon: <PersonOutlineRoundedIcon />,link: "/mypage"},
     {
       text: "인터뷰찾기",
       icon: <ContentPasteSearchOutlinedIcon />,
       state: "0",
       link: "/interview",
     },
-    { text: "공고올리기", icon: <CampaignOutlinedIcon />, link: "/post" },
+    { text: "공고올리기", icon: <CampaignOutlinedIcon />, link: "/announcement/post" },
     {
       text: "매칭인터뷰",
       icon: <HandshakeOutlinedIcon />,
@@ -44,14 +42,14 @@ export default function Sidebar({ toggleDrawer }) {
       state: "1",
       link: "/interview",
     },
-    { text: "완료인터뷰", icon: <InventoryOutlinedIcon /> },
-    { text: "인터뷰진행", icon: <VideocamOutlinedIcon /> },
-    { text: "인터뷰모집", icon: <GroupAddOutlinedIcon /> },
-    { text: "인터뷰결과", icon: <VideoFileOutlinedIcon /> },
+    { text: "완료인터뷰", icon: <InventoryOutlinedIcon />},
+    { text: "인터뷰관리", icon: <VideoFileOutlinedIcon />, link: "/announcement/manage", },
   ];
 
-  const navigate = useNavigate();
 
+
+   // 페이지 이동
+  const navigate = useNavigate();
   function handlePage(e, state, link) {
     console.log(link);
     navigate(link, {
@@ -60,7 +58,7 @@ export default function Sidebar({ toggleDrawer }) {
   }
 
   return (
-    <div>
+    <div className="Sidebar">
       <Box
         sx={{ width: "left" === "top" || "left" === "bottom" ? "auto" : 250 }}
         role="presentation"
@@ -77,7 +75,7 @@ export default function Sidebar({ toggleDrawer }) {
           >
             <MenuIcon />
           </IconButton>
-          <img src={Logo} alt="logo" width="130px" />
+          <img src={Logo} alt="logo" width="130px" onClick={(e) => handlePage(e, "", "/")}  />
         </Toolbar>
         <List>
           {menu.map((item, index) => (

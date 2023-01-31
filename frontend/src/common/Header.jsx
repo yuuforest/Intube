@@ -6,26 +6,20 @@ import Logo from "../assets/logo.png";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Sidebar from "./Sidebar";
-import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import ContentPasteSearchOutlinedIcon from "@mui/icons-material/ContentPasteSearchOutlined";
-import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
+import Avatar from '@mui/material/Avatar';
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux'
 import "./Common.css";
 
 export default function DenseAppBar() {
+  const userInfo = useSelector((state) => state.counter.user)
+  console.log(userInfo)
   const menu = [
-    {
-      text: "인터뷰찾기",
-      icon: <ContentPasteSearchOutlinedIcon fontSize="inherit" />,
-    },
-    { text: "공고올리기", icon: <CampaignOutlinedIcon fontSize="inherit" /> },
-    {
-      text: "마이페이지",
-      icon: <PersonOutlineRoundedIcon fontSize="inherit" />,
-    },
     {
       text: "로그인",
       icon: <LoginOutlinedIcon fontSize="inherit" />,
+      link: "/login"
     },
   ];
   const [state, setState] = React.useState({
@@ -34,6 +28,15 @@ export default function DenseAppBar() {
   const toggleDrawer = (open) => (event) => {
     setState({ ...state, left: open });
   };
+
+  // 페이지 이동
+  const navigate = useNavigate();
+  function handlePage(e, link) {
+    console.log(link);
+    navigate(link, {
+      state: state,
+    });
+  }
 
   return (
     <div>
@@ -47,9 +50,13 @@ export default function DenseAppBar() {
         >
           <MenuIcon />
         </IconButton>
-        <img src={Logo} alt="logo" width="130px" />
+        <img src={Logo} alt="logo" width="130px" onClick={(e) => handlePage(e, "/")} />
         <Box sx={{ flexGrow: 1 }} />
-        {menu.map((item, index) => (
+
+        {/* ------ 로그인 전 -------- */}
+        {
+        Object.keys(userInfo).length === 0 && 
+        menu.map((item, index) => (
           <IconButton
             edge="start"
             size="large"
@@ -57,10 +64,17 @@ export default function DenseAppBar() {
             aria-label={item.text}
             sx={{ mr: 2 }}
             key={index}
+            onClick={(e) => handlePage(e, item.link)} 
           >
             {item.icon}
           </IconButton>
-        ))}
+        ))
+        }
+        {/* ------ 로그인 후 -------- */}
+        {
+          Object.keys(userInfo).length > 0 &&
+          <Avatar>{userInfo.email[0]}</Avatar>
+        }
       </Toolbar>
 
       <Drawer anchor="left" open={state["left"]} onClose={toggleDrawer(false)}>

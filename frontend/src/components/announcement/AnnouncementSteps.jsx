@@ -26,18 +26,22 @@ export default function AnnouncementSteps(props) {
     <div>
       <AnnouncementStep1
         value={props.value}
+        interview={interview}
         interviewChangeHandler={interviewChangeHandler}
       ></AnnouncementStep1>
       <AnnouncementStep2
         value={props.value}
+        interview={interview}
         interviewChangeHandler={interviewChangeHandler}
       ></AnnouncementStep2>
       <AnnouncementStep3
         value={props.value}
+        interview={interview}
         interviewChangeHandler={interviewChangeHandler}
       ></AnnouncementStep3>
       <AnnouncementStep4
         value={props.value}
+        interview={interview}
         interviewChangeHandler={interviewChangeHandler}
       ></AnnouncementStep4>
     </div>

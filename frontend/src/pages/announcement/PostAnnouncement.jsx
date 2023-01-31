@@ -8,7 +8,7 @@ import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import AnnouncementSteps from "components/announcement/AnnouncementSteps";
 
 export default function PostAnnouncement() {
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

@@ -89,7 +89,7 @@ export default function AnnouncementStep2(props) {
       <Typography variant="h5" gutterBottom>
         공고 내용
       </Typography>
-      <InterviewListItemTag />
+      <InterviewListItemTag interview={props.interview} />
       <Divider sx={{ my: 3 }} />
       <Grid
         container
