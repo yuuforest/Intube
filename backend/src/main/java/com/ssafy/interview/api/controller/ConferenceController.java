@@ -72,7 +72,7 @@ public class ConferenceController {
     }
 
     @PostMapping("/out")
-    @ApiOperation(value = "Conference 방에 참여자 퇴장")
+    @ApiOperation(value = "Conference 방에서 참여자가 스스로 퇴장")
     public ResponseEntity<? extends BaseResponseBody> outConference(@RequestParam(value = "historyID") Long historyID) {
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 3);
@@ -113,7 +113,7 @@ public class ConferenceController {
 
     @GetMapping("/question")
     @ApiOperation(value = "관련 Interview의 질문 목록 조회")
-    public ResponseEntity<List<String>> getQuestionInConference(@RequestParam(value = "InterviewID") Long interviewID) {
+    public ResponseEntity<List<String>> getQuestionInConference(@RequestParam(value = "interviewID") Long interviewID) {
         // [Question Table]
         List<String> contents = new ArrayList<>();
         List<Question> questions = conferenceService.questionInfoInConference(interviewID);
@@ -144,6 +144,22 @@ public class ConferenceController {
     public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody recordDialogInReq dialogInfo) {
         // [Dialog Table]
         conferenceService.recordDialogInConference(dialogInfo);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+//    @PostMapping("/kick")
+//    @ApiOperation(value = "Conference 진행 중 질문자가 답변자를 퇴장시킴")
+//    public ResponseEntity<? extends BaseResponseBody> kickUserInConference(@RequestParam(value = "historyID") Long historyID) {
+//        // [Conference History Table] historyID를 직접 받아서 상태 변경하는 방법
+//        conferenceService.updateConferenceHistory(historyID, 3);
+//        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+//    }
+
+    @PostMapping("/kick")
+    @ApiOperation(value = "Conference 진행 중 질문자가 답변자를 퇴장시킴")
+    public ResponseEntity<? extends BaseResponseBody> kickUserInConference(@RequestBody kickUserInReq kickInfo) {
+        // [Conference History Table] conferenceID와 userEmail에 해당하는 기록 불러와서 내림차순으로 정렬한 후, 맨 위에 있는 정보를 변경하는 방법
+        conferenceService.kickConferenceHistory(kickInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }

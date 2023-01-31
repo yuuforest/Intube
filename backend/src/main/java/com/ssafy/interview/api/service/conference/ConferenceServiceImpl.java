@@ -77,6 +77,16 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    public void kickConferenceHistory(kickUserInReq kickInfo) {
+        // [질문자가 Conference에 참여중인 참가자를 퇴장시킴]
+        User user = userRepository.findByEmail(kickInfo.getUserEmail()).get();
+        ConferenceHistory conferenceHistory
+                = conferenceHistoryRepository.findByConference_idAndUser_idOrderByIdDesc(kickInfo.getConferenceID(), user.getId()).get(0);
+        conferenceHistory.setAction(3);
+        conferenceHistoryRepository.save(conferenceHistory);
+    }
+
+    @Override
     public List<User> userInConference(Long conferenceID) {
         // [현재 Conference에 참여중인 User 목록 조회]
         List<User> users = new ArrayList<>();

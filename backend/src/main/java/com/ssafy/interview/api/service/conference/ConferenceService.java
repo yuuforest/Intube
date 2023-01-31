@@ -18,6 +18,7 @@ public interface ConferenceService {
     // [Conference History Table]
     ConferenceHistory createConferenceHistory(Long conferenceID, String userEmail, int action);
     void updateConferenceHistory(Long historyID, int action);
+    void kickConferenceHistory(kickUserInReq kickInfo);
     List<User> userInConference(Long ConferenceID);
 
     // [Question Table]

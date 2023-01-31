@@ -10,4 +10,5 @@ import java.util.List;
 public interface ConferenceHistoryRepository extends JpaRepository<ConferenceHistory, Long>  {
 
     List<ConferenceHistory> findByConference_idAndAction(Long conference_id, int action);
+    List<ConferenceHistory> findByConference_idAndUser_idOrderByIdDesc(Long conference_id, Long user_id);
 }
