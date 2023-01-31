@@ -51,11 +51,14 @@ public class ConferenceController {
     @PostMapping("/end")
     @ApiOperation(value = "Conference 방 종료")
     public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "conferenceID") Long conferenceID,
-                                                                    @RequestParam(value = "historyID") Long historyID) {
+                                                                    @RequestParam(value = "historyID") Long historyID,
+                                                                    @RequestBody recordDialogInReq dialogInfo) {
         // [Conference Table]
         conferenceService.endConference(conferenceID);
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 4);
+        // [Dialog Table]
+        conferenceService.recordDialogInConference(dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
@@ -139,13 +142,10 @@ public class ConferenceController {
     }
 
     @PostMapping("/dialog/user")
-    @ApiOperation(value = "Conference 진행 중 이전 발언 내용 저장, 현재 발언자 정보 저장")
-    public ResponseEntity<Long> recordDialogInConference(@RequestBody recordDialogInReq dialogInfo) {
+    @ApiOperation(value = "Conference 진행 중 발언 내용 저장")
+    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody recordDialogInReq dialogInfo) {
         // [Dialog Table]
-        if(dialogInfo.getDialogID() != null) {
-            conferenceService.recordPreviousInConference(dialogInfo.getDialogID(), dialogInfo.getContent());     // 이전 발언자
-        }
-        Dialog dialog = conferenceService.recordNowInConference(dialogInfo);       // 현재 발언자
-        return ResponseEntity.status(200).body(dialog.getId());
+        conferenceService.recordDialogInConference(dialogInfo);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 }

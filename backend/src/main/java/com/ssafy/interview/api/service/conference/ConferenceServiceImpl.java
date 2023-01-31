@@ -121,15 +121,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void recordPreviousInConference(Long dialogID, String content) {
-        // [이전 발언자]
-        Dialog previous = dialogRepository.findById(dialogID).get();
-        previous.setContent(content);
-        dialogRepository.save(previous);
-    }
-
-    @Override
-    public Dialog recordNowInConference(recordDialogInReq dialogInfo) {
+    public void recordDialogInConference(recordDialogInReq dialogInfo) {
         Dialog now = new Dialog();
         now.setUser(userRepository.findByEmail(dialogInfo.getUserEmail()).get());
         now.setConference(conferenceRepository.findById(dialogInfo.getConferenceID()).get());
@@ -138,8 +130,8 @@ public class ConferenceServiceImpl implements ConferenceService {
         } else {
             now.setQuestion(questionRepository.findById(dialogInfo.getQuestionID()).get());
         }
+        now.setContent(dialogInfo.getContent());
         now.setTimestamp(dialogInfo.getTimestamp());
         dialogRepository.save(now);
-        return now;
     }
 }

@@ -29,7 +29,6 @@ public interface ConferenceService {
 
     // [Dialog Table]
     void recordQuestionInConference(recordQuestionInReq questionInfo);
-    void recordPreviousInConference(Long dialogID, String content);
-    Dialog recordNowInConference(recordDialogInReq dialogInfo);
+    void recordDialogInConference(recordDialogInReq dialogInfo);
 
 }
