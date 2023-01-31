@@ -30,12 +30,12 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
     QInterviewCategory qInterviewCategory = QInterviewCategory.interviewCategory;
 
     @Override
-    public Page<InterviewLoadRes> findAllInterview(String categoryName, String word, Pageable pageable) {
+    public Page<InterviewLoadRes> findInterviewByCategory(String categoryName, String word, Pageable pageable) {
         List<InterviewLoadRes> content = jpaQueryFactory
                 .select(new QInterviewLoadRes(qInterview))
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), categoryEq(categoryName), qInterview.interview_state.eq(4))
+                .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -44,7 +44,28 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .select(qInterview)
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), categoryEq(categoryName), qInterview.interview_state.eq(4));
+                .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4));
+
+
+        return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
+    }
+
+    @Override
+    public Page<InterviewLoadRes> findInterviewByInterviewState(Long user_id, int interviewState, String word, Pageable pageable) {
+        List<InterviewLoadRes> content = jpaQueryFactory
+                .select(new QInterviewLoadRes(qInterview))
+                .from(qInterview)
+                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+                .where(wordEq(word), qInterview.user.id.eq(user_id), qInterview.interviewState.eq(interviewState))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Interview> countQuery = jpaQueryFactory
+                .select(qInterview)
+                .from(qInterview)
+                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+                .where(wordEq(word), qInterview.interviewState.eq(interviewState));
 
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());

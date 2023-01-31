@@ -2,6 +2,7 @@ package com.ssafy.interview.api.service.interview;
 
 
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
+import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
@@ -16,7 +17,9 @@ import java.util.List;
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
  */
 public interface InterviewService {
-	Page<InterviewLoadRes> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable);
+	Page<InterviewLoadRes> findInterviewByCategory(InterviewSearchReq interviewSearchReq, Pageable pageable);
+
+	Page<InterviewLoadRes> findInterviewByInterviewState(String email, InterviewSearchByStateReq interviewSearchByStateReq, Pageable pageable);
 
 	// 인터뷰 생성
 	Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo);

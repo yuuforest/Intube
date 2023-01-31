@@ -3,7 +3,10 @@ package com.ssafy.interview.api.service.user;
 
 import com.ssafy.interview.api.request.user.UserModifyPutReq;
 import com.ssafy.interview.api.request.user.UserRegisterPostReq;
+import com.ssafy.interview.api.response.user.InterviewerRes;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.repository.interview.InterviewRepository;
+import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +24,12 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    InterviewTimeRepository interviewTimeRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    private InterviewRepository interviewRepository;
 
     @Override
     public void createUser(UserRegisterPostReq userRegisterInfo) {
@@ -71,6 +79,22 @@ public class UserServiceImpl implements UserService {
     public void uploadImage(String email, String url) {
         User user = userRepository.findByEmail(email).get();
         user.setProfile_url(url);
+    }
+
+    @Override
+    public InterviewerRes findInterviewerMyPage(String email) {
+        // 유저 정보 가져오기
+        InterviewerRes interviewerRes = userRepository.findInterviewer(email);
+
+        // 인터뷰 시작 시간 가져오기
+        interviewerRes.setConductInterviewTimeList(interviewTimeRepository.findInterviewTimeByOwnerId(interviewerRes.getId()));
+
+        // 인터뷰(모집, 진행, 완료 순) count 가져오기
+        interviewerRes.setRecruit_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 4));
+        interviewerRes.setConduct_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 5));
+        interviewerRes.setComplete_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 6));
+
+        return interviewerRes;
     }
 
     @Override

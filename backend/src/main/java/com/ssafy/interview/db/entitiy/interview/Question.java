@@ -22,7 +22,7 @@ public class Question extends BaseEntity {
 
         String content;
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "interview_id")
         private Interview interview;
 

@@ -60,7 +60,7 @@ public class InterviewDetailRes extends InterviewLoadRes {
 		this.standard_point = interview.getStandard_point();
 		this.apply_start_time = interview.getApply_start_time();
 		this.apply_end_time = interview.getApply_end_time();
-		this.interview_state = interview.getInterview_state();
+		this.interview_state = interview.getInterviewState();
 		this.estimated_time = interview.getEstimated_time();
 		this.download_expiration = interview.getDownload_expiration();
 		this.owner_id = user.getId();

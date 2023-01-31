@@ -85,11 +85,11 @@ public class InterviewController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<Page<InterviewLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchReq interviewSearchReq, @PageableDefault(size = 2) Pageable pageable) {
+	public ResponseEntity<Page<InterviewLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchReq interviewSearchReq, @PageableDefault(size = 10) Pageable pageable) {
 		/**
 		 *
 		 */
-		return ResponseEntity.status(200).body(interviewService.findAllInterview(interviewSearchReq, pageable));
+		return ResponseEntity.status(200).body(interviewService.findInterviewByCategory(interviewSearchReq, pageable));
 	}
 
 	@GetMapping("/search/{interview_id}")

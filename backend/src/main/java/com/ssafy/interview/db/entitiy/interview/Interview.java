@@ -54,7 +54,8 @@ public class Interview extends BaseEntity {
 
         //        @ColumnDefault("1")
         @Builder.Default()
-        int interview_state = 4;
+        @Column(name = "interview_state")
+        int interviewState = 4;
 
         // OneToMany 관계 설정
         @OneToMany(mappedBy = "interview")

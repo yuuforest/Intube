@@ -64,6 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .antMatchers("/user/me").authenticated()
                 .antMatchers("/user/image").authenticated()
+                .antMatchers("/interviews/apply").authenticated()
+                .antMatchers("/user/interviewer").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/password").authenticated()
                 .antMatchers(HttpMethod.POST, "/auth/check-password").authenticated()

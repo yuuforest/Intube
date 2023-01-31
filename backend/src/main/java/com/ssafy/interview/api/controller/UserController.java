@@ -1,21 +1,32 @@
 package com.ssafy.interview.api.controller;
 
 
+import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
+import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.request.user.*;
+import com.ssafy.interview.api.response.interview.InterviewLoadRes;
+import com.ssafy.interview.api.response.user.InterviewerRes;
 import com.ssafy.interview.api.response.user.UserEmailPostRes;
 import com.ssafy.interview.api.response.user.UserRes;
 import com.ssafy.interview.api.service.S3Uploader;
+import com.ssafy.interview.api.service.interview.InterviewService;
 import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.api.service.user.EmailService;
 import com.ssafy.interview.api.service.user.UserService;
+import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -39,10 +50,15 @@ public class UserController {
     UserService userService;
 
     @Autowired
+    InterviewService interviewService;
+
+    @Autowired
     EmailService emailService;
 
     @Autowired
     S3Uploader s3Uploader;
+    @Autowired
+    private InterviewRepository interviewRepository;
 
     @PostMapping()
     @ApiOperation(value = "회원 가입", notes = "사용자 정보를 입력 받아 DB에 insert한다.")
@@ -250,4 +266,40 @@ public class UserController {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Addresses"));
         }
     }
+
+    /*
+     * 마이페이지 - 질문자관련
+     */
+    @GetMapping("/interviewer/mypage")
+    @ApiOperation(value = "마이페이지(질문자) 조회", notes = "유저 email을 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<InterviewerRes> searchInterviewer(@ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        return ResponseEntity.status(200).body(userService.findInterviewerMyPage(email));
+    }
+
+    @PostMapping("/interviewer")
+    @ApiOperation(value = "인터뷰 상태별 공고 조회", notes = "조회할 인터뷰 상태와 검색어 그리고 pageNumber를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<Page<InterviewLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchByStateReq interviewSearchByStateReq,
+                                                                                 @PageableDefault(size = 10) Pageable pageable, @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        return ResponseEntity.status(200).body(interviewService.findInterviewByInterviewState(email, interviewSearchByStateReq, pageable));
+    }
+
+
 }

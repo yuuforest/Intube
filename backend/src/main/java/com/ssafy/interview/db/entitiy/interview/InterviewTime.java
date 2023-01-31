@@ -24,7 +24,7 @@ public class InterviewTime extends BaseEntity {
         @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
         Date interview_start_time;
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "interview_id")
         private Interview interview;
 

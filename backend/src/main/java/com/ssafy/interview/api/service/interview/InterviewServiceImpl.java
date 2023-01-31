@@ -1,6 +1,7 @@
 package com.ssafy.interview.api.service.interview;
 
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
+import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
@@ -43,8 +44,19 @@ public class InterviewServiceImpl implements InterviewService {
 
 	// 인터뷰 전체 및 카테고리별 조회
 	@Override
-	public Page<InterviewLoadRes> findAllInterview(InterviewSearchReq interviewSearchReq, Pageable pageable) {
-		return interviewRepository.findAllInterview(interviewSearchReq.getCategoryName(), interviewSearchReq.getWord(), pageable);
+	public Page<InterviewLoadRes> findInterviewByCategory(InterviewSearchReq interviewSearchReq, Pageable pageable) {
+		return interviewRepository.findInterviewByCategory(interviewSearchReq.getCategoryName(), interviewSearchReq.getWord(), pageable);
+	}
+
+	// 인터뷰 상태별 조회
+	@Override
+	public Page<InterviewLoadRes> findInterviewByInterviewState(String email, InterviewSearchByStateReq interviewSearchByStateReq, Pageable pageable) {
+		Optional<User> userOptional = userRepository.findByEmail(email);
+		User user = null;
+		if(userOptional.isPresent()){
+			user = userOptional.get();
+		}
+		return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterviewState(), interviewSearchByStateReq.getWord(), pageable);
 	}
 
 	// 인터뷰 공고 생성 Method

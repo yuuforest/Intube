@@ -1,6 +1,9 @@
 package com.ssafy.interview.db.repository.user;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.interview.api.response.interview.QInterviewDetailRes;
+import com.ssafy.interview.api.response.user.InterviewerRes;
+import com.ssafy.interview.api.response.user.QInterviewerRes;
 import com.ssafy.interview.db.entitiy.QUser;
 import com.ssafy.interview.db.entitiy.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +44,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .where(qUser.is_kakao.eq(isKakao), qUser.email.eq(email))
                 .fetchOne();
         return Optional.ofNullable(user);
+    }
+
+    @Override
+    public InterviewerRes findInterviewer(String email) {
+        InterviewerRes interviewerRes = jpaQueryFactory
+                .select(new QInterviewerRes(qUser))
+                .from(qUser)
+                .where(qUser.email.eq(email))
+                .fetchOne();
+        return interviewerRes;
     }
 }

@@ -13,4 +13,5 @@ import java.util.Optional;
 @Repository
 public interface InterviewRepository extends JpaRepository<Interview, Long>, InterviewRepositoryCustom{ // 인터뷰 생성 Method
     Optional<Interview> findById(String id);
+    Long countByUser_IdAndInterviewState(Long owner_id, int interview_state);
 }

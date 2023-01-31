@@ -21,4 +21,12 @@ public interface InterviewTimeRepositoryCustom { // 인터뷰 생성 Method
      * @return 검색 결과
      */
     List<Date> findAllInterviewTime(Long interview_id);
+
+    /**
+     * 내가 만든 인터뷰 시작 시간 검색
+     *
+     * @param owner_id    작성자 Id
+     * @return 검색 결과
+     */
+    List<Date> findInterviewTimeByOwnerId(Long owner_id);
 }

@@ -12,13 +12,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
     /**
+     * 인터뷰 카테고리별  검색
+     *
+     * @param categoryName     카테고리
+     * @param word             검색어
+     * @param pageable         페이지 정보
+     * @return                 검색 결과
+     */
+    Page<InterviewLoadRes> findInterviewByCategory(String categoryName, String word, Pageable pageable);
+
+    /**
      * 상품 검색
      *
-     * @param word       검색어
-     * @param pageable   페이지 정보
-     * @return 검색 결과
+     * @param interviewState    인터뷰 상태
+     * @param word              검색어
+     * @param pageable          페이지 정보
+     * @return                  검색 결과
      */
-    Page<InterviewLoadRes> findAllInterview(String categoryName, String word, Pageable pageable);
+    Page<InterviewLoadRes> findInterviewByInterviewState(Long user_id, int interviewState, String word, Pageable pageable);
 
     /**
      * 상품 상세정보 조회
