@@ -12,7 +12,7 @@ import ContentPasteRoundedIcon from "@mui/icons-material/ContentPasteRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import InterviewListItemDetail from "./InterviewListItemDetail";
-import InterviewListItemTag from "./InterviewListItemTag";
+import InterviewListItemTag from "components/Interview/InterviewListItemTag";
 import "./InterviewListItem.css";
 
 export default function InterviewListItem(props) {

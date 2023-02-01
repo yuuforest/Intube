@@ -11,7 +11,6 @@ import "./InterviewList.css";
 export default function InterviewList() {
   const location = useLocation();
   const state = location.state;
-  console.log(state);
   let newList = "";
   if (state === "1") {
     newList = getAnswererList1.interview_list.map((item) => {
