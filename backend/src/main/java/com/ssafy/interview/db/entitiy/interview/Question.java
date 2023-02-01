@@ -1,6 +1,7 @@
 package com.ssafy.interview.db.entitiy.interview;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Question extends BaseEntity {
 
         String content;
 
+        @JsonIgnore
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "interview_id")
         private Interview interview;

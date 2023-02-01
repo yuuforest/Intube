@@ -1,10 +1,10 @@
 package com.ssafy.interview.api.controller;
 
 import com.ssafy.interview.api.request.conference.*;
+import com.ssafy.interview.api.response.conference.ConferenceInfoRes;
 import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
-import com.ssafy.interview.api.service.user.UserService;
-import com.ssafy.interview.common.auth.SsafyUserDetails;
+import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -29,17 +28,15 @@ public class ConferenceController {
 
     @Autowired
     ConferenceService conferenceService;
-
     @Autowired
-    UserService userService;
+    AuthService authService;
 
     @ApiOperation(value = "Conference 방 생성")
     @PostMapping("/start")
     public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewID") Long interviewID,
                                                               @RequestParam(value="sessionID") String sessionID,
                                                               @ApiIgnore Authentication authentication) {
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String userEmail = userDetails.getUsername();
+        String userEmail = authService.getUserByAuthentication(authentication);
         // [Conference Table] 생성된 Conference 방에 대한 정보 저장
         Conference conference = conferenceService.startConference(interviewID, userEmail, sessionID);
         // [Conference History Table] 질문자가 Conference 방에 참여 -> 참여 기록 생성
@@ -64,8 +61,7 @@ public class ConferenceController {
     @ApiOperation(value = "Conference 방에 참여자 입장")
     public ResponseEntity<Long> inConference(@RequestParam(value = "conferenceID") Long conferenceID,
                                              @ApiIgnore Authentication authentication) {
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String userEmail = userDetails.getUsername();
+        String userEmail = authService.getUserByAuthentication(authentication);
         // [Conference History Table]
         ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userEmail, 2);
         return ResponseEntity.status(200).body(history.getId());
@@ -81,26 +77,19 @@ public class ConferenceController {
 
     @GetMapping("/info")
     @ApiOperation(value = "Conference 방에 대한 정보 호출")
-    public ResponseEntity<? extends BaseResponseBody> getInterviewInfo(@RequestParam(value = "interviewID") Long interviewID,
-                                                                       @RequestParam(value = "conferenceID") Long conferenceID) {
-        // [Interview Table]
-
-        // [Conference Table]
-        // [User table]
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    public ResponseEntity<ConferenceInfoRes> getConferenceInfo(@RequestParam(value = "interviewID") Long interviewID,
+                                                               @RequestParam(value = "conferenceID") Long conferenceID) {
+        // [Interview Table] + [Conference Table] + [User table]
+        ConferenceInfoRes conferenceInfo = conferenceService.getInfoConference(interviewID, conferenceID);
+        return ResponseEntity.status(200).body(conferenceInfo);
     }
 
     @GetMapping("/user")
-    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 이름 목록")
-    public ResponseEntity<List<String>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
+    public ResponseEntity<List<User>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
         // [Conference History Table]
-        List<String> username = new ArrayList<>();
         List<User> users = conferenceService.userInConference(conferenceID);
-        for (User user : users) {
-            username.add(user.getName());
-        }
-        return ResponseEntity.status(200).body(username);
+        return ResponseEntity.status(200).body(users);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
     }
 
     @PostMapping("/question")
@@ -113,14 +102,10 @@ public class ConferenceController {
 
     @GetMapping("/question")
     @ApiOperation(value = "관련 Interview의 질문 목록 조회")
-    public ResponseEntity<List<String>> getQuestionInConference(@RequestParam(value = "interviewID") Long interviewID) {
+    public ResponseEntity<List<Question>> getQuestionInConference(@RequestParam(value = "interviewID") Long interviewID) {
         // [Question Table]
-        List<String> contents = new ArrayList<>();
-        List<Question> questions = conferenceService.questionInfoInConference(interviewID);
-        for (Question question : questions) {
-            contents.add(question.getContent());
-        }
-        return ResponseEntity.status(200).body(contents);
+        List<Question> questions = conferenceService.questionAllInConference(interviewID);
+        return ResponseEntity.status(200).body(questions);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
     }
 
     @PostMapping("/mark")

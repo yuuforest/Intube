@@ -1,5 +1,6 @@
 package com.ssafy.interview.db.entitiy.conference;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
 import lombok.Getter;
@@ -23,9 +24,11 @@ public class ConferenceHistory extends BaseEntity {
     @LastModifiedDate
     LocalDateTime end_time;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="conference_id")
     private Conference conference;

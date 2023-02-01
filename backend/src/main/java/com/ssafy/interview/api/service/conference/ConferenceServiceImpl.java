@@ -1,16 +1,14 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.*;
+import com.ssafy.interview.api.response.conference.ConferenceInfoRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.conference.Mark;
 import com.ssafy.interview.db.entitiy.interview.Question;
-import com.ssafy.interview.db.repository.conference.ConferenceHistoryRepository;
-import com.ssafy.interview.db.repository.conference.ConferenceRepository;
-import com.ssafy.interview.db.repository.conference.DialogRepository;
-import com.ssafy.interview.db.repository.conference.MarkRepository;
+import com.ssafy.interview.db.repository.conference.*;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
@@ -27,6 +25,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     ConferenceHistoryRepository conferenceHistoryRepository;
     @Autowired
+    ConferenceRepositoryCustom conferenceRepositoryCustom;
+    @Autowired
     UserRepository userRepository;
     @Autowired
     InterviewRepository interviewRepository;
@@ -36,6 +36,11 @@ public class ConferenceServiceImpl implements ConferenceService {
     MarkRepository markRepository;
     @Autowired
     DialogRepository dialogRepository;
+
+    @Override
+    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
+        return conferenceRepositoryCustom.findConferenceInfo(interviewID, conferenceID);
+    }
 
     @Override
     public Conference startConference(Long interviewID, String user_email, String sessionID) {
@@ -107,7 +112,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public List<Question> questionInfoInConference(Long interviewID) {
+    public List<Question> questionAllInConference(Long interviewID) {
         return questionRepository.findByInterview_idOrderById(interviewID);
     }
 

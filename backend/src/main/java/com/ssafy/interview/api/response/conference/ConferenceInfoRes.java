@@ -1,11 +1,11 @@
 package com.ssafy.interview.api.response.conference;
 
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Setter
@@ -39,19 +39,18 @@ public class ConferenceInfoRes {
     @ApiModelProperty(name="Owner name")
     String name;
 
-    public static ConferenceInfoRes of(String title, String categoryName, String description, String estimated_time, char gender,
-                                       int max_people, int standard_point, LocalDateTime start_time, String sessionId, String name) {
-        ConferenceInfoRes res = new ConferenceInfoRes();
-        res.setTitle(title);
-        res.setCategoryName(categoryName);
-        res.setDescription(description);
-        res.setEstimated_time(estimated_time);
-        res.setGender(gender);
-        res.setMax_people(max_people);
-        res.setStandard_point(standard_point);
-        res.setStart_time(start_time);
-        res.setSessionId(sessionId);
-        res.setName(name);
-        return res;
+    @QueryProjection
+    public ConferenceInfoRes(String title, String categoryName, String description, String estimated_time,  char gender,
+                             int max_people, int standard_point, LocalDateTime start_time, String sessionId, String name) {
+        this.title = title;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.estimated_time = estimated_time;
+        this.gender = gender;
+        this.max_people = max_people;
+        this.standard_point = standard_point;
+        this.start_time = start_time;
+        this.sessionId = sessionId;
+        this.name = name;
     }
 }

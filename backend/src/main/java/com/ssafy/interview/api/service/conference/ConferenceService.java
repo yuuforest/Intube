@@ -1,15 +1,18 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.*;
+import com.ssafy.interview.api.response.conference.ConferenceInfoRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
-import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Question;
 
 import java.util.List;
 
 public interface ConferenceService {
+
+    // [Interview Table] + [Conference Table] + [User table]
+    ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID);
 
     // [Conference Table]
     Conference startConference(Long interviewID, String user_email, String sessionID);  // Conference 방 처음 생성
@@ -23,7 +26,7 @@ public interface ConferenceService {
 
     // [Question Table]
     void createQuestionInConference(questionCreateInReq questionInfo);
-    List<Question> questionInfoInConference(Long interviewID);
+    List<Question> questionAllInConference(Long interviewID);
 
     // [Mark Table]
     void createMarkInConference(markCreateInReq markInfo);

@@ -1,5 +1,6 @@
 package com.ssafy.interview.db.entitiy.conference;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.interview.Interview;
@@ -26,9 +27,11 @@ public class Conference extends BaseEntity {
     @Column(unique = true)
     String sessionid;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private User user;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interview_id")
     private Interview interview;

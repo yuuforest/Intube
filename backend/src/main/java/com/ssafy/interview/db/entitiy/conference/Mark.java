@@ -1,5 +1,6 @@
 package com.ssafy.interview.db.entitiy.conference;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class Mark extends BaseEntity {
 
     String mark_time;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conference_id")
     private Conference conference;
