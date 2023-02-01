@@ -39,6 +39,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
+        // [Conference 방 정보 조회]
         return conferenceRepositoryCustom.findConferenceInfo(interviewID, conferenceID);
     }
 
@@ -85,7 +86,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     public void kickConferenceHistory(kickUserInReq kickInfo) {
         // [질문자가 Conference에 참여중인 참가자를 퇴장시킴]
         User user = userRepository.findByEmail(kickInfo.getUserEmail()).get();
-        ConferenceHistory conferenceHistory
+        ConferenceHistory conferenceHistory     // QueryDSL로 최근 기록 딱 하나만 가져올 수도 있음 -> 코드를 변경해야 할까?
                 = conferenceHistoryRepository.findByConference_idAndUser_idOrderByIdDesc(kickInfo.getConferenceID(), user.getId()).get(0);
         conferenceHistory.setAction(3);
         conferenceHistoryRepository.save(conferenceHistory);
@@ -113,11 +114,13 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public List<Question> questionAllInConference(Long interviewID) {
+        // [Interview에 대한 모든 Question 조회]
         return questionRepository.findByInterview_idOrderById(interviewID);
     }
 
     @Override
     public void createMarkInConference(markCreateInReq markInfo) {
+        // [질문자가 원하는 시간 마크]
         Mark mark = new Mark();
         mark.setConference(conferenceRepository.findById(markInfo.getConferenceID()).get());
         mark.setMark_time(markInfo.getMarkTime());
@@ -126,6 +129,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public void recordQuestionInConference(recordQuestionInReq questionInfo) {
+        // [Conference 진행 중 각 질문이 시작한 시간 기록]
         Dialog dialog = new Dialog();
         dialog.setConference(conferenceRepository.findById(questionInfo.getConferenceID()).get());
         dialog.setQuestion(questionRepository.findById(questionInfo.getQuestionID()).get());
@@ -137,6 +141,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public void recordDialogInConference(recordDialogInReq dialogInfo) {
+        // [Conference 진행 중 발언자가 발언한 내용과 그에 대한 정보 기록]
         Dialog now = new Dialog();
         now.setUser(userRepository.findByEmail(dialogInfo.getUserEmail()).get());
         now.setConference(conferenceRepository.findById(dialogInfo.getConferenceID()).get());
