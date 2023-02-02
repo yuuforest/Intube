@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import { yellow } from '@mui/material/colors';
+import { yellow, blue } from '@mui/material/colors';
 
 function Copyright(props) {
   return (
@@ -29,7 +29,6 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-// const secondary = yellow[600]
 
 export default function SignInSide() {
   const handleSubmit = (event) => {
@@ -43,7 +42,7 @@ export default function SignInSide() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: '80vh' }}>
         <CssBaseline />
         {/* 이미지 부분 */}
         <Grid
@@ -58,10 +57,11 @@ export default function SignInSide() {
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            borderRadius: 2
           }}
         />
         {/* 로그인 부분 */}
-        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={0} square sx={{ borderRadius: 3 }}>
           <Box
             sx={{
               my: 8,
@@ -71,7 +71,7 @@ export default function SignInSide() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: blue[900] }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -115,8 +115,12 @@ export default function SignInSide() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="info"
-                sx={{ mb: 3 }}
+                sx={{ mb: 3, 
+                  '&:hover': {
+                  backgroundColor: yellow[600],
+                },
+                backgroundColor: yellow[600],  
+              }}
               >
                 Login with Kakao
               </Button>
