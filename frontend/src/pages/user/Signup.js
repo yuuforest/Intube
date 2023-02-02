@@ -1,5 +1,4 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,7 +7,6 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -104,8 +102,8 @@ export default function SignUp() {
       birth: "",
       passwordConfirm: "",
     },
-    // validationSchema: validationSchema,
-    onSubmit: response => {
+    validationSchema: validationSchema,
+    onSubmit: (response) => {
       let values = {
         // "birth": this.birth,
         // "email": this.email,
@@ -137,10 +135,10 @@ export default function SignUp() {
           },
           withCredentials: true,
         })
-        .then(values => {
+        .then((values) => {
           console.log(values);
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 409) {
             alert("이미 가입된 이메일입니다.");
           }

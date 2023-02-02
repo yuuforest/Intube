@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from "react";
 import CalendarComponent from "./components/CalendarComponent";
 import "./MyPage.css";
 import GetUser from "../../json/user.json";

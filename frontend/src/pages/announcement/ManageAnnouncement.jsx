@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import getInterviewList from "json/interview_list";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import "./Announcement.css";
 const newList = getInterviewList.interview_list.map((item) => {
   return item;
 });
@@ -26,7 +27,7 @@ export default function ManageAnnouncement() {
     navigate("/manage/answerer", { state: { interview, index } });
   }
   return (
-    <div>
+    <div className="announcement-table">
       <Typography
         variant="h5"
         gutterBottom

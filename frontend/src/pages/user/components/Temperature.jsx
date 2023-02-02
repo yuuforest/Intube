@@ -1,13 +1,13 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
 // import { styled } from '@mui/material/styles';
 // import { blue, yellow } from "@mui/material/colors";
 
 const marks = [
   {
     value: 0,
-    label: '0°C',
+    label: "0°C",
   },
   {
     value: 30,
@@ -15,13 +15,12 @@ const marks = [
   },
   {
     value: 100,
-    label: '100°C',
+    label: "100°C",
   },
 ];
 
-
 // 나중에 정보 불러오고 수정하기
-const mytemp = 45.2
+const mytemp = 45.2;
 // if (mytemp > 30) {
 //   color = yellow[600]
 // } else {
@@ -33,7 +32,6 @@ function valuetext(value) {
 }
 
 export default function DiscreteSliderMarks() {
-
   return (
     <Box sx={{ width: 300 }}>
       <Slider

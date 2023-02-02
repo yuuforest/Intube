@@ -6,11 +6,9 @@ import Logo from "../assets/logo.png";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Sidebar from "./Sidebar";
-import Avatar from "@mui/material/Avatar";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { logout } from "../components/api/logout";
 import "./Common.css";
 
@@ -35,7 +33,7 @@ export default function DenseAppBar() {
   const [state, setState] = React.useState({
     left: false,
   });
-  const toggleDrawer = open => event => {
+  const toggleDrawer = (open) => (event) => {
     setState({ ...state, left: open });
   };
 
@@ -68,7 +66,7 @@ export default function DenseAppBar() {
           src={Logo}
           alt="logo"
           width="130px"
-          onClick={e => handlePage(e, "/")}
+          onClick={(e) => handlePage(e, "/")}
         />
         <Box sx={{ flexGrow: 1 }} />
 
@@ -77,6 +75,7 @@ export default function DenseAppBar() {
         {localStorage.getItem("accessToken") === null &&
           loginButton.map(
             (item, index) => (
+              // eslint-disable-next-line no-sequences
               console.log(localStorage.getItem("accessToken")),
               (
                 <IconButton
@@ -86,7 +85,7 @@ export default function DenseAppBar() {
                   aria-label={item.text}
                   sx={{ mr: 2 }}
                   key={index}
-                  onClick={e => handlePage(e, item.link)}
+                  onClick={(e) => handlePage(e, item.link)}
                 >
                   {item.icon}
                 </IconButton>
@@ -101,6 +100,7 @@ export default function DenseAppBar() {
               console.log(
                 localStorage.getItem("accessToken"),
                 "엑세스토큰 있음. 로그인 상태 맞음?"
+                // eslint-disable-next-line no-sequences
               ),
               (
                 <IconButton
