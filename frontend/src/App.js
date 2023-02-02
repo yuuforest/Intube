@@ -12,6 +12,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./common/Header";
 import "./App.css";
 import ManageAnswerer from "pages/announcement/ManageAnswerer";
+import Signup from "./pages/user/Signup";
+import KakaoSignup from "./pages/user/KakaoSignup";
+import Kakaoloading from "./pages/user/Kakaoloading";
+import FindUser from "./pages/user/FindUser";
 
 function App() {
   return (
@@ -26,6 +30,10 @@ function App() {
         <Route path={"/manage/answerer"} element={<ManageAnswerer />}></Route>
         <Route path={"/mypage"} element={<Mypage />}></Route>
         <Route path={"/login"} element={<Login />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/KakaoSignup" element={<KakaoSignup />}></Route>
+        <Route path="/auth/kakao/callback" element={<Kakaoloading />}></Route>
+        <Route path="/findUser" element={<FindUser />}></Route>
         <Route path={"/main"} element={<PostAnnouncement />}></Route>
         <Route
           path={"/announcement/manage"}
