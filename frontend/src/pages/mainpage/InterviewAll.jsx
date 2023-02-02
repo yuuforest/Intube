@@ -4,9 +4,19 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import GetList from "json/interview_list.json";
+import InterviewListItem from "components/Interview/InterviewListItem";
+import Grid from "@mui/material/Grid";
+
+
+const totalList = GetList.interview_list
+const onetooneList = totalList.filter((item) => item.category_name === '1:1')
+const manytooneList = totalList.filter((item) => item.category_name === 'N:1')
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+
 
   return (
     <div
@@ -49,19 +59,37 @@ export default function InterviewAll() {
   <div>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-        <Tab label="Item One" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
+        <Tab label="전체" {...a11yProps(0)} />
+        <Tab label="1:1" {...a11yProps(1)} />
+        <Tab label="N:1" {...a11yProps(2)} />
       </Tabs>
     </Box>
     <TabPanel value={value} index={0}>
-      Item One
+      <Grid container spacing={{ xs: 2, md: 3 }}>
+        {totalList.map((interview) => (
+          <Grid item sm={12} md={6} lg={4} xl={3} key={interview.id}>
+            <InterviewListItem interview={interview} />
+          </Grid>
+        ))}
+      </Grid>
     </TabPanel>
     <TabPanel value={value} index={1}>
-      Item Two
+    <Grid container spacing={{ xs: 2, md: 3 }}>
+        {onetooneList.map((interview) => (
+          <Grid item sm={12} md={6} lg={4} xl={3} key={interview.id}>
+            <InterviewListItem interview={interview} />
+          </Grid>
+        ))}
+      </Grid>
     </TabPanel>
     <TabPanel value={value} index={2}>
-      Item Three
+    <Grid container spacing={{ xs: 2, md: 3 }}>
+        {manytooneList.map((interview) => (
+          <Grid item sm={12} md={6} lg={4} xl={3} key={interview.id}>
+            <InterviewListItem interview={interview} />
+          </Grid>
+        ))}
+      </Grid>
     </TabPanel>
   </div> 
   );
