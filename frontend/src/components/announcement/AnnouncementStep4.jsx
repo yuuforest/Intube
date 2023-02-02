@@ -161,6 +161,7 @@ export default function AnnouncementStep4(props) {
         </Grid>
       </Grid>
       <Divider sx={{ my: 3 }} />
+      <div onClick={props.step4Handeler}>공고등록</div>
     </div>
   );
 }

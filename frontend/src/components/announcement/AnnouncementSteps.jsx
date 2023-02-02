@@ -2,6 +2,7 @@ import React from "react";
 import AnnouncementStep1 from "./AnnouncementStep1";
 import AnnouncementStep2 from "./AnnouncementStep2";
 import AnnouncementStep3 from "./AnnouncementStep3";
+import axios from "axios";
 import AnnouncementStep4 from "./AnnouncementStep4";
 import "./AnnouncementSteps.css";
 
@@ -22,13 +23,13 @@ export default function AnnouncementSteps(props) {
     download_expiration: "",
   });
   const [question, setQuestion] = React.useState([""]);
-
-  const step3Handeler = (data) => {
-    const qlist = [];
-    data.forEach((d) => {
-      qlist.push(d.value);
+  const step1Handeler = (e, data) => {
+    console.log(data);
+    setInterview((interview) => {
+      let newCondition = { ...interview };
+      newCondition.category_name = data;
+      return newCondition;
     });
-    setQuestion(qlist);
   };
 
   const step2Handeler = (
@@ -60,13 +61,31 @@ export default function AnnouncementSteps(props) {
       return newCondition;
     });
   };
-  const step1Handeler = (e, data) => {
-    console.log(data);
-    setInterview((interview) => {
-      let newCondition = { ...interview };
-      newCondition.category_name = data;
-      return newCondition;
+  const step3Handeler = (data) => {
+    const qlist = [];
+    data.forEach((d) => {
+      qlist.push(d.value);
     });
+    setQuestion(qlist);
+  };
+
+  const step4Handeler = () => {
+    console.log(interview);
+    console.log(question);
+    axios.post(
+      "http://localhost:8080/interviews",
+      {
+        interview,
+      },
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          // Accept: "application/json",
+          // "Access-Control-Allow-Origin": "http://localhost:8080",
+        },
+        // withCredentials: true,
+      }
+    );
   };
   return (
     <div>
@@ -89,6 +108,7 @@ export default function AnnouncementSteps(props) {
         value={props.value}
         interview={interview}
         question={question}
+        step4Handeler={step4Handeler}
       ></AnnouncementStep4>
     </div>
   );
