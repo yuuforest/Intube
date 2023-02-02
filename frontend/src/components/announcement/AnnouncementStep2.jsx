@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -19,18 +19,92 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import InterviewListItemTag from "components/Interview/InterviewListItemTag";
 
 export default function AnnouncementStep2(props) {
-  const [value, setValue] = React.useState([20, 37]);
-  const [timeList, setTimeList] = React.useState([""]);
+  const [description, setDescription] = React.useState("");
+  const [estimatedTime, setEstimatedTime] = React.useState("");
+  const [age, setAge] = React.useState([20, 40]);
+  const [gender, setGender] = React.useState("");
+  const [maxPeople, setMaxPeople] = React.useState("");
+  const [point, setPoint] = React.useState("");
+  const [title, setTitle] = React.useState(props.interview.title);
+  const [interviewTime, setInterviewTime] = React.useState([
+    { id: 0, value: "" },
+  ]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const titleHandeler = (e) => {
+    setTitle(e.target.value);
   };
-  const onClickAddTime = (e) => {
-    setTimeList((timeList) => {
-      return [...timeList, ""];
+
+  React.useEffect(() => {
+    props.step2Handeler(
+      title,
+      description,
+      estimatedTime,
+      age,
+      gender,
+      maxPeople,
+      point,
+      interviewTime
+    );
+  }, [
+    title,
+    description,
+    estimatedTime,
+    age,
+    gender,
+    maxPeople,
+    point,
+    interviewTime,
+  ]);
+
+  const descriptionHandeler = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const estimatedTimeHandeler = (e) => {
+    setEstimatedTime(e.target.value);
+  };
+  const ageHandeler = (e) => {
+    setAge(e.target.value);
+  };
+  const genderHandeler = (e) => {
+    setGender(e.target.value);
+  };
+  const maxPeopleHandeler = (e) => {
+    setMaxPeople(e.target.value);
+  };
+  const pointHandeler = (e) => {
+    setPoint(e.target.value);
+  };
+  const handleChange = (e, id) => {
+    setInterviewTime(
+      interviewTime.map((time) =>
+        time.id === id
+          ? // user 객체를 update할 때에도 불변성을 지켜줘야 하기 때문에 spread연산자 사용.
+            { ...time, value: e.target.value }
+          : // 일치하지 않으면 기존의 값 그대로 사용
+            time
+      )
+    );
+    console.log(interviewTime);
+  };
+  const onClickAddTime = (e, index) => {
+    setInterviewTime((interviewTime) => {
+      return [...interviewTime, { id: index + 1, value: "" }];
     });
   };
-
+  const onClickDeleteTime = (e, id) => {
+    setInterviewTime(interviewTime.filter((time) => time.id !== id));
+    console.log(interviewTime);
+  };
+  const btn = () => {
+    console.log(description);
+    console.log(estimatedTime);
+    console.log(age);
+    console.log(gender);
+    console.log(maxPeople);
+    console.log(point);
+    console.log(interviewTime);
+  };
   const marks = [
     {
       value: 0,
@@ -85,9 +159,17 @@ export default function AnnouncementStep2(props) {
         placeholder="공고 제목을 입력하세요"
         fullWidth
         sx={{ my: 3 }}
+        value={title}
+        onChange={titleHandeler}
       />
-      <Typography variant="h5" gutterBottom>
-        공고 내용
+
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{ mb: 0, float: "left" }}
+        onClick={btn}
+      >
+        공고 입력
       </Typography>
       <InterviewListItemTag interview={props.interview} />
       <Divider sx={{ my: 3 }} />
@@ -106,9 +188,11 @@ export default function AnnouncementStep2(props) {
         <Grid item xs={9}>
           <TextField
             variant="outlined"
-            sx={{ width: "60%" }}
+            sx={{ width: "80%" }}
             multiline
             rows={2}
+            value={description}
+            onChange={descriptionHandeler}
           />
         </Grid>
       </Grid>
@@ -131,7 +215,9 @@ export default function AnnouncementStep2(props) {
             endAdornment={<InputAdornment position="end">시간</InputAdornment>}
             type="number"
             id="number-input"
-            sx={{ width: "60%" }}
+            sx={{ width: "80%" }}
+            value={estimatedTime}
+            onChange={estimatedTimeHandeler}
           />
         </Grid>
       </Grid>
@@ -153,7 +239,9 @@ export default function AnnouncementStep2(props) {
             endAdornment={<InputAdornment position="end">명</InputAdornment>}
             type="number"
             id="number-input"
-            sx={{ width: "60%" }}
+            sx={{ width: "80%" }}
+            value={maxPeople}
+            onChange={maxPeopleHandeler}
           />
         </Grid>
       </Grid>
@@ -179,7 +267,9 @@ export default function AnnouncementStep2(props) {
             }
             type="number"
             id="number-input"
-            sx={{ width: "60%" }}
+            sx={{ width: "80%" }}
+            value={point}
+            onChange={pointHandeler}
           />
         </Grid>
       </Grid>
@@ -203,18 +293,12 @@ export default function AnnouncementStep2(props) {
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
+              value={gender}
+              onChange={genderHandeler}
             >
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Other"
-              />
+              <FormControlLabel value="W" control={<Radio />} label="Female" />
+              <FormControlLabel value="M" control={<Radio />} label="Male" />
+              <FormControlLabel value="O" control={<Radio />} label="Other" />
             </RadioGroup>
             <FormLabel>나이</FormLabel>
           </FormControl>
@@ -222,10 +306,10 @@ export default function AnnouncementStep2(props) {
             <Slider
               aria-labelledby="demo-row-radio-slider-group-label"
               getAriaLabel={() => "Temperature range"}
-              value={value}
-              onChange={handleChange}
+              value={age}
+              onChange={ageHandeler}
               valueLabelDisplay="auto"
-              sx={{ width: "60%" }}
+              sx={{ width: "80%" }}
               marks={marks}
             />
           </Grid>
@@ -245,18 +329,19 @@ export default function AnnouncementStep2(props) {
           </Typography>
         </Grid>
         <Grid item xs={9}>
-          {timeList.map((time, index) => (
+          {interviewTime.map((time, index) => (
             <div key={index}>
               <OutlinedInput
                 type="datetime-local"
-                sx={{ width: "60%", mb: 2 }}
-                value={time}
+                sx={{ width: "80%", mb: 2 }}
+                value={time.value}
+                onChange={(e) => handleChange(e, time.id)}
               />
-              {index === timeList.length - 1 ? (
+              {index === interviewTime.length - 1 ? (
                 <IconButton
                   aria-label="add"
-                  onClick={onClickAddTime}
                   sx={{ ml: 2 }}
+                  onClick={(e) => onClickAddTime(e, time.id)}
                 >
                   <ControlPointIcon />
                 </IconButton>
@@ -264,9 +349,8 @@ export default function AnnouncementStep2(props) {
                 <span></span>
               ) : (
                 <IconButton
-                  aria-label="add"
-                  onClick={onClickAddTime}
                   sx={{ ml: 2 }}
+                  onClick={(e) => onClickDeleteTime(e, time.id)}
                 >
                   <RemoveCircleOutlineIcon />
                 </IconButton>

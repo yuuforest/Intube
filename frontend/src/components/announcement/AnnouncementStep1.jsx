@@ -10,17 +10,17 @@ export default function AnnouncementStep1(props) {
   const images = [
     {
       url: { one2one },
-      title: "1:1 인터뷰",
+      title: "1:1",
       width: "40%",
     },
     {
       url: { one2n },
-      title: "1:N 인터뷰",
+      title: "N:1",
       width: "30%",
     },
     {
       url: { avatar },
-      title: "아바타 인터뷰",
+      title: "아바타",
       width: "20%",
     },
   ];
@@ -94,12 +94,13 @@ export default function AnnouncementStep1(props) {
       {images.map((image, index) => (
         <ImageButton
           focusRipple
-          key={image.title}
+          key={index}
           style={{
             width: "66.7%",
             height: "230px",
             marginTop: "24px",
           }}
+          onClick={(e) => props.step1Handeler(e, image.title)}
         >
           <ImageSrc style={{ backgroundImage: `url(${image.url.avatar})` }} />
           <ImageSrc style={{ backgroundImage: `url(${image.url.one2n})` }} />
