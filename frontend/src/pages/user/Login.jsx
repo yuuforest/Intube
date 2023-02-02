@@ -1,14 +1,10 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -56,8 +52,8 @@ export default function SignIn() {
       email: "",
       password: "",
     },
-    // validationSchema: validationSchema,
-    onSubmit: response => {
+    validationSchema: validationSchema,
+    onSubmit: (response) => {
       let values = {
         email: "jos9404@naver.com",
         password: "1234",
@@ -80,7 +76,7 @@ export default function SignIn() {
             navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 401) {
             alert("비밀번호가 틀렸습니다.");
           }
