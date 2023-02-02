@@ -11,9 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import axios from "axios";
-import { useNavigate } from "react-router";
 import { useState } from "react";
 
 function Copyright(props) {
@@ -37,19 +35,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const navigate = useNavigate();
-  const validationSchema = yup.object({
-    email: yup
-      .string("Enter your email")
-      .email("올바른 이메일 형식이 아닙니다."),
-  });
+  // const navigate = useNavigate();
+  // const validationSchema = yup.object({
+  //   email: yup
+  //     .string("Enter your email")
+  //     .email("올바른 이메일 형식이 아닙니다."),
+  // });
   const formik = useFormik({
     initialValues: {
       email: "",
       name: "",
     },
     // validationSchema: validationSchema,
-    onSubmit: response => {
+    onSubmit: (response) => {
       let values = {
         name: "지원석",
         email: "jos9404@naver.com",
@@ -72,7 +70,7 @@ export default function SignIn() {
             // navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 404) {
             alert("등록된 회원이 아닙니다...");
           }
@@ -88,7 +86,7 @@ export default function SignIn() {
   const nameChange = ({ target: { value } }) => setIdName(value);
   const phoneChange = ({ target: { value } }) => setIdPhone(value);
 
-  const findEmail = event => {
+  const findEmail = (event) => {
     event.preventDefault();
     let values = {
       // name: idName,
@@ -113,7 +111,7 @@ export default function SignIn() {
           setCheck(true);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         // if (e.response.data.statusCode === 401) {
         //   alert("비밀번호가 틀렸습니다.");
         // }

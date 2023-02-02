@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -33,7 +33,6 @@ export default function AnnouncementStep2(props) {
   const titleHandeler = (e) => {
     setTitle(e.target.value);
   };
-
   React.useEffect(() => {
     props.step2Handeler(
       title,
@@ -45,6 +44,7 @@ export default function AnnouncementStep2(props) {
       point,
       interviewTime
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     title,
     description,

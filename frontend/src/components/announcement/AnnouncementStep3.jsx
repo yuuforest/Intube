@@ -28,6 +28,7 @@ export default function AnnouncementStep3(props) {
 
   React.useEffect(() => {
     props.step3Handeler(timeList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeList]);
   const onClickAddTime = (e, index) => {
     setTimeList((timeList) => {

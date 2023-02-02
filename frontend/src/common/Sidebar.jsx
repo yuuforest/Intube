@@ -22,14 +22,18 @@ import "./Common.css";
 
 export default function Sidebar({ toggleDrawer }) {
   const menu = [
-    { text: "마이페이지", icon: <PersonOutlineRoundedIcon />,link: "/mypage"},
+    { text: "마이페이지", icon: <PersonOutlineRoundedIcon />, link: "/mypage" },
     {
       text: "인터뷰찾기",
       icon: <ContentPasteSearchOutlinedIcon />,
       state: "0",
       link: "/interview",
     },
-    { text: "공고올리기", icon: <CampaignOutlinedIcon />, link: "/announcement/post" },
+    {
+      text: "공고올리기",
+      icon: <CampaignOutlinedIcon />,
+      link: "/announcement/post",
+    },
     {
       text: "매칭인터뷰",
       icon: <HandshakeOutlinedIcon />,
@@ -42,13 +46,15 @@ export default function Sidebar({ toggleDrawer }) {
       state: "1",
       link: "/interview",
     },
-    { text: "완료인터뷰", icon: <InventoryOutlinedIcon />},
-    { text: "인터뷰관리", icon: <VideoFileOutlinedIcon />, link: "/announcement/manage", },
+    { text: "완료인터뷰", icon: <InventoryOutlinedIcon /> },
+    {
+      text: "인터뷰관리",
+      icon: <VideoFileOutlinedIcon />,
+      link: "/announcement/manage",
+    },
   ];
 
-
-
-   // 페이지 이동
+  // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, state, link) {
     console.log(link);
@@ -75,7 +81,12 @@ export default function Sidebar({ toggleDrawer }) {
           >
             <MenuIcon />
           </IconButton>
-          <img src={Logo} alt="logo" width="130px" onClick={(e) => handlePage(e, "", "/")}  />
+          <img
+            src={Logo}
+            alt="logo"
+            width="130px"
+            onClick={(e) => handlePage(e, "", "/")}
+          />
         </Toolbar>
         <List>
           {menu.map((item, index) => (

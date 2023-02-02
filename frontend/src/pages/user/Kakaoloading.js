@@ -18,7 +18,7 @@ const Kakaoloading = () => {
       method: "GET",
       url: `http://localhost:8080/auth/kakao/callback?code=${code}`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res); // 토큰이 넘어올 것임
 
         if (res.data.statusCode === 200) {
@@ -42,7 +42,7 @@ const Kakaoloading = () => {
           alert("회원가입 창으로 이동합니다.");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("소셜로그인 에러", err);
         window.alert("로그인에 실패하였습니다.");
         navigate("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
@@ -50,7 +50,7 @@ const Kakaoloading = () => {
   };
   React.useEffect(() => {
     getKakaoToken();
-  }, []);
+  });
   //   React.useEffect(async () => {
   //     await dispatch(userActions.kakaoLogIn(code));
   //   }, []);
