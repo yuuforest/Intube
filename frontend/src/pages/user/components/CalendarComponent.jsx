@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import moment from "moment"
 import GetList from "../../../json/answerer_list_state2.json";
 import './CalendarComponent.css'
-import InterviewList from './InterviewList.jsx';
+import MatchList from './MatchList.jsx';
 
 export default function CalendarComponent() {
   const [value, onChange] = useState(new Date());
@@ -30,7 +30,7 @@ export default function CalendarComponent() {
       />
          <div>
            <p>{moment(value).format("YYYY년 MM월 DD일")}</p>
-           <InterviewList date={moment(value).format("YYYY-MM-DD")} />
+           <MatchList date={moment(value).format("YYYY-MM-DD")} />
          </div>
     </div>
   );
