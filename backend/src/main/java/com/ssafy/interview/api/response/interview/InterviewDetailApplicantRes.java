@@ -3,7 +3,9 @@ package com.ssafy.interview.api.response.interview;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.entitiy.interview.Applicant;
 import com.ssafy.interview.db.entitiy.interview.Interview;
+import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -20,13 +22,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel("InterviewResponse")
-public class InterviewDetailRes extends InterviewLoadRes {
+public class InterviewDetailApplicantRes extends InterviewLoadRes {
 
     @ApiModelProperty(name = "Estimated Time")
     String estimated_time;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    List<Date> interviewTimeList = new ArrayList<>();
+    Date interview_start_time;
 
     @ApiModelProperty(name = "Apply End Time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
@@ -48,7 +50,7 @@ public class InterviewDetailRes extends InterviewLoadRes {
     int applicant_state;
 
     @QueryProjection
-    public InterviewDetailRes(Interview interview, User user) {
+    public InterviewDetailApplicantRes(Interview interview, InterviewTime interviewTime, Applicant applicant, User user) {
         this.id = interview.getId();
         this.categoryName = interview.getInterviewCategory().getCategoryName();
         this.title = interview.getTitle();
@@ -67,6 +69,8 @@ public class InterviewDetailRes extends InterviewLoadRes {
         this.owner_email = user.getEmail();
         this.owner_name = user.getName();
         this.owner_phone = user.getPhone();
+        this.applicant_state = applicant.getApplicantState();
+        this.interview_start_time = interviewTime.getInterview_start_time();
     }
 }
 

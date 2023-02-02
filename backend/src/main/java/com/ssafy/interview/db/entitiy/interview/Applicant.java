@@ -24,11 +24,11 @@ public class Applicant extends BaseEntity {
         @Column(name = "applicant_state")
         int applicantState = 1;
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "interview_time_id")
         private InterviewTime interviewTime;
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "user_id")
         private User user;
 
@@ -38,5 +38,9 @@ public class Applicant extends BaseEntity {
                 Assert.notNull(interviewTime, "interviewTime must not be empty");
                 this.user = user;
                 this.interviewTime = interviewTime;
+        }
+
+        public void updateApplicantState(int applicantState) {
+                this.applicantState = applicantState;
         }
 }

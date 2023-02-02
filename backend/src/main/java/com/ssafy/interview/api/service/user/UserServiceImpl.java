@@ -1,10 +1,17 @@
 package com.ssafy.interview.api.service.user;
 
 
+import com.querydsl.core.Tuple;
 import com.ssafy.interview.api.request.user.UserModifyPutReq;
 import com.ssafy.interview.api.request.user.UserRegisterPostReq;
+import com.ssafy.interview.api.response.interview.InterviewDetailApplicantRes;
+import com.ssafy.interview.api.response.user.ApplicantDetailRes;
+import com.ssafy.interview.api.response.user.IntervieweeRes;
 import com.ssafy.interview.api.response.user.InterviewerRes;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.entitiy.interview.Applicant;
+import com.ssafy.interview.db.entitiy.interview.QApplicant;
+import com.ssafy.interview.db.repository.interview.ApplicantRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -13,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,7 +38,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    private InterviewRepository interviewRepository;
+    InterviewRepository interviewRepository;
+    @Autowired
+    ApplicantRepository applicantRepository;
+    QApplicant qApplicant = QApplicant.applicant;
 
     @Override
     public void createUser(UserRegisterPostReq userRegisterInfo) {
@@ -95,6 +107,53 @@ public class UserServiceImpl implements UserService {
         interviewerRes.setComplete_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 6));
 
         return interviewerRes;
+    }
+
+    @Override
+    public List<ApplicantDetailRes> findApplicantDetailRes(Long interview_time_id) {
+        return applicantRepository.findApplicantDetailRes(interview_time_id);
+    }
+
+    @Transactional
+    @Override
+    public void updateApplicantState(Long applicant_id, int applicantState) {
+        Applicant applicant = applicantRepository.findById(applicant_id).orElseThrow(() -> new IllegalArgumentException("해당 신청자는 없습니다. id=" + applicant_id));
+
+        applicant.updateApplicantState(applicantState);
+    }
+
+    @Override
+    public void deleteApplicant(Long applicant_id) {
+        applicantRepository.deleteById(applicant_id);
+    }
+
+    @Override
+    public IntervieweeRes findIntervieweeMyPage(String email) {
+        // 유저 정보 가져오기
+        IntervieweeRes intervieweeRes = userRepository.findInterviewee(email);
+
+        // 매칭된 인터뷰 정보 가져오기
+        Optional<List<InterviewDetailApplicantRes>> interviewDetailApplicantResList = applicantRepository.findInterviewDetailByIntervieweeRes(intervieweeRes.getId());
+        intervieweeRes.setConductInterviewTimeList(interviewDetailApplicantResList.orElse(new ArrayList<>()));
+        intervieweeRes.setConduct_interview_count(Long.valueOf(interviewDetailApplicantResList.get().size()));
+
+        // 인터뷰(신청 대기, 인터뷰 완료 순) count 가져오기
+        Optional<List<Tuple>> optionalTuples = applicantRepository.countInterviewByApplicantState(intervieweeRes.getId());
+        List<Tuple> tupleList = null;
+        if (optionalTuples.isPresent()) {
+            tupleList = optionalTuples.get();
+
+            for (Tuple tuple : tupleList) {
+                switch (tuple.get(qApplicant.applicantState)) {
+                    case 1: // 신청 대기
+                        intervieweeRes.setApply_interview_count(tuple.get(qApplicant.id.count()));
+                        break; // 인터뷰 완료
+                    case 3: intervieweeRes.setComplete_interview_count(tuple.get(qApplicant.id.count()));
+                }
+            }
+        }
+
+        return intervieweeRes;
     }
 
     @Override

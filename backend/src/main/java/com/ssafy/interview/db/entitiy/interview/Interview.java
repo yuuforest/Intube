@@ -100,6 +100,10 @@ public class Interview extends BaseEntity {
                 this.user = user;
                 this.interviewCategory = interviewCategory;
         }
+
+        public void updateInterviewState(int interviewState) {
+                this.interviewState = interviewState;
+        }
 }
 
 

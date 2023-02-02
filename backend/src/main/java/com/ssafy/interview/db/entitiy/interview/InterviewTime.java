@@ -9,7 +9,9 @@ import lombok.Setter;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *  인터뷰 모델 정의.
@@ -27,6 +29,9 @@ public class InterviewTime extends BaseEntity {
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "interview_id")
         private Interview interview;
+
+        @OneToMany(mappedBy = "interviewTime")
+        private List<Applicant> applicantList = new ArrayList<>();
 
         @Builder
         private InterviewTime(Date interview_start_time, Interview interview) {

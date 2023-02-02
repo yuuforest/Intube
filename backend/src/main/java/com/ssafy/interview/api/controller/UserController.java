@@ -5,9 +5,8 @@ import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.request.user.*;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
-import com.ssafy.interview.api.response.user.InterviewerRes;
-import com.ssafy.interview.api.response.user.UserEmailPostRes;
-import com.ssafy.interview.api.response.user.UserRes;
+import com.ssafy.interview.api.response.interview.InterviewTimeLoadRes;
+import com.ssafy.interview.api.response.user.*;
 import com.ssafy.interview.api.service.S3Uploader;
 import com.ssafy.interview.api.service.interview.InterviewService;
 import com.ssafy.interview.api.service.user.AuthService;
@@ -32,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -268,7 +268,7 @@ public class UserController {
     }
 
     /*
-     * 마이페이지 - 질문자관련
+     * 마이페이지 - 질문자 관련
      */
     @GetMapping("/interviewer/mypage")
     @ApiOperation(value = "마이페이지(질문자) 조회", notes = "유저 email을 입력 받는다.")
@@ -293,13 +293,68 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<Page<InterviewLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchByStateReq interviewSearchByStateReq,
-                                                                                 @PageableDefault(size = 10) Pageable pageable, @ApiIgnore Authentication authentication) {
+    public ResponseEntity<Page<InterviewTimeLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchByStateReq interviewSearchByStateReq,
+                                                                                     @PageableDefault(size = 10) Pageable pageable, @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String email = userDetails.getUsername();
 
         return ResponseEntity.status(200).body(interviewService.findInterviewByInterviewState(email, interviewSearchByStateReq, pageable));
     }
 
+    @GetMapping("/interviewer/{interview_time_id}/manage-applicant")
+    @ApiOperation(value = "인터뷰 시작 시간관련 신청자 리스트 조회", notes = "해당 시작시간의 id를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<List<ApplicantDetailRes>> findApplicantDetailRes(@PathVariable Long interview_time_id) {
+        return ResponseEntity.status(200).body(userService.findApplicantDetailRes(interview_time_id));
+    }
+
+    @PutMapping("/interviewer/accept-applicant")
+    @ApiOperation(value = "신청자의 요청을 수락", notes = "해당 신청자의 id와 state를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> acceptApplicant(@RequestParam Long applicant_id,
+                                                                           @RequestParam int applicant_state) {
+        userService.updateApplicantState(applicant_id, applicant_state);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @DeleteMapping("/interviewer/refuse-applicant")
+    @ApiOperation(value = "신청자의 요청을 거절(삭제)", notes = "해당 신청자의 id를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> refuseApplicant(@RequestParam Long applicant_id) {
+        userService.deleteApplicant(applicant_id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    /*
+     * 마이페이지 - 답변자 관련
+     */
+    @GetMapping("/interviewee/mypage")
+    @ApiOperation(value = "마이페이지(답변자) 조회", notes = "로그인 토큰을 확인한다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<IntervieweeRes> searchInterviewee(@ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        return ResponseEntity.status(200).body(userService.findIntervieweeMyPage(email));
+    }
 
 }
