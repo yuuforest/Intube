@@ -24,12 +24,16 @@ instance.interceptors.response.use(
   function (response) {
     console.log(response);
 
-    return response.data.data;
+    return response;
   },
   function (error) {
     // const navigate = useNavigate();
     console.log(error);
-    if (error.response.data.status === 401) {
+    if (error.response.data.message === "Invalid Password") {
+      // "Invalid Password"
+      alert("비밀번호 오류");
+    }
+    if (error.response.status === 401) {
       axios
         .get(
           "http://localhost:8080/auth/issue",
@@ -50,7 +54,7 @@ instance.interceptors.response.use(
             // navigate("/");
             localStorage.clear();
             alert("refreshToken 만료. 다시 로그인 해주세요");
-
+            deleteCookie("refreshToken");
             window.location.replace("/");
           }
           console.log(e, "dfdfdffdfd");
@@ -58,5 +62,8 @@ instance.interceptors.response.use(
     }
   }
 );
+function deleteCookie(name) {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:10 GMT;";
+}
 
 export default instance;

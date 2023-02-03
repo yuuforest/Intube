@@ -16,6 +16,11 @@ import axios from "axios";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { verifySend } from "components/api/verifySend";
 import { emailCheck } from "components/api/verifyCheck";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import { useState } from "react";
 
 function Copyright(props) {
@@ -85,7 +90,8 @@ export default function SignUp() {
     gender: yup.string("Enter your password"),
     introduction: yup
       .string("Enter your password")
-      .min(5, "5글자 이상 입력해주세요"),
+      .min(5, "5글자 이상 입력해주세요")
+      .max(100, "100글자 이하로 입력해주세요"),
     passwordConfirm: yup
       .string()
       .oneOf([yup.ref("password"), null], 'Must match "password" field value'),
@@ -105,24 +111,25 @@ export default function SignUp() {
     validationSchema: validationSchema,
     onSubmit: (response) => {
       let values = {
-        // "birth": this.birth,
-        // "email": this.email,
-        // "gender": this.gender,
-        // "introduction": this.introduction,
-        // "name": this.name,
-        // "nickname": this.nickname,
-        // "password": this.password,
-        // "phone": this.phone,
-        birth: "1994-04-26",
-        email: "jos9404@naver.com",
-        gender: "M",
-        introduction: "안녕하세요 저는 착한 사람입니다.",
-        name: "지원석",
+        birth: response.birth,
+        email: email,
+        // email: response.email,
+        gender: response.gender,
+        introduction: response.introduction,
+        name: response.name,
+        nickname: response.nickname,
+        password: response.password,
+        phone: response.phone,
+        // birth: "1994-04-26",
+        // email: "jos9404@naver.com",
+        // gender: "M",
+        // introduction: "안녕하세요 저는 착한 사람입니다.",
+        // name: "지원석",
         isEmailAuthorized: 1,
         isKakao: 1,
-        nickname: "커플600일차",
-        password: "1234",
-        phone: "01099130059",
+        // nickname: "커플600일차",
+        // password: "1234",
+        // phone: "01099130059",
       };
 
       alert(JSON.stringify(values, null, 2));
@@ -145,6 +152,11 @@ export default function SignUp() {
         });
     },
   });
+  // const [value, setValue] = React.useState("female");
+
+  // const handleChange = event => {
+  //   setValue(event.target.value);
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -159,34 +171,18 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
-            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
             <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
               Sign up
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  name="phone"
-                  label="phone"
-                  id="phone"
-                  required
-                  fullWidth
-                  autoFocus
-                  value={formik.values.phone}
-                  onChange={formik.handleChange}
-                  error={formik.touched.phone && Boolean(formik.errors.phone)}
-                  helperText={formik.touched.phone && formik.errors.phone}
-                  onBlur={formik.handleBlur}
-                />
-              </Grid>
               <Grid item xs={9}>
                 <TextField
                   fullWidth
                   id="email"
                   name="email"
                   label="Email"
+                  // value={formik.values.email}
+                  // onChange={formik.handleChange}
                   value={email}
                   onChange={emailChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}
@@ -224,6 +220,22 @@ export default function SignUp() {
                   인증번호확인
                 </Button>
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  name="phone"
+                  label="phone"
+                  id="phone"
+                  required
+                  fullWidth
+                  autoFocus
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  error={formik.touched.phone && Boolean(formik.errors.phone)}
+                  helperText={formik.touched.phone && formik.errors.phone}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -307,19 +319,36 @@ export default function SignUp() {
                   }
                   helperText={formik.touched.nickname && formik.errors.nickname}
                   onBlur={formik.handleBlur}
+
+                  // 닉네임 중복확인ㄴ아ㅣㄹ넘이ㅏㄹ먼;ㅣㄹㄴ이;ㅏ러니ㅏㅁㄹㄴ임ㄴㄹㅇ
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="gender"
-                  label="gender"
-                  id="gender"
-                  onChange={formik.handleChange}
-                  value={formik.values.gender}
-                />
+                <FormControl>
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Gender
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="gender"
+                    value={formik.values.gender}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="F"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="M"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
