@@ -23,7 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
-@Api(value = "인증 API", tags = {"Conference"})
+@Api(value = "Conference API", tags = {"Conference"})
 @RestController
 @RequestMapping("/conference")
 public class ConferenceController {
