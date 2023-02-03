@@ -12,6 +12,8 @@ import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,8 +33,13 @@ public class ConferenceController {
     @Autowired
     AuthService authService;
 
-    @ApiOperation(value = "Conference 방 생성")
     @PostMapping("/start")
+    @ApiOperation(value = "Conference 방 생성")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewID") Long interviewID,
                                                               @RequestParam(value="sessionID") String sessionID,
                                                               @ApiIgnore Authentication authentication) {
@@ -46,6 +53,11 @@ public class ConferenceController {
 
     @PostMapping("/end")
     @ApiOperation(value = "Conference 방 종료")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "historyID") Long historyID,
                                                                     @RequestBody recordDialogInReq dialogInfo) {
         // [Conference Table]
@@ -59,6 +71,11 @@ public class ConferenceController {
 
     @PostMapping("/in")
     @ApiOperation(value = "Conference 방에 참여자 입장")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<Long> inConference(@RequestParam(value = "conferenceID") Long conferenceID,
                                              @ApiIgnore Authentication authentication) {
         String userEmail = authService.getUserByAuthentication(authentication);
@@ -69,6 +86,11 @@ public class ConferenceController {
 
     @PostMapping("/out")
     @ApiOperation(value = "Conference 방에서 참여자가 스스로 퇴장")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> outConference(@RequestParam(value = "historyID") Long historyID) {
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 3);
@@ -77,6 +99,11 @@ public class ConferenceController {
 
     @GetMapping("/info")
     @ApiOperation(value = "Conference 방에 대한 정보 호출")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<ConferenceInfoRes> getConferenceInfo(@RequestParam(value = "interviewID") Long interviewID,
                                                                @RequestParam(value = "conferenceID") Long conferenceID) {
         // [Interview Table] + [Conference Table] + [User table]
@@ -86,6 +113,11 @@ public class ConferenceController {
 
     @GetMapping("/user")
     @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<List<User>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
         // [Conference History Table]
         List<User> users = conferenceService.userInConference(conferenceID);
@@ -94,6 +126,11 @@ public class ConferenceController {
 
     @PostMapping("/question")
     @ApiOperation(value = "Conference 진행 중 새로운 질문 추가")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> createQuestionInConference(@RequestBody questionCreateInReq questionInfo) {
         // [Question Table]
         conferenceService.createQuestionInConference(questionInfo);
@@ -102,6 +139,11 @@ public class ConferenceController {
 
     @GetMapping("/question")
     @ApiOperation(value = "관련 Interview의 질문 목록 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<List<Question>> getQuestionInConference(@RequestParam(value = "interviewID") Long interviewID) {
         // [Question Table]
         List<Question> questions = conferenceService.questionAllInConference(interviewID);
@@ -110,6 +152,11 @@ public class ConferenceController {
 
     @PostMapping("/mark")
     @ApiOperation(value = "Conference 진행 중 질문자가 원하는 마크 시간 저장")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> createMarkInConference(@RequestBody markCreateInReq markInfo) {
         // [Mark Table]
         conferenceService.createMarkInConference(markInfo);
@@ -118,6 +165,11 @@ public class ConferenceController {
 
     @PostMapping("/dialog/question")
     @ApiOperation(value = "Conference 진행 중 질문 시작 시간 저장")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> recordQuestionInConference(@RequestBody recordQuestionInReq questionInfo) {
         // [Dialog Table]
         conferenceService.recordQuestionInConference(questionInfo);
@@ -126,6 +178,11 @@ public class ConferenceController {
 
     @PostMapping("/dialog/user")
     @ApiOperation(value = "Conference 진행 중 발언 내용 저장")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody recordDialogInReq dialogInfo) {
         // [Dialog Table]
         conferenceService.recordDialogInConference(dialogInfo);
@@ -142,6 +199,11 @@ public class ConferenceController {
 
     @PostMapping("/kick")
     @ApiOperation(value = "Conference 진행 중 질문자가 답변자를 퇴장시킴")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
     public ResponseEntity<? extends BaseResponseBody> kickUserInConference(@RequestBody kickUserInReq kickInfo) {
         // [Conference History Table] conferenceID와 userEmail에 해당하는 기록 불러와서 내림차순으로 정렬한 후, 맨 위에 있는 정보를 변경하는 방법
         conferenceService.kickConferenceHistory(kickInfo);
