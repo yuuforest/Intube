@@ -28,6 +28,10 @@ public interface AuthService {
     // redis에 값 저장
     void setAuthKey(String key, String value, int expireTime);
 
+    boolean hasAuthKey(String key);
+
+    void deleteAuthKey(String key);
+
     // 로그인한 유저의 이메일 가져오기
     String getUserByAuthentication(Authentication authentication);
 

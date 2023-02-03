@@ -1,15 +1,27 @@
 package com.ssafy.interview.api.service.user;
 
 
+import com.querydsl.core.Tuple;
 import com.ssafy.interview.api.request.user.UserModifyPutReq;
 import com.ssafy.interview.api.request.user.UserRegisterPostReq;
+import com.ssafy.interview.api.response.interview.InterviewDetailApplicantRes;
+import com.ssafy.interview.api.response.user.ApplicantDetailRes;
+import com.ssafy.interview.api.response.user.IntervieweeRes;
+import com.ssafy.interview.api.response.user.InterviewerRes;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.entitiy.interview.Applicant;
+import com.ssafy.interview.db.entitiy.interview.QApplicant;
+import com.ssafy.interview.db.repository.interview.ApplicantRepository;
+import com.ssafy.interview.db.repository.interview.InterviewRepository;
+import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,7 +33,15 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    InterviewTimeRepository interviewTimeRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    InterviewRepository interviewRepository;
+    @Autowired
+    ApplicantRepository applicantRepository;
+    QApplicant qApplicant = QApplicant.applicant;
 
     @Override
     public void createUser(UserRegisterPostReq userRegisterInfo) {
@@ -60,6 +80,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
     }
 
+    @Transactional
     @Override
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).get();
@@ -71,6 +92,69 @@ public class UserServiceImpl implements UserService {
     public void uploadImage(String email, String url) {
         User user = userRepository.findByEmail(email).get();
         user.setProfile_url(url);
+    }
+
+    @Override
+    public InterviewerRes findInterviewerMyPage(String email) {
+        // 유저 정보 가져오기
+        InterviewerRes interviewerRes = userRepository.findInterviewer(email);
+
+        // 인터뷰 시작 시간 가져오기
+        interviewerRes.setConductInterviewTimeList(interviewTimeRepository.findInterviewTimeByOwnerId(interviewerRes.getId()));
+
+        // 인터뷰(모집, 진행, 완료 순) count 가져오기
+        interviewerRes.setRecruit_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 4));
+        interviewerRes.setConduct_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 5));
+        interviewerRes.setComplete_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 6));
+
+        return interviewerRes;
+    }
+
+    @Override
+    public List<ApplicantDetailRes> findApplicantDetailRes(Long interview_time_id) {
+        return applicantRepository.findApplicantDetailRes(interview_time_id);
+    }
+
+    @Transactional
+    @Override
+    public void updateApplicantState(Long applicant_id, int applicantState) {
+        Applicant applicant = applicantRepository.findById(applicant_id).orElseThrow(() -> new IllegalArgumentException("해당 신청자는 없습니다. id=" + applicant_id));
+
+        applicant.updateApplicantState(applicantState);
+    }
+
+    @Override
+    public void deleteApplicant(Long applicant_id) {
+        applicantRepository.deleteById(applicant_id);
+    }
+
+    @Override
+    public IntervieweeRes findIntervieweeMyPage(String email) {
+        // 유저 정보 가져오기
+        IntervieweeRes intervieweeRes = userRepository.findInterviewee(email);
+
+        // 매칭된 인터뷰 정보 가져오기
+        Optional<List<InterviewDetailApplicantRes>> interviewDetailApplicantResList = applicantRepository.findInterviewDetailByIntervieweeRes(intervieweeRes.getId());
+        intervieweeRes.setConductInterviewTimeList(interviewDetailApplicantResList.orElse(new ArrayList<>()));
+        intervieweeRes.setConduct_interview_count(Long.valueOf(interviewDetailApplicantResList.get().size()));
+
+        // 인터뷰(신청 대기, 인터뷰 완료 순) count 가져오기
+        Optional<List<Tuple>> optionalTuples = applicantRepository.countInterviewByApplicantState(intervieweeRes.getId());
+        List<Tuple> tupleList = null;
+        if (optionalTuples.isPresent()) {
+            tupleList = optionalTuples.get();
+
+            for (Tuple tuple : tupleList) {
+                switch (tuple.get(qApplicant.applicantState)) {
+                    case 1: // 신청 대기
+                        intervieweeRes.setApply_interview_count(tuple.get(qApplicant.id.count()));
+                        break; // 인터뷰 완료
+                    case 3: intervieweeRes.setComplete_interview_count(tuple.get(qApplicant.id.count()));
+                }
+            }
+        }
+
+        return intervieweeRes;
     }
 
     @Override
@@ -91,5 +175,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findPassword(String name, String email) {
         return userRepository.findEmail(name, email);
+    }
+
+    @Transactional
+    @Override
+    public void updatePoint(String email, int point) {
+        User user = userRepository.findByEmail(email).get();
+        user.setPoint(user.getPoint()+point);
+    }
+
+    @Transactional
+    @Override
+    public void updateTemperature(String email, double temperature) {
+        User user = userRepository.findByEmail(email).get();
+        user.setTemperature(user.getTemperature()+temperature);
     }
 }

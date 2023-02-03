@@ -11,6 +11,6 @@ import java.util.Optional;
  * 인터뷰 모델 관련 디비 쿼리 생성을 위한 JPA Query Method 인터페이스 정의.
  */
 @Repository
-public interface InterviewRepository extends JpaRepository<Interview, Long>, InterviewRepositoryCustom{ // 인터뷰 생성 Method
-    Optional<Interview> findById(String id);
+public interface InterviewRepository extends JpaRepository<Interview, Long>, InterviewRepositoryCustom { // 인터뷰 생성 Method
+    Long countByUser_IdAndInterviewState(Long owner_id, int interview_state);
 }
