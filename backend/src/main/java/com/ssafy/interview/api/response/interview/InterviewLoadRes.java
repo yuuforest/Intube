@@ -56,9 +56,6 @@ public class InterviewLoadRes {
     @ApiModelProperty(name = "Interview State")
     int interview_state;
 
-    @ApiModelProperty(name = "Interview Point")
-    int point;
-
 
     @QueryProjection
     public InterviewLoadRes(Interview interview) {
@@ -74,6 +71,5 @@ public class InterviewLoadRes {
         this.apply_start_time = interview.getApply_start_time();
         this.apply_end_time = interview.getApply_end_time();
         this.interview_state = interview.getInterviewState();
-        this.point = interview.getStandard_point();
     }
 }
