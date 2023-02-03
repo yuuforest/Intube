@@ -16,13 +16,13 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewResponse")
+@ApiModel("InterviewLoadRes")
 public class InterviewLoadRes {
     @ApiModelProperty(name = "Interview ID")
     Long id;
 
     @ApiModelProperty(name = "Category Name")
-    String categoryName;
+    String category_name;
 
     @ApiModelProperty(name = "Title")
     String title;
@@ -56,10 +56,11 @@ public class InterviewLoadRes {
     @ApiModelProperty(name = "Interview State")
     int interview_state;
 
+
     @QueryProjection
     public InterviewLoadRes(Interview interview) {
         this.id = interview.getId();
-        this.categoryName = interview.getInterviewCategory().getCategoryName();
+        this.category_name = interview.getInterviewCategory().getCategoryName();
         this.title = interview.getTitle();
         this.description = interview.getDescription();
         this.start_standard_age = interview.getStart_standard_age();

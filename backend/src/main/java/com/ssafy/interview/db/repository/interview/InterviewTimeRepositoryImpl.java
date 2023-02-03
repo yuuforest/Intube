@@ -1,10 +1,8 @@
 package com.ssafy.interview.db.repository.interview;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.interview.api.response.interview.InterviewTimeRes;
+import com.ssafy.interview.api.response.interview.QInterviewTimeRes;
 import com.ssafy.interview.db.entitiy.interview.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,13 +24,14 @@ public class InterviewTimeRepositoryImpl implements InterviewTimeRepositoryCusto
 
 
     @Override
-    public List<Date> findAllInterviewTime(Long interview_id) {
-
-        List<Date> interviewTimeList = jpaQueryFactory.select(qInterviewTime.interview_start_time)
+    public List<InterviewTimeRes> findAllInterviewTime(Long interview_id) {
+        List<InterviewTimeRes> interviewTimeResList = jpaQueryFactory
+                .select(new QInterviewTimeRes(qInterviewTime))
                 .from(qInterviewTime)
                 .where(qInterviewTime.interview.id.eq(interview_id))
                 .fetch();
-        return interviewTimeList;
+
+        return interviewTimeResList;
     }
 
     @Override

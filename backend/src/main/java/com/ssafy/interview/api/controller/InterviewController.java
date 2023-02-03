@@ -40,7 +40,6 @@ public class InterviewController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> create(@RequestBody @ApiParam(value = "공고생성 정보", required = true) InterviewSaveReq registerInfo,
-                                                             @RequestParam("questionContentList") List<String> questionContentList,
                                                              @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String tokenEmail = userDetails.getUsername();
@@ -52,7 +51,7 @@ public class InterviewController {
         interviewService.createInterviewTime(interview, registerInfo.getInterviewTimeList());
 
         //생성된 interview, 인터뷰 질문 리스트로 인터뷰 신청시간을 생성하는 코드
-        interviewService.createQuestion(interview, questionContentList);
+        interviewService.createQuestion(interview, registerInfo.getQuestionList());
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
@@ -84,9 +83,6 @@ public class InterviewController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<Page<InterviewLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchReq interviewSearchReq, @PageableDefault(size = 10) Pageable pageable) {
-        /**
-         *
-         */
         return ResponseEntity.status(200).body(interviewService.findInterviewByCategory(interviewSearchReq, pageable));
     }
 
@@ -98,15 +94,18 @@ public class InterviewController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<InterviewDetailRes> findInterviewDetail(@RequestParam("email") String email, @PathVariable Long interview_id) {
+    public ResponseEntity<InterviewDetailRes> findInterviewDetail(@PathVariable Long interview_id, @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String tokenEmail = userDetails.getUsername();
 
-        return ResponseEntity.status(200).body(interviewService.detailInterview(email, interview_id));
+        return ResponseEntity.status(200).body(interviewService.detailInterview(tokenEmail, interview_id));
     }
 
     @PutMapping("/interviewer/expired-interview")
     @ApiOperation(value = "인터뷰 공고 모집상태를 마감(진행)으로 변경", notes = "해당 인터뷰의 id와 state를 입력 받는다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })

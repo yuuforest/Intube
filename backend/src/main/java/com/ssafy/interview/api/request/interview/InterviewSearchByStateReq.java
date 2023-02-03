@@ -14,7 +14,7 @@ import lombok.*;
 @Builder
 public class InterviewSearchByStateReq {
     @ApiModelProperty(example = "", value = "인터뷰 상태 - 4(모집), 5(진행), 6(완료)")
-    private int interviewState;
+    private int interview_state;
     @ApiModelProperty(example = "", value = "검색어(공고 제목 or 내용)")
     private String word = null;
 }

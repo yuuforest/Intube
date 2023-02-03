@@ -46,7 +46,7 @@ public class InterviewServiceImpl implements InterviewService {
     // 인터뷰 전체 및 카테고리별 조회
     @Override
     public Page<InterviewLoadRes> findInterviewByCategory(InterviewSearchReq interviewSearchReq, Pageable pageable) {
-        return interviewRepository.findInterviewByCategory(interviewSearchReq.getCategoryName(), interviewSearchReq.getWord(), pageable);
+        return interviewRepository.findInterviewByCategory(interviewSearchReq.getCategory_name(), interviewSearchReq.getWord(), pageable);
     }
 
     // 인터뷰 상태별 조회
@@ -57,7 +57,7 @@ public class InterviewServiceImpl implements InterviewService {
         if (userOptional.isPresent()) {
             user = userOptional.get();
         }
-        return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterviewState(), interviewSearchByStateReq.getWord(), pageable);
+        return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterview_state(), interviewSearchByStateReq.getWord(), pageable);
     }
 
     // 인터뷰 공고 생성 Method
@@ -65,7 +65,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Transactional
     public Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo) {
         Optional<User> userOptional = userRepository.findByEmail(email);
-        Optional<InterviewCategory> interviewCategoryOptional = interviewCategoryRepository.findByCategoryName(interviewRegisterInfo.getCategoryName());
+        Optional<InterviewCategory> interviewCategoryOptional = interviewCategoryRepository.findByCategoryName(interviewRegisterInfo.getCategory_name());
         User user = null;
         InterviewCategory interviewCategory = null;
         if (userOptional.isPresent()) {
@@ -100,10 +100,10 @@ public class InterviewServiceImpl implements InterviewService {
     // 인터뷰 공고관련 질문 생성 Method
     @Override
     @Transactional
-    public void createQuestion(Interview interview, List<String> questionContentList) {
+    public void createQuestion(Interview interview, List<String> questionList) {
         List<Question> questions = new ArrayList<>();
 
-        for (String content : questionContentList) {
+        for (String content : questionList) {
             Question question = Question.builder().content(content).interview(interview).build();
 
             questions.add(question);
@@ -143,17 +143,17 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewDetailRes interviewDetailRes = interviewRepository.findDetailInterview(user_id, interview_id);
 
         // interviewTimeList 가져오기
-        List<Date> interviewTimeList = interviewTimeRepository.findAllInterviewTime(interview_id);
-        interviewDetailRes.setInterviewTimeList(interviewTimeList);
+        interviewDetailRes.setInterviewTimeResList(interviewTimeRepository.findAllInterviewTime(interview_id));
 
         // Applicant 정보 가져오기
         Optional<Applicant> applicantOptional = applicantRepository.findByUserIdAndInterviewId(user_id, interview_id);
         if (applicantOptional.isPresent()) {
             Applicant applicant = applicantOptional.get();
             interviewDetailRes.setApplicant_state(applicant.getApplicantState());
-        } else {
-            interviewDetailRes.setApplicant_state(0);
         }
+//        } else {
+//            interviewDetailRes.setApplicant_state(0);
+//        }
 
         return interviewDetailRes;
     }
