@@ -1,14 +1,11 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -16,14 +13,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import { verifySend } from "components/api/verifySend";
-import { emailCheck } from "components/api/verifyCheck";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import { useState } from "react";
+import instance from "components/api/APIController";
 
 function Copyright(props) {
   return (
@@ -46,32 +36,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
-  const verifyEmail = () => {
-    console.log(email);
-    verifySend(email);
-  };
-  const verifyCheck = () => {
-    console.log(email);
-    emailCheck(email, number);
-  };
-
-  const [email, setEmail] = useState("");
-  const emailChange = ({ target: { value } }) => setEmail(value);
-  const [number, setNumber] = useState("");
-  const numberChange = ({ target: { value } }) => setNumber(value);
-
   const validationSchema = yup.object({
-    email: yup
-      .string("Enter your email")
-      .email("올바른 이메일 형식이 아닙니다."),
     password: yup
       .string("Enter your password")
       .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
@@ -92,55 +57,63 @@ export default function SignUp() {
     gender: yup.string("Enter your password"),
     introduction: yup
       .string("Enter your password")
-      .min(5, "5글자 이상 입력해주세요")
-      .max(100, "100글자 이하로 입력해주세요"),
+      .min(5, "5글자 이상 입력해주세요"),
     passwordConfirm: yup
       .string()
       .oneOf([yup.ref("password"), null], 'Must match "password" field value'),
   });
+
+  const BEFORE_EMAIL = localStorage.getItem("email");
+  const BEFORE_NICKNAME = localStorage.getItem("nickname");
+  const BEFORE_INTRODUCTION = localStorage.getItem("introduction");
+  const BEFORE_NAME = localStorage.getItem("name");
+  const BEFORE_PHONE = localStorage.getItem("phone");
+  const BEFORE_BIRTH = localStorage.getItem("birth");
+  const BEFORE_GENDER = localStorage.getItem("gender");
+
   const formik = useFormik({
     initialValues: {
-      email: "",
-      nickname: "",
+      nickname: BEFORE_NICKNAME,
       password: "",
-      introduction: "",
-      gender: "",
-      name: "",
-      phone: "",
-      birth: "",
+      introduction: BEFORE_INTRODUCTION,
+      gender: BEFORE_GENDER,
+      name: BEFORE_NAME,
+      phone: BEFORE_PHONE,
+      birth: BEFORE_BIRTH,
       passwordConfirm: "",
+      email: BEFORE_EMAIL,
     },
     // validationSchema: validationSchema,
     onSubmit: response => {
       let values = {
-        birth: response.birth,
-        email: email,
-        // email: response.email,
-        gender: response.gender,
-        introduction: response.introduction,
-        name: response.name,
-        nickname: response.nickname,
-        password: response.password,
-        phone: response.phone,
-        // birth: "1994-04-26",
-        // email: "jos9404@naver.com",
-        // gender: "M",
-        // introduction: "안녕하세요 저는 착한 사람입니다.",
-        // name: "지원석",
+        // "birth": this.birth,
+        // "email": this.email,
+        // "gender": this.gender,
+        // "introduction": this.introduction,
+        // "name": this.name,
+        // "nickname": this.nickname,
+        // "password": this.password,
+        // "phone": this.phone,
+        birth: "1994-04-26",
+        email: "jos9404@naver.com",
+        gender: "M",
+        introduction: "안녕하세요 저는 착한 사람입니다.",
+        name: "지원석",
         isEmailAuthorized: 1,
         isKakao: 1,
-        // nickname: "커플600일차",
-        // password: "1234",
-        // phone: "01099130059",
+        nickname: "커플600일차",
+        password: "1234",
+        phone: "01099130059",
       };
 
       alert(JSON.stringify(values, null, 2));
-      axios
-        .post("http://localhost:8080/user", JSON.stringify(values), {
+      instance
+        .put("http://localhost:8080/user", JSON.stringify(values), {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
             // Accept: "application/json",
             "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
           withCredentials: true,
         })
@@ -148,17 +121,18 @@ export default function SignUp() {
           console.log(values);
         })
         .catch(e => {
-          if (e.response.data.statusCode === 409) {
-            alert("이미 가입된 이메일입니다.");
+          if (e.response.data.statusCode === 400) {
+            alert("잘못된 비밀번호입니다.");
+          }
+          if (e.response.data.statusCode === 401) {
+            console.log("토큰 만료~~");
+          }
+          if (e.response.data.statusCode === 403) {
+            console.log("엑세스 토큰을 주시오~~~");
           }
         });
     },
   });
-  // const [value, setValue] = React.useState("female");
-
-  // const handleChange = event => {
-  //   setValue(event.target.value);
-  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -173,27 +147,44 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
+            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar> */}
             <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              Sign up
+              회원정보 수정
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={9}>
+              <Grid item xs={12}>
+                <TextField
+                  name="phone"
+                  label="phone"
+                  id="phone"
+                  required
+                  fullWidth
+                  autoFocus
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  error={formik.touched.phone && Boolean(formik.errors.phone)}
+                  helperText={formik.touched.phone && formik.errors.phone}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   id="email"
                   name="email"
-                  label="Email"
-                  // value={formik.values.email}
-                  // onChange={formik.handleChange}
-                  value={email}
-                  onChange={emailChange}
+                  label="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}
                   helperText={formik.touched.email && formik.errors.email}
                   onBlur={formik.handleBlur}
                   required
+                  disabled
                 />
               </Grid>
-              <Grid item xs={3}>
+              {/* <Grid item xs={3}>
                 <Button
                   variant="outlined"
                   endIcon={<VerifiedUserIcon />}
@@ -221,23 +212,7 @@ export default function SignUp() {
                 >
                   인증번호확인
                 </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="phone"
-                  label="phone"
-                  id="phone"
-                  required
-                  fullWidth
-                  autoFocus
-                  value={formik.values.phone}
-                  onChange={formik.handleChange}
-                  error={formik.touched.phone && Boolean(formik.errors.phone)}
-                  helperText={formik.touched.phone && formik.errors.phone}
-                  onBlur={formik.handleBlur}
-                />
-              </Grid>
-
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -321,36 +296,19 @@ export default function SignUp() {
                   }
                   helperText={formik.touched.nickname && formik.errors.nickname}
                   onBlur={formik.handleBlur}
-
-                  // 닉네임 중복확인ㄴ아ㅣㄹ넘이ㅏㄹ먼;ㅣㄹㄴ이;ㅏ러니ㅏㅁㄹㄴ임ㄴㄹㅇ
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControl>
-                  <FormLabel id="demo-controlled-radio-buttons-group">
-                    Gender
-                  </FormLabel>
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="gender"
-                    value={formik.values.gender}
-                    onChange={formik.handleChange}
-                  >
-                    <FormControlLabel
-                      value="F"
-                      control={<Radio />}
-                      label="Female"
-                    />
-                    <FormControlLabel
-                      value="M"
-                      control={<Radio />}
-                      label="Male"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                <TextField
+                  required
+                  fullWidth
+                  name="gender"
+                  label="gender"
+                  id="gender"
+                  onChange={formik.handleChange}
+                  value={formik.values.gender}
+                />
               </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"

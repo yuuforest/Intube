@@ -9,10 +9,10 @@ const Kakaoloading = () => {
   //   const dispatch = useDispatch();
   const navigate = useNavigate();
   const href = window.location.href;
-  console.log(href);
+  console.log(href, "코드가져오기");
   let params = new URL(href).searchParams;
   let code = params.get("code");
-
+  console.log(code);
   const getKakaoToken = () => {
     axios({
       method: "GET",
@@ -43,9 +43,9 @@ const Kakaoloading = () => {
         }
       })
       .catch(err => {
-        console.log("소셜로그인 에러", err);
-        window.alert("로그인에 실패하였습니다.");
-        navigate("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
+        // console.log("소셜로그인 에러", err);
+        // window.alert("로그인에 실패하였습니다.");
+        // navigate("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
       });
   };
   React.useEffect(() => {

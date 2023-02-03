@@ -16,6 +16,11 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 function Copyright(props) {
   return (
@@ -77,7 +82,7 @@ export default function SignUp() {
       .oneOf([yup.ref("password"), null], 'Must match "password" field value'),
   });
   const KAKAO_EMAIL = localStorage.getItem("kakaoEmail");
-  const KAKAO_GENDER = localStorage.getItem("kakaoGender");
+  // const KAKAO_GENDER = localStorage.getItem("kakaoGender");
   const KAKAO_NICKNAME = localStorage.getItem("kakaoNickname");
   const formik = useFormik({
     initialValues: {
@@ -85,7 +90,7 @@ export default function SignUp() {
       nickname: KAKAO_NICKNAME,
       password: "",
       introduction: "",
-      gender: KAKAO_GENDER,
+      gender: "",
       name: "",
       phone: "",
       birth: "",
@@ -94,21 +99,21 @@ export default function SignUp() {
     // validationSchema: validationSchema,
     onSubmit: response => {
       let values = {
-        // "birth": this.birth,
-        // "email": this.email,
-        // "gender": this.gender,
-        // "introduction": this.introduction,
-        // "name": this.name,
-        // "nickname": this.nickname,
-        // "password": this.password,
-        // "phone": this.phone,
+        // birth: response.birth,
+        // email: response.email,
+        // gender: response.gender,
+        // introduction: response.introduction,
+        // name: response.name,
+        // nickname: response.nickname,
+        // password: response.password,
+        // phone: response.phone,
+        isEmailAuthorized: 1,
+        isKakao: 1,
         birth: "1994-04-26",
         email: "jos9404@naver.com",
         gender: "M",
         introduction: "안녕하세요 저는 착한 사람입니다.",
         name: "지원석",
-        isEmailAuthorized: 1,
-        isKakao: 1,
         nickname: "커플600일차",
         password: "1234",
         phone: "01099130059",
@@ -195,7 +200,7 @@ export default function SignUp() {
                   name="email"
                   label="Email"
                   // // autoComplete="email"
-                  // value={formik.values.email}
+                  value={formik.values.email}
                   // onChange={formik.handleChange}
                   // error={formik.touched.email && Boolean(formik.errors.email)}
                   // helperText={formik.touched.email && formik.errors.email}
@@ -294,15 +299,29 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="gender"
-                  label="gender"
-                  id="gender"
-                  onChange={formik.handleChange}
-                  value={formik.values.gender}
-                />
+                <FormControl>
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Gender
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="gender"
+                    value={formik.values.gender}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="F"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="M"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -325,14 +344,6 @@ export default function SignUp() {
                   }
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
             </Grid>
             <Button
               type="submit"

@@ -2,10 +2,10 @@ import axios from "axios";
 
 export function emailCheck(email, number) {
   let values = {
-    email: "abcdq12345@naver.com",
-    number: "rqDsyUYU",
-    // email: email,
-    // number: number,
+    // email: "abcdq12345@naver.com",
+    // number: "rqDsyUYU",
+    email: email,
+    number: number,
   };
   console.log("hi");
   axios
