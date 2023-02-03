@@ -18,31 +18,77 @@ export default function AnnouncementSteps(props) {
     point: "",
     interview_time: [],
     applicant_state: "0",
+    apply_end_time: "",
+    download_expiration: "",
   });
-  const interviewChangeHandler = (data) => {
-    setInterview(data);
+  const [question, setQuestion] = React.useState([""]);
+
+  const step3Handeler = (data) => {
+    const qlist = [];
+    data.forEach((d) => {
+      qlist.push(d.value);
+    });
+    setQuestion(qlist);
+  };
+
+  const step2Handeler = (
+    title,
+    description,
+    estimatedTime,
+    age,
+    gender,
+    maxPeople,
+    point,
+    interviewTime
+  ) => {
+    setInterview((interview) => {
+      let newCondition = { ...interview };
+      newCondition.title = title;
+      newCondition.description = description;
+      newCondition.estimated_time = estimatedTime;
+      newCondition.start_standard_age = age[0];
+      newCondition.end_standard_age = age[1];
+      newCondition.gender = gender;
+      newCondition.max_people = maxPeople;
+      newCondition.point = point;
+      const times = [];
+
+      interviewTime.forEach((time) => {
+        if (time.value.length > 0) times.push(time.value);
+      });
+      newCondition.interview_time = times;
+      return newCondition;
+    });
+  };
+  const step1Handeler = (e, data) => {
+    console.log(data);
+    setInterview((interview) => {
+      let newCondition = { ...interview };
+      newCondition.category_name = data;
+      return newCondition;
+    });
   };
   return (
     <div>
       <AnnouncementStep1
         value={props.value}
         interview={interview}
-        interviewChangeHandler={interviewChangeHandler}
+        step1Handeler={step1Handeler}
       ></AnnouncementStep1>
       <AnnouncementStep2
         value={props.value}
         interview={interview}
-        interviewChangeHandler={interviewChangeHandler}
+        step2Handeler={step2Handeler}
       ></AnnouncementStep2>
       <AnnouncementStep3
         value={props.value}
         interview={interview}
-        interviewChangeHandler={interviewChangeHandler}
+        step3Handeler={step3Handeler}
       ></AnnouncementStep3>
       <AnnouncementStep4
         value={props.value}
         interview={interview}
-        interviewChangeHandler={interviewChangeHandler}
+        question={question}
       ></AnnouncementStep4>
     </div>
   );

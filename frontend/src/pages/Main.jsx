@@ -1,7 +1,13 @@
 import React from "react";
+import SignInSide from "./mainpage/SignInSide.jsx";
 
 export default function Main() {
-  return <div>
-    <h1>Main</h1>
-  </div>;
+  return (
+  <div>
+    {/* <br />
+    <br /> */}
+    <SignInSide />
+  </div> 
+  );
+
 }

@@ -96,8 +96,8 @@ export default function SignUp() {
       birth: "",
       passwordConfirm: "",
     },
-    // validationSchema: validationSchema,
-    onSubmit: response => {
+    validationSchema: validationSchema,
+    onSubmit: (response) => {
       let values = {
         // birth: response.birth,
         // email: response.email,
@@ -128,7 +128,7 @@ export default function SignUp() {
           },
           withCredentials: true,
         })
-        .then(values => {
+        .then((values) => {
           if (values.data.statusCode === 200) {
             const ACCESS_TOKEN = values.data.accessToken;
 
@@ -141,7 +141,7 @@ export default function SignUp() {
           console.log(values);
           navigate("/");
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 409) {
             alert("이미 가입된 이메일입니다.");
           }
