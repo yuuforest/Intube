@@ -65,7 +65,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Transactional
     public Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo) {
         Optional<User> userOptional = userRepository.findByEmail(email);
-        Optional<InterviewCategory> interviewCategoryOptional = interviewCategoryRepository.findByCategoryName(interviewRegisterInfo.getCategoryName());
+        Optional<InterviewCategory> interviewCategoryOptional = interviewCategoryRepository.findByCategoryName(interviewRegisterInfo.getCategory_name());
         User user = null;
         InterviewCategory interviewCategory = null;
         if (userOptional.isPresent()) {
@@ -100,10 +100,10 @@ public class InterviewServiceImpl implements InterviewService {
     // 인터뷰 공고관련 질문 생성 Method
     @Override
     @Transactional
-    public void createQuestion(Interview interview, List<String> questionContentList) {
+    public void createQuestion(Interview interview, List<String> questionList) {
         List<Question> questions = new ArrayList<>();
 
-        for (String content : questionContentList) {
+        for (String content : questionList) {
             Question question = Question.builder().content(content).interview(interview).build();
 
             questions.add(question);
