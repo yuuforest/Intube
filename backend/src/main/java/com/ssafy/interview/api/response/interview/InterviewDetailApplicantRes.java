@@ -21,7 +21,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewResponse")
+@ApiModel("InterviewDetailApplicantRes")
 public class InterviewDetailApplicantRes extends InterviewLoadRes {
 
     @ApiModelProperty(name = "Estimated Time")
@@ -52,7 +52,7 @@ public class InterviewDetailApplicantRes extends InterviewLoadRes {
     @QueryProjection
     public InterviewDetailApplicantRes(Interview interview, InterviewTime interviewTime, Applicant applicant, User user) {
         this.id = interview.getId();
-        this.categoryName = interview.getInterviewCategory().getCategoryName();
+        this.category_name = interview.getInterviewCategory().getCategoryName();
         this.title = interview.getTitle();
         this.description = interview.getDescription();
         this.start_standard_age = interview.getStart_standard_age();
