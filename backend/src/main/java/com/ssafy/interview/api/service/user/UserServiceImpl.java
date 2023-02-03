@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
     }
 
+    @Transactional
     @Override
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).get();
@@ -174,5 +175,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findPassword(String name, String email) {
         return userRepository.findEmail(name, email);
+    }
+
+    @Transactional
+    @Override
+    public void updatePoint(String email, int point) {
+        User user = userRepository.findByEmail(email).get();
+        user.setPoint(user.getPoint()+point);
+    }
+
+    @Transactional
+    @Override
+    public void updateTemperature(String email, double temperature) {
+        User user = userRepository.findByEmail(email).get();
+        user.setTemperature(user.getTemperature()+temperature);
     }
 }
