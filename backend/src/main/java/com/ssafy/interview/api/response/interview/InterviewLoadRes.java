@@ -22,7 +22,7 @@ public class InterviewLoadRes {
     Long id;
 
     @ApiModelProperty(name = "Category Name")
-    String categoryName;
+    String category_name;
 
     @ApiModelProperty(name = "Title")
     String title;
@@ -56,10 +56,14 @@ public class InterviewLoadRes {
     @ApiModelProperty(name = "Interview State")
     int interview_state;
 
+    @ApiModelProperty(name = "Interview Point")
+    int point;
+
+
     @QueryProjection
     public InterviewLoadRes(Interview interview) {
         this.id = interview.getId();
-        this.categoryName = interview.getInterviewCategory().getCategoryName();
+        this.category_name = interview.getInterviewCategory().getCategoryName();
         this.title = interview.getTitle();
         this.description = interview.getDescription();
         this.start_standard_age = interview.getStart_standard_age();
@@ -70,5 +74,6 @@ public class InterviewLoadRes {
         this.apply_start_time = interview.getApply_start_time();
         this.apply_end_time = interview.getApply_end_time();
         this.interview_state = interview.getInterviewState();
+        this.point = interview.getStandard_point();
     }
 }

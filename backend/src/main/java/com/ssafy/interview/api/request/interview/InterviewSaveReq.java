@@ -50,11 +50,11 @@ public class InterviewSaveReq {
 
     @ApiModelProperty(example = "2023-01-30 11:00", name = "인터뷰 모집 마감 시감")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     Date apply_end_time;
 
     @ApiModelProperty(example = "2023-02-20 11:00", name = "인터뷰 결과 다운로드 만료기간")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
     Date download_expiration;
 

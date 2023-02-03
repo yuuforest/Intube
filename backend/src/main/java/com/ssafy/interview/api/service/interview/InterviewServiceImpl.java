@@ -46,7 +46,7 @@ public class InterviewServiceImpl implements InterviewService {
     // 인터뷰 전체 및 카테고리별 조회
     @Override
     public Page<InterviewLoadRes> findInterviewByCategory(InterviewSearchReq interviewSearchReq, Pageable pageable) {
-        return interviewRepository.findInterviewByCategory(interviewSearchReq.getCategoryName(), interviewSearchReq.getWord(), pageable);
+        return interviewRepository.findInterviewByCategory(interviewSearchReq.getCategory_name(), interviewSearchReq.getWord(), pageable);
     }
 
     // 인터뷰 상태별 조회
@@ -57,7 +57,7 @@ public class InterviewServiceImpl implements InterviewService {
         if (userOptional.isPresent()) {
             user = userOptional.get();
         }
-        return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterviewState(), interviewSearchByStateReq.getWord(), pageable);
+        return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterview_state(), interviewSearchByStateReq.getWord(), pageable);
     }
 
     // 인터뷰 공고 생성 Method
