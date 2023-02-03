@@ -17,15 +17,18 @@ import StopScreenShare from "@mui/icons-material/StopScreenShare";
 import Tooltip from "@mui/material/Tooltip";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
-
 import IconButton from "@mui/material/IconButton";
+
+// import { connect } from 'react-redux';
+// import * as actions from 'redux/actions/stateChange';
+
 
 const logo = require("assets/logo.png");
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false };
+    this.state = { fullscreen: false, };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -34,6 +37,11 @@ export default class ToolbarComponent extends Component {
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+    this.changeMic = this.changeMic(this);
+  }
+
+  changeMic() {
+    this.props.changeMic()
   }
 
   micStatusChanged() {
@@ -72,6 +80,8 @@ export default class ToolbarComponent extends Component {
   render() {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    // const { storeMic, changeStoreState } = this.props
+
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
@@ -90,7 +100,7 @@ export default class ToolbarComponent extends Component {
               color="inherit"
               className="navButton"
               id="navMicButton"
-              onClick={this.micStatusChanged}
+              onClick={() => {this.micStatusChanged(); this.changeMic();}}
             >
               {localUser !== undefined && localUser.isAudioActive() ? (
                 <Mic />
@@ -172,3 +182,13 @@ export default class ToolbarComponent extends Component {
     );
   }
 }
+
+// const mapStateToProps = (state) => ({
+//   storeMic: state
+// });
+
+// const mapDispatchToProps = (dispatch) => ({
+//   changeStoreState: () => dispatch(actions.changeState()),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(ToolbarComponent);
