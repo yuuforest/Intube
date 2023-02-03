@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 인터뷰 생성 API ([POST] /interviews) 요청에 필요한 리퀘스트 바디 정의.
  */
-@ApiModel("InterviewSaveRequest")
+@ApiModel("InterviewSaveReq")
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

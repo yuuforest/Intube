@@ -143,17 +143,17 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewDetailRes interviewDetailRes = interviewRepository.findDetailInterview(user_id, interview_id);
 
         // interviewTimeList 가져오기
-        List<Date> interviewTimeList = interviewTimeRepository.findAllInterviewTime(interview_id);
-        interviewDetailRes.setInterviewTimeList(interviewTimeList);
+        interviewDetailRes.setInterviewTimeResList(interviewTimeRepository.findAllInterviewTime(interview_id));
 
         // Applicant 정보 가져오기
         Optional<Applicant> applicantOptional = applicantRepository.findByUserIdAndInterviewId(user_id, interview_id);
         if (applicantOptional.isPresent()) {
             Applicant applicant = applicantOptional.get();
             interviewDetailRes.setApplicant_state(applicant.getApplicantState());
-        } else {
-            interviewDetailRes.setApplicant_state(0);
         }
+//        } else {
+//            interviewDetailRes.setApplicant_state(0);
+//        }
 
         return interviewDetailRes;
     }

@@ -21,7 +21,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewResponse")
+@ApiModel("InterviewDetailApplicantRes")
 public class InterviewDetailApplicantRes extends InterviewLoadRes {
 
     @ApiModelProperty(name = "Estimated Time")

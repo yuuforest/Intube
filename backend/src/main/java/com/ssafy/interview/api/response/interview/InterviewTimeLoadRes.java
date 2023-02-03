@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewResponse")
+@ApiModel("InterviewTimeLoadRes")
 public class InterviewTimeLoadRes extends InterviewLoadRes {
     @ApiModelProperty(name = "InterviewTime Detail Response List")
     List<InterviewTimeDetailRes> interviewTimeDetailResList;

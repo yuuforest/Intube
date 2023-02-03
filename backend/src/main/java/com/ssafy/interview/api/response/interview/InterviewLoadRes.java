@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewResponse")
+@ApiModel("InterviewLoadRes")
 public class InterviewLoadRes {
     @ApiModelProperty(name = "Interview ID")
     Long id;

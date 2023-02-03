@@ -19,14 +19,14 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewResponse")
+@ApiModel("InterviewDetailRes")
 public class InterviewDetailRes extends InterviewLoadRes {
 
     @ApiModelProperty(name = "Estimated Time")
     String estimated_time;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    List<Date> interviewTimeList = new ArrayList<>();
+    @ApiModelProperty(name = "InterviewTimeRes List")
+    List<InterviewTimeRes> interviewTimeResList = new ArrayList<>();
 
     @ApiModelProperty(name = "Apply End Time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
