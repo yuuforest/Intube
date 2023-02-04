@@ -58,9 +58,11 @@ public class Interview extends BaseEntity {
         int interviewState = 4;
 
         // OneToMany 관계 설정
+        @Builder.Default
         @OneToMany(mappedBy = "interview")
         private List<InterviewTime> interviewTimeList = new ArrayList<>();
 
+        @Builder.Default
         @OneToMany(mappedBy = "interview")
         private List<Question> questionList = new ArrayList<>();
 
