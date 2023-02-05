@@ -1,3 +1,13 @@
+.Mypage{
+  /* position: relative;
+  left: 15%;;
+  right: 15%;
+  background-color: #FFCE63;
+  padding-left: 250px;
+  padding-right: 250px;
+  border-radius: 10px; */
+}
+
 #sidebar {
   display: flex;
   flex-direction: column;
