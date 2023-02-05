@@ -1,9 +1,11 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Logo from "../assets/logo.png";
 import Drawer from "@mui/material/Drawer";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Sidebar from "./Sidebar";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -15,6 +17,22 @@ import "./Common.css";
 export default function DenseAppBar() {
   // const userInfo = useSelector(state => state.counter.user);
   // console.log(userInfo);
+  const [userInfo, setUserInfo] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
   const loginButton = [
     {
       text: "로그인",
@@ -69,7 +87,6 @@ export default function DenseAppBar() {
           onClick={(e) => handlePage(e, "/")}
         />
         <Box sx={{ flexGrow: 1 }} />
-
         {/* ------ 로그인 전 -------- */}
         {/* Object.keys(userInfo).length */}
         {localStorage.getItem("accessToken") === null &&
@@ -93,6 +110,8 @@ export default function DenseAppBar() {
             )
           )}
         {/* ------ 로그인 후 -------- */}
+        {userInfo != "" && <Avatar sx={{ mr: 3 }}>{userInfo.name[0]}</Avatar>}
+
         {localStorage.getItem("accessToken") != null &&
           // <Avatar>{userInfo.email[0]}</Avatar>
           logoutButton.map(

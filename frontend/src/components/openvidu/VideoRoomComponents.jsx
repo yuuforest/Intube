@@ -32,8 +32,8 @@ class VideoRoomComponent extends Component {
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = "SessionA";
-    let userName = "OpenVidu_User" + Math.floor(Math.random() * 100);
+    let sessionName = "Session" + props.interview.id;
+    let userName = props.userName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -45,6 +45,9 @@ class VideoRoomComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
     };
+
+    this.navigate = this.props.navigate;
+    this.handleSubscriber = this.props.handleSubscriber;
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -100,6 +103,13 @@ class VideoRoomComponent extends Component {
 
   joinSession() {
     this.OV = new OpenVidu();
+
+    this.OV.setAdvancedConfiguration({
+      publisherSpeakingEventsOptions: {
+        interval: 100, // Frequency of the polling of audio streams in ms (default 100)
+        threshold: -50, // Threshold volume in dB (default -50)
+      },
+    });
 
     this.setState(
       {
@@ -234,6 +244,9 @@ class VideoRoomComponent extends Component {
         this.updateLayout();
       }
     );
+    console.log("여기서 참여자 집어넣을거임");
+    console.log(this.remotes);
+    this.handleSubscriber(this.remotes);
   }
 
   leaveSession() {
@@ -255,12 +268,15 @@ class VideoRoomComponent extends Component {
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
+
+    this.navigate("/");
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
     this.setState({ localUser: localUser });
+    console.log(this.state.subscribers);
   }
 
   micStatusChanged() {
@@ -313,6 +329,13 @@ class VideoRoomComponent extends Component {
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
       }
+    });
+    this.state.session.on("publisherStartSpeaking", (event) => {
+      console.log("User " + event.connection.connectionId + " start speaking");
+    });
+
+    this.state.session.on("publisherStopSpeaking", (event) => {
+      console.log("User " + event.connection.connectionId + " stop speaking");
     });
   }
 

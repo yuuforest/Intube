@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -12,16 +13,43 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import InterviewListItemTag from "./InterviewListItemTag";
 import "./InterviewListItemDetail.css";
+import { useEffect, useState } from "react";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
+
+const NewAlert = React.forwardRef(function NewAlert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function InterviewListItemDetail(props) {
-  const [time, setTime] = React.useState(props.interview.interview_time[0]);
-
-  const handleChange = (event) => {
-    setTime(event.target.value);
+  const onClickApply = () => {
+    axios
+      .post(
+        "http://localhost:8080/interviews/apply/" + applyTime,
+        {},
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        setAlertOpen(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   const menu = [
     { title: "내용", content: props.interview.description },
-    { title: "인터뷰 시간", content: props.interview.interview_time },
+    {
+      title: "인터뷰 시간",
+      content: props.interview.interviewTimeResList,
+    },
     { title: "소요시간", content: props.interview.estimated_time },
     {
       title: "공통대상",
@@ -36,23 +64,59 @@ export default function InterviewListItemDetail(props) {
           ? "남성"
           : "상관없음"),
     },
-    { title: "지급 포인트", content: props.interview.point },
+    { title: "지급 포인트", content: props.interview.standard_point },
     {
       title: "담당자",
       content: props.interview.owner_name + "\n" + props.interview.owner_phone,
     },
   ];
 
-  // "인터뷰 종류",
-  // "인터뷰 시간",
-  // "소요시간",
-  // "내용",
-  // "공통대상",
-  // "지급 포인트",
-  // "담당자",
+  const [applyTime, setApplyTime] = React.useState(
+    props.interview.interviewTimeResList[0].interview_start_time
+  );
+
+  const handleApplyTimeChange = (event) => {
+    setApplyTime(event.target.value);
+  };
+
   const handleClose = () => {
     props.setOpen(false);
   };
+
+  const [alertOpen, setAlertOpen] = React.useState(false);
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlertOpen(false);
+  };
+
+  // 방입장
+  const interview = props.interview;
+  const navigate = useNavigate();
+  function onClickEnter(e) {
+    navigate("/conference", { state: { interview, userName } });
+  }
+  const [userName, setUserName] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUserName(response.data.name);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <Dialog
       open={props.open}
@@ -84,14 +148,14 @@ export default function InterviewListItemDetail(props) {
                 {menu.title === "인터뷰 시간" ? (
                   Array.isArray(menu.content) ? (
                     <Select
-                      onChange={handleChange}
-                      value={time}
+                      onChange={handleApplyTimeChange}
+                      value={applyTime}
                       variant="standard"
                       sx={{ mt: 1 }}
                     >
-                      {props.interview.interview_time.map((time, index) => (
-                        <MenuItem value={time} key={index}>
-                          {time}
+                      {props.interview.interviewTimeResList.map((time) => (
+                        <MenuItem value={time.id} key={time.id}>
+                          {time.interview_start_time}
                         </MenuItem>
                       ))}
                     </Select>
@@ -101,7 +165,7 @@ export default function InterviewListItemDetail(props) {
                 ) : (
                   <p> {menu.content}</p>
                 )}
-                {index === 0 && props.interview.applicant_state === "0" ? (
+                {index === 0 && props.interview.applicant_state === 0 ? (
                   <Alert severity="error" sx={{ mb: 1 }}>
                     <Typography variant="subtitle1" gutterBottom>
                       인터뷰 신청시 유의사항
@@ -114,7 +178,7 @@ export default function InterviewListItemDetail(props) {
                       - 연락을 받지 못하신 것은 조사 대상이 아니라는 의미입니다.
                     </p>
                   </Alert>
-                ) : index === 0 && props.interview.applicant_state === "1" ? (
+                ) : index === 0 && props.interview.applicant_state === 1 ? (
                   <Alert severity="warning" sx={{ mb: 1 }}>
                     <Typography variant="subtitle1" gutterBottom>
                       신청 인터뷰 유의사항
@@ -123,7 +187,7 @@ export default function InterviewListItemDetail(props) {
                     <p>- 매칭된 이후로는 취소가 불가합니다.</p>
                     <p>- 인터뷰 취소로 발생하는 문제는 본인 책임입니다.</p>
                   </Alert>
-                ) : index === 0 && props.interview.applicant_state === "2" ? (
+                ) : index === 0 && props.interview.applicant_state === 2 ? (
                   <Alert severity="success" sx={{ mb: 1 }}>
                     <Typography variant="subtitle1" gutterBottom>
                       매칭 인터뷰 유의사항
@@ -141,17 +205,27 @@ export default function InterviewListItemDetail(props) {
       </DialogContent>
 
       <DialogActions>
-        {props.interview.applicant_state === "0" && (
-          <Button onClick={handleClose}>신청하기</Button>
+        {props.interview.applicant_state === 0 && (
+          <Button onClick={(() => handleClose, onClickApply)}>신청하기</Button>
         )}
-        {props.interview.applicant_state === "1" && (
+        {props.interview.applicant_state === 1 && (
           <Button onClick={handleClose}>취소하기</Button>
         )}
-        {props.interview.applicant_state === "2" && (
-          <Button onClick={handleClose}>입장하기</Button>
+        {props.interview.applicant_state === 2 && (
+          <Button onClick={onClickEnter}>입장하기</Button>
         )}
         <Button onClick={handleClose}>닫기</Button>
       </DialogActions>
+
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleAlertClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          신청을 완료했습니다.!
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 }

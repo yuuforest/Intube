@@ -64,7 +64,7 @@ export default function SignIn() {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
             // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
+            "Access-Control-Allow-Origin": "localhost:8080",
           },
           withCredentials: true,
         })

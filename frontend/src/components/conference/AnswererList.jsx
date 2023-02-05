@@ -1,9 +1,16 @@
 import React from "react";
-import getAnswererList from "json/answerer_list.json";
 
-export default function AnswererList() {
-  const newList = getAnswererList.question_list.map((item) => {
-    return item;
-  });
-  return <div>AnswererList</div>;
+export default function AnswererList(props) {
+  console.log(props.subscriber);
+  return (
+    <div>
+      입장한 사람
+      {props.subscriber.map((sub) => (
+        <div>
+          {sub.connectionId}
+          {sub.nickname}
+        </div>
+      ))}
+    </div>
+  );
 }

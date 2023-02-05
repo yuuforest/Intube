@@ -5,10 +5,12 @@ import AnnouncementStep3 from "./AnnouncementStep3";
 import axios from "axios";
 import AnnouncementStep4 from "./AnnouncementStep4";
 import "./AnnouncementSteps.css";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function AnnouncementSteps(props) {
   const [interview, setInterview] = React.useState({
-    category_name: "",
+    category_name: "1:1",
     title: "",
     description: "",
     estimated_time: "",
@@ -16,13 +18,13 @@ export default function AnnouncementSteps(props) {
     end_standard_age: "",
     gender: "",
     max_people: "",
-    point: "",
-    interview_time: [],
+    standard_point: "",
+    interviewTimeList: [],
     applicant_state: "0",
     apply_end_time: "",
     download_expiration: "",
+    questionList: [],
   });
-  const [question, setQuestion] = React.useState([""]);
   const step1Handeler = (e, data) => {
     console.log(data);
     setInterview((interview) => {
@@ -39,7 +41,7 @@ export default function AnnouncementSteps(props) {
     age,
     gender,
     maxPeople,
-    point,
+    standard_point,
     interviewTime
   ) => {
     setInterview((interview) => {
@@ -51,13 +53,13 @@ export default function AnnouncementSteps(props) {
       newCondition.end_standard_age = age[1];
       newCondition.gender = gender;
       newCondition.max_people = maxPeople;
-      newCondition.point = point;
+      newCondition.standard_point = standard_point;
       const times = [];
 
       interviewTime.forEach((time) => {
         if (time.value.length > 0) times.push(time.value);
       });
-      newCondition.interview_time = times;
+      newCondition.interviewTimeList = times;
       return newCondition;
     });
   };
@@ -66,26 +68,44 @@ export default function AnnouncementSteps(props) {
     data.forEach((d) => {
       qlist.push(d.value);
     });
-    setQuestion(qlist);
+    setInterview((interview) => {
+      let newCondition = { ...interview };
+      newCondition.questionList = qlist;
+      return newCondition;
+    });
   };
 
   const step4Handeler = () => {
     console.log(interview);
-    console.log(question);
-    axios.post(
-      "http://localhost:8080/interviews",
-      {
-        interview,
-      },
-      {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          // Accept: "application/json",
-          // "Access-Control-Allow-Origin": "http://localhost:8080",
-        },
-        // withCredentials: true,
-      }
-    );
+    axios
+      .post(
+        "http://localhost:8080/interviews?questionContentList=",
+        JSON.stringify(interview),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            // Accept: "application/json",
+            // "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          // withCredentials: true,
+        }
+      )
+      .then((response) => {
+        setOpen(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
   return (
     <div>
@@ -107,9 +127,18 @@ export default function AnnouncementSteps(props) {
       <AnnouncementStep4
         value={props.value}
         interview={interview}
-        question={question}
+        question={interview.questionList}
         step4Handeler={step4Handeler}
       ></AnnouncementStep4>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <MuiAlert
+          onClose={handleClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          등록성공
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 }
