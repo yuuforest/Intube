@@ -51,6 +51,7 @@ public class S3Uploader {
 //        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         //파일 형식 구하기
         String ext = fileName.split("\\.")[1];
+        System.out.println("ext >>> " + ext);
         String contentType = "";
 
         //content type을 지정해서 올려주지 않으면 자동으로 "application/octet-stream"으로 고정이 되서 링크 클릭시 웹에서 열리는게 아니라 자동 다운이 시작됨.
@@ -73,9 +74,9 @@ public class S3Uploader {
         objMeta.setContentType(contentType);
         objMeta.setContentLength(uploadFile.getInputStream().available());
 
-        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile.getInputStream(), objMeta)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-//        amazonS3Client.putObject(S3Bucket, fileName, uploadFile.getInputStream(), objMeta);
+//        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile.getInputStream(), objMeta)
+//                .withCannedAcl(CannedAccessControlList.PublicRead));
+        amazonS3Client.putObject(S3Bucket, fileName, uploadFile.getInputStream(), objMeta);
         String result = amazonS3Client.getUrl(S3Bucket, fileName).toString();
         return result;
     }
@@ -85,14 +86,14 @@ public class S3Uploader {
         String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.') + 1);
         String o_FileName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
         String StrToday = (new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
-        String strFileName = "_"+StrToday+"."+ext;
+        String strFileName = "_" + StrToday + "." + ext;
 
         File convertFile = new File(System.getProperty("user.dir") + "/" + strFileName);
 //        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
 //            try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
 //                fos.write(file.getBytes());
 //            }
-            return Optional.of(convertFile);
+        return Optional.of(convertFile);
 //        }
 //        return Optional.empty();
     }
