@@ -34,16 +34,14 @@ public class S3Uploader {
 
     // S3로 파일 업로드하기
     public String upload(MultipartFile uploadFile, String dirName) throws IOException {
-        // 추가
         String ext = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf('.') + 1);
         String o_FileName = uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf('.'));
         String StrToday = (new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
         String strFileName = "_" + StrToday + "." + ext;
 
-        String fileName = dirName + "/" + strFileName;  // S3에 저장된 파일 이름
+        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();  // S3에 저장된 파일 이름
 
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
-//        removeNewFile(uploadFile);
         return fileName;
     }
 
@@ -56,7 +54,6 @@ public class S3Uploader {
 
     // S3로 업로드
     private String putS3(MultipartFile uploadFile, String fileName) throws IOException {
-        // 변경
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(uploadFile.getContentType());
         objectMetadata.setContentLength(uploadFile.getSize());
@@ -65,7 +62,6 @@ public class S3Uploader {
         amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, inputStream, objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
-//        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         String result = amazonS3Client.getUrl(S3Bucket, fileName).toString();
         return result;
     }
