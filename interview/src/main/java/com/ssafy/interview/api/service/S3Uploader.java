@@ -2,6 +2,7 @@ package com.ssafy.interview.api.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,13 +26,13 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String S3Bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("error : MultipartFile -> file convert fail"));
-        return upload(uploadFile, dirName);
-    }
+//    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+//        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("error : MultipartFile -> file convert fail"));
+//        return upload(multipartFile, dirName);
+//    }
 
     // S3로 파일 업로드하기
-    private String upload(File uploadFile, String dirName) {
+    private String upload(MultipartFile uploadFile, String dirName) throws IOException {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();  // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
 //        removeNewFile(uploadFile);
@@ -46,8 +47,12 @@ public class S3Uploader {
     }
 
     // S3로 업로드
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+    private String putS3(MultipartFile uploadFile, String fileName) throws IOException {
+//        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(uploadFile.getInputStream().available());
+
+        amazonS3Client.putObject(S3Bucket, fileName, uploadFile.getInputStream(), objMeta);
         String result = amazonS3Client.getUrl(S3Bucket, fileName).toString();
         return result;
     }
