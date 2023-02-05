@@ -1,8 +1,10 @@
 package com.ssafy.interview.api.service.interview;
 
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
+import com.ssafy.interview.api.request.interview.InterviewSearchByApplicantStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
+import com.ssafy.interview.api.response.interview.InterviewApplicantDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.api.response.interview.InterviewTimeLoadRes;
@@ -58,6 +60,17 @@ public class InterviewServiceImpl implements InterviewService {
             user = userOptional.get();
         }
         return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterview_state(), interviewSearchByStateReq.getWord(), pageable);
+    }
+
+    // 답변자 신청 상태별 조회
+    @Override
+    public Page<InterviewApplicantDetailRes> findInterviewByApplicantState(String email, InterviewSearchByApplicantStateReq interviewSearchByApplicantStateReq, Pageable pageable) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        User user = null;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+        }
+        return interviewRepository.findInterviewByApplicantState(user.getId(), interviewSearchByApplicantStateReq.getApplicant_state(), interviewSearchByApplicantStateReq.getWord(), pageable);
     }
 
     // 인터뷰 공고 생성 Method
