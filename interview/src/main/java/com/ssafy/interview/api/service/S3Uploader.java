@@ -50,7 +50,7 @@ public class S3Uploader {
     private String putS3(MultipartFile uploadFile, String fileName) throws IOException {
 //        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         //파일 형식 구하기
-        String ext = fileName.split("\\.")[1];
+        String ext = uploadFile.getOriginalFilename().split("\\.")[1];
         System.out.println("ext >>> " + ext);
         String contentType = "";
 
@@ -74,9 +74,9 @@ public class S3Uploader {
         objMeta.setContentType(contentType);
         objMeta.setContentLength(uploadFile.getInputStream().available());
 
-//        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile.getInputStream(), objMeta)
-//                .withCannedAcl(CannedAccessControlList.PublicRead));
-        amazonS3Client.putObject(S3Bucket, fileName, uploadFile.getInputStream(), objMeta);
+        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile.getInputStream(), objMeta)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+//        amazonS3Client.putObject(S3Bucket, fileName, uploadFile.getInputStream(), objMeta);
         String result = amazonS3Client.getUrl(S3Bucket, fileName).toString();
         return result;
     }
