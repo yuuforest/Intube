@@ -144,7 +144,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 2. 쿠키에 저장 - response header 넣어서 보냄
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .domain("i8a303.p.ssafy.io") // 쿠키 도메인 설정
+                .domain("52.78.72.74") // 쿠키 도메인 설정
                 .maxAge(expireTime)
                 .path("/")
                 .secure(true)
