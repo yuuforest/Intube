@@ -163,7 +163,7 @@ public class AuthController {
             String confirm = emailService.sendAuthCode(emailInfo.getEmail());
 
             // 인증코드를 redis에 저장
-            authService.setAuthKey(emailInfo.getEmail() + "-email", confirm, 60);
+            authService.setAuthKey(emailInfo.getEmail() + "-email", confirm, 3600);
 
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
         } catch (IllegalArgumentException e) {
@@ -243,7 +243,7 @@ public class AuthController {
             User user = userService.findByEmail(email).get();
 
             // Access token blacklist에 추가
-            authService.setAuthKey(user.getEmail()+"-BlackList", "Forced expiration", 60);
+            authService.setAuthKey(user.getEmail()+"-BlackList", "Forced expiration", 3600);
 
             // Refresh token redis에서 삭제
             authService.deleteAuthKey(user.getEmail());
