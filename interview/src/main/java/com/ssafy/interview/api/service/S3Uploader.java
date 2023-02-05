@@ -34,7 +34,7 @@ public class S3Uploader {
     private String upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();  // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
-        removeNewFile(uploadFile);
+//        removeNewFile(uploadFile);
         return fileName;
     }
 
@@ -60,12 +60,12 @@ public class S3Uploader {
         String strFileName = "_"+StrToday+"."+ext;
 
         File convertFile = new File(System.getProperty("user.dir") + "/" + strFileName);
-        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
-                fos.write(file.getBytes());
-            }
+//        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
+//            try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
+//                fos.write(file.getBytes());
+//            }
             return Optional.of(convertFile);
-        }
-        return Optional.empty();
+//        }
+//        return Optional.empty();
     }
 }
