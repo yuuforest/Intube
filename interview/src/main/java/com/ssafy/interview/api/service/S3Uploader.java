@@ -26,13 +26,13 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String S3Bucket;
 
-//    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-//        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("error : MultipartFile -> file convert fail"));
-//        return upload(multipartFile, dirName);
-//    }
+    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("error : MultipartFile -> file convert fail"));
+        return upload(uploadFile, dirName);
+    }
 
     // S3로 파일 업로드하기
-    public String upload(MultipartFile uploadFile, String dirName) throws IOException {
+    private String upload(File uploadFile, String dirName) throws IOException {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();  // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
 //        removeNewFile(uploadFile);
@@ -47,35 +47,36 @@ public class S3Uploader {
     }
 
     // S3로 업로드
-    private String putS3(MultipartFile uploadFile, String fileName) throws IOException {
-//        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+    private String putS3(File uploadFile, String fileName) throws IOException {
+        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         //파일 형식 구하기
-        String ext = uploadFile.getOriginalFilename().split("\\.")[1];
-        System.out.println("ext >>> " + ext);
-        String contentType = "";
+//        String ext = uploadFile.getOriginalFilename().split("\\.")[1];
+//        System.out.println("ext >>> " + ext);
+//        String contentType = "";
 
         //content type을 지정해서 올려주지 않으면 자동으로 "application/octet-stream"으로 고정이 되서 링크 클릭시 웹에서 열리는게 아니라 자동 다운이 시작됨.
-        switch (ext) {
-            case "jpeg":
-                contentType = "image/jpeg";
-                break;
-            case "png":
-                contentType = "image/png";
-                break;
-            case "txt":
-                contentType = "text/plain";
-                break;
-            case "csv":
-                contentType = "text/csv";
-                break;
-        }
+//        switch (ext) {
+//            case "jpeg":
+//                contentType = "image/jpeg";
+//                break;
+//            case "png":
+//                contentType = "image/png";
+//                break;
+//            case "txt":
+//                contentType = "text/plain";
+//                break;
+//            case "csv":
+//                contentType = "text/csv";
+//                break;
+//        }
 
-        ObjectMetadata objMeta = new ObjectMetadata();
-        objMeta.setContentType(contentType);
-        objMeta.setContentLength(uploadFile.getInputStream().available());
+//        ObjectMetadata objMeta = new ObjectMetadata();
+//        objMeta.setContentType(contentType);
+//        objMeta.setContentLength(uploadFile.getInputStream().available());
 
-        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile.getInputStream(), objMeta)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+//        amazonS3Client.putObject(new PutObjectRequest(S3Bucket, fileName, uploadFile.getInputStream(), objMeta)
+//                .withCannedAcl(CannedAccessControlList.PublicRead));
+        
 //        amazonS3Client.putObject(S3Bucket, fileName, uploadFile.getInputStream(), objMeta);
         String result = amazonS3Client.getUrl(S3Bucket, fileName).toString();
         return result;
