@@ -100,6 +100,34 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
     }
 
     @Override
+    public Page<InterviewApplicantDetailRes> findInterviewByApplicantState(Long user_id, int applicantState, String word, Pageable pageable) {
+        List<InterviewApplicantDetailRes> content = jpaQueryFactory
+                .select(new QInterviewApplicantDetailRes(qInterview, qUser, qInterviewTime))
+                .from(qInterview)
+                .leftJoin(qInterview.user, qUser)
+                .leftJoin(qInterview.interviewTimeList, qInterviewTime)
+                .leftJoin(qInterviewTime.applicantList, qApplicant)
+                .where(qApplicant.applicantState.eq(applicantState), qApplicant.user.id.eq(user_id))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        for (InterviewApplicantDetailRes detail: content) {
+            detail.setApplicant_state(applicantState);
+        }
+
+        JPAQuery<Applicant> countQuery = jpaQueryFactory
+                .select(qApplicant)
+                .from(qApplicant)
+                .leftJoin(qApplicant.interviewTime, qInterviewTime)
+                .fetchJoin()
+                .where(wordEq(word), qApplicant.user.id.eq(user_id), qApplicant.applicantState.eq(applicantState));
+
+
+        return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
+    }
+
+    @Override
     public InterviewDetailRes findDetailInterview(Long user_id, Long interview_id) {
         return jpaQueryFactory
                 .select(new QInterviewDetailRes(qInterview, qUser))
@@ -116,6 +144,17 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .from(qApplicant)
                 .leftJoin(qApplicant.interviewTime, qInterviewTime)
                 .where(qInterviewTime.interview.id.eq(interview_id), qApplicant.user.id.eq(user_id))
+                .fetchFirst(); // limit 1
+
+        return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
+    }
+
+    @Override
+    public Boolean existInterviewByUserId(Long user_id, Long interview_id) {
+        Long fetchOne = jpaQueryFactory
+                .select(qInterview.id)
+                .from(qInterview)
+                .where(qInterview.id.eq(interview_id), qInterview.user.id.eq(user_id))
                 .fetchFirst(); // limit 1
 
         return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)

@@ -1,9 +1,11 @@
 package com.ssafy.interview.api.controller;
 
 
+import com.ssafy.interview.api.request.interview.InterviewSearchByApplicantStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
 import com.ssafy.interview.api.request.user.*;
+import com.ssafy.interview.api.response.interview.InterviewApplicantDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.api.response.interview.InterviewTimeLoadRes;
 import com.ssafy.interview.api.response.user.*;
@@ -445,6 +447,22 @@ public class UserController {
         String email = userDetails.getUsername();
 
         return ResponseEntity.status(200).body(userService.findIntervieweeMyPage(email));
+    }
+
+    @PostMapping("/interviewee")
+    @ApiOperation(value = "답변자 신청 상태별 공고 조회", notes = "조회할 신청자 상태와 검색어 그리고 pageNumber를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<Page<InterviewApplicantDetailRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchByApplicantStateReq interviewSearchByApplicantStateReq,
+                                                                                            @PageableDefault(size = 10) Pageable pageable, @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        return ResponseEntity.status(200).body(interviewService.findInterviewByApplicantState(email, interviewSearchByApplicantStateReq, pageable));
     }
 
 }
