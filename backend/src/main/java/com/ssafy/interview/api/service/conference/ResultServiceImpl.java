@@ -32,4 +32,22 @@ public class ResultServiceImpl implements ResultService {
         }
         return res;
     }
+
+    @Override
+    public List<DialogRes> dialogInQuestion(Long conferenceID, Long questionID) {
+        List<Dialog> dialogs = dialogRepository.findByConference_idAndQuestion_id(conferenceID, questionID).get();
+        List<DialogRes> res = new ArrayList<>();
+        for (Dialog dialog : dialogs) {
+            Long questionId = dialog.getQuestion() == null ? null : dialog.getQuestion().getId();
+            res.add(DialogRes.DialogResBuilder()
+                    .dialogID(dialog.getId())
+                    .userID(dialog.getUser().getId())
+                    .conferenceID(dialog.getConference().getId())
+                    .questionID(questionId)
+                    .content(dialog.getContent())
+                    .timestamp(dialog.getTimestamp())
+                    .build());
+        }
+        return res;
+    }
 }

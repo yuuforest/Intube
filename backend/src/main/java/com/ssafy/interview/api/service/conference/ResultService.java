@@ -8,4 +8,5 @@ public interface ResultService {
 
     // [Dialog Table]
     List<DialogRes> dialogInAll(Long conferenceID);
+    List<DialogRes> dialogInQuestion(Long conferenceID, Long questionID);
 }

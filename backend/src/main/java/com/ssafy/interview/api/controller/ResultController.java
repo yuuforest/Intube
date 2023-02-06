@@ -30,12 +30,8 @@ public class ResultController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<List<DialogRes>> dialogInAll(@RequestParam(value="conferenceID") Long conferenceID) {
-        List<DialogRes> allDialog = resultService.dialogInAll(conferenceID);
-        if(allDialog == null) {
-            return null;
-        } else {
-            return ResponseEntity.status(200).body(allDialog);
-        }
+        List<DialogRes> dialogs = resultService.dialogInAll(conferenceID);
+        return ResponseEntity.status(200).body(dialogs);
     }
 
     @GetMapping("/question")
@@ -45,8 +41,10 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> dialogInQuestion(@RequestParam(value="interviewID") Long interviewID) {
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    public ResponseEntity<List<DialogRes>> dialogInQuestion(@RequestParam(value="conferenceID") Long conferenceID,
+                                                            @RequestParam(value="questionID") Long questionID) {
+        List<DialogRes> dialogs = resultService.dialogInQuestion(conferenceID, questionID);
+        return ResponseEntity.status(200).body(dialogs);
     }
 
     @PutMapping("/modify")

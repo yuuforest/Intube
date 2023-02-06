@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface DialogRepository extends JpaRepository<Dialog, Long> {
 
     Optional<List<Dialog>> findByConference_idOrderById(Long conferenceID);
+    Optional<List<Dialog>> findByConference_idAndQuestion_id(Long conferenceID, Long QuestionID);
 }
