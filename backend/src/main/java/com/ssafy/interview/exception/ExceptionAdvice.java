@@ -22,6 +22,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(ApplicantAndOwnerDuplicationException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     protected ResponseEntity<? extends BaseResponseBody> applicantAndOwnerDuplicationException(ApplicantAndOwnerDuplicationException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(BaseResponseBody.of(-122, e.getMessage() + " : 자신이 등록한 인터뷰는 신청할 수 없습니다."));
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(BaseResponseBody.of(-122, e.getMessage() + " : 자신이 등록한 인터뷰는 신청할 수 없습니다."));
     }
 }

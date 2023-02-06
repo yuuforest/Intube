@@ -31,7 +31,7 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      *
      * @param user_id        로그인한 질문자 id
      * @param interviewState 인터뷰 상태
-     * @param word         검색어
+     * @param word           검색어
      * @param pageable       페이지 정보
      * @return 검색 결과
      */
@@ -42,7 +42,7 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      *
      * @param user_id        로그인한 질문자 id
      * @param applicantState 인터뷰 상태
-     * @param word         검색어
+     * @param word           검색어
      * @param pageable       페이지 정보
      * @return 검색 결과
      */
@@ -69,7 +69,8 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      * 상품 검색
      *
      * @param user_id      로그인한 유저 Id
+     * @param interview_id 해당 인터뷰 Id
      * @return 검색 결과
      */
-    Boolean existInterviewByUserId(Long user_id);
+    Boolean existInterviewByUserId(Long user_id, Long interview_id);
 }
