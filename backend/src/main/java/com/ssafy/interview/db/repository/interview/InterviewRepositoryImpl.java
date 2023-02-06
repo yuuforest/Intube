@@ -15,6 +15,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 
@@ -56,7 +57,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         List<Long> findDoneId = jpaQueryFactory.select(qInterview.id)
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), qInterview.user.id.eq(user_id), qInterview.interviewState.eq(interviewState))
+                .where(wordEq(word), qInterview.user.id.eq(user_id), interviewStateEq(interviewState))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -93,7 +94,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .select(qInterview)
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), qInterview.interviewState.eq(interviewState));
+                .where(wordEq(word), interviewStateEq(interviewState));
 
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
@@ -112,7 +113,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        for (InterviewApplicantDetailRes detail: content) {
+        for (InterviewApplicantDetailRes detail : content) {
             detail.setApplicant_state(applicantState);
         }
 
@@ -162,6 +163,14 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 
     private BooleanExpression wordEq(String word) {
         return word.isEmpty() ? null : qInterview.title.contains(word);
+    }
+
+    private BooleanExpression interviewStateEq(int interviewState) {
+        if (interviewState == 0) {
+            return null;
+        } else {
+            return qInterview.interviewState.eq(interviewState);
+        }
     }
 
     private BooleanExpression categoryEq(String categoryName) {
