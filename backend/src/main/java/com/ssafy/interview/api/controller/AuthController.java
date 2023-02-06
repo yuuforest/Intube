@@ -57,6 +57,9 @@ public class AuthController {
     public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo) {
         logger.info("login call!");
         try {
+            // 로그아웃 처리했던 코드 되돌리기
+            authService.deleteAuthKey(loginInfo.getEmail()+"-BlackList");
+
             // Access, Refresh token 생성
             Map<String, String> tokens = authService.getToken(loginInfo);
 
@@ -66,7 +69,7 @@ public class AuthController {
             }
 
             // refresh token 저장
-            ResponseCookie cookie = authService.setRefreshToken(loginInfo.getEmail(), tokens.get("refreshToken"), 60);
+            ResponseCookie cookie = authService.setRefreshToken(loginInfo.getEmail(), tokens.get("refreshToken"));
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -133,7 +136,7 @@ public class AuthController {
             String refreshToken = JwtTokenUtil.getRefreshToken(email);
 
             // refresh token 저장
-            ResponseCookie cookie = authService.setRefreshToken(email, refreshToken, 60);
+            ResponseCookie cookie = authService.setRefreshToken(email, refreshToken);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -162,8 +165,8 @@ public class AuthController {
 
             String confirm = emailService.sendAuthCode(emailInfo.getEmail());
 
-            // 인증코드를 redis에 저장
-            authService.setAuthKey(emailInfo.getEmail() + "-email", confirm, 60);
+            // 인증코드를 redis에 저장 (5분)
+            authService.setAuthKey(emailInfo.getEmail() + "-email", confirm, 300000);
 
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
         } catch (IllegalArgumentException e) {
@@ -243,7 +246,7 @@ public class AuthController {
             User user = userService.findByEmail(email).get();
 
             // Access token blacklist에 추가
-            authService.setAuthKey(user.getEmail()+"-BlackList", "Forced expiration", 60);
+            authService.setAccessToken(user.getEmail());
 
             // Refresh token redis에서 삭제
             authService.deleteAuthKey(user.getEmail());

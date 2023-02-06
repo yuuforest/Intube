@@ -58,7 +58,6 @@ public class InterviewSaveReq {
     @Temporal(TemporalType.DATE)
     Date download_expiration;
 
-
     @ApiModelProperty(example = "[2023-02-20T11:00, 2023-02-21T11:00, 2023-02-22T11:00]", value = "인터뷰 신청가능한 시간 리스트")
     @JsonSerialize(contentUsing = JsonDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")

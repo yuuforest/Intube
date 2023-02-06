@@ -342,7 +342,7 @@ public class UserController {
             User user = userService.findByEmail(email).get();
 
             // Access token blacklist에 추가
-            authService.setAuthKey(user.getEmail()+"-BlackList", "Forced expiration", 60);
+            authService.setAccessToken(user.getEmail());
 
             // Refresh token redis에서 삭제
             authService.deleteAuthKey(user.getEmail());
