@@ -14,6 +14,7 @@ import com.ssafy.interview.common.util.JwtTokenUtil;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,10 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder passwordEncoder;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
+    @Value("${jwt.expiration.access}")
+    int accessExpireTime;
+    @Value("${jwt.expiration.refresh}")
+    int refreshExpireTime;
 
     @Override
     public String getKakaoAccessToken(String code) {
@@ -138,14 +143,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseCookie setRefreshToken(String email, String refreshToken, int expireTime) {
+    public ResponseCookie setRefreshToken(String email, String refreshToken) {
         // 1. Redis에 저장 - 만료 시간 설정을 통해 자동 삭제 처리
-        setAuthKey(email, refreshToken, expireTime);
+        setAuthKey(email, refreshToken, refreshExpireTime);
 
         // 2. 쿠키에 저장 - response header 넣어서 보냄
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .domain("i8a303.p.ssafy.io")
-                .maxAge(expireTime)
+                .maxAge(refreshExpireTime)
                 .path("/")
 //                .secure(true)
 //                .sameSite("None")
@@ -153,6 +158,11 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         return cookie;
+    }
+
+    @Override
+    public void setAccessToken(String email) {
+        setAuthKey(email+"-BlackList", "Forced expiration", accessExpireTime);
     }
 
     @Override
@@ -208,7 +218,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void setAuthKey(String key, String value, int expireTime) {
-        redisTemplate.opsForValue().set(key, value, expireTime, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, value, expireTime, TimeUnit.MILLISECONDS);
     }
 
     @Override

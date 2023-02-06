@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findPassword(String name, String email) {
-        return userRepository.findEmail(name, email);
+        return userRepository.findPassword(name, email);
     }
 
     @Transactional
