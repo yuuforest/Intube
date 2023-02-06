@@ -1,5 +1,5 @@
 import React from 'react';
-import InterviewListItemDetail from 'components/Interview/InterviewListItemDetail';
+import MatchingInterviewListItemDetail from 'pages/Interview/MatchingInterviewListItemDetail';
 
 export default function MatchListItem(props) {
 
@@ -12,8 +12,8 @@ export default function MatchListItem(props) {
   return (
     <div>
     <p onClick={handleClickOpen}>{props.interview.interview_start_time.slice(11)}: {props.interview.title}</p>
-    {/* <InterviewListItemDetail
-     open={open} setOpen={setOpen} interview={props.interview} /> */}
+    <MatchingInterviewListItemDetail
+     open={open} setOpen={setOpen} interview={props.interview} />
     </div>
   );
 }
