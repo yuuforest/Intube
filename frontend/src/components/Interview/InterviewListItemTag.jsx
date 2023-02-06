@@ -34,7 +34,7 @@ export default function InterviewListItemTag(props) {
           color="primary"
         />
       )}
-      {props.interview.category_name === "N:1" && (
+      {props.interview.category_name === "1:N" && (
         <Chip
           label="1:N 인터뷰"
           size="small"
@@ -42,7 +42,7 @@ export default function InterviewListItemTag(props) {
           color="primary"
         />
       )}
-      {props.interview.category_name === "아바타" && (
+      {props.interview.category_name === "avatar" && (
         <Chip
           label="아바타 인터뷰"
           size="small"

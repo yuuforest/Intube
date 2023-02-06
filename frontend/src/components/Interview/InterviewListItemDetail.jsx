@@ -27,7 +27,7 @@ export default function InterviewListItemDetail(props) {
   const onClickApply = () => {
     axios
       .post(
-        "http://localhost:8080/interviews/apply/" + applyTime,
+        "http://i8a303.p.ssafy.io:8081/interviews/apply/" + applyTime,
         {},
         {
           headers: {

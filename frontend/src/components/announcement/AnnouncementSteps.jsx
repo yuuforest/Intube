@@ -79,7 +79,7 @@ export default function AnnouncementSteps(props) {
     console.log(interview);
     axios
       .post(
-        "http://localhost:8080/interviews?questionContentList=",
+        "http://i8a303.p.ssafy.io:8081/interviews?questionContentList=",
         JSON.stringify(interview),
         {
           headers: {

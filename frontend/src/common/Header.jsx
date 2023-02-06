@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -17,8 +17,17 @@ import "./Common.css";
 export default function DenseAppBar() {
   // const userInfo = useSelector(state => state.counter.user);
   // console.log(userInfo);
+  const [checked, setChecked] = React.useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    console.log(checked);
+  };
   const [userInfo, setUserInfo] = useState([]);
   useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = () => {
     axios
       .get("http://i8a303.p.ssafy.io:8081/user/me", {
         headers: {
@@ -32,7 +41,7 @@ export default function DenseAppBar() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  };
   const loginButton = [
     {
       text: "로그인",
@@ -141,7 +150,12 @@ export default function DenseAppBar() {
       </Toolbar>
 
       <Drawer anchor="left" open={state["left"]} onClose={toggleDrawer(false)}>
-        <Sidebar toggleDrawer={toggleDrawer} />
+        <Sidebar
+          toggleDrawer={toggleDrawer}
+          handleChange={handleChange}
+          checked={checked}
+          userInfo={userInfo}
+        />
       </Drawer>
     </div>
   );

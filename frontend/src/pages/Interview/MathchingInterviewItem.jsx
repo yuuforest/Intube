@@ -12,51 +12,13 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ContentPasteRoundedIcon from "@mui/icons-material/ContentPasteRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
-import InterviewListItemDetail from "./InterviewListItemDetail";
+import InterviewListItemDetail from "components/Interview/InterviewListItemDetail";
 import InterviewListItemTag from "components/Interview/InterviewListItemTag";
-import "./InterviewListItem.css";
+import "components/Interview/InterviewListItem.css";
 
 export default function InterviewListItem(props) {
   const [open, setOpen] = React.useState(false);
-  const [interview, setInterview] = React.useState({
-    id: "",
-    category_name: "",
-    title: "",
-    description: "",
-    estimated_time: "",
-    start_standard_age: "",
-    end_standard_age: "",
-    gender: "",
-    max_people: "",
-    standard_point: "",
-    apply_start_time: "",
-    apply_end_time: "",
-    interviewTimeResList: [{ id: "", interview_start_time: "" }],
-    download_expiration: "",
-    owner_id: "",
-    owner_email: "",
-    owner_name: "",
-    owner_phone: "",
-    applicant_state: "",
-  });
   const handleClickOpen = () => () => {
-    axios
-      .get(
-        "http://i8a303.p.ssafy.io:8081/interviews/search/" + props.interview.id,
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setInterview(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
     setOpen(true);
   };
 
@@ -125,7 +87,7 @@ export default function InterviewListItem(props) {
       <InterviewListItemDetail
         open={open}
         setOpen={setOpen}
-        interview={interview}
+        interview={props.interview}
       />
     </div>
   );

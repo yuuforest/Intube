@@ -38,7 +38,7 @@ export default function ManageAnnouncement() {
   const getInterviewList = () => {
     axios
       .post(
-        "http://localhost:8080/user/interviewer",
+        "http://i8a303.p.ssafy.io:8081/user/interviewer",
         JSON.stringify(searchCondition),
         {
           headers: {
@@ -58,7 +58,7 @@ export default function ManageAnnouncement() {
   const onClickDeadline = (e) => {
     axios
       .put(
-        "http://localhost:8080/interviews/interviewer/expired-interview?interview_id=" +
+        "http://i8a303.p.ssafy.io:8081/interviews/interviewer/expired-interview?interview_id=" +
           e.target.value +
           "&interview_state=5",
         {
@@ -79,7 +79,7 @@ export default function ManageAnnouncement() {
   const onClickEnd = (e) => {
     axios
       .put(
-        "http://localhost:8080/interviews/interviewer/expired-interview?interview_id=" +
+        "http://i8a303.p.ssafy.io:8081/interviews/interviewer/expired-interview?interview_id=" +
           e.target.value +
           "&interview_state=6",
         {

@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import InterviewListItem from "./InterviewListItem";
+import MathchingInterviewItem from "pages/Interview/MathchingInterviewItem";
 import { useLocation } from "react-router-dom";
-import "./InterviewList.css";
 
-export default function InterviewList() {
+export default function MathchingInterview() {
   const location = useLocation();
   const state = location.state;
   const [interviewList, setInterviewList] = useState([]);
@@ -14,7 +13,7 @@ export default function InterviewList() {
   const selectInterview = () => {
     axios
       .post(
-        "http://i8a303.p.ssafy.io:8081/interviews/search",
+        "http://i8a303.p.ssafy.io:8081/user/interviewee",
         JSON.stringify(searchCondition),
         {
           headers: {
@@ -37,10 +36,8 @@ export default function InterviewList() {
   }, []);
 
   const searchCondition = {
-    category_name: "",
+    applicant_state: 1,
     word: "",
-    pageNumber: 1,
-    size: 1,
   };
 
   return (
@@ -50,7 +47,7 @@ export default function InterviewList() {
           {interviewList.length > 0 ? (
             interviewList.map((interview) => (
               <Grid item sm={12} md={6} lg={4} xl={3} key={interview.id}>
-                <InterviewListItem interview={interview} />
+                <MathchingInterviewItem interview={interview} />
               </Grid>
             ))
           ) : (

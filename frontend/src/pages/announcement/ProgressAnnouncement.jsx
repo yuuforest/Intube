@@ -15,7 +15,7 @@ export default function ProgressAnnouncement() {
   const [userName, setUserName] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/me", {
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

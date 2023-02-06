@@ -25,7 +25,7 @@ export default function ManageAnswerer() {
   const getAnswererList = () => {
     axios
       .get(
-        "http://localhost:8080/user/interviewer/" +
+        "http://i8a303.p.ssafy.io:8081/user/interviewer/" +
           interview.interviewTimeDetailResList[index].id +
           "/manage-applicant",
         JSON.stringify(searchCondition),
@@ -47,7 +47,7 @@ export default function ManageAnswerer() {
   const acceptHandeler = (e) => {
     axios
       .put(
-        "http://localhost:8080/user/interviewer/accept-applicant?applicant_id=" +
+        "http://i8a303.p.ssafy.io:8081/user/interviewer/accept-applicant?applicant_id=" +
           e.target.value +
           "&applicant_state=2",
         {

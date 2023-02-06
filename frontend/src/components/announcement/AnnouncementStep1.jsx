@@ -15,12 +15,12 @@ export default function AnnouncementStep1(props) {
     },
     {
       url: { one2n },
-      title: "N:1",
+      title: "1:N",
       width: "30%",
     },
     {
       url: { avatar },
-      title: "아바타",
+      title: "avatar",
       width: "20%",
     },
   ];

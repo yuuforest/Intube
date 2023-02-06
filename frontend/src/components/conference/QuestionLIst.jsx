@@ -10,7 +10,7 @@ export default function QuestionLIst(props) {
   useEffect(() => {
     axios
       .get(
-        "http://localhost:8080/conference/question?interviewID=" +
+        "http://i8a303.p.ssafy.io:8081/conference/question?interviewID=" +
           props.interview.id,
         {
           headers: {
