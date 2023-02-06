@@ -1,6 +1,7 @@
 package com.ssafy.interview.db.repository.interview;
 
 import com.querydsl.core.Tuple;
+import com.ssafy.interview.api.response.interview.InterviewApplicantDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.api.response.interview.InterviewTimeLoadRes;
@@ -30,10 +31,22 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      *
      * @param user_id        로그인한 질문자 id
      * @param interviewState 인터뷰 상태
+     * @param word         검색어
      * @param pageable       페이지 정보
      * @return 검색 결과
      */
     Page<InterviewTimeLoadRes> findInterviewByInterviewState(Long user_id, int interviewState, String word, Pageable pageable);
+
+    /**
+     * 답변자가 신청한 인터뷰 공고 신청 상태별 조회
+     *
+     * @param user_id        로그인한 질문자 id
+     * @param applicantState 인터뷰 상태
+     * @param word         검색어
+     * @param pageable       페이지 정보
+     * @return 검색 결과
+     */
+    Page<InterviewApplicantDetailRes> findInterviewByApplicantState(Long user_id, int applicantState, String word, Pageable pageable);
 
     /**
      * 상품 상세정보 조회
@@ -51,4 +64,12 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      * @return 없으면 Null 있으면 해당 객체 결과
      */
     Boolean existApplicantByInterviewId(Long user_id, Long interview_id);
+
+    /**
+     * 상품 검색
+     *
+     * @param user_id      로그인한 유저 Id
+     * @return 검색 결과
+     */
+    Boolean existInterviewByUserId(Long user_id);
 }
