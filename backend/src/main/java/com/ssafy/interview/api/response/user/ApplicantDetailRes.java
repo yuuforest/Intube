@@ -20,7 +20,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("Applicant Response")
+@ApiModel("ApplicantDetailRes")
 public class ApplicantDetailRes {
     @ApiModelProperty(name = "신청자 PK")
     Long id;
