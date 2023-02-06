@@ -64,4 +64,12 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      * @return 없으면 Null 있으면 해당 객체 결과
      */
     Boolean existApplicantByInterviewId(Long user_id, Long interview_id);
+
+    /**
+     * 상품 검색
+     *
+     * @param user_id      로그인한 유저 Id
+     * @return 검색 결과
+     */
+    Boolean existInterviewByUserId(Long user_id);
 }

@@ -12,6 +12,8 @@ import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.interview.*;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.db.repository.interview.*;
+import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
+import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -140,6 +142,12 @@ public class InterviewServiceImpl implements InterviewService {
             interviewTime = interviewTimeOptional.get();
         }
 
+        // 신청여부 중복 체크 - 인터뷰 작성자와 동일인인 경우
+        DuplicateApplicantUserId(user.getName(), user.getId());
+
+        // 신청여부 중복 체크 - 이미 신청한 경우
+        DuplicateApplicantId(user.getName(), user.getId(), interview_time_id);
+
         applicantRepository.save(Applicant.builder().user(user).interviewTime(interviewTime).build());
     }
 
@@ -176,5 +184,28 @@ public class InterviewServiceImpl implements InterviewService {
     public void updateInterviewState(Long interview_id, int interviewState) {
         Interview interview = interviewRepository.findById(interview_id).orElseThrow(() -> new IllegalArgumentException("해당 인터뷰 공고는 없습니다. id=" + interview_id));
         interview.updateInterviewState(interviewState);
+    }
+
+    /**
+     * 인터뷰 신청여부 중복확인 - 이미 신청한 경우
+     *
+     * @param user_id           중복검사 할 로그인 Id
+     * @param interview_time_id 중복검사 할 인터뷰 시작시간 Id
+     */
+    private void DuplicateApplicantId(String name, Long user_id, Long interview_time_id) {
+        if (applicantRepository.existApplicantByUserId(user_id, interview_time_id) != null) {
+            throw new ApplicantDuplicationException(name + "님");
+        }
+    }
+
+    /**
+     * 인터뷰 신청여부 중복확인 - 작성자와 동일인인 경우
+     *
+     * @param user_id 중복검사 할 로그인 Id
+     */
+    private void DuplicateApplicantUserId(String name, Long user_id) {
+        if (interviewRepository.existInterviewByUserId(user_id) == null) {
+            throw new ApplicantAndOwnerDuplicationException(name + "님");
+        }
     }
 }
