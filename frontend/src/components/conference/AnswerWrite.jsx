@@ -12,7 +12,7 @@ export default function AnswerWrite(props) {
   //   console.log(name);
   // };
   const dispatch = useDispatch();
-  const micState = props.micState
+  const micState = props.micState 
   
   const {
     transcript,
