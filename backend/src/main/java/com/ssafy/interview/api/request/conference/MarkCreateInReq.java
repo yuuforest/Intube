@@ -7,12 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("kickUserInReq")
-public class kickUserInReq {
+@ApiModel("markCreateInReq")
+public class MarkCreateInReq {
 
     @ApiModelProperty(name="conference ID")
     Long conferenceID;
 
-    @ApiModelProperty(name="User Email")
-    String userEmail;
+    @ApiModelProperty(name="마크 시간", example = "00:00:00")
+    String markTime;
 }

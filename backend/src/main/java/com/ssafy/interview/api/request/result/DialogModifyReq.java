@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("dialogModifyReq")
-public class dialogModifyReq {
+public class DialogModifyReq {
 
     @ApiModelProperty(name="dialog ID")
     Long dialogID;

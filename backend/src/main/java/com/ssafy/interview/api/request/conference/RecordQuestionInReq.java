@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("RecordQuestionInReq")
-public class recordQuestionInReq {
+public class RecordQuestionInReq {
 
     @ApiModelProperty(name = "Conference ID")
     Long conferenceID;

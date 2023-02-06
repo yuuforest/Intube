@@ -21,18 +21,18 @@ public interface ConferenceService {
     // [Conference History Table]
     ConferenceHistory createConferenceHistory(Long conferenceID, String userEmail, int action);
     void updateConferenceHistory(Long historyID, int action);
-    void kickConferenceHistory(kickUserInReq kickInfo);
+    void kickConferenceHistory(KickUserInReq kickInfo);
     List<User> userInConference(Long ConferenceID);
 
     // [Question Table]
-    void createQuestionInConference(questionCreateInReq questionInfo);
+    void createQuestionInConference(QuestionCreateInReq questionInfo);
     List<Question> questionAllInConference(Long interviewID);
 
     // [Mark Table]
-    void createMarkInConference(markCreateInReq markInfo);
+    void createMarkInConference(MarkCreateInReq markInfo);
 
     // [Dialog Table]
-    void recordQuestionInConference(recordQuestionInReq questionInfo);
-    void recordDialogInConference(recordDialogInReq dialogInfo);
+    void recordQuestionInConference(RecordQuestionInReq questionInfo);
+    void recordDialogInConference(RecordDialogInReq dialogInfo);
 
 }

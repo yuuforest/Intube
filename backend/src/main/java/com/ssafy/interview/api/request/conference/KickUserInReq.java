@@ -7,12 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("questionCreateInReq")
-public class questionCreateInReq {
+@ApiModel("kickUserInReq")
+public class KickUserInReq {
 
-    @ApiModelProperty(name="인터뷰 ID")
-    Long interviewID;
+    @ApiModelProperty(name="conference ID")
+    Long conferenceID;
 
-    @ApiModelProperty(name="질문 내용")
-    String content;
+    @ApiModelProperty(name="User Email")
+    String userEmail;
 }

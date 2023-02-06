@@ -1,7 +1,7 @@
 package com.ssafy.interview.api.controller;
 
 
-import com.ssafy.interview.api.request.result.dialogModifyReq;
+import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.api.service.conference.ResultService;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
@@ -55,7 +55,7 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateOneDialog(@RequestBody dialogModifyReq dialogInfo) {
+    public ResponseEntity<? extends BaseResponseBody> updateOneDialog(@RequestBody DialogModifyReq dialogInfo) {
         resultService.updateOneDialog(dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
@@ -67,7 +67,7 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestBody List<dialogModifyReq> dialogInfo) {
+    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestBody List<DialogModifyReq> dialogInfo) {
         resultService.updateAllDialog(dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }

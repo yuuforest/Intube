@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("recordDialogInReq")
-public class recordDialogInReq {
+public class RecordDialogInReq {
 
     @ApiModelProperty(name = "User Email")
     String userEmail;

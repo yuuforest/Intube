@@ -83,7 +83,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void kickConferenceHistory(kickUserInReq kickInfo) {
+    public void kickConferenceHistory(KickUserInReq kickInfo) {
         // [질문자가 Conference에 참여중인 참가자를 퇴장시킴]
         User user = userRepository.findByEmail(kickInfo.getUserEmail()).get();
         ConferenceHistory conferenceHistory     // QueryDSL로 최근 기록 딱 하나만 가져올 수도 있음 -> 코드를 변경해야 할까?
@@ -104,7 +104,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void createQuestionInConference(questionCreateInReq questionInfo) {
+    public void createQuestionInConference(QuestionCreateInReq questionInfo) {
         // [Conference 진행 중에 Interview 내에서 새로운 질문 추가]
         Question question = new Question();
         question.setInterview(interviewRepository.findById(questionInfo.getInterviewID()).get());
@@ -119,7 +119,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void createMarkInConference(markCreateInReq markInfo) {
+    public void createMarkInConference(MarkCreateInReq markInfo) {
         // [질문자가 원하는 시간 마크]
         Mark mark = new Mark();
         mark.setConference(conferenceRepository.findById(markInfo.getConferenceID()).get());
@@ -128,7 +128,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void recordQuestionInConference(recordQuestionInReq questionInfo) {
+    public void recordQuestionInConference(RecordQuestionInReq questionInfo) {
         // [Conference 진행 중 각 질문이 시작한 시간 기록]
         Dialog dialog = new Dialog();
         dialog.setConference(conferenceRepository.findById(questionInfo.getConferenceID()).get());
@@ -140,7 +140,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void recordDialogInConference(recordDialogInReq dialogInfo) {
+    public void recordDialogInConference(RecordDialogInReq dialogInfo) {
         // [Conference 진행 중 발언자가 발언한 내용과 그에 대한 정보 기록]
         Dialog now = new Dialog();
         now.setUser(userRepository.findByEmail(dialogInfo.getUserEmail()).get());

@@ -59,7 +59,7 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "historyID") Long historyID,
-                                                                    @RequestBody recordDialogInReq dialogInfo) {
+                                                                    @RequestBody RecordDialogInReq dialogInfo) {
         // [Conference Table]
         conferenceService.endConference(dialogInfo.getConferenceID());
         // [Conference History Table]
@@ -131,7 +131,7 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> createQuestionInConference(@RequestBody questionCreateInReq questionInfo) {
+    public ResponseEntity<? extends BaseResponseBody> createQuestionInConference(@RequestBody QuestionCreateInReq questionInfo) {
         // [Question Table]
         conferenceService.createQuestionInConference(questionInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -157,7 +157,7 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> createMarkInConference(@RequestBody markCreateInReq markInfo) {
+    public ResponseEntity<? extends BaseResponseBody> createMarkInConference(@RequestBody MarkCreateInReq markInfo) {
         // [Mark Table]
         conferenceService.createMarkInConference(markInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -170,7 +170,7 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> recordQuestionInConference(@RequestBody recordQuestionInReq questionInfo) {
+    public ResponseEntity<? extends BaseResponseBody> recordQuestionInConference(@RequestBody RecordQuestionInReq questionInfo) {
         // [Dialog Table]
         conferenceService.recordQuestionInConference(questionInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -183,7 +183,7 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody recordDialogInReq dialogInfo) {
+    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo) {
         // [Dialog Table]
         conferenceService.recordDialogInConference(dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -204,7 +204,7 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> kickUserInConference(@RequestBody kickUserInReq kickInfo) {
+    public ResponseEntity<? extends BaseResponseBody> kickUserInConference(@RequestBody KickUserInReq kickInfo) {
         // [Conference History Table] conferenceID와 userEmail에 해당하는 기록 불러와서 내림차순으로 정렬한 후, 맨 위에 있는 정보를 변경하는 방법
         conferenceService.kickConferenceHistory(kickInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
