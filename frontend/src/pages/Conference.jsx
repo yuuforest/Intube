@@ -1,12 +1,17 @@
 import QuestionLIst from "components/conference/QuestionLIst";
 import NowQuestion from "components/conference/NowQuestion";
-import React from "react";
+import React, { useEffect } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useLocation, useNavigate } from "react-router-dom";
 import AnswererList from "components/conference/AnswererList";
+import { useDispatch } from "react-redux";
+import {
+  setMic,
+  // micState
+} from "store/counter/micSlice.js";
 
 export default function Conference() {
   const location = useLocation();
@@ -24,6 +29,11 @@ export default function Conference() {
     setSubscriber(item);
   };
 
+  // const micstatus = useSelector(micState)
+  const [micState, setMicState] = React.useState(true);
+  const handleMicState = () => {
+    setMicState(!micState);
+  };
   const [state, setState] = React.useState({
     question: "",
     id: "",
@@ -32,6 +42,15 @@ export default function Conference() {
     setState({ ...state, question: item.content, id: item.id });
   };
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  // const changeMic = useCallback(() => {
+  //   dispatch(setMic());
+  // }, [dispatch, micState])
+
+  useEffect(() => {
+    dispatch(setMic());
+  }, [micState, dispatch]);
 
   return (
     <div>
@@ -42,6 +61,7 @@ export default function Conference() {
             userName={userName}
             navigate={navigate}
             handleSubscriber={handleSubscriber}
+            handleMicState={handleMicState}
           ></VideoRoomComponents>
         </Grid>
         <Grid item xs={2}>
@@ -52,7 +72,7 @@ export default function Conference() {
         </Grid>
         <Grid item xs={10}>
           <NowQuestion state={state} />
-          <AnswerWrite state={state}></AnswerWrite>
+          <AnswerWrite state={state} micState={micState}></AnswerWrite>
         </Grid>
         <Grid item xs={2}>
           <AnswererList subscriber={subscriber}></AnswererList>
