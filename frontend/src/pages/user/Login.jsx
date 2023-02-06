@@ -55,7 +55,7 @@ export default function SignIn() {
     validationSchema: validationSchema,
     onSubmit: (response) => {
       let values = {
-        email: "ssafy1@naver.com",
+        email: "ssafy5@naver.com",
         password: "1234",
       };
       alert(JSON.stringify(values, null, 2));
@@ -77,7 +77,7 @@ export default function SignIn() {
             localStorage.setItem("accessToken", data.accessToken);
             console.log(data);
             console.log("엑세스토큰 :", localStorage.getItem("accessToken"));
-            navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+            window.location.replace("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
         .catch((e) => {

@@ -4,17 +4,27 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import InterviewListItem from "./InterviewListItem";
 import { useLocation } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 import "./InterviewList.css";
 
 export default function InterviewList() {
   const location = useLocation();
   const state = location.state;
   const [interviewList, setInterviewList] = useState([]);
-  console.log(state);
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(0);
+  const [searchCondition, setSearchCondition] = React.useState({
+    category_name: "",
+    word: "",
+  });
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
   const selectInterview = () => {
     axios
       .post(
-        "http://i8a303.p.ssafy.io:8081/interviews/search",
+        "http://i8a303.p.ssafy.io:8081/interviews/search?page=" + page,
         JSON.stringify(searchCondition),
         {
           headers: {
@@ -24,8 +34,9 @@ export default function InterviewList() {
         }
       )
       .then((response) => {
-        console.log(response.data.content);
+        console.log(response);
         setInterviewList(response.data.content);
+        setTotalPage(response.data.totalPages);
       })
       .catch((error) => {
         console.error(error);
@@ -34,14 +45,7 @@ export default function InterviewList() {
 
   useEffect(() => {
     selectInterview();
-  }, []);
-
-  const searchCondition = {
-    category_name: "",
-    word: "",
-    pageNumber: 1,
-    size: 1,
-  };
+  }, [page]);
 
   return (
     <div className="interviewList">
@@ -58,6 +62,13 @@ export default function InterviewList() {
           )}
         </Grid>
       </Container>
+
+      <Pagination
+        count={totalPage}
+        onChange={handleChangePage}
+        page={page}
+        color="primary"
+      />
     </div>
   );
 }

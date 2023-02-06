@@ -14,7 +14,7 @@ import "./Announcement.css";
 export default function ManageAnnouncement() {
   const [interviewList, setInterviewList] = useState([]);
   const [searchCondition, setSearchCondition] = useState({
-    interview_state: 4,
+    interview_state: 0,
     word: "",
   });
   const changeState = (e) => {
@@ -107,7 +107,12 @@ export default function ManageAnnouncement() {
       >
         인터뷰 관리
       </Typography>
-      <Button variant="outlined" sx={{ ml: 2, my: 1 }}>
+      <Button
+        variant="outlined"
+        sx={{ ml: 2, my: 1 }}
+        value={0}
+        onClick={changeState}
+      >
         전체
       </Button>
       <Button
