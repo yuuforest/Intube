@@ -22,8 +22,8 @@ public interface UserService {
 	// Interviewer service 시작
 	InterviewerRes findInterviewerMyPage(String email);
 	List<ApplicantDetailRes> findApplicantDetailRes(Long interview_time_id);
-	void updateApplicantState(Long applicant_id, int applicantState);
-	void deleteApplicant(Long applicant_id);
+	void updateApplicantState(String email, Long applicant_id, int applicantState);
+	void deleteApplicant(String email, Long applicant_id);
 	// Interviewer service 끝
 	// Interviewee service 시작
 	IntervieweeRes findIntervieweeMyPage(String email);

@@ -412,8 +412,12 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> acceptApplicant(@RequestParam Long applicant_id,
-                                                                           @RequestParam int applicant_state) {
-        userService.updateApplicantState(applicant_id, applicant_state);
+                                                                      @RequestParam int applicant_state,
+                                                                      @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        userService.updateApplicantState(email, applicant_id, applicant_state);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
@@ -425,8 +429,12 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> refuseApplicant(@RequestParam Long applicant_id) {
-        userService.deleteApplicant(applicant_id);
+    public ResponseEntity<? extends BaseResponseBody> refuseApplicant(@RequestParam Long applicant_id,
+                                                                      @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        userService.deleteApplicant(email, applicant_id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
