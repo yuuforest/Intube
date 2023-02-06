@@ -55,19 +55,23 @@ export default function SignIn() {
     validationSchema: validationSchema,
     onSubmit: (response) => {
       let values = {
-        email: "jos9404@naver.com",
+        email: "ssafy1@naver.com",
         password: "1234",
       };
       alert(JSON.stringify(values, null, 2));
       axios
-        .post("http://localhost:8080/auth/login", JSON.stringify(values), {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-          },
-          withCredentials: true,
-        })
+        .post(
+          "http://i8a303.p.ssafy.io:8081/auth/login",
+          JSON.stringify(values),
+          {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              // Accept: "application/json",
+              "Access-Control-Allow-Origin": "i8a303.p.ssafy.io:8081",
+            },
+            withCredentials: true,
+          }
+        )
         .then(({ data }) => {
           if (data.statusCode === 200) {
             localStorage.setItem("accessToken", data.accessToken);

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
@@ -6,17 +7,63 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import getAnswererList from "json/answerer_list";
 import Checkbox from "@mui/material/Checkbox";
 import { useLocation } from "react-router-dom";
 
-const newList = getAnswererList.answerer_list.map((item) => {
-  return item;
-});
 export default function ManageAnswerer() {
   const location = useLocation();
   const interview = location.state.interview;
   const index = location.state.index;
+  const [AnsewererList, setAnsewererList] = useState([]);
+  const searchCondition = {
+    interview_state: 4,
+    word: "",
+  };
+  useEffect(() => {
+    getAnswererList();
+  }, []);
+  const getAnswererList = () => {
+    axios
+      .get(
+        "http://i8a303.p.ssafy.io:8081/user/interviewer/" +
+          interview.interviewTimeDetailResList[index].id +
+          "/manage-applicant",
+        JSON.stringify(searchCondition),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setAnsewererList(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const acceptHandeler = (e) => {
+    axios
+      .put(
+        "http://i8a303.p.ssafy.io:8081/user/interviewer/accept-applicant?applicant_id=" +
+          e.target.value +
+          "&applicant_state=2",
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        getAnswererList();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <div>
       <Typography
@@ -24,7 +71,9 @@ export default function ManageAnswerer() {
         gutterBottom
         sx={{ fontWeight: "bold", ml: 3, mt: 3, textAlign: "center" }}
       >
-        {interview.title} {interview.interview_time[index]} 지원자 관리
+        {interview.title}{" "}
+        {interview.interviewTimeDetailResList[index].interview_start_time}{" "}
+        지원자 관리
       </Typography>
       <Divider />
       <List>
@@ -59,7 +108,7 @@ export default function ManageAnswerer() {
           </Grid>
         </ListItem>
         <Divider />
-        {newList.map((answerer) => (
+        {AnsewererList.map((answerer) => (
           <div className="list-item" key={answerer.id}>
             <ListItem>
               <Grid
@@ -93,10 +142,24 @@ export default function ManageAnswerer() {
                   </Typography>
                 </Grid>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>
-                  <Button variant="outlined">합격</Button>
-                  <Button variant="outlined" sx={{ ml: 2 }}>
-                    불합격
-                  </Button>
+                  {answerer.applicant_state === 1 ? (
+                    <div>
+                      <Button
+                        variant="outlined"
+                        value={answerer.id}
+                        onClick={acceptHandeler}
+                      >
+                        합격
+                      </Button>
+                      <Button variant="outlined" sx={{ ml: 2 }}>
+                        불합격
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button variant="outlined" value={answerer.id}>
+                      합격
+                    </Button>
+                  )}
                 </Grid>
               </Grid>
             </ListItem>

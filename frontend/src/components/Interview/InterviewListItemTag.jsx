@@ -4,9 +4,10 @@ import { blue, red, green, indigo, yellow } from "@mui/material/colors";
 import "./InterviewListItemTag.css";
 
 export default function InterviewListItemTag(props) {
+  console.log(props);
   return (
     <div className="interview_item-tag">
-      {props.interview.applicant_state === "1" && (
+      {props.interview.applicant_state === 1 && (
         <Chip
           label="신청완료"
           size="small"
@@ -17,7 +18,7 @@ export default function InterviewListItemTag(props) {
           }}
         />
       )}
-      {props.interview.applicant_state === "2" && (
+      {props.interview.applicant_state === 2 && (
         <Chip
           label="매칭완료"
           size="small"
@@ -33,7 +34,7 @@ export default function InterviewListItemTag(props) {
           color="primary"
         />
       )}
-      {props.interview.category_name === "N:1" && (
+      {props.interview.category_name === "1:N" && (
         <Chip
           label="1:N 인터뷰"
           size="small"
@@ -41,7 +42,7 @@ export default function InterviewListItemTag(props) {
           color="primary"
         />
       )}
-      {props.interview.category_name === "아바타" && (
+      {props.interview.category_name === "avatar" && (
         <Chip
           label="아바타 인터뷰"
           size="small"

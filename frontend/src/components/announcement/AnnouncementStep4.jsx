@@ -5,6 +5,7 @@ import "./AnnouncementSteps.css";
 import Divider from "@mui/material/Divider";
 import PaidIcon from "@mui/icons-material/Paid";
 import InterviewListItemTag from "components/Interview/InterviewListItemTag";
+import Button from "@mui/material/Button";
 
 export default function AnnouncementStep4(props) {
   return (
@@ -128,7 +129,7 @@ export default function AnnouncementStep4(props) {
           </Typography>
         </Grid>
         <Grid item xs={9}>
-          {props.interview.interview_time.map((time, index) => (
+          {props.interview.interviewTimeList.map((time, index) => (
             <div key={index}>
               <Typography variant="h6" gutterBottom>
                 - {time.split("T")[0]} {time.split("T")[1]}
@@ -160,7 +161,12 @@ export default function AnnouncementStep4(props) {
           ))}
         </Grid>
       </Grid>
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 3 }} />{" "}
+      <Typography variant="h4" gutterBottom sx={{ textAlign: "center", mt: 4 }}>
+        <Button variant="contained" onClick={props.step4Handeler}>
+          공고등록
+        </Button>
+      </Typography>
     </div>
   );
 }

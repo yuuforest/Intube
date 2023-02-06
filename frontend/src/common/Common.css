@@ -7,3 +7,14 @@
   margin-top: 8px;
   font-size: 12px;
 }
+.Sidebar {
+  background-color: #ffce63;
+  height: 100vh;
+  color: white;
+}
+.sidebar-profile {
+  text-align: center;
+}
+.sidebar-menu .MuiSvgIcon-root {
+  color: white;
+}

@@ -5,6 +5,8 @@ export default class OvVideoComponent extends Component {
   constructor(props) {
     super(props);
     this.videoRef = React.createRef();
+    console.log("videoRef가뭐냐");
+    console.log(this.videoRef);
   }
 
   componentDidMount() {
