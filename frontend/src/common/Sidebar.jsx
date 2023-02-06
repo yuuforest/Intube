@@ -42,14 +42,20 @@ export default function Sidebar(props) {
       text: "신청인터뷰",
       icon: <ApprovalIcon />,
       state: "1",
-      link: "/interview",
+      link: "/interview/matching",
     },
     {
       text: "매칭인터뷰",
       icon: <HandshakeIcon />,
+      state: "2",
       link: "/interview/matching",
     },
-    { text: "완료인터뷰", icon: <AssignmentTurnedInIcon /> },
+    {
+      text: "완료인터뷰",
+      icon: <AssignmentTurnedInIcon />,
+      state: "2",
+      link: "/interview/matching",
+    },
     {
       text: "프로필 수정",
       icon: <ConstructionIcon />,

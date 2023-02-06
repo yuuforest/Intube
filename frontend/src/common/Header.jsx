@@ -12,6 +12,8 @@ import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../components/api/logout";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 import "./Common.css";
 
 export default function DenseAppBar() {
@@ -95,6 +97,7 @@ export default function DenseAppBar() {
           width="130px"
           onClick={(e) => handlePage(e, "/")}
         />
+
         <Box sx={{ flexGrow: 1 }} />
         {/* ------ 로그인 전 -------- */}
         {/* Object.keys(userInfo).length */}

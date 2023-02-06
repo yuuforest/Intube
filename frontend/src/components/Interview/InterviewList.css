@@ -3,3 +3,9 @@
   height: 100vh;
   background-color: #f2f7ff;
 }
+.MuiPagination-ul {
+  justify-content: center;
+}
+.pagination {
+  margin-top: 32px;
+}

@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import MathchingInterviewItem from "pages/Interview/MathchingInterviewItem";
+import MathchingInterviewItem from "pages/Interview/MatchingInterviewItem";
 import { useLocation } from "react-router-dom";
 
 export default function MathchingInterview() {
   const location = useLocation();
   const state = location.state;
+  const searchCondition = {
+    applicant_state: state,
+    word: "",
+  };
   const [interviewList, setInterviewList] = useState([]);
-  console.log(state);
   const selectInterview = () => {
     axios
       .post(
@@ -23,7 +26,6 @@ export default function MathchingInterview() {
         }
       )
       .then((response) => {
-        console.log(response.data.content);
         setInterviewList(response.data.content);
       })
       .catch((error) => {
@@ -33,12 +35,7 @@ export default function MathchingInterview() {
 
   useEffect(() => {
     selectInterview();
-  }, []);
-
-  const searchCondition = {
-    applicant_state: 1,
-    word: "",
-  };
+  }, [state]);
 
   return (
     <div className="interviewList">
@@ -51,7 +48,7 @@ export default function MathchingInterview() {
               </Grid>
             ))
           ) : (
-            <div>신청한 인터뷰가 없습니다. 인터뷰 찾기에서 신청해보세요</div>
+            <div>인터뷰가 없습니다. 인터뷰 찾기에서 신청해보세요</div>
           )}
         </Grid>
       </Container>

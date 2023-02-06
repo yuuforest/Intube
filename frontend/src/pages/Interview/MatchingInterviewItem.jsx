@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -12,7 +11,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ContentPasteRoundedIcon from "@mui/icons-material/ContentPasteRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
-import InterviewListItemDetail from "components/Interview/InterviewListItemDetail";
+import MatchingInterviewListItemDetail from "pages/Interview/MatchingInterviewListItemDetail";
 import InterviewListItemTag from "components/Interview/InterviewListItemTag";
 import "components/Interview/InterviewListItem.css";
 
@@ -84,7 +83,7 @@ export default function InterviewListItem(props) {
         </CardContent>
       </Card>
 
-      <InterviewListItemDetail
+      <MatchingInterviewListItemDetail
         open={open}
         setOpen={setOpen}
         interview={props.interview}
