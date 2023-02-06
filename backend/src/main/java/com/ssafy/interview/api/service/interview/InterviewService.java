@@ -2,8 +2,10 @@ package com.ssafy.interview.api.service.interview;
 
 
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
+import com.ssafy.interview.api.request.interview.InterviewSearchByApplicantStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
+import com.ssafy.interview.api.response.interview.InterviewApplicantDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.api.response.interview.InterviewTimeLoadRes;
@@ -21,6 +23,8 @@ public interface InterviewService {
     Page<InterviewLoadRes> findInterviewByCategory(InterviewSearchReq interviewSearchReq, Pageable pageable);
 
     Page<InterviewTimeLoadRes> findInterviewByInterviewState(String email, InterviewSearchByStateReq interviewSearchByStateReq, Pageable pageable);
+
+    Page<InterviewApplicantDetailRes> findInterviewByApplicantState(String email, InterviewSearchByApplicantStateReq interviewSearchByApplicantStateReq, Pageable pageable);
 
     // 인터뷰 생성
     Interview createInterview(String email, InterviewSaveReq interviewRegisterInfo);
