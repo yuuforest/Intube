@@ -84,7 +84,7 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(history.getId());
     }
 
-    @PostMapping("/out")
+    @PutMapping("/out")
     @ApiOperation(value = "Conference 방에서 참여자가 스스로 퇴장")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -197,7 +197,7 @@ public class ConferenceController {
 //        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 //    }
 
-    @PostMapping("/kick")
+    @PutMapping("/kick")
     @ApiOperation(value = "Conference 진행 중 질문자가 답변자를 퇴장시킴")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
