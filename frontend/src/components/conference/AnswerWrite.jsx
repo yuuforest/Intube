@@ -1,10 +1,8 @@
-import React from "react";
-// import TextField from "@mui/material/TextField";
+import React, { useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   setMic,
-  micState
   } from 'store/counter/micSlice.js';
 
 export default function AnswerWrite(props) {
@@ -14,7 +12,7 @@ export default function AnswerWrite(props) {
   //   console.log(name);
   // };
   const dispatch = useDispatch();
-  const micstatus = useSelector(micState)
+  const micState = props.micState
   
   const {
     transcript,
@@ -22,20 +20,34 @@ export default function AnswerWrite(props) {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
-  const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'ko' });
 
+  useEffect(() => {
+    const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'ko' });
+
+    if (micState) {
+      dispatch(setMic());
+      startListening();
+      resetTranscript();
+    } else {
+      dispatch(setMic())
+      SpeechRecognition.stopListening();
+    }
+  }, [micState, dispatch, resetTranscript])
+  
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
+  
   return (
     <div>
       <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <p>{micstatus ? '적용' : '안됨'}</p>
-      <button onClick={() => {dispatch(setMic()); console.log(micstatus); startListening(); resetTranscript()}}>Start</button>
+      <p>{micState ? '적용' : '안됨'}</p>
+      {/* <button onClick={() => {dispatch(setMic()); console.log(micstatus); startListening(); resetTranscript()}}>Start</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button>
+      <button onClick={resetTranscript}>Reset</button> */}
       <p>{listening ? transcript : ""}</p>
     </div>
   );
+
 }

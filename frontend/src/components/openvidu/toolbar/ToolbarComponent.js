@@ -37,11 +37,11 @@ export default class ToolbarComponent extends Component {
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
-    this.changeMic = this.changeMic(this);
+    this.handleMicState = this.handleMicState.bind(this);
   }
 
-  changeMic() {
-    this.props.changeMic()
+  handleMicState() {
+    this.props.handleMicState()
   }
 
   micStatusChanged() {
@@ -100,7 +100,7 @@ export default class ToolbarComponent extends Component {
               color="inherit"
               className="navButton"
               id="navMicButton"
-              onClick={() => {this.micStatusChanged(); this.changeMic();}}
+              onClick={() => {this.micStatusChanged(); this.handleMicState();}}
             >
               {localUser !== undefined && localUser.isAudioActive() ? (
                 <Mic />
