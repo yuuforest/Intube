@@ -47,14 +47,27 @@ public class ResultController {
         return ResponseEntity.status(200).body(dialogs);
     }
 
-    @PutMapping("/modify")
-    @ApiOperation(value = "발언 내용 수정")
+    @PutMapping("/modify/one")
+    @ApiOperation(value = "하나의 발언 내용 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateDialog(@RequestParam(value="interviewID") Long interviewID) {
+    public ResponseEntity<? extends BaseResponseBody> updateOneDialog(@RequestParam(value="dialogID") Long dialogID,
+                                                                      @RequestParam(value="content") String content) {
+        resultService.updateOneDialog(dialogID, content);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PutMapping("/modify/all")
+    @ApiOperation(value = "모든 발언 내용 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestParam(value="interviewID") Long interviewID) {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 

@@ -3,7 +3,6 @@ package com.ssafy.interview.db.entitiy.conference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.entitiy.interview.Interview;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,5 +31,6 @@ public class Dialog extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+
 
 }

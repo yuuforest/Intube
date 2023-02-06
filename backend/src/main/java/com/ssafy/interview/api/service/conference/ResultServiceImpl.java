@@ -6,6 +6,7 @@ import com.ssafy.interview.db.repository.conference.DialogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,5 +50,12 @@ public class ResultServiceImpl implements ResultService {
                     .build());
         }
         return res;
+    }
+
+    @Override
+    @Transactional
+    public void updateOneDialog(Long dialogID, String content) {
+        Dialog dialog = dialogRepository.findById(dialogID).get();
+        dialog.setContent(content);
     }
 }
