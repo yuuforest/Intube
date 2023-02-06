@@ -1,5 +1,6 @@
 package com.ssafy.interview.api.service.conference;
 
+import com.ssafy.interview.api.request.result.dialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.repository.conference.DialogRepository;
@@ -54,8 +55,8 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     @Transactional
-    public void updateOneDialog(Long dialogID, String content) {
-        Dialog dialog = dialogRepository.findById(dialogID).get();
-        dialog.setContent(content);
+    public void updateOneDialog(dialogModifyReq dialogInfo) {
+        Dialog dialog = dialogRepository.findById(dialogInfo.getDialogID()).get();
+        dialog.setContent(dialogInfo.getContent());
     }
 }
