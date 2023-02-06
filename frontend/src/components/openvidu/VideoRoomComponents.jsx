@@ -61,6 +61,11 @@ class VideoRoomComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
+    this.handleMicState = this.handleMicState.bind(this);
+  }
+
+  handleMicState() {
+    this.props.handleMicState();
   }
 
   componentDidMount() {
@@ -572,6 +577,7 @@ class VideoRoomComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          handleMicState={this.handleMicState}
         />
 
         <DialogExtensionComponent

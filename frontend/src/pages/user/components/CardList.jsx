@@ -18,6 +18,7 @@ export default function BasicCard() {
     navigate("/interview", {state: '1'});
   };
   const goToClose = () => {
+    // TODO: 완료 페이지는 아직 구현안돼서 나중에 state 변경하기
     navigate("/interview", {state: '3'});
   };
   return (
