@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewerResponse")
+@ApiModel("IntervieweeRes")
 public class IntervieweeRes {
 	@ApiModelProperty(name="유저 PK")
 	Long id;

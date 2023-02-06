@@ -208,7 +208,7 @@ public class InterviewServiceImpl implements InterviewService {
      */
     private void DuplicateApplicantUserId(String name, Long user_id, Long interview_id) {
         if (interviewRepository.existInterviewByUserId(user_id, interview_id)) {
-            throw new ApplicantAndOwnerDuplicationException(name + "님");
+            throw new ApplicantAndOwnerDuplicationException(name + "님! 작성자와 동일한 유저입니다.");
         }
     }
 }

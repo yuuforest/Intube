@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel("InterviewerResponse")
+@ApiModel("InterviewerRes")
 public class InterviewerRes{
 	@ApiModelProperty(name="유저 PK")
 	Long id;
