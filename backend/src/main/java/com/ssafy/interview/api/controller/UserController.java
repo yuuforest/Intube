@@ -386,7 +386,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<Page<InterviewTimeLoadRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchByStateReq interviewSearchByStateReq,
-                                                                                     @PageableDefault(size = 10) Pageable pageable, @ApiIgnore Authentication authentication) {
+                                                                                     @PageableDefault(size = 8) Pageable pageable, @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String email = userDetails.getUsername();
 
@@ -466,7 +466,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<Page<InterviewApplicantDetailRes>> findInterviewByCategoryAndWord(@RequestBody InterviewSearchByApplicantStateReq interviewSearchByApplicantStateReq,
-                                                                                            @PageableDefault(size = 10) Pageable pageable, @ApiIgnore Authentication authentication) {
+                                                                                            @PageableDefault(size = 8) Pageable pageable, @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String email = userDetails.getUsername();
 
