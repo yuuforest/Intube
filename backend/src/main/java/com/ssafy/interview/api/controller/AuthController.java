@@ -57,6 +57,9 @@ public class AuthController {
     public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo) {
         logger.info("login call!");
         try {
+            // 로그아웃 처리했던 코드 되돌리기
+            authService.deleteAuthKey(loginInfo.getEmail()+"-BlackList");
+
             // Access, Refresh token 생성
             Map<String, String> tokens = authService.getToken(loginInfo);
 
