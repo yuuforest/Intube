@@ -29,6 +29,7 @@ export default function Sidebar(props) {
     {
       text: "마이페이지",
       icon: <PersonIcon color="primary" />,
+      state: props.checked,
       link: "/mypage",
     },
     {
@@ -56,7 +57,7 @@ export default function Sidebar(props) {
     },
   ];
   const questionerMenu = [
-    { text: "마이페이지", icon: <PersonIcon />, link: "/mypage" },
+    { text: "마이페이지", state: props.checked, icon: <PersonIcon />, link: "/mypage" },
     {
       text: "공고올리기",
       icon: <EditIcon />,
