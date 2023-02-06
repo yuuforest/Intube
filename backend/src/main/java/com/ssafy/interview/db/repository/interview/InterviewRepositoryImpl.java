@@ -150,11 +150,11 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
     }
 
     @Override
-    public Boolean existInterviewByUserId(Long user_id) {
+    public Boolean existInterviewByUserId(Long user_id, Long interview_id) {
         Long fetchOne = jpaQueryFactory
                 .select(qInterview.id)
                 .from(qInterview)
-                .where(qInterview.user.id.eq(user_id))
+                .where(qInterview.id.eq(interview_id), qInterview.user.id.eq(user_id))
                 .fetchFirst(); // limit 1
 
         return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
