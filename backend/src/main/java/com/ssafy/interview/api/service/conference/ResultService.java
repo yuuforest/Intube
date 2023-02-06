@@ -11,4 +11,5 @@ public interface ResultService {
     List<DialogRes> dialogInAll(Long conferenceID);
     List<DialogRes> dialogInQuestion(Long conferenceID, Long questionID);
     void updateOneDialog(dialogModifyReq dialogInfo);
+    void updateAllDialog(List<dialogModifyReq> dialogInfos);
 }

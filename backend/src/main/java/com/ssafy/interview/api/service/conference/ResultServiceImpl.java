@@ -59,4 +59,13 @@ public class ResultServiceImpl implements ResultService {
         Dialog dialog = dialogRepository.findById(dialogInfo.getDialogID()).get();
         dialog.setContent(dialogInfo.getContent());
     }
+
+    @Override
+    @Transactional
+    public void updateAllDialog(List<dialogModifyReq> dialogInfos) {
+        for (dialogModifyReq info : dialogInfos) {
+            Dialog dialog = dialogRepository.findById(info.getDialogID()).get();
+            dialog.setContent(info.getContent());
+        }
+    }
 }

@@ -67,7 +67,8 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestParam(value="interviewID") Long interviewID) {
+    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestBody List<dialogModifyReq> dialogInfo) {
+        resultService.updateAllDialog(dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
