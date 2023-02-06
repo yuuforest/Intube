@@ -143,7 +143,7 @@ public class InterviewServiceImpl implements InterviewService {
         }
 
         // 신청여부 중복 체크 - 인터뷰 작성자와 동일인인 경우
-        DuplicateApplicantUserId(user.getName(), user.getId());
+        DuplicateApplicantUserId(user.getName(), user.getId(), interviewTime.getInterview().getId());
 
         // 신청여부 중복 체크 - 이미 신청한 경우
         DuplicateApplicantId(user.getName(), user.getId(), interview_time_id);
@@ -189,11 +189,12 @@ public class InterviewServiceImpl implements InterviewService {
     /**
      * 인터뷰 신청여부 중복확인 - 이미 신청한 경우
      *
+     * @param name              로그인한 유저 이름
      * @param user_id           중복검사 할 로그인 Id
      * @param interview_time_id 중복검사 할 인터뷰 시작시간 Id
      */
     private void DuplicateApplicantId(String name, Long user_id, Long interview_time_id) {
-        if (applicantRepository.existApplicantByUserId(user_id, interview_time_id) != null) {
+        if (applicantRepository.existApplicantByUserId(user_id, interview_time_id)) {
             throw new ApplicantDuplicationException(name + "님");
         }
     }
@@ -201,10 +202,12 @@ public class InterviewServiceImpl implements InterviewService {
     /**
      * 인터뷰 신청여부 중복확인 - 작성자와 동일인인 경우
      *
-     * @param user_id 중복검사 할 로그인 Id
+     * @param name         로그인한 유저 이름
+     * @param user_id      중복검사 할 로그인 Id
+     * @param interview_id 해당 인터뷰 Id
      */
-    private void DuplicateApplicantUserId(String name, Long user_id) {
-        if (interviewRepository.existInterviewByUserId(user_id) == null) {
+    private void DuplicateApplicantUserId(String name, Long user_id, Long interview_id) {
+        if (interviewRepository.existInterviewByUserId(user_id, interview_id)) {
             throw new ApplicantAndOwnerDuplicationException(name + "님");
         }
     }
