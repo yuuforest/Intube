@@ -1,6 +1,6 @@
 import QuestionLIst from "components/conference/QuestionLIst";
 import NowQuestion from "components/conference/NowQuestion";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";
 import Button from "@mui/material/Button";
@@ -12,12 +12,34 @@ import {
   setMic,
   // micState
 } from "store/counter/micSlice.js";
+import instance from 'components/api/APIController';
 
 export default function Conference() {
   const location = useLocation();
-
   const interview = location.state.interview;
   const userName = location.state.userName;
+  const [userInfo, setUserInfo] = useState([]);
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = () => {
+    instance
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log('userInfo', response.data)
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  
+
   const [subscriber, setSubscriber] = React.useState([
     {
       nickname: "",
@@ -72,7 +94,12 @@ export default function Conference() {
         </Grid>
         <Grid item xs={10}>
           <NowQuestion state={state} />
-          <AnswerWrite state={state} micState={micState}></AnswerWrite>
+          <AnswerWrite
+          state={state}
+          micState={micState}
+          userInfo={userInfo}
+          interview={interview}
+          ></AnswerWrite>
         </Grid>
         <Grid item xs={2}>
           <AnswererList subscriber={subscriber}></AnswererList>
