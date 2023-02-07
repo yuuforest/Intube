@@ -45,7 +45,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         List<InterviewLoadRes> content = jpaQueryFactory
                 .select(new QInterviewLoadRes(qInterview))
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4))
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
@@ -55,7 +55,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         JPAQuery<Interview> countQuery = jpaQueryFactory
                 .select(qInterview)
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4));
 
 
