@@ -116,4 +116,22 @@ public class InterviewController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @DeleteMapping("/cancel/{interview_time_id}")
+    @ApiOperation(value = "인터뷰 공고 신청 취소하기", notes = "해당 interview_time_id를 받아 신청을 취소한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteApplicant(@PathVariable Long interview_time_id, @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String tokenEmail = userDetails.getUsername();
+
+        //유저 email, interview_time_id로 해당 인터뷰를 신청하는 코드
+        interviewService.deleteApplicant(tokenEmail, interview_time_id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
 }

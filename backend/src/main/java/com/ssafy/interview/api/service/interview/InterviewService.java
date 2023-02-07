@@ -35,8 +35,11 @@ public interface InterviewService {
     // 인터뷰관련 질문 생성
     void createQuestion(Interview interview, List<String> questionContentList);
 
-    // 인터뷰관련 질문 생성
+    // 인터뷰 신청하기
     void applyInterview(String email, Long interview_time_id);
+
+    // 인터뷰 신청 취소하기
+    void deleteApplicant(String email, Long interview_time_id);
 
     // 인터뷰 상세정보 조회
     InterviewDetailRes detailInterview(String email, Long interview_time_id);
