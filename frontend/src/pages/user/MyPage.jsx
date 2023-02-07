@@ -40,10 +40,8 @@ export default function Mypage() {
         )
         .then((response) => {
           setUserInfo(response.data)
-          console.log(response.data)
           setCardInfo({match: response.data.conduct_interview_count, apply: response.data.apply_interview_count, complete: response.data.complete_interview_count ,name: ['매칭인터뷰', '신청인터뷰', '완료인터뷰']})
           setCalendarInfo(response.data.conductInterviewTimeList)
-          console.log(response.data.conductInterviewTimeList)
         })
         .catch((error) => {
           console.error(error);
