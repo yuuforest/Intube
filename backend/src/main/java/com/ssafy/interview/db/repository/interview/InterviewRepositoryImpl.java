@@ -114,6 +114,43 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
     }
 
     @Override
+    public List<InterviewTimeLoadRes> findInterviewByInterviewerMyPage(Long user_id, int interviewState) {
+        List<Long> findDoneId = jpaQueryFactory.select(qInterview.id)
+                .from(qInterview)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+                .where(qInterview.user.id.eq(user_id), interviewStateEq(interviewState))
+                .fetch();
+
+        List<InterviewTimeLoadRes> content = jpaQueryFactory
+                .select(new QInterviewTimeLoadRes(qInterview))
+                .from(qInterview)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+                .where(findDoneId.isEmpty() ? qInterview.isNull() : qInterview.id.in(findDoneId))
+                .fetch();
+
+        int i = 0;
+        for (Long id : findDoneId) {
+            List<InterviewTimeDetailRes> timeDetailRes = jpaQueryFactory
+                    .select(new QInterviewTimeDetailRes(
+                            qInterviewTime,
+                            select(qApplicant.count())
+                                    .from(qApplicant)
+                                    .join(qApplicant.interviewTime)
+                                    .where(qApplicant.interviewTime.id.eq(qInterviewTime.id), qApplicant.applicantState.eq(1)),
+                            select(qApplicant.count())
+                                    .from(qApplicant)
+                                    .join(qApplicant.interviewTime)
+                                    .where(qApplicant.interviewTime.id.eq(qInterviewTime.id), qApplicant.applicantState.eq(2))))
+                    .from(qInterviewTime)
+                    .where(qInterviewTime.interview.id.eq(id))
+                    .fetch();
+            content.get(i++).setInterviewTimeDetailResList(timeDetailRes);
+        }
+
+        return content;
+    }
+
+    @Override
     public Page<InterviewApplicantDetailRes> findInterviewByApplicantState(Long user_id, int applicantState, String word, Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
 
