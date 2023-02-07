@@ -16,7 +16,9 @@ public interface AuthService {
 
     Map<String, String> getToken(UserLoginPostReq loginInfo) throws NoSuchElementException;
 
-    ResponseCookie setRefreshToken(String email, String refreshToken, int expireTime);
+    ResponseCookie setRefreshToken(String email, String refreshToken);
+
+    void setAccessToken(String email);
 
     String issueToken(Cookie cookie) throws NullPointerException;
 

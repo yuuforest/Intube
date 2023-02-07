@@ -15,6 +15,7 @@ import com.ssafy.interview.db.repository.interview.ApplicantRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
+import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -117,14 +118,24 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateApplicantState(Long applicant_id, int applicantState) {
+    public void updateApplicantState(String email, Long applicant_id, int applicantState) {
+        User user = userRepository.findByEmail(email).get();
         Applicant applicant = applicantRepository.findById(applicant_id).orElseThrow(() -> new IllegalArgumentException("해당 신청자는 없습니다. id=" + applicant_id));
+
+        // 로그인한 유저와 작성자가 동일한지 여부 확인
+        DuplicateApplicantUserId(user.getName(), user.getId(), applicant.getInterviewTime().getInterview().getId());
 
         applicant.updateApplicantState(applicantState);
     }
 
     @Override
-    public void deleteApplicant(Long applicant_id) {
+    public void deleteApplicant(String email, Long applicant_id) {
+        User user = userRepository.findByEmail(email).get();
+        Applicant applicant = applicantRepository.findById(applicant_id).orElseThrow(() -> new IllegalArgumentException("해당 신청자는 없습니다. id=" + applicant_id));
+
+        // 로그인한 유저와 작성자가 동일한지 여부 확인
+        DuplicateApplicantUserId(user.getName(), user.getId(), applicant.getInterviewTime().getInterview().getId());
+
         applicantRepository.deleteById(applicant_id);
     }
 
@@ -174,7 +185,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findPassword(String name, String email) {
-        return userRepository.findEmail(name, email);
+        return userRepository.findPassword(name, email);
     }
 
     @Transactional
@@ -189,5 +200,18 @@ public class UserServiceImpl implements UserService {
     public void updateTemperature(String email, double temperature) {
         User user = userRepository.findByEmail(email).get();
         user.setTemperature(user.getTemperature()+temperature);
+    }
+
+    /**
+     * 내가 작성한 인터뷰가 맞는지 여부 확인
+     *
+     * @param name         로그인한 유저 이름
+     * @param user_id      중복검사 할 로그인 Id
+     * @param interview_id 해당 인터뷰 Id
+     */
+    private void DuplicateApplicantUserId(String name, Long user_id, Long interview_id) {
+        if (!interviewRepository.existInterviewByUserId(user_id, interview_id)) {
+            throw new ApplicantAndOwnerDuplicationException(name + "님! 작성자와 일치하지않아 권한이 없습니다.");
+        }
     }
 }

@@ -1,22 +1,30 @@
 package com.ssafy.interview.db.repository.interview;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.interview.api.response.interview.*;
+import com.ssafy.interview.common.util.QueryDslUtil;
 import com.ssafy.interview.db.entitiy.QUser;
 import com.ssafy.interview.db.entitiy.interview.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.querydsl.jpa.JPAExpressions.select;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * 유저 모델 관련 디비 쿼리 생성을 위한 구현 정의.
@@ -32,11 +40,14 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 
     @Override
     public Page<InterviewLoadRes> findInterviewByCategory(String categoryName, String word, Pageable pageable) {
+        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
+
         List<InterviewLoadRes> content = jpaQueryFactory
                 .select(new QInterviewLoadRes(qInterview))
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4))
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -53,10 +64,13 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 
     @Override
     public Page<InterviewTimeLoadRes> findInterviewByInterviewState(Long user_id, int interviewState, String word, Pageable pageable) {
+        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
+
         List<Long> findDoneId = jpaQueryFactory.select(qInterview.id)
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), qInterview.user.id.eq(user_id), qInterview.interviewState.eq(interviewState))
+                .where(wordEq(word), qInterview.user.id.eq(user_id), interviewStateEq(interviewState))
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -93,7 +107,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .select(qInterview)
                 .from(qInterview)
                 .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), qInterview.interviewState.eq(interviewState));
+                .where(wordEq(word), interviewStateEq(interviewState));
 
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
@@ -101,6 +115,8 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 
     @Override
     public Page<InterviewApplicantDetailRes> findInterviewByApplicantState(Long user_id, int applicantState, String word, Pageable pageable) {
+        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
+
         List<InterviewApplicantDetailRes> content = jpaQueryFactory
                 .select(new QInterviewApplicantDetailRes(qInterview, qUser, qInterviewTime))
                 .from(qInterview)
@@ -108,11 +124,12 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .leftJoin(qInterview.interviewTimeList, qInterviewTime)
                 .leftJoin(qInterviewTime.applicantList, qApplicant)
                 .where(qApplicant.applicantState.eq(applicantState), qApplicant.user.id.eq(user_id))
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        for (InterviewApplicantDetailRes detail: content) {
+        for (InterviewApplicantDetailRes detail : content) {
             detail.setApplicant_state(applicantState);
         }
 
@@ -160,8 +177,48 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
     }
 
+    private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
+        List<OrderSpecifier> ORDERS = new ArrayList<>();
+
+        if (!isEmpty(pageable.getSort())) {
+            for (Sort.Order order : pageable.getSort()) {
+                Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+
+                switch (order.getProperty()) {
+                    case "apply_start_time":
+                        OrderSpecifier<?> apply_start_time = QueryDslUtil
+                                .getSortedColumn(direction, qInterview, "apply_start_time");
+                        ORDERS.add(apply_start_time);
+                        break;
+                    case "apply_end_time":
+                        OrderSpecifier<?> apply_end_time = QueryDslUtil
+                                .getSortedColumn(direction, qInterview, "apply_end_time");
+                        ORDERS.add(apply_end_time);
+                        break;
+                    case "standard_point":
+                        OrderSpecifier<?> standard_point = QueryDslUtil
+                                .getSortedColumn(direction, qInterview, "standard_point");
+                        ORDERS.add(standard_point);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return ORDERS;
+    }
+
     private BooleanExpression wordEq(String word) {
         return word.isEmpty() ? null : qInterview.title.contains(word);
+    }
+
+    private BooleanExpression interviewStateEq(int interviewState) {
+        if (interviewState == 0) {
+            return null;
+        } else {
+            return qInterview.interviewState.eq(interviewState);
+        }
     }
 
     private BooleanExpression categoryEq(String categoryName) {
