@@ -100,12 +100,13 @@ public class UserServiceImpl implements UserService {
         // 유저 정보 가져오기
         InterviewerRes interviewerRes = userRepository.findInterviewer(email);
 
-        // 인터뷰 시작 시간 가져오기
-        interviewerRes.setConductInterviewTimeList(interviewTimeRepository.findInterviewTimeByOwnerId(interviewerRes.getId()));
+        // 작성한 인터뷰(진행) 리스트 가져오기
+//        interviewerRes.setConductInterviewTimeList(interviewTimeRepository.findInterviewTimeByOwnerId(interviewerRes.getId()));
+        interviewerRes.setConductInterviewList(interviewRepository.findInterviewByInterviewerMyPage(interviewerRes.getId(), 5));
 
         // 인터뷰(모집, 진행, 완료 순) count 가져오기
         interviewerRes.setRecruit_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 4));
-        interviewerRes.setConduct_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 5));
+        interviewerRes.setConduct_interview_count(interviewerRes.getConductInterviewList().size());
         interviewerRes.setComplete_interview_count(interviewRepository.countByUser_IdAndInterviewState(interviewerRes.getId(), 6));
 
         return interviewerRes;

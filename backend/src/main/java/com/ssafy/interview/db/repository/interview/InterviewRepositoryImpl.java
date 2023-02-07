@@ -45,7 +45,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         List<InterviewLoadRes> content = jpaQueryFactory
                 .select(new QInterviewLoadRes(qInterview))
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4))
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
@@ -55,7 +55,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         JPAQuery<Interview> countQuery = jpaQueryFactory
                 .select(qInterview)
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4));
 
 
@@ -111,6 +111,43 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
+    }
+
+    @Override
+    public List<InterviewTimeLoadRes> findInterviewByInterviewerMyPage(Long user_id, int interviewState) {
+        List<Long> findDoneId = jpaQueryFactory.select(qInterview.id)
+                .from(qInterview)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+                .where(qInterview.user.id.eq(user_id), interviewStateEq(interviewState))
+                .fetch();
+
+        List<InterviewTimeLoadRes> content = jpaQueryFactory
+                .select(new QInterviewTimeLoadRes(qInterview))
+                .from(qInterview)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+                .where(findDoneId.isEmpty() ? qInterview.isNull() : qInterview.id.in(findDoneId))
+                .fetch();
+
+        int i = 0;
+        for (Long id : findDoneId) {
+            List<InterviewTimeDetailRes> timeDetailRes = jpaQueryFactory
+                    .select(new QInterviewTimeDetailRes(
+                            qInterviewTime,
+                            select(qApplicant.count())
+                                    .from(qApplicant)
+                                    .join(qApplicant.interviewTime)
+                                    .where(qApplicant.interviewTime.id.eq(qInterviewTime.id), qApplicant.applicantState.eq(1)),
+                            select(qApplicant.count())
+                                    .from(qApplicant)
+                                    .join(qApplicant.interviewTime)
+                                    .where(qApplicant.interviewTime.id.eq(qInterviewTime.id), qApplicant.applicantState.eq(2))))
+                    .from(qInterviewTime)
+                    .where(qInterviewTime.interview.id.eq(id))
+                    .fetch();
+            content.get(i++).setInterviewTimeDetailResList(timeDetailRes);
+        }
+
+        return content;
     }
 
     @Override
