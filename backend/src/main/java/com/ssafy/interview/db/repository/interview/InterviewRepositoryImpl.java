@@ -68,9 +68,8 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 
         List<Long> findDoneId = jpaQueryFactory.select(qInterview.id)
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), qInterview.user.id.eq(user_id), interviewStateEq(interviewState))
-                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -78,8 +77,9 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         List<InterviewTimeLoadRes> content = jpaQueryFactory
                 .select(new QInterviewTimeLoadRes(qInterview))
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(findDoneId.isEmpty() ? qInterview.isNull() : qInterview.id.in(findDoneId))
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
