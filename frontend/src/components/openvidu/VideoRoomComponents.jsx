@@ -24,8 +24,7 @@ import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "http://i8a303.p.ssafy.io:8081/";
+const APPLICATION_SERVER_URL = "http://i8a303.p.ssafy.io:8081/";
 
 class VideoRoomComponent extends Component {
   constructor(props) {
