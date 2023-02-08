@@ -7,7 +7,7 @@ export function logout() {
   console.log("hi");
   console.log(localStorage.getItem("accessToken"));
   axios
-    .delete("http://localhost:8080/auth/logout", {
+    .delete("http://i8a303.p.ssafy.io:8081/auth/logout", {
       headers: {
         "Content-type": "application/json;charset=UTF-8",
         // Accept: "application/json",
@@ -39,7 +39,7 @@ export function logout() {
       if (e.response.data.status === 401) {
         axios
           .get(
-            "http://localhost:8080/auth/issue",
+            "http://i8a303.p.ssafy.io:8081/auth/issue",
             {
               headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -51,7 +51,7 @@ export function logout() {
             ({ data }) => localStorage.setItem("accessToken", data.accessToken),
             console.log("엑세스토큰 재발급 다시 로그아웃 버튼 눌러주세요"),
             axios
-              .delete("http://localhost:8080/auth/logout", {
+              .delete("hhttp://i8a303.p.ssafy.io:8081/auth/logout", {
                 headers: {
                   "Content-type": "application/json;charset=UTF-8",
                   // Accept: "application/json",

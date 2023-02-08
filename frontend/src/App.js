@@ -18,6 +18,7 @@ import Kakaoloading from "./pages/user/Kakaoloading";
 import FindUser from "./pages/user/FindUser";
 import UserUpdate from "./pages/user/UserUpdate";
 import CheckPassword from "./pages/user/CheckPassword";
+import ChangePassword from "./pages/user/ChangePassword";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/userupdate" element={<UserUpdate />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/checkpassword" element={<CheckPassword />}></Route>
+        <Route path="/changepassword" element={<ChangePassword />}></Route>
         <Route path="/KakaoSignup" element={<KakaoSignup />}></Route>
         <Route path="/auth/kakao/callback" element={<Kakaoloading />}></Route>
         <Route path="/findUser" element={<FindUser />}></Route>

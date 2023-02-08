@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function Copyright(props) {
   return (
@@ -35,42 +36,46 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  // const navigate = useNavigate();
-  // const validationSchema = yup.object({
-  //   email: yup
-  //     .string("Enter your email")
-  //     .email("올바른 이메일 형식이 아닙니다."),
-  // });
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
       name: "",
     },
     // validationSchema: validationSchema,
-    onSubmit: (response) => {
+    onSubmit: response => {
       let values = {
-        name: "지원석",
-        email: "jos9404@naver.com",
+        // name: "지원석",
+        // email: "jos9404@naver.com",
+        name: response.name,
+        email: response.email,
       };
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       axios
-        .post("http://localhost:8080/user", JSON.stringify(values), {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-          },
-          withCredentials: true,
-        })
+        .post(
+          "http://i8a303.p.ssafy.io:8081/user/find-password",
+          JSON.stringify(values),
+          {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              // Accept: "application/json",
+              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+            },
+            withCredentials: true,
+          }
+        )
         .then(({ data }) => {
           if (data.statusCode === 200) {
             console.log(data);
-            alert("비밀번호가 이메일로 전송되었습니다. 이메일 확인 바랍니다.");
+            alert(
+              "임시 비밀번호가 이메일로 전송되었습니다. 이메일 확인 바랍니다."
+            );
 
-            // navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+            navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch((e) => {
+        .catch(e => {
           if (e.response.data.statusCode === 404) {
             alert("등록된 회원이 아닙니다...");
           }
@@ -86,7 +91,7 @@ export default function SignIn() {
   const nameChange = ({ target: { value } }) => setIdName(value);
   const phoneChange = ({ target: { value } }) => setIdPhone(value);
 
-  const findEmail = (event) => {
+  const findEmail = event => {
     event.preventDefault();
     let values = {
       // name: idName,
@@ -94,16 +99,20 @@ export default function SignIn() {
       name: "지원석",
       phone: "01099130059",
     };
-    alert(JSON.stringify(values, null, 2));
+    // alert(JSON.stringify(values, null, 2));
     axios
-      .post("http://localhost:8080/user/find-email", JSON.stringify(values), {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          // Accept: "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-        },
-        withCredentials: true,
-      })
+      .post(
+        "http://i8a303.p.ssafy.io:8081/user/find-email",
+        JSON.stringify(values),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            // Accept: "application/json",
+            "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+          },
+          withCredentials: true,
+        }
+      )
       .then(({ data }) => {
         if (data.statusCode === 200) {
           console.log(data);
@@ -111,7 +120,7 @@ export default function SignIn() {
           setCheck(true);
         }
       })
-      .catch((e) => {
+      .catch(e => {
         // if (e.response.data.statusCode === 401) {
         //   alert("비밀번호가 틀렸습니다.");
         // }
@@ -194,15 +203,19 @@ export default function SignIn() {
               required
               fullWidth
               id="name"
-              label="Name"
-              autoFocus
+              label="이름"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+              onBlur={formik.handleBlur}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="이메일 주소"
               name="email"
               autoComplete="email"
               autoFocus

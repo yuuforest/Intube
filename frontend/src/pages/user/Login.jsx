@@ -13,7 +13,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { KAKAO_AUTH_URL } from "./OAuth";
 import { useNavigate } from "react-router";
-import APIController from "../../components/api/APIController";
+// import APIController from "../../components/api/APIController";
 
 function Copyright(props) {
   return (
@@ -43,9 +43,9 @@ export default function SignIn() {
       .email("올바른 이메일 형식이 아닙니다."),
     password: yup
       .string("Enter your password")
-      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
-      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+      // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
+      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
+    // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
   });
   const formik = useFormik({
     initialValues: {
@@ -53,21 +53,28 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (response) => {
+    onSubmit: response => {
       let values = {
-        email: "jos9404@naver.com",
-        password: "1234",
+        //   email: "jos9404@naver.com",
+        //   // password: "5678",
+        //   password: "1234",
+        email: response.email,
+        password: response.password,
       };
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       axios
-        .post("http://localhost:8080/auth/login", JSON.stringify(values), {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-          },
-          withCredentials: true,
-        })
+        .post(
+          "http://i8a303.p.ssafy.io:8081/auth/login",
+          JSON.stringify(values),
+          {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              // Accept: "application/json",
+              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+            },
+            withCredentials: true,
+          }
+        )
         .then(({ data }) => {
           if (data.statusCode === 200) {
             localStorage.setItem("accessToken", data.accessToken);
@@ -76,11 +83,14 @@ export default function SignIn() {
             navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch((e) => {
-          if (e.response.data.statusCode === 401) {
+        .catch(e => {
+          if (e.response.data.statusCode === 400) {
             alert("비밀번호가 틀렸습니다.");
           }
           if (e.response.data.statusCode === 404) {
+            alert("등록된 회원이 아닙니다.");
+          }
+          if (e.response.data.statusCode === 500) {
             alert("등록된 회원이 아닙니다.");
           }
           console.log(e);
@@ -90,17 +100,14 @@ export default function SignIn() {
   function kakaoLogin() {
     console.log("hi");
     window.location.replace(KAKAO_AUTH_URL);
-    // let code = new URL(window.location.href);
-    // console.log(code);
-    // localStorage.setItem("code", code);
   }
-  function loginTest() {
-    console.log("hi");
-    return APIController({
-      url: "/user/me",
-      method: "get",
-    });
-  }
+  // function loginTest() {
+  //   console.log("hi");
+  //   return APIController({
+  //     url: "/user/me",
+  //     method: "get",
+  //   });
+  // }
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,9 +122,6 @@ export default function SignIn() {
               alignItems: "center",
             }}
           >
-            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
@@ -133,7 +137,6 @@ export default function SignIn() {
               autoFocus
               value={formik.values.email}
               onChange={formik.handleChange}
-              // onBlur={formik.handleBlur}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
               onBlur={formik.handleBlur}
@@ -153,10 +156,6 @@ export default function SignIn() {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Grid container>
               <Grid item xs={4}>
                 <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
@@ -173,7 +172,7 @@ export default function SignIn() {
                   Log in for Kakao
                 </Button>
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Button
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
@@ -181,7 +180,7 @@ export default function SignIn() {
                 >
                   LOG IN TEST
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
             <Grid container>
               <Grid item xs>

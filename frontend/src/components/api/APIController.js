@@ -2,7 +2,7 @@ import axios from "axios";
 // import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://http://i8a303.p.ssafy.io:8081",
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     withCredentials: true,
@@ -36,7 +36,7 @@ instance.interceptors.response.use(
     if (error.response.status === 401) {
       axios
         .get(
-          "http://localhost:8080/auth/issue",
+          "http://http://i8a303.p.ssafy.io:8081/auth/issue",
           {
             headers: {
               "Content-Type": "application/json; charset=utf-8",
@@ -57,8 +57,15 @@ instance.interceptors.response.use(
             deleteCookie("refreshToken");
             window.location.replace("/");
           }
+          if (e.response.data.statusCode === 403) {
+            alert("로그인이 필요합니다.");
+            window.location.replace("/login");
+          }
           console.log(e, "dfdfdffdfd");
         });
+    }
+    if (error.response.data.statusCode === 403) {
+      console.log("오ㅓㅐㅇ라 ㅓㅁㄴ이ㅓㅏ런;ㅣㅇ");
     }
   }
 );

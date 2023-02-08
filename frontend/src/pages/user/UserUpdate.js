@@ -5,15 +5,15 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import instance from "components/api/APIController";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -36,12 +36,11 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  function changePassword() {
+    navigate("/changepassword");
+  }
   const validationSchema = yup.object({
-    password: yup
-      .string("Enter your password")
-      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
-      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
     name: yup.string("문자를 입력해주세요"),
     nickname: yup
       .string("Enter your password")
@@ -74,79 +73,150 @@ export default function SignUp() {
   const formik = useFormik({
     initialValues: {
       nickname: BEFORE_NICKNAME,
-      password: "",
       introduction: BEFORE_INTRODUCTION,
       gender: BEFORE_GENDER,
       name: BEFORE_NAME,
       phone: BEFORE_PHONE,
       birth: BEFORE_BIRTH,
-      passwordConfirm: "",
       email: BEFORE_EMAIL,
     },
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: response => {
       let values = {
-        // "birth": this.birth,
-        // "email": this.email,
-        // "gender": this.gender,
-        // "introduction": this.introduction,
-        // "name": this.name,
-        // "nickname": this.nickname,
-        // "password": this.password,
-        // "phone": this.phone,
-        birth: "1994-04-26",
-        email: "jos9404@naver.com",
-        gender: "M",
-        introduction: "안녕하세요 저는 착한 사람입니다.",
-        name: "지원석",
-        isEmailAuthorized: 1,
-        isKakao: 1,
-        nickname: "커플600일차",
-        password: "1234",
-        phone: "01099130059",
+        birth: response.birth,
+        email: response.email,
+        gender: response.gender,
+        introduction: response.introduction,
+        name: response.name,
+        nickname: response.nickname,
+        password: localStorage.getItem("password"),
+        phone: response.phone,
+        // birth: "1994-04-26",
+        // email: "jos9404@naver.com",
+        // gender: "M",
+        // introduction: "안녕하세요 저는 착한 사람입니다.",
+        // name: "지원석",
+        // nickname: "커플600일차",
+        // password: localStorage.getItem("password"),
+        // phone: "01099130059",
       };
-
       alert(JSON.stringify(values, null, 2));
       instance
-        .put("http://localhost:8080/user", JSON.stringify(values), {
+        .put("http://i8a303.p.ssafy.io:8081/user", JSON.stringify(values), {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
+            "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
           withCredentials: true,
         })
         .then(values => {
           console.log(values);
+          if (values.data.statusCode === 200) {
+            alert("비밀번호가 변경되었습니다. 다시 로그인해주세요");
+            navigate("/");
+          }
         })
         .catch(e => {
           if (e.response.data.statusCode === 400) {
             alert("잘못된 비밀번호입니다.");
           }
           if (e.response.data.statusCode === 401) {
-            console.log("토큰 만료~~");
+            console.log("권한 없음. 다시 로그인해주세요");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
           }
           if (e.response.data.statusCode === 403) {
-            console.log("엑세스 토큰을 주시오~~~");
+            alert("403 Forbidden");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
+          }
+          if (e.response.data.statusCode === 500) {
+            console.log("서버 에러. 다시 로그인해주세요");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
           }
         });
     },
   });
+  const [image, setImg] = useState("");
+
+  const onChangeImg = async event => {
+    event.preventDefault();
+    // console.log(event);
+    // console.log("image", event.target.files[0]);
+    setImg(event.target.files[0]);
+    // const formData = new FormData();
+    // formData.append();
+    // console.log(formData);
+    // const response = await axios.post(
+    //   "http://i8a303.p.ssafy.io:8081/user/image",
+    //   {
+    //     headers: {
+    //       // "Content-Type": "application/json; charset=utf-8",
+    //       "Content-Type": "multipart/form-data",
+    //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //     },
+    //   },
+    //   { withCredentials: true },
+    //   formData
+    // );
+    // console.log(response);
+  };
+
+  const handleImg = () => {
+    const formData = new FormData();
+    formData.append("image", image);
+    // console.log(image);
+    /*key 확인하기 */
+    for (let key of formData.keys()) {
+      console.log(key);
+    }
+    /* value 확인하기 */
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+    axios
+      .post(
+        "http://i8a303.p.ssafy.io:8081/user/image",
+        {
+          headers: {
+            accept: "application/json;charset=utf-8",
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
+        { withCredentials: true },
+        formData
+      )
+      .then(({ data }) => {
+        console.log(data);
+        if (data.statusCode === 200) {
+        }
+      })
+      .catch(e => {
+        if (e.response.data.statusCode === 400) {
+          alert("비밀번호가 틀렸습니다.");
+        }
+        console.log(e);
+      });
+  };
+  React.useEffect(() => {});
+  function deleteUser() {}
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        <form onSubmit={formik.handleSubmit}>
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <form onSubmit={formik.handleSubmit}>
             {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar> */}
@@ -154,6 +224,35 @@ export default function SignUp() {
               회원정보 수정
             </Typography>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <img src={localStorage.getItem("profile_url")} alt="dfdf"></img>
+              </Grid>
+              <Grid item xs={6}>
+                <input
+                  type="file"
+                  accept="image/jpg,impge/png,image/jpeg,image/gif"
+                  id="file"
+                  // value={image}
+                  name="file"
+                  // value={img || ""}
+                  onChange={onChangeImg}
+                ></input>
+              </Grid>
+              <Grid item xs={6}>
+                <Button onClick={handleImg} variant="contained">
+                  프로필 변경하기
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={changePassword}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  비밀번호 변경
+                </Button>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="phone"
@@ -169,6 +268,7 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -184,75 +284,7 @@ export default function SignUp() {
                   disabled
                 />
               </Grid>
-              {/* <Grid item xs={3}>
-                <Button
-                  variant="outlined"
-                  endIcon={<VerifiedUserIcon />}
-                  onClick={verifyEmail}
-                >
-                  인증하기
-                </Button>
-              </Grid>
-              <Grid item xs={9}>
-                <TextField
-                  fullWidth
-                  id="checkNumber"
-                  name="checkNumber"
-                  label="인증번호 확인"
-                  value={number}
-                  onChange={numberChange}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  onClick={verifyCheck}
-                  // sx={{ mt: 3, mb: 2 }}
-                >
-                  인증번호확인
-                </Button>
-              </Grid> */}
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                  helperText={formik.touched.password && formik.errors.password}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="passwordConfirm"
-                  label="PasswordConfirm"
-                  type="password"
-                  id="passwordConfirm"
-                  onChange={formik.handleChange}
-                  value={formik.values.passwordConfirm}
-                  // onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.passwordConfirm &&
-                    Boolean(formik.errors.passwordConfirm)
-                  }
-                  helperText={
-                    formik.touched.passwordConfirm &&
-                    formik.errors.passwordConfirm
-                  }
-                  onBlur={formik.handleBlur}
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   name="name"
@@ -347,15 +379,24 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+            <Button
+              onClick={deleteUser}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 1, mb: 2 }}
+            >
+              회원탈퇴
+            </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
-          </Box>
-        </form>
+          </form>
+          <Grid item xs={12}></Grid>
+        </Box>
 
         {/* </Box> */}
         <Copyright sx={{ mt: 5 }} />
