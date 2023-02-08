@@ -46,8 +46,6 @@ public class ConferenceController {
     @Autowired
     AuthService authService;
 
-    // openvidu ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @PostConstruct
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
@@ -74,8 +72,6 @@ public class ConferenceController {
         Connection connection = session.createConnection(properties);
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @PostMapping("/start")
     @ApiOperation(value = "Conference 방 생성")
