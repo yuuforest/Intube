@@ -134,6 +134,7 @@ export default function Header(props) {
                 <Button
                   variant="outlined"
                   startIcon={<VideoCallOutlinedIcon />}
+                  onClick={(e) => handlePage(e, "/announcement")}
                 >
                   공고 만들기
                 </Button>

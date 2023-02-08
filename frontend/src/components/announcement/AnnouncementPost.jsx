@@ -31,7 +31,7 @@ export default function AnnouncementSteps(props) {
   };
 
   const [interview, setInterview] = React.useState({
-    category_name: "1:1",
+    category_name: "",
     title: "",
     description: "",
     estimated_time: "",
@@ -47,6 +47,7 @@ export default function AnnouncementSteps(props) {
     questionList: [],
   });
   const [needPoint, setNeedPoint] = React.useState();
+
   const step1Handeler = (e, data) => {
     setInterview((interview) => {
       let newCondition = { ...interview };
@@ -129,7 +130,7 @@ export default function AnnouncementSteps(props) {
           )
           .then(() => {
             alert("등록성공");
-            navigate("/announcement/manage");
+            navigate("/");
           })
           .catch((error) => {
             console.error(error);

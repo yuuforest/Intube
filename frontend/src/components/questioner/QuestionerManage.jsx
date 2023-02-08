@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
+
 import QuestionerList from "components/questioner/QuestionerList";
 import Pagination from "@mui/material/Pagination";
+import NativeSelect from "@mui/material/NativeSelect";
 
 import "pages/questioner/Questioner.css";
 
@@ -22,11 +20,12 @@ export default function Questioner(props) {
   const handleChangePage = (event, value) => {
     setPage(value);
   };
-  const handleChangeWord = (event) => {
+
+  const handleChangeState = (event) => {
     console.log(event.target.value);
     setSearchCondition({
-      category_name: " ",
-      word: event.target.value,
+      interview_state: event.target.value,
+      word: "",
     });
   };
 
@@ -60,26 +59,19 @@ export default function Questioner(props) {
 
   return (
     <div>
-      <Paper
-        component="form"
-        sx={{
-          p: "2px 4px",
-          display: "flex",
-          alignItems: "center",
-          width: 400,
+      <NativeSelect
+        defaultValue={0}
+        inputProps={{
+          name: "interview_state",
         }}
+        sx={{ mx: 1, mb: 1 }}
+        onChange={handleChangeState}
       >
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
-          placeholder="Search Interview"
-          inputProps={{ "aria-label": "search google maps" }}
-          onChange={handleChangeWord}
-        />
-        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-
+        <option value={0}>공고 전체</option>
+        <option value={4}>모집중</option>
+        <option value={5}>진행중</option>
+        <option value={6}>완료</option>
+      </NativeSelect>
       <QuestionerList interviewList={interviewList}></QuestionerList>
 
       <Pagination

@@ -221,7 +221,7 @@ export default function Header(props) {
                   </Typography>
 
                   <Typography variant="subtitle1" gutterBottom>
-                    질문자
+                    답변자
                   </Typography>
                 </div>
 

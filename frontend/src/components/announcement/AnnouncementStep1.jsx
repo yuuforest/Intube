@@ -100,10 +100,10 @@ export default function AnnouncementStep1(props) {
             height: "230px",
             marginTop: "24px",
           }}
-          onClick={
-            ((e) => props.step1Handeler(e, image.title),
-            (e) => props.handleChange(e, 1))
-          }
+          onClick={(e) => {
+            props.step1Handeler(e, image.title);
+            props.handleChange(e, 1);
+          }}
         >
           <ImageSrc style={{ backgroundImage: `url(${image.url.avatar})` }} />
           <ImageSrc style={{ backgroundImage: `url(${image.url.one2n})` }} />
