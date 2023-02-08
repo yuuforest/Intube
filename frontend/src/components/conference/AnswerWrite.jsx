@@ -1,73 +1,75 @@
 import React, { useEffect } from "react";
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { useDispatch } from 'react-redux';
-import {
-  setMic,
-  } from 'store/counter/micSlice.js';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { useDispatch } from "react-redux";
+import { setMic } from "store/counter/micSlice.js";
 // import instance from 'components/api/APIController';
-import moment from 'moment';
+import moment from "moment";
 
 export default function AnswerWrite(props) {
-
   const dispatch = useDispatch();
-  const micState = props.micState
+  const micState = props.micState;
 
-  const [currentTime, setCurrentTime] = React.useState(moment().format('HH:mm:ss'))
-  const userInfo = props.userInfo
-  const conferId = props.interview.id
-  
+  const [currentTime, setCurrentTime] = React.useState(
+    moment().format("HH:mm:ss")
+  );
+  const userInfo = props.userInfo;
+  const conferId = props.interview.id;
+
   const {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition
+    browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
-  
+
   const speechInfo = {
     conferenceID: conferId,
     questionID: "1",
     content: transcript,
     userEmail: userInfo.email,
     timestamp: currentTime,
-}
+  };
 
   useEffect(() => {
-    const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'ko' });
+    const startListening = () =>
+      SpeechRecognition.startListening({ continuous: true, language: "ko" });
 
     const promise = new Promise(function (resolve, reject) {
       const x = "geeksforgeeks";
       const y = "geeksforgeeks";
-    
+
       if (x === y) {
         resolve();
       } else {
         reject();
       }
     });
-    
+
     promise
       .then(function () {
-        console.log('Success, You are a GEEK');
+        console.log("Success, You are a GEEK");
       })
       .catch(function () {
-        console.log('Some error has occurred');
+        console.log("Some error has occurred");
       });
     if (micState) {
       dispatch(setMic());
       startListening();
       resetTranscript();
-      setCurrentTime(moment().format('HH:mm:ss'))
+      setCurrentTime(moment().format("HH:mm:ss"));
     } else {
-      dispatch(setMic())
+      dispatch(setMic());
       promise
-      .then(function() {
-        SpeechRecognition.stopListening();
-        return
-      })
-        .then(function() {
-          console.log('speechInfo', speechInfo)
-          return
+        .then(function () {
+          SpeechRecognition.stopListening();
+          return;
         })
+        .then(function () {
+          console.log("speechInfo", speechInfo);
+          return;
+        });
       // instance
       //   .post(
       //     "http://i8a303.p.ssafy.io:8081/conference/dialog/user",
@@ -86,22 +88,21 @@ export default function AnswerWrite(props) {
       //     console.error(error);
       //   });
     }
-  }, [micState, dispatch, resetTranscript, setCurrentTime, moment])
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [micState, dispatch, resetTranscript, setCurrentTime, moment]);
+
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  
   return (
     <div>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <p>{micState ? '적용' : '안됨'}</p>
+      <p>Microphone: {listening ? "on" : "off"}</p>
+      <p>{micState ? "적용" : "안됨"}</p>
       {/* <button onClick={() => {dispatch(setMic()); console.log(micstatus); startListening(); resetTranscript()}}>Start</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button> */}
       <p>{listening ? transcript : ""}</p>
     </div>
   );
-
 }
