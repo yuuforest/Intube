@@ -14,11 +14,10 @@ export default function QuestionerApply() {
   const location = useLocation();
   const interview = location.state.interview;
   const index = location.state.index;
+  console.log(index);
+  console.log(interview);
   const [AnsewererList, setAnsewererList] = useState([]);
-  const searchCondition = {
-    interview_state: 4,
-    word: "",
-  };
+
   useEffect(() => {
     getAnswererList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,7 +28,6 @@ export default function QuestionerApply() {
         "http://i8a303.p.ssafy.io:8081/user/interviewer/" +
           interview.interviewTimeDetailResList[index].id +
           "/manage-applicant",
-        JSON.stringify(searchCondition),
         {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -51,6 +49,7 @@ export default function QuestionerApply() {
         "http://i8a303.p.ssafy.io:8081/user/interviewer/accept-applicant?applicant_id=" +
           e.target.value +
           "&applicant_state=2",
+        {},
         {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -72,7 +71,7 @@ export default function QuestionerApply() {
         gutterBottom
         sx={{ fontWeight: "bold", ml: 3, mt: 3, textAlign: "center" }}
       >
-        {interview.title}{" "}
+        {interview.title}
         {interview.interviewTimeDetailResList[index].interview_start_time}{" "}
         지원자 관리
       </Typography>

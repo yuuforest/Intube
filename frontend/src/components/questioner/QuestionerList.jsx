@@ -10,8 +10,8 @@ export default function QuestionerList(props) {
     <Paper>
       <MenuList>
         {props.interviewList.map((interview, index) => (
-          <div>
-            <QuestionListittem interview={(interview, index)} />
+          <div key={index}>
+            <QuestionListittem interview={interview} index={index} />
             <Divider />
           </div>
         ))}
