@@ -7,7 +7,7 @@ import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import AnnouncementPost from "components/announcement/AnnouncementPost";
 
-import Header from "components/common/Header";
+import QuestionerHeader from "components/questioner/QuestionerHeader";
 
 export default function Announcement() {
   const [value, setValue] = React.useState(0);
@@ -19,8 +19,8 @@ export default function Announcement() {
 
   return (
     <div>
-      <Header></Header>
-      <Tabs value={value} onChange={handleChange} centered>
+      <QuestionerHeader></QuestionerHeader>
+      <Tabs value={value} onChange={handleChange} sx={{ mt: 3 }} centered>
         <Tab
           icon={<InterpreterModeIcon />}
           label="종류선택"

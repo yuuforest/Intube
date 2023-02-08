@@ -9,13 +9,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function QuestionListittem(props) {
-  const interview = props.interview;
-
   const navigate = useNavigate();
-  function handlePage(e) {
-    navigate("/conference", { state: { interview, userName } });
+  function handlePage(e, link) {
+    console.log(link);
+    navigate(link, { state: { interview, userName } });
   }
   const [userName, setUserName] = useState([]);
+  const interview = props.interview;
+
   useEffect(() => {
     axios
       .get("http://i8a303.p.ssafy.io:8081/user/me", {
@@ -54,7 +55,7 @@ export default function QuestionListittem(props) {
             gutterBottom
             sx={{ fontWeight: "bold", mt: 2 }}
           >
-            인터뷰 관리
+            {props.interview.title}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -110,7 +111,9 @@ export default function QuestionListittem(props) {
               variant="subtitle1"
               gutterBottom
               sx={{ color: "rgba(0, 0, 0, 0.5)", mt: 2, mr: 2, float: "right" }}
-              onClick={handlePage}
+              onClick={(e) => {
+                handlePage(e, "/conference");
+              }}
             >
               수정
             </Typography>
@@ -134,7 +137,14 @@ export default function QuestionListittem(props) {
             variant="outlined"
             sx={{ width: "100%", float: "left", mt: 2, height: 50 }}
           >
-            <Grid container spacing={2} justifyContent="space-between">
+            <Grid
+              container
+              spacing={2}
+              justifyContent="space-between"
+              onClick={(e) => {
+                handlePage(e, "/questioner/apply");
+              }}
+            >
               <Grid item>지원자</Grid>
               <Grid item>1명</Grid>
               <Grid item>|</Grid>

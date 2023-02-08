@@ -25,7 +25,7 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
+  process.env.NODE_ENV === "production" ? "" : "http://i8a303.p.ssafy.io:8081/";
 
 class VideoRoomComponent extends Component {
   constructor(props) {
@@ -671,7 +671,7 @@ class VideoRoomComponent extends Component {
 
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      APPLICATION_SERVER_URL + "conference/sessions",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
@@ -682,7 +682,10 @@ class VideoRoomComponent extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      APPLICATION_SERVER_URL +
+        "conference/sessions/" +
+        sessionId +
+        "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },
