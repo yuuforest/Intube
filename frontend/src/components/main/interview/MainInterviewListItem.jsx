@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import http from "api/Http";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -43,16 +43,12 @@ export default function MainInterviewListItem(props) {
   });
 
   const handleClickOpen = () => () => {
-    axios
-      .get(
-        "http://i8a303.p.ssafy.io:8081/interviews/search/" + props.interview.id,
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+    http
+      .get("/interviews/search/" + props.interview.id, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((response) => {
         setInterview(response.data);
       })

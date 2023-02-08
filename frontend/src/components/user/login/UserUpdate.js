@@ -11,7 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import instance from "api/APIController";
-import axios from "axios";
+import http from "api/Http";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
@@ -81,7 +81,7 @@ export default function SignUp() {
       email: BEFORE_EMAIL,
     },
     validationSchema: validationSchema,
-    onSubmit: response => {
+    onSubmit: (response) => {
       let values = {
         birth: response.birth,
         email: response.email,
@@ -110,14 +110,14 @@ export default function SignUp() {
           },
           withCredentials: true,
         })
-        .then(values => {
+        .then((values) => {
           console.log(values);
           if (values.data.statusCode === 200) {
             alert("비밀번호가 변경되었습니다. 다시 로그인해주세요");
             navigate("/");
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 400) {
             alert("잘못된 비밀번호입니다.");
           }
@@ -141,7 +141,7 @@ export default function SignUp() {
   });
   const [image, setImg] = useState("");
 
-  const onChangeImg = async event => {
+  const onChangeImg = async (event) => {
     event.preventDefault();
     // console.log(event);
     // console.log("image", event.target.files[0]);
@@ -176,9 +176,9 @@ export default function SignUp() {
     for (let value of formData.values()) {
       console.log(value);
     }
-    axios
+    http
       .post(
-        "http://i8a303.p.ssafy.io:8081/user/image",
+        "/user/image",
         {
           headers: {
             accept: "application/json;charset=utf-8",
@@ -194,7 +194,7 @@ export default function SignUp() {
         if (data.statusCode === 200) {
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e.response.data.statusCode === 400) {
           alert("비밀번호가 틀렸습니다.");
         }

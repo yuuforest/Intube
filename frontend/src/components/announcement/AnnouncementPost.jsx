@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import http from "api/Http";
 
 import AnnouncementStep4 from "./AnnouncementStep4";
 import AnnouncementStep1 from "./AnnouncementStep1";
@@ -15,10 +15,9 @@ export default function AnnouncementSteps(props) {
     getUser();
   }, []);
   const getUser = () => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
@@ -101,21 +100,16 @@ export default function AnnouncementSteps(props) {
   };
 
   const step4Handeler = () => {
-    axios
-      .post(
-        "http://i8a303.p.ssafy.io:8081/interviews?questionContentList=",
-        JSON.stringify(interview),
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+    http
+      .post("/interviews?questionContentList=", JSON.stringify(interview), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then(() => {
-        axios
+        http
           .put(
-            "http://i8a303.p.ssafy.io:8081/user/point",
+            "/user/point",
             JSON.stringify({
               email: userInfo.email,
               point: needPoint,
