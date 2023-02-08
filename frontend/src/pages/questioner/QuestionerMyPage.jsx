@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-// import { useLocation } from "react-router-dom";
 import CalendarComponent from "components/answerer/mypage/CalendarComponent";
 import Grid from "@mui/material/Grid";
 import CardList from "components/answerer/mypage/CardList";
 import Temperature from "components/answerer/mypage/Temperature";
 import instance from "api/APIController";
-import Header from "components/common/Header";
 
-import "./AnswererMyPage.css";
+import "./QuestionerMyPage.css";
 
 export default function AnswererMyPage() {
   const [userInfo, setUserInfo] = useState({
@@ -27,22 +25,18 @@ export default function AnswererMyPage() {
     match: 1,
     apply: 2,
     complete: 3,
-    name: ["매칭인터뷰", "신청인터뷰", "완료인터뷰"],
+    name: ["모집인터뷰", "진행인터뷰", "완료인터뷰"],
   });
 
   const routeInfo = {
-    route: '/answerer',
-    matchInfo: 1,
-    applyInfo: 2,
-    completeInfo: 3,
+    route: '/questioner',
+    matchInfo: 4,
+    applyInfo: 5,
+    completeInfo: 6,
   }
 
   const [calendarInfo, setCalendarInfo] = useState([]);
   const date = new Date();
-
-  // 나중에 정부 수정할 때
-  // const intro="저는 인터뷰 경험이 많아서 잘 할 수 있습니다."
-  // const [userIntro, setUserIntro] = useState(intro)
 
   const userName = userInfo.name;
   const userAge = date.getFullYear() - Number(userInfo.birth.slice(0, 4)) + 1;
@@ -50,7 +44,7 @@ export default function AnswererMyPage() {
 
   const infoInterview = () => {
     instance
-      .get("http://i8a303.p.ssafy.io:8081/user/interviewee/mypage", {
+      .get("http://i8a303.p.ssafy.io:8081/user/interviewer/mypage", {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -59,12 +53,12 @@ export default function AnswererMyPage() {
       .then((response) => {
         setUserInfo(response.data);
         setCardInfo({
-          match: response.data.conduct_interview_count,
-          apply: response.data.apply_interview_count,
+          match: response.data.recruit_interview_count,
+          apply: response.data.conduct_interview_count,
           complete: response.data.complete_interview_count,
-          name: ["매칭인터뷰", "신청인터뷰", "완료인터뷰"],
+          name: ["모집인터뷰", "진행인터뷰", "완료인터뷰"],
         });
-        setCalendarInfo(response.data.conductInterviewTimeList);
+        setCalendarInfo(response.data.conductInterviewList);
       })
       .catch((error) => {
         console.error(error);
@@ -78,7 +72,6 @@ export default function AnswererMyPage() {
 
   return (
     <div className="Mypage">
-      <Header></Header>
       <div id="sidebar"></div>
       <div id="info">
         <h1>{userName}</h1>
@@ -94,7 +87,7 @@ export default function AnswererMyPage() {
             <Temperature />
           </Grid>
           <Grid item xs={6}>
-            <CalendarComponent position={1} calendarInfo={calendarInfo} />
+            <CalendarComponent position={2} calendarInfo={calendarInfo} />
           </Grid>
         </Grid>
       </div>

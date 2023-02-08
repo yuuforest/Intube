@@ -1,17 +1,19 @@
-import React from "react";
-import MatchListItem from "./MatchListItem";
+import React from 'react';
+// import GetList from "../../../json/answerer_list_state2.json";
+import MatchListItem from "./MatchListItem"
 
 export default function MatchList(props) {
-  const GetList = null;
-  const interviewList = GetList.interview_list.filter(
-    (x) => x.interview_time.slice(0, 10) === props.date
-  );
+  const interviewList = props.matchInfo
 
   return (
     <div>
-      {interviewList.map((x) => {
-        return <MatchListItem interview={x} key={x.id} />;
-      })}
+      {
+        interviewList.map((x) => {
+          return (
+            <MatchListItem position={props.position} interview={x} key={x.id} />
+            )
+        })
+      }
     </div>
   );
 }
