@@ -96,11 +96,12 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "historyID") Long historyID,
-                                                                    @RequestBody RecordDialogInReq dialogInfo) {
+                                                                    @RequestParam(value = "conferenceID") Long conferenceID) {
         // [Conference Table]
-        conferenceService.endConference(dialogInfo.getConferenceID());
+        conferenceService.endConference(conferenceID);
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 4);
+        // 현재 들어와있는 사용자 상태도 변경해야하나?
 
         // [Applicant Table] Change Interview 생성 필요
 
