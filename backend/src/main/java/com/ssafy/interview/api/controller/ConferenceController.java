@@ -99,11 +99,12 @@ public class ConferenceController {
                                                                     @RequestParam(value = "conferenceID") Long conferenceID) {
         // [Conference Table]
         conferenceService.endConference(conferenceID);
-        // [Conference History Table]
+        // [Conference History Table] 답변자를 질문자가 다 내보낸 후, Conference를 종료할 수 있음
         conferenceService.updateConferenceHistory(historyID, 4);
-        // 현재 들어와있는 사용자 상태도 변경해야하나?
 
-        // [Applicant Table] Change Interview 생성 필요
+        // [Applicant Table] interview_time_id 가 동일한 applicant의 상태를 3으로 변경
+
+
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
