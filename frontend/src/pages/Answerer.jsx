@@ -6,7 +6,7 @@ import Pagination from "@mui/material/Pagination";
 
 import AnswererList from "components/answerer/AnswererList";
 
-import axios from "axios";
+import http from "api/Http";
 
 export default function Answerer() {
   const location = useLocation();
@@ -41,17 +41,13 @@ export default function Answerer() {
 
   const [interviewList, setInterviewList] = useState([]);
   const getInterview = (searchCondition) => {
-    axios
-      .post(
-        "http://i8a303.p.ssafy.io:8081/user/interviewee",
-        JSON.stringify(searchCondition),
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+    http
+      .post("/user/interviewee", JSON.stringify(searchCondition), {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((response) => {
         console.log(searchCondition);
         setInterviewList(response.data.content);

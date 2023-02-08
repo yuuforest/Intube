@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { blue, green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import http from "api/Http";
 
 export default function QuestionListittem(props) {
   const navigate = useNavigate();
@@ -22,10 +22,9 @@ export default function QuestionListittem(props) {
   }
 
   useEffect(() => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })

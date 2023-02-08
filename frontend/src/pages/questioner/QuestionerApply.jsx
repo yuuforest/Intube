@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import http from "api/Http";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
@@ -23,14 +23,13 @@ export default function QuestionerApply() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const getAnswererList = () => {
-    axios
+    http
       .get(
-        "http://i8a303.p.ssafy.io:8081/user/interviewer/" +
+        "/user/interviewer/" +
           interview.interviewTimeDetailResList[index].id +
           "/manage-applicant",
         {
           headers: {
-            "Content-type": "application/json;charset=UTF-8",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
@@ -44,9 +43,9 @@ export default function QuestionerApply() {
       });
   };
   const acceptHandeler = (e) => {
-    axios
+    http
       .put(
-        "http://i8a303.p.ssafy.io:8081/user/interviewer/accept-applicant?applicant_id=" +
+        "/user/interviewer/accept-applicant?applicant_id=" +
           e.target.value +
           "&applicant_state=2",
         {},

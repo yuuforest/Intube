@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import http from "api/Http";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -70,10 +70,9 @@ export default function InterviewListItemDetail(props) {
   }
   const [userName, setUserName] = useState([]);
   useEffect(() => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })

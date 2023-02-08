@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { logout } from "api/logout";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -21,7 +20,7 @@ import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
-
+import http from "api/Http";
 import Logo from "assets/logo2.png";
 
 import "components/questioner/QuestionerHeader.css";
@@ -32,10 +31,9 @@ export default function Header(props) {
     getUser();
   }, []);
   const getUser = () => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })

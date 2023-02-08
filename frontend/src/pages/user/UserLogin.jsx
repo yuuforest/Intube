@@ -10,9 +10,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
+import http from "api/Http";
 import { KAKAO_AUTH_URL } from "components/user/login/OAuth";
-import APIController from "api/APIController";
 
 function Copyright(props) {
   return (
@@ -51,25 +50,19 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: response => {
+    onSubmit: (response) => {
       let values = {
         email: response.email,
         password: response.password,
       };
       alert(JSON.stringify(values, null, 2));
-      axios
-        .post(
-          "http://i8a303.p.ssafy.io:8081/auth/login",
-          JSON.stringify(values),
-          {
-            headers: {
-              "Content-type": "application/json;charset=UTF-8",
-              // Accept: "application/json",
-              "Access-Control-Allow-Origin": "i8a303.p.ssafy.io:8081",
-            },
-            withCredentials: true,
-          }
-        )
+      http
+        .post("/auth/login", JSON.stringify(values), {
+          headers: {
+            "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+          },
+          withCredentials: true,
+        })
         .then(({ data }) => {
           if (data.statusCode === 200) {
             localStorage.setItem("accessToken", data.accessToken);
@@ -78,7 +71,7 @@ export default function SignIn() {
             window.location.replace("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 401) {
             alert("비밀번호가 틀렸습니다.");
           }
@@ -95,13 +88,6 @@ export default function SignIn() {
     // let code = new URL(window.location.href);
     // console.log(code);
     // localStorage.setItem("code", code);
-  }
-  function loginTest() {
-    console.log("hi");
-    return APIController({
-      url: "/user/me",
-      method: "get",
-    });
   }
 
   return (
@@ -173,15 +159,6 @@ export default function SignIn() {
                   onClick={kakaoLogin}
                 >
                   Log in for Kakao
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={loginTest}
-                >
-                  LOG IN TEST
                 </Button>
               </Grid>
             </Grid>

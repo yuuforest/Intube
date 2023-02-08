@@ -4,7 +4,7 @@ import CalendarComponent from "components/answerer/mypage/CalendarComponent";
 import Grid from "@mui/material/Grid";
 import CardList from "components/answerer/mypage/CardList";
 import Temperature from "components/answerer/mypage/Temperature";
-import instance from "api/APIController";
+import http from "api/Http";
 import Header from "components/common/Header";
 
 import "./AnswererMyPage.css";
@@ -49,10 +49,9 @@ export default function AnswererMyPage() {
   const userIntro = userInfo.introduction;
 
   const infoInterview = () => {
-    instance
-      .get("http://i8a303.p.ssafy.io:8081/user/interviewee/mypage", {
+    http
+      .get("/user/interviewee/mypage", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
