@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/interviews/cancel/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/interviews/search/{interview_id}").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
+                .antMatchers("/conference").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/password").authenticated()
                 .antMatchers(HttpMethod.POST, "/interviews").authenticated()
                 .antMatchers(HttpMethod.POST, "/auth/check-password").authenticated()
