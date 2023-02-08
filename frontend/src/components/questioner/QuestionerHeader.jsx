@@ -16,6 +16,7 @@ import Tooltip from "@mui/material/Tooltip";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import Logout from "@mui/icons-material/Logout";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
+import VideoFileOutlinedIcon from "@mui/icons-material/VideoFileOutlined";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -129,6 +130,15 @@ export default function Header(props) {
                   textAlign: "center",
                 }}
               >
+                <Button
+                  startIcon={<VideoFileOutlinedIcon />}
+                  variant="outlined"
+                  onClick={(e) => handlePage(e, "/questioner")}
+                  sx={{ mr: 5 }}
+                >
+                  인터뷰 관리
+                </Button>
+
                 <Button
                   variant="outlined"
                   startIcon={<VideoCallOutlinedIcon />}

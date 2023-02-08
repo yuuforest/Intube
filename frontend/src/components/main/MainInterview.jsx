@@ -37,7 +37,8 @@ export default function MainInterview(props) {
         }
       )
       .then((response) => {
-        console.log(response);
+        console.log(response.data.content);
+        console.log(props.searchCondition);
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
       })
