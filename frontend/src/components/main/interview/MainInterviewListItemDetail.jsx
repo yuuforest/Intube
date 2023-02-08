@@ -66,10 +66,10 @@ export default function MainInterviewListItemDetail(props) {
         }
       )
       .then((response) => {
-        console.log(response);
+        alert("등록완료");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        alert(error.response.data.message);
       });
   };
 

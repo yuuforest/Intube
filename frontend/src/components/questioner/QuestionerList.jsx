@@ -1,21 +1,19 @@
 import React from "react";
 
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
-import MenuList from "@mui/material/MenuList";
-import QuestionListittem from "components/questioner/QuestionListittem";
+import QuestionListitem from "components/questioner/QuestionListitem";
 
 export default function QuestionerList(props) {
   return (
-    <Paper>
-      <MenuList>
-        {props.interviewList.map((interview, index) => (
-          <div key={index}>
-            <QuestionListittem interview={interview} index={index} />
-            <Divider />
-          </div>
-        ))}
-      </MenuList>
-    </Paper>
+    <div>
+      {props.interviewList.map((interview, index) => (
+        <div key={index}>
+          <QuestionListitem
+            interview={interview}
+            index={index}
+            getInterviewList={props.getInterviewList}
+          />
+        </div>
+      ))}
+    </div>
   );
 }
