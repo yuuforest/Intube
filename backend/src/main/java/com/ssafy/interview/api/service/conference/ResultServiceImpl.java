@@ -32,6 +32,7 @@ public class ResultServiceImpl implements ResultService {
                     .timestamp(dialog.getTimestamp())
                     .build());
         }
+        // Group By Question ID
         return res;
     }
 
@@ -68,4 +69,6 @@ public class ResultServiceImpl implements ResultService {
             dialog.setContent(info.getContent());
         }
     }
+
+
 }

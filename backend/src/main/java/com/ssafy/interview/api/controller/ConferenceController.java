@@ -56,7 +56,9 @@ public class ConferenceController {
             throws OpenViduJavaClientException, OpenViduHttpException {
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
+
         System.out.println(session.getSessionId());
+
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
     }
 
@@ -80,15 +82,14 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewID") Long interviewID,
-                                                              @RequestParam(value="sessionID") String sessionID,
+    public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewTimeID") Long interviewTimeID,
                                                               @ApiIgnore Authentication authentication) {
         String userEmail = authService.getUserByAuthentication(authentication);
         // [Conference Table] 생성된 Conference 방에 대한 정보 저장
-        Conference conference = conferenceService.startConference(interviewID, userEmail, sessionID);
+        Conference conference = conferenceService.startConference(interviewTimeID);
         // [Conference History Table] 질문자가 Conference 방에 참여 -> 참여 기록 생성
         ConferenceHistory history = conferenceService.createConferenceHistory(conference.getId(), userEmail, 1);
-        return ResponseEntity.status(200).body(ConferenceStartRes.of(conference.getId(),  history.getId(), sessionID));
+        return ResponseEntity.status(200).body(ConferenceStartRes.of(conference.getId(),  history.getId()));
     }
 
     @PostMapping("/end")
@@ -104,8 +105,11 @@ public class ConferenceController {
         conferenceService.endConference(dialogInfo.getConferenceID());
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 4);
-        // [Dialog Table]
+        // [Dialog Table] 수정 필요
         conferenceService.recordDialogInConference(dialogInfo);
+
+        // [Applicant Table] Change Interview 생성 필요
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
@@ -188,19 +192,6 @@ public class ConferenceController {
         // [Question Table]
         List<Question> questions = conferenceService.questionAllInConference(interviewID);
         return ResponseEntity.status(200).body(questions);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
-    }
-
-    @PostMapping("/mark")
-    @ApiOperation(value = "Conference 진행 중 질문자가 원하는 마크 시간 저장")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends BaseResponseBody> createMarkInConference(@RequestBody MarkCreateInReq markInfo) {
-        // [Mark Table]
-        conferenceService.createMarkInConference(markInfo);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
     @PostMapping("/dialog/question")

@@ -14,14 +14,11 @@ public class ConferenceStartRes {
     Long conferenceID;
     @ApiModelProperty(name="ConferenceHistory ID")
     Long historyID;
-    @ApiModelProperty(name="Session ID")
-    String sessionID;
 
-    public static ConferenceStartRes of(Long conferenceID, Long historyID, String sessionID) {
+    public static ConferenceStartRes of(Long conferenceID, Long historyID) {
         ConferenceStartRes res = new ConferenceStartRes();
         res.setConferenceID(conferenceID);
         res.setHistoryID(historyID);
-        res.setSessionID(sessionID);
         return res;
     }
 }

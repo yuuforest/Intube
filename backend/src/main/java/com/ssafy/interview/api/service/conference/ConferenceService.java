@@ -12,10 +12,10 @@ import java.util.List;
 public interface ConferenceService {
 
     // [Interview Table] + [Conference Table] + [User table]
-    ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID);
+    ConferenceInfoRes getInfoConference(Long interviewTimeID, Long conferenceID);
 
     // [Conference Table]
-    Conference startConference(Long interviewID, String user_email, String sessionID);  // Conference 방 처음 생성
+    Conference startConference(Long interviewID);  // Conference 방 처음 생성
     void endConference(Long conference_id);
 
     // [Conference History Table]
@@ -27,9 +27,6 @@ public interface ConferenceService {
     // [Question Table]
     void createQuestionInConference(QuestionCreateInReq questionInfo);
     List<Question> questionAllInConference(Long interviewID);
-
-    // [Mark Table]
-    void createMarkInConference(MarkCreateInReq markInfo);
 
     // [Dialog Table]
     void recordQuestionInConference(RecordQuestionInReq questionInfo);
