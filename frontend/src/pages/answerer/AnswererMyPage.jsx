@@ -31,11 +31,11 @@ export default function AnswererMyPage() {
   });
 
   const routeInfo = {
-    route: '/answerer',
-    matchInfo: 1,
-    applyInfo: 2,
+    route: "/answerer",
+    matchInfo: 2,
+    applyInfo: 1,
     completeInfo: 3,
-  }
+  };
 
   const [calendarInfo, setCalendarInfo] = useState([]);
   const date = new Date();
@@ -88,7 +88,7 @@ export default function AnswererMyPage() {
         <h3>{userIntro}</h3>
         <Grid container spacing={6}>
           <Grid item xs={6}>
-            <CardList cardInfo={cardInfo} routeInfo={routeInfo}/>
+            <CardList cardInfo={cardInfo} routeInfo={routeInfo} />
             <h2 style={{ color: "#10316B" }}>인터뷰 온도</h2>
             <br />
             <Temperature />
