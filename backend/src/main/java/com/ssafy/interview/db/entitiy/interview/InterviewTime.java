@@ -2,10 +2,8 @@ package com.ssafy.interview.db.entitiy.interview;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.interview.db.entitiy.BaseEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ssafy.interview.db.entitiy.conference.Conference;
+import lombok.*;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -20,15 +18,24 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class InterviewTime extends BaseEntity {
 
         @Temporal(TemporalType.TIMESTAMP)
         @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
         Date interview_start_time;
 
+        @Builder.Default()
+        @Column(name = "modify_result_state")
+        int modifyResultState = 0;
+
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "interview_id")
         private Interview interview;
+
+        @OneToOne(mappedBy = "interviewTime")
+        private Conference conference;
 
         @OneToMany(mappedBy = "interviewTime")
         private List<Applicant> applicantList = new ArrayList<>();

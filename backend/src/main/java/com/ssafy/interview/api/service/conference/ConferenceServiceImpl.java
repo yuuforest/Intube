@@ -1,14 +1,13 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.*;
-import com.ssafy.interview.api.response.conference.ConferenceInfoRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
-import com.ssafy.interview.db.entitiy.conference.Mark;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.*;
+import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
@@ -29,28 +28,26 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    InterviewTimeRepository interviewTimeRepository;
+    @Autowired
     InterviewRepository interviewRepository;
     @Autowired
     QuestionRepository questionRepository;
     @Autowired
-    MarkRepository markRepository;
-    @Autowired
     DialogRepository dialogRepository;
 
-    @Override
-    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
-        // [Conference 방 정보 조회]
-        return conferenceRepositoryCustom.findConferenceInfo(interviewID, conferenceID);
-    }
+//    @Override
+//    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
+//        // [Conference 방 정보 조회]
+//        return conferenceRepositoryCustom.findConferenceInfo(interviewID, conferenceID);
+//    }
 
     @Override
-    public Conference startConference(Long interviewID, String user_email, String sessionID) {
+    public Conference startConference(Long interviewTimeID) {
         // [회의방 생성]
         Conference conference = new Conference();
-        conference.setUser(userRepository.findByEmail(user_email).get());
-        conference.setInterview(interviewRepository.findById(interviewID).get());
+        conference.setInterviewTime(interviewTimeRepository.findById(interviewTimeID).get());
         conference.setIs_active(1); // Conference 방 시작 (1)
-        conference.setSessionid(sessionID);
         conferenceRepository.save(conference);  // Conference 생성
         return conference;
     }
@@ -116,15 +113,6 @@ public class ConferenceServiceImpl implements ConferenceService {
     public List<Question> questionAllInConference(Long interviewID) {
         // [Interview에 대한 모든 Question 조회]
         return questionRepository.findByInterview_idOrderById(interviewID);
-    }
-
-    @Override
-    public void createMarkInConference(MarkCreateInReq markInfo) {
-        // [질문자가 원하는 시간 마크]
-        Mark mark = new Mark();
-        mark.setConference(conferenceRepository.findById(markInfo.getConferenceID()).get());
-        mark.setMark_time(markInfo.getMarkTime());
-        markRepository.save(mark);
     }
 
     @Override
