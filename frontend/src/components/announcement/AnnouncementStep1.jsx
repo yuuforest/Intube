@@ -15,12 +15,12 @@ export default function AnnouncementStep1(props) {
     },
     {
       url: { one2n },
-      title: "N:1",
+      title: "1:N",
       width: "30%",
     },
     {
       url: { avatar },
-      title: "아바타",
+      title: "avatar",
       width: "20%",
     },
   ];
@@ -100,7 +100,10 @@ export default function AnnouncementStep1(props) {
             height: "230px",
             marginTop: "24px",
           }}
-          onClick={(e) => props.step1Handeler(e, image.title)}
+          onClick={
+            ((e) => props.step1Handeler(e, image.title),
+            (e) => props.handleChange(e, 1))
+          }
         >
           <ImageSrc style={{ backgroundImage: `url(${image.url.avatar})` }} />
           <ImageSrc style={{ backgroundImage: `url(${image.url.one2n})` }} />
