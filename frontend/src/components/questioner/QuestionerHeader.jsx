@@ -80,15 +80,6 @@ export default function Header(props) {
   return (
     <div className="question-header">
       <Toolbar variant="" sx={{ height: "60px" }}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 3, color: " rgb(0, 0, 0)" }}
-          onClick={toggleDrawer(true)}
-        >
-          <MenuIcon />
-        </IconButton>
         <img
           src={Logo}
           alt="logo"
@@ -222,7 +213,7 @@ export default function Header(props) {
                   </ListItemIcon>
                   마이페이지
                 </MenuItem>
-                <MenuItem onClick={(e) => handlePage(e, "/questioner")}>
+                <MenuItem onClick={(e) => handlePage(e, "/")}>
                   <ListItemIcon>
                     <SwitchAccountIcon fontSize="small" />
                   </ListItemIcon>
