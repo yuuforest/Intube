@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserPasswordPutRequest")
 public class UserPasswordPutReq {
-    @ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
+    @ApiModelProperty(name="유저 ID(email)", example="ssafy@ssafy.com")
     String email;
     @ApiModelProperty(name="유저 Password", example="1234")
     String password;

@@ -38,6 +38,15 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
     Page<InterviewTimeLoadRes> findInterviewByInterviewState(Long user_id, int interviewState, String word, Pageable pageable);
 
     /**
+     * 마이페이지 - 질문자가 작성한 인터뷰(진행) 공고 리스트
+     *
+     * @param user_id        로그인한 질문자 id
+     * @param interviewState 인터뷰 상태
+     * @return 검색 결과
+     */
+    List<InterviewTimeLoadRes> findInterviewByInterviewerMyPage(Long user_id, int interviewState);
+
+    /**
      * 답변자가 신청한 인터뷰 공고 신청 상태별 조회
      *
      * @param user_id        로그인한 질문자 id

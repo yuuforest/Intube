@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/interviewer").authenticated()
                 .antMatchers("/user/interviewee").authenticated()
                 .antMatchers("/interviews/apply/**").authenticated()
+                .antMatchers("/interviews/cancel/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/interviews/search/{interview_id}").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
                 .antMatchers("/conference").authenticated()

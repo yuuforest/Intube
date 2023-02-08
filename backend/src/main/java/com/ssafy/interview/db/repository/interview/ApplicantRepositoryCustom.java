@@ -34,6 +34,15 @@ public interface ApplicantRepositoryCustom { // 인터뷰 생성 Method
     Boolean existApplicantByUserId(Long user_id, Long interview_time_id);
 
     /**
+     * 상품 검색
+     *
+     * @param user_id      로그인한 유저 Id
+     * @param interview_time_id 인터뷰 시간 Id
+     * @return 검색 결과
+     */
+    Optional<Applicant> findByApplicantByUserId(Long user_id, Long interview_time_id);
+
+    /**
      * ApplicantDetailRes 찾기
      *
      * @param interview_time_id 인터뷰 시작 시간 id

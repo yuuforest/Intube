@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel("InterviewTimeDetailRes")
-public class InterviewTimeDetailRes extends InterviewTimeRes{
+public class InterviewTimeDetailRes extends InterviewTimeRes {
 
     @ApiModelProperty(name = "Applicant state = 1")
     Long wait_applicant_count;

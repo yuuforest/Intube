@@ -14,6 +14,7 @@ import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.db.repository.interview.*;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
+import com.ssafy.interview.exception.interview.ExistApplicantException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,11 +57,8 @@ public class InterviewServiceImpl implements InterviewService {
     // 인터뷰 상태별 조회
     @Override
     public Page<InterviewTimeLoadRes> findInterviewByInterviewState(String email, InterviewSearchByStateReq interviewSearchByStateReq, Pageable pageable) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        User user = null;
-        if (userOptional.isPresent()) {
-            user = userOptional.get();
-        }
+        User user = userRepository.findByEmail(email).get();
+
         return interviewRepository.findInterviewByInterviewState(user.getId(), interviewSearchByStateReq.getInterview_state(), interviewSearchByStateReq.getWord(), pageable);
     }
 
@@ -151,6 +149,16 @@ public class InterviewServiceImpl implements InterviewService {
         applicantRepository.save(Applicant.builder().user(user).interviewTime(interviewTime).build());
     }
 
+    @Override
+    @Transactional
+    public void deleteApplicant(String email, Long interview_time_id) {
+        User user = userRepository.findByEmail(email).get();
+
+        // 로그인한 유저와 신청자가 동일한지 여부 확인
+        Applicant applicant = applicantRepository.findByApplicantByUserId(user.getId(), interview_time_id).orElseThrow(() -> new ExistApplicantException(user.getName() + "님! 해당 신청자는 존재하지 않습니다."));
+
+        applicantRepository.deleteById(applicant.getId());
+    }
 
     @Override
     @Transactional

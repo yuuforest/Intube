@@ -15,15 +15,15 @@ import java.util.Date;
 @ApiModel("UserModifyPutRequest")
 public class UserModifyPutReq {
 
-    @ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
+    @ApiModelProperty(name="유저 ID(email)", example="ssafy@ssafy.com")
     String email;
     @ApiModelProperty(name="유저 Password", example="1234")
     String password;
-    @ApiModelProperty(name="유저 name", example="이영준")
+    @ApiModelProperty(name="유저 name", example="이싸피")
     String name;
-    @ApiModelProperty(name="유저 nickname", example="필립인디요")
+    @ApiModelProperty(name="유저 nickname", example="아몰랑!")
     String nickname;
-    @ApiModelProperty(name="유저 phone", example="01012341234")
+    @ApiModelProperty(name="유저 phone", example="01011111112")
     String phone;
     @ApiModelProperty(name="유저 gender", example="M")
     String gender;
