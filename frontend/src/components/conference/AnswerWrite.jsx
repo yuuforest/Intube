@@ -48,12 +48,14 @@ export default function AnswerWrite(props) {
     });
     
     if (micState) {
+      // props.handleMicState();
       dispatch(setMic());
       startListening();
       resetTranscript();
       setCurrentTime(moment().format("HH:mm:ss"));
     } else {
       dispatch(setMic());
+      // props.handleMicState();
       promise
         .then(function () {
           SpeechRecognition.stopListening();

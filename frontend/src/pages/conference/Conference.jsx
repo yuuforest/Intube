@@ -98,6 +98,7 @@ export default function Conference() {
             micState={micState}
             userInfo={userInfo}
             interview={interview}
+            handleMicState={handleMicState}
           ></AnswerWrite>
         </Grid>
         <Grid item xs={2}>
