@@ -5,7 +5,6 @@ import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
 import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
-import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
@@ -150,18 +149,18 @@ public class ConferenceController {
 //        return ResponseEntity.status(200).body(conferenceInfo);
 //    }
 
-    @GetMapping("/user")
-    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<List<User>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
-        // [Conference History Table]
-        List<User> users = conferenceService.userInConference(conferenceID);
-        return ResponseEntity.status(200).body(users);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
-    }
+//    @GetMapping("/user")
+//    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<List<User>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+//        // [Conference History Table]
+//        List<User> users = conferenceService.userInConference(conferenceID);
+//        return ResponseEntity.status(200).body(users);
+//    }
 
     @PostMapping("/question")
     @ApiOperation(value = "Conference 진행 중 새로운 질문 추가")
@@ -186,7 +185,7 @@ public class ConferenceController {
     public ResponseEntity<List<Question>> getQuestionInConference(@RequestParam(value = "interviewID") Long interviewID) {
         // [Question Table]
         List<Question> questions = conferenceService.questionAllInConference(interviewID);
-        return ResponseEntity.status(200).body(questions);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
+        return ResponseEntity.status(200).body(questions);
     }
 
     @PostMapping("/dialog/question")

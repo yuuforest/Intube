@@ -14,7 +14,6 @@ import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("ConferenceService")
@@ -89,16 +88,16 @@ public class ConferenceServiceImpl implements ConferenceService {
         conferenceHistoryRepository.save(conferenceHistory);
     }
 
-    @Override
-    public List<User> userInConference(Long conferenceID) {
-        // [현재 Conference에 참여중인 User 목록 조회]
-        List<User> users = new ArrayList<>();
-        List<ConferenceHistory> histories = conferenceHistoryRepository.findByConference_idAndAction(conferenceID, 2);
-        for (ConferenceHistory history : histories) {
-            users.add(history.getUser());
-        }
-        return users;
-    }
+//    @Override
+//    public List<User> userInConference(Long conferenceID) {
+//        // [현재 Conference에 참여중인 User 목록 조회]
+//        List<User> users = new ArrayList<>();
+//        List<ConferenceHistory> histories = conferenceHistoryRepository.findByConference_idAndAction(conferenceID, 2);
+//        for (ConferenceHistory history : histories) {
+//            users.add(history.getUser());
+//        }
+//        return users;
+//    }
 
     @Override
     public void createQuestionInConference(QuestionCreateInReq questionInfo) {
