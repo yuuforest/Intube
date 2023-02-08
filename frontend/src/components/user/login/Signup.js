@@ -83,9 +83,9 @@ export default function SignUp() {
       .email("올바른 이메일 형식이 아닙니다."),
     password: yup
       .string("Enter your password")
-      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
-      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+      // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
+      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
+      // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
     name: yup.string("문자를 입력해주세요"),
     nickname: yup
       .string("Enter your password")
