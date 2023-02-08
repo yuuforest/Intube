@@ -51,7 +51,7 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (response) => {
+    onSubmit: response => {
       let values = {
         email: response.email,
         password: response.password,
@@ -78,7 +78,7 @@ export default function SignIn() {
             window.location.replace("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch((e) => {
+        .catch(e => {
           if (e.response.data.statusCode === 401) {
             alert("비밀번호가 틀렸습니다.");
           }

@@ -6,12 +6,16 @@ export function verifySend(email) {
   };
   console.log("hi");
   axios
-    .post("http://localhost:8080/auth/send-email", JSON.stringify(values), {
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-      },
-      withCredentials: true,
-    })
+    .post(
+      "http://i8a303.p.ssafy.io:8081/auth/send-email",
+      JSON.stringify(values),
+      {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+        },
+        withCredentials: true,
+      }
+    )
     .then(({ data }) => {
       if (data.statusCode === 200) {
         alert("인증번호가 발송되었습니다. 메일을 확인해주세요");

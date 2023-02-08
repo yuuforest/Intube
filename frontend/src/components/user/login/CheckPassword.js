@@ -34,10 +34,10 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function CheckPassword() {
   function getUserInfo() {
     instance
-      .get("http://localhost:8080/user/me", {
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           // Accept: "application/json",
@@ -57,6 +57,7 @@ export default function SignIn() {
           localStorage.setItem("phone", data.phone);
           localStorage.setItem("name", data.name);
           localStorage.setItem("birth", data.birth);
+          localStorage.setItem("profile_url", data.profile_url);
         }
       })
       .catch(e => {
@@ -73,28 +74,29 @@ export default function SignIn() {
   const validationSchema = yup.object({
     password: yup
       .string("Enter your password")
-      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
-      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+      // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
+      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
+    // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
   });
   const formik = useFormik({
     initialValues: {
       password: "",
     },
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: response => {
       let values = {
-        // password: this.password,
-        password: "1234",
+        password: response.password,
+        // // password: "1234",
+        // password: "5678",
       };
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       APIController.post(
-        "http://localhost:8080/auth/check-password",
+        "http://i8a303.p.ssafy.io:8081/auth/check-password",
         JSON.stringify(values),
         {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
+            "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
           withCredentials: true,
@@ -113,6 +115,8 @@ export default function SignIn() {
           }
           if (e.response.data.statusCode === 403) {
             alert("403 Forbidden");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
           }
           console.log(e, "뭐가 문젠데");
         });

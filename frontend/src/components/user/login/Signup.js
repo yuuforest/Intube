@@ -2,8 +2,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -15,7 +13,9 @@ import * as yup from "yup";
 import axios from "axios";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { verifySend } from "components/api/verifySend";
-import { emailCheck } from "components/api/verifyCheck";
+import { EmailCheck } from "components/api/verifyCheck";
+import { VerifyNickname } from "components/api/verifyNickname";
+import { useNavigate } from "react-router";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -44,27 +44,38 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
+  const navigate = useNavigate();
+
+  const nicknameCheck = () => {
+    if (nickname === "") {
+      alert("닉네임을 기입해주세요!");
+    } else {
+      VerifyNickname(nickname);
+      // setNicknameAuthorize(localStorage.getItem("nicknameAuthorize"));
+      // console.log(localStorage.getItem("nicknameAuthorize"));
+      // console.log(nicknameAuthorize);
+      // localStorage.removeItem("nicknameAuthorize");
+    }
+  };
   const verifyEmail = () => {
     console.log(email);
     verifySend(email);
+    setEmailSecret(true);
   };
   const verifyCheck = () => {
-    console.log(email);
-    emailCheck(email, number);
+    EmailCheck(email, number);
+    // setemailAuthorize(localStorage.getItem("emailAuthorize"));
+    // console.log(emailAuthorize);
   };
-
+  const [emailSecret, setEmailSecret] = useState(false);
   const [email, setEmail] = useState("");
   const emailChange = ({ target: { value } }) => setEmail(value);
   const [number, setNumber] = useState("");
   const numberChange = ({ target: { value } }) => setNumber(value);
+  // const [emailAuthorize, setemailAuthorize] = useState(false);
+  // const [nicknameAuthorize, setNicknameAuthorize] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const nicknameChange = ({ target: { value } }) => setNickname(value);
 
   const validationSchema = yup.object({
     email: yup
@@ -72,30 +83,35 @@ export default function SignUp() {
       .email("올바른 이메일 형식이 아닙니다."),
     password: yup
       .string("Enter your password")
-      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
-      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+      // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
+      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
+      // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
     name: yup.string("문자를 입력해주세요"),
     nickname: yup
       .string("Enter your password")
       .min(2, "2글자 이상의 닉네임을 입력해주세요"),
     birth: yup
       .string("Enter your password")
-      .length(10, "ex) 2000-04-04")
+      .length(10, "ex) 2000-01-01")
       .matches(
         /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
         "올바른 형식이 아닙니다."
       ),
-    phone: yup.string("Enter your password"),
+    phone: yup
+      .string()
+      .matches(/[0-9]/, "'-'를 제외한 휴대폰 번호를 입력해주세요"),
     gender: yup.string("Enter your password"),
     introduction: yup
       .string("Enter your password")
-      .min(5, "5글자 이상 입력해주세요")
       .max(100, "100글자 이하로 입력해주세요"),
     passwordConfirm: yup
       .string()
       .oneOf([yup.ref("password"), null], 'Must match "password" field value'),
+    nicknameAuthorize: yup.boolean().oneOf([true], "닉네임 인증을 해주세요"),
   });
+  // const abce = () => {
+  //   formik.handleSubmit;
+  // };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -109,54 +125,65 @@ export default function SignUp() {
       passwordConfirm: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (response) => {
-      let values = {
-        birth: response.birth,
-        email: email,
-        // email: response.email,
-        gender: response.gender,
-        introduction: response.introduction,
-        name: response.name,
-        nickname: response.nickname,
-        password: response.password,
-        phone: response.phone,
-        // birth: "1994-04-26",
-        // email: "jos9404@naver.com",
-        // gender: "M",
-        // introduction: "안녕하세요 저는 착한 사람입니다.",
-        // name: "지원석",
-        isEmailAuthorized: 1,
-        isKakao: 1,
-        // nickname: "커플600일차",
-        // password: "1234",
-        // phone: "01099130059",
-      };
 
-      alert(JSON.stringify(values, null, 2));
-      axios
-        .post("http://localhost:8080/user", JSON.stringify(values), {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-          },
-          withCredentials: true,
-        })
-        .then((values) => {
-          console.log(values);
-        })
-        .catch((e) => {
-          if (e.response.data.statusCode === 409) {
-            alert("이미 가입된 이메일입니다.");
-          }
-        });
+    onSubmit: response => {
+      if (localStorage.getItem("nicknameAuthorize")) {
+        if (localStorage.getItem("emailAuthorize")) {
+          let values = {
+            birth: response.birth,
+            email: email,
+            // email: response.email,
+            gender: response.gender,
+            introduction: response.introduction,
+            name: response.name,
+            nickname: nickname,
+            password: response.password,
+            phone: response.phone,
+            // birth: "1994-04-26",
+            // email: "jos9404@naver.com",
+            // gender: "M",
+            // introduction: "안녕하세요 저는 착한 사람입니다.",
+            // name: "지원석",
+            isEmailAuthorized: 1,
+            isKakao: 0,
+            // nickname: "커플600일차",
+            // password: "1234",
+            // phone: "01099130059",
+          };
+
+          // alert(JSON.stringify(values, null, 2));
+          axios
+            .post(
+              "http://i8a303.p.ssafy.io:8081/user",
+              JSON.stringify(values),
+              {
+                headers: {
+                  "Content-type": "application/json;charset=UTF-8",
+                  // Accept: "application/json",
+                  "Access-Control-Allow-Origin":
+                    "http://i8a303.p.ssafy.io:8081",
+                },
+                withCredentials: true,
+              }
+            )
+            .then(values => {
+              console.log(values);
+              alert("회원가입되었습니다.");
+              navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+            })
+            .catch(e => {
+              if (e.response.data.statusCode === 409) {
+                alert("이미 가입된 이메일입니다.");
+              }
+            });
+        } else {
+          alert("이메일 인증 해주세요");
+        }
+      } else {
+        alert("닉네임 중복확인 해주세요");
+      }
     },
   });
-  // const [value, setValue] = React.useState("female");
-
-  // const handleChange = event => {
-  //   setValue(event.target.value);
-  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -200,26 +227,36 @@ export default function SignUp() {
                   인증하기
                 </Button>
               </Grid>
+
               <Grid item xs={9}>
-                <TextField
-                  fullWidth
-                  id="checkNumber"
-                  name="checkNumber"
-                  label="인증번호 확인"
-                  value={number}
-                  onChange={numberChange}
-                />
+                {emailSecret ? (
+                  <TextField
+                    fullWidth
+                    id="checkNumber"
+                    name="checkNumber"
+                    label="인증번호 확인"
+                    value={number}
+                    onChange={numberChange}
+                  />
+                ) : (
+                  false
+                )}
               </Grid>
               <Grid item xs={3}>
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  onClick={verifyCheck}
-                  // sx={{ mt: 3, mb: 2 }}
-                >
-                  인증번호확인
-                </Button>
+                {emailSecret ? (
+                  <Button
+                    // type="submit"
+                    variant="outlined"
+                    onClick={verifyCheck}
+                    // sx={{ mt: 3, mb: 2 }}
+                  >
+                    인증번호확인
+                  </Button>
+                ) : (
+                  false
+                )}
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   name="phone"
@@ -304,24 +341,27 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={10}>
                 <TextField
                   name="nickname"
                   required
                   fullWidth
                   id="nickname"
-                  label="nickname"
+                  label="닉네임"
                   // autoFocus
-                  onChange={formik.handleChange}
-                  value={formik.values.nickname}
-                  error={
-                    formik.touched.nickname && Boolean(formik.errors.nickname)
-                  }
-                  helperText={formik.touched.nickname && formik.errors.nickname}
+                  onChange={nicknameChange}
+                  value={nickname}
                   onBlur={formik.handleBlur}
-
-                  // 닉네임 중복확인ㄴ아ㅣㄹ넘이ㅏㄹ먼;ㅣㄹㄴ이;ㅏ러니ㅏㅁㄹㄴ임ㄴㄹㅇ
                 />
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  variant="outlined"
+                  name="nicknameAuthorize"
+                  onClick={nicknameCheck}
+                >
+                  중복확인
+                </Button>
               </Grid>
               <Grid item xs={12}>
                 <FormControl>
@@ -370,26 +410,19 @@ export default function SignUp() {
                   }
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
             </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              // disabled={!(formik.dirty && formik.isValid)}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
