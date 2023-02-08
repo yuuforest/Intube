@@ -106,7 +106,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         JPAQuery<Interview> countQuery = jpaQueryFactory
                 .select(qInterview)
                 .from(qInterview)
-                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
+//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(wordEq(word), interviewStateEq(interviewState));
 
 
