@@ -22,8 +22,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     ConferenceRepository conferenceRepository;
     @Autowired
     ConferenceHistoryRepository conferenceHistoryRepository;
-    @Autowired
-    ConferenceRepositoryCustom conferenceRepositoryCustom;
+//    @Autowired
+//    ConferenceRepositoryCustom conferenceRepositoryCustom;
     @Autowired
     UserRepository userRepository;
     @Autowired
