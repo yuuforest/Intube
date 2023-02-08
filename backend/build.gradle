@@ -4,6 +4,11 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	//querydsl 추가
 	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+
+	// openvidu
+	id 'java-library'
+	id 'maven-publish'
+
 }
 
 group = 'com.ssafy'
@@ -18,6 +23,10 @@ configurations {
 
 repositories {
 	mavenCentral()
+	// openvidu
+	maven {
+		url = uri('https://repo.maven.apache.org/maven2/')
+	}
 }
 
 dependencies {
@@ -56,6 +65,9 @@ dependencies {
 	//AWS
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+	// Openvidu
+	api("org.springframework.boot:spring-boot-starter-web:2.7.0")
+	api("io.openvidu:openvidu-java-client:2.25.0")
 }
 
 tasks.named('test') {

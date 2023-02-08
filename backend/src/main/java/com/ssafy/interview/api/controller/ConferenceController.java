@@ -10,17 +10,22 @@ import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
+import io.openvidu.java.client.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Api(value = "Conference API", tags = {"Conference"})
@@ -28,10 +33,45 @@ import java.util.List;
 @RequestMapping("/conference")
 public class ConferenceController {
 
+    @Value("${OPENVIDU_URL}")
+    private String OPENVIDU_URL;
+
+    @Value("${OPENVIDU_SECRET}")
+    private String OPENVIDU_SECRET;
+
+    private OpenVidu openvidu;
+
     @Autowired
     ConferenceService conferenceService;
     @Autowired
     AuthService authService;
+
+    @PostConstruct
+    public void init() {
+        this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
+    }
+
+    @PostMapping("/sessions")
+    public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
+            throws OpenViduJavaClientException, OpenViduHttpException {
+        SessionProperties properties = SessionProperties.fromJson(params).build();
+        Session session = openvidu.createSession(properties);
+        System.out.println(session.getSessionId());
+        return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
+    }
+
+    @PostMapping("/sessions/{sessionId}/connections")
+    public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
+                                                   @RequestBody(required = false) Map<String, Object> params)
+            throws OpenViduJavaClientException, OpenViduHttpException {
+        Session session = openvidu.getActiveSession(sessionId);
+        if (session == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
+        Connection connection = session.createConnection(properties);
+        return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
+    }
 
     @PostMapping("/start")
     @ApiOperation(value = "Conference 방 생성")
