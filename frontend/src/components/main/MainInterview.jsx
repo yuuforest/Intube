@@ -18,6 +18,7 @@ export default function MainInterview(props) {
 
   useEffect(() => {
     getInterview();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, props.searchCondition, selectedValue]);
 
   const handleChangePage = (event, value) => {
