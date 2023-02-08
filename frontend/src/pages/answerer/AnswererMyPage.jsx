@@ -72,6 +72,7 @@ export default function AnswererMyPage() {
 
   useEffect(() => {
     infoInterview();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
