@@ -226,7 +226,7 @@ export default function Header(props) {
                 </div>
 
                 <Divider />
-                <MenuItem onClick={handleCloseAvatar}>
+                <MenuItem onClick={(e) => handlePage(e, "answerer/mypage")}>
                   <ListItemIcon>
                     <PersonIcon fontSize="small" />
                   </ListItemIcon>
