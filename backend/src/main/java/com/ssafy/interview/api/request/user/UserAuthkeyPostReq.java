@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserAuthkeyPostRequest")
 public class UserAuthkeyPostReq {
-    @ApiModelProperty(name="유저 email ID", example="slhyj95@naver.com")
+    @ApiModelProperty(name="유저 email ID", example="ssafy@ssafy.com")
     String email;
     @ApiModelProperty(name="이메일 인증 키", example="E134DAY")
     String authKey;

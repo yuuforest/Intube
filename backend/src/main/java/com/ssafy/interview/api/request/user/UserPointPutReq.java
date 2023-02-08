@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserPointPutRequest")
 public class UserPointPutReq {
-    @ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
+    @ApiModelProperty(name="유저 ID(email)", example="ssafy@ssafy.com")
     String email;
     @ApiModelProperty(name="증감될 point 크기", example="500")
     int point;

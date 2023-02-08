@@ -19,31 +19,31 @@ import java.util.Date;
 @Setter
 @ApiModel("UserResponse")
 public class UserRes extends BaseResponseBody {
-	@ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
+	@ApiModelProperty(name="유저 ID(email)")
 	String email;
-	@ApiModelProperty(name="유저 name", example="이영준")
+	@ApiModelProperty(name="유저 name")
 	String name;
-	@ApiModelProperty(name="유저 nickname", example="커플13일차")
+	@ApiModelProperty(name="유저 nickname")
 	String nickname;
-	@ApiModelProperty(name="유저 phone", example="01012341234")
+	@ApiModelProperty(name="유저 phone")
 	String phone;
-	@ApiModelProperty(name="유저 gender", example="M")
+	@ApiModelProperty(name="유저 gender")
 	String gender;
-	@ApiModelProperty(name="유저 birth", example="1999-07-13")
+	@ApiModelProperty(name="유저 birth")
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
 	Date birth;
-	@ApiModelProperty(name="유저 introduction", example="안녕하세요 저는 착한 사람입니다.")
+	@ApiModelProperty(name="유저 introduction")
 	String introduction;
-	@ApiModelProperty(name="유저 is_kakao", example="0")
+	@ApiModelProperty(name="유저 is_kakao")
 	int isKakao;
-	@ApiModelProperty(name="유저 is_email_authorized", example="1")
+	@ApiModelProperty(name="유저 is_email_authorized")
 	int isEmailAuthorized;
-	@ApiModelProperty(name="유저 temperature", example="36.5")
+	@ApiModelProperty(name="유저 temperature")
 	double temperature;
-	@ApiModelProperty(name="유저 point", example="500")
+	@ApiModelProperty(name="유저 point")
 	int point;
-	@ApiModelProperty(name="유저 profile_url", example="https://303-intube.s3.ap-northeast-2.amazonaws.com/profile/user.png")
+	@ApiModelProperty(name="유저 profile_url")
 	String profile_url;
 	
 	public static UserRes of(Integer statusCode, String message, User user) {

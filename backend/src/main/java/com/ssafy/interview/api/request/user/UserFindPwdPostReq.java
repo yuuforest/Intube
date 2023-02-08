@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserFindPwdPostRequest")
 public class UserFindPwdPostReq {
-    @ApiModelProperty(name="유저 name", example="이영준")
+    @ApiModelProperty(name="유저 name", example="김싸피")
     String name;
-    @ApiModelProperty(name="유저 email ID", example="slhyj95@naver.com")
+    @ApiModelProperty(name="유저 email ID", example="ssafy@ssafy.com")
     String email;
 }
