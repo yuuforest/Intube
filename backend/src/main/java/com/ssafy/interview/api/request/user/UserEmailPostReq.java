@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserEmailPostRequest")
 public class UserEmailPostReq {
-    @ApiModelProperty(name="유저 email ID", example="slhyj95@naver.com")
+    @ApiModelProperty(name="유저 email ID", example="ssafy@ssafy.com")
     String email;
 }

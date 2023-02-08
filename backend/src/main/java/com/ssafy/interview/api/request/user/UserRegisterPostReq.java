@@ -17,19 +17,19 @@ import java.util.Date;
 @Setter
 @ApiModel("UserRegisterPostRequest")
 public class UserRegisterPostReq {
-	@ApiModelProperty(name="유저 ID(email)", example="slhyj95@naver.com")
+	@ApiModelProperty(name="유저 ID(email)", example="ssafy@ssafy.com")
 	String email;
 	@ApiModelProperty(name="유저 Password", example="1234")
 	String password;
-	@ApiModelProperty(name="유저 name", example="이영준")
+	@ApiModelProperty(name="유저 name", example="김싸피")
 	String name;
-	@ApiModelProperty(name="유저 nickname", example="커플13일차")
+	@ApiModelProperty(name="유저 nickname", example="인튜브정복자")
 	String nickname;
-	@ApiModelProperty(name="유저 phone", example="01012341234")
+	@ApiModelProperty(name="유저 phone", example="01011111111")
 	String phone;
 	@ApiModelProperty(name="유저 gender", example="M")
 	String gender;
-	@ApiModelProperty(name="유저 birth", example="1999-07-13")
+	@ApiModelProperty(name="유저 birth", example="1999-01-01")
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
 	Date birth;
