@@ -2,12 +2,14 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import "./AnnouncementSteps.css";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import InterviewListItemTag from "components/Interview/InterviewListItemTag";
+
+import InterviewTag from "components/common/InterviewTag";
+import "./AnnouncementPost.css";
 
 export default function AnnouncementStep3(props) {
   const [timeList, setTimeList] = React.useState([{ id: 0, value: "" }]);
@@ -48,7 +50,7 @@ export default function AnnouncementStep3(props) {
       <Typography variant="h5" gutterBottom sx={{ mb: 0, float: "left" }}>
         질문 입력
       </Typography>
-      <InterviewListItemTag interview={props.interview} />
+      <InterviewTag interview={props.interview} />
       <Divider sx={{ my: 3 }} />
 
       {timeList.map((time, index) => (
@@ -96,6 +98,12 @@ export default function AnnouncementStep3(props) {
       ))}
 
       <Divider sx={{ my: 3 }} />
+
+      <Typography variant="h4" gutterBottom sx={{ textAlign: "center", mt: 4 }}>
+        <Button variant="contained" onClick={(e) => props.handleChange(e, 3)}>
+          다음
+        </Button>
+      </Typography>
     </div>
   );
 }
