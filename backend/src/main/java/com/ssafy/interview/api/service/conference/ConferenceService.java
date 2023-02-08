@@ -30,4 +30,7 @@ public interface ConferenceService {
     void recordQuestionInConference(RecordQuestionInReq questionInfo);
     void recordDialogInConference(RecordDialogInReq dialogInfo);
 
+    // [Interview Time Table]
+    void modifyApplicantState(Long interviewTimeID);
+
 }

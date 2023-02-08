@@ -5,8 +5,10 @@ import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
+import com.ssafy.interview.db.entitiy.interview.Applicant;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.*;
+import com.ssafy.interview.db.repository.interview.ApplicantRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -34,6 +36,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     QuestionRepository questionRepository;
     @Autowired
     DialogRepository dialogRepository;
+    @Autowired
+    ApplicantRepository applicantRepository;
 
 //    @Override
 //    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
@@ -140,5 +144,13 @@ public class ConferenceServiceImpl implements ConferenceService {
         now.setContent(dialogInfo.getContent());
         now.setTimestamp(dialogInfo.getTimestamp());
         dialogRepository.save(now);
+    }
+
+    @Override
+    public void modifyApplicantState(Long interviewTimeID) {
+        List<Applicant> applicants = applicantRepository.findByInterview_time_id(interviewTimeID);
+        for (Applicant applicant : applicants) {
+            applicant.setApplicantState(3);
+        }
     }
 }
