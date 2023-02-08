@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -61,15 +61,15 @@ export default function SignUp() {
       newpasswordConfirm: "",
     },
     validationSchema: validationSchema,
-    onSubmit: response => {
-      let values = {
-        // password: "1234",
-        // newpassword: "01099130059",
-        // newpasswordConfirm: "",
-        password: response.password,
-        newpassword: response.newpassword,
-        newpasswordConfirm: response.newpasswordConfirm,
-      };
+    onSubmit: (response) => {
+      // let values = {
+      //   password: "1234",
+      //   newpassword: "01099130059",
+      //   newpasswordConfirm: "",
+      //   password: response.password,
+      //   newpassword: response.newpassword,
+      //   newpasswordConfirm: response.newpasswordConfirm,
+      // };
       let data = {
         // password: "1234",
         // password: "5678",
@@ -96,14 +96,14 @@ export default function SignUp() {
             withCredentials: true,
           }
         )
-        .then(values => {
+        .then((values) => {
           if (values.data.statusCode === 200) {
             alert("비밀번호가 변경되었습니다. 다시 로그인 해주세요");
             localStorage.clear();
             navigate("/");
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
           if (e.response.data.status === 401) {
             console.log("인증실패 다시 로그인해주세요");
