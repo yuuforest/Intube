@@ -10,12 +10,17 @@ import axios from "axios";
 
 export default function QuestionListittem(props) {
   const navigate = useNavigate();
-  function handlePage(e, link) {
-    console.log(link);
-    navigate(link, { state: { interview, userName } });
-  }
+
   const [userName, setUserName] = useState([]);
   const interview = props.interview;
+  function handlePageConference(e, link) {
+    navigate(link, { state: { interview, userName } });
+  }
+
+  const index = props.index;
+  function handlePageApply(e, link) {
+    navigate(link, { state: { interview, index } });
+  }
 
   useEffect(() => {
     axios
@@ -112,7 +117,7 @@ export default function QuestionListittem(props) {
               gutterBottom
               sx={{ color: "rgba(0, 0, 0, 0.5)", mt: 2, mr: 2, float: "right" }}
               onClick={(e) => {
-                handlePage(e, "/conference");
+                handlePageConference(e, "/conference");
               }}
             >
               수정
@@ -142,7 +147,7 @@ export default function QuestionListittem(props) {
               spacing={2}
               justifyContent="space-between"
               onClick={(e) => {
-                handlePage(e, "/questioner/apply");
+                handlePageApply(e, "/questioner/apply");
               }}
             >
               <Grid item>지원자</Grid>

@@ -9,9 +9,9 @@ export default function QuestionerList(props) {
   return (
     <Paper>
       <MenuList>
-        {props.interviewList.map((interview) => (
+        {props.interviewList.map((interview, index) => (
           <div>
-            <QuestionListittem interview={interview} />
+            <QuestionListittem interview={(interview, index)} />
             <Divider />
           </div>
         ))}
