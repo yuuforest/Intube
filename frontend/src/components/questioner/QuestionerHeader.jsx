@@ -6,7 +6,6 @@ import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import PersonIcon from "@mui/icons-material/Person";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -47,20 +46,12 @@ export default function Header(props) {
         console.error(error);
       });
   };
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const toggleDrawer = (open) => (event) => {
-    setState({ ...state, left: open });
-  };
 
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
     console.log(link);
-    navigate(link, {
-      state: state,
-    });
+    navigate(link);
   }
 
   function logoutApi() {
