@@ -3,10 +3,7 @@ package com.ssafy.interview.db.entitiy.interview;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.conference.Conference;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -21,6 +18,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class InterviewTime extends BaseEntity {
 
         @Temporal(TemporalType.TIMESTAMP)

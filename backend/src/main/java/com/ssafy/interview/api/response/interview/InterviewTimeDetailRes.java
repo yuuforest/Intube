@@ -21,16 +21,20 @@ import java.util.Date;
 @ApiModel("InterviewTimeDetailRes")
 public class InterviewTimeDetailRes extends InterviewTimeRes {
 
-    @ApiModelProperty(name = "Applicant state = 1")
+    @ApiModelProperty(name = "apply_applicant_count")
     Long wait_applicant_count;
 
-    @ApiModelProperty(name = "Applicant state = 2")
+    @ApiModelProperty(name = "apply_applicant_count")
     Long apply_applicant_count;
+
+    @ApiModelProperty(name = "modify_result_state")
+    int modifyResultState;
 
     @QueryProjection
     public InterviewTimeDetailRes(InterviewTime interviewTime, Long wait_applicant_count, Long apply_applicant_count) {
         this.id = interviewTime.getId();
         this.interview_start_time = interviewTime.getInterview_start_time();
+        this.modifyResultState = interviewTime.getModifyResultState();
         this.wait_applicant_count = wait_applicant_count;
         this.apply_applicant_count = apply_applicant_count;
     }
