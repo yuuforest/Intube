@@ -11,8 +11,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router";
-import APIController from "../../components/api/APIController";
-import instance from "components/api/APIController";
+import APIController from "api/APIController";
+import instance from "api/APIController";
 
 function Copyright(props) {
   return (

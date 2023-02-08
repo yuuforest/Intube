@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import instance from "components/api/APIController";
+import instance from "api/APIController";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useState } from "react";

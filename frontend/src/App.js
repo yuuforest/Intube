@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import ManageAnswerer from "pages/announcement/ManageAnswerer";
-import Signup from "./pages/user/Signup";
-import KakaoSignup from "./pages/user/KakaoSignup";
-import Kakaoloading from "./pages/user/Kakaoloading";
-import FindUser from "./pages/user/FindUser";
-import UserUpdate from "./pages/user/UserUpdate";
-import CheckPassword from "./pages/user/CheckPassword";
+import Signup from "./components/user/login/Signup";
+import KakaoSignup from "./components/user/login/KakaoSignup";
+import Kakaoloading from "./components/user/login/Kakaoloading";
+import FindUser from "./components/user/login/FindUser";
+import UserUpdate from "./components/user/login/UserUpdate";
+import CheckPassword from "./components/user/login/CheckPassword";
 import ChangePassword from "./pages/user/ChangePassword";
 
 // page router
@@ -21,7 +20,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={"/manage/answerer"} element={<ManageAnswerer />}></Route>
         <Route path="/userupdate" element={<UserUpdate />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/checkpassword" element={<CheckPassword />}></Route>

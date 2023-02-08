@@ -12,9 +12,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import { verifySend } from "components/api/verifySend";
-import { EmailCheck } from "components/api/verifyCheck";
-import { VerifyNickname } from "components/api/verifyNickname";
+import { verifySend } from "api/verifySend";
+import { EmailCheck } from "api/verifyCheck";
+import { VerifyNickname } from "api/verifyNickname";
 import { useNavigate } from "react-router";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -85,7 +85,7 @@ export default function SignUp() {
       .string("Enter your password")
       // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
       .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
-      // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+    // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
     name: yup.string("문자를 입력해주세요"),
     nickname: yup
       .string("Enter your password")
