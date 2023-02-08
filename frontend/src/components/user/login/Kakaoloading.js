@@ -12,11 +12,10 @@ const Kakaoloading = () => {
   console.log(href, "코드가져오기");
   let params = new URL(href).searchParams;
   let code = params.get("code");
-  console.log(code);
   const getKakaoToken = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/auth/kakao/callback?code=${code}`,
+      url: `http://i8a303.p.ssafy.io:8081/auth/kakao/callback?code=${code}`,
     })
       .then(res => {
         console.log(res); // 토큰이 넘어올 것임
@@ -24,8 +23,8 @@ const Kakaoloading = () => {
         if (res.data.statusCode === 200) {
           const ACCESS_TOKEN = res.data.accessToken;
 
-          localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-          localStorage.getItem("token");
+          localStorage.setItem("accessToken", ACCESS_TOKEN); //예시로 로컬에 저장함
+          localStorage.getItem("accessToken");
 
           alert("로그인 되었습니다.");
           navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)

@@ -21,6 +21,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { VerifyNickname } from "api/verifyNickname";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -44,14 +46,20 @@ const theme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
+  const nicknameCheck = () => {
+    if (nickname === "") {
+      alert("닉네임을 기입해주세요!");
+    } else {
+      VerifyNickname(nickname);
+      setNicknameAuthorize(localStorage.getItem("nicknameAuthorize"));
+      console.log(localStorage.getItem("nicknameAuthorize"));
+      localStorage.removeItem("nicknameAuthorize");
+    }
+  };
+  const [nicknameAuthorize, setNicknameAuthorize] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const nicknameChange = ({ target: { value } }) => setNickname(value);
+
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -97,55 +105,59 @@ export default function SignUp() {
       passwordConfirm: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (response) => {
-      let values = {
-        // birth: response.birth,
-        // email: response.email,
-        // gender: response.gender,
-        // introduction: response.introduction,
-        // name: response.name,
-        // nickname: response.nickname,
-        // password: response.password,
-        // phone: response.phone,
-        isEmailAuthorized: 1,
-        isKakao: 1,
-        birth: "1994-04-26",
-        email: "jos9404@naver.com",
-        gender: "M",
-        introduction: "안녕하세요 저는 착한 사람입니다.",
-        name: "지원석",
-        nickname: "커플600일차",
-        password: "1234",
-        phone: "01099130059",
-      };
-      alert(JSON.stringify(values, null, 2));
-      axios
-        .post("http://localhost:8080/user", JSON.stringify(values), {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:8080",
-          },
-          withCredentials: true,
-        })
-        .then((values) => {
-          if (values.data.statusCode === 200) {
-            const ACCESS_TOKEN = values.data.accessToken;
+    onSubmit: response => {
+      if (nicknameAuthorize) {
+        let values = {
+          birth: response.birth,
+          email: response.email,
+          gender: response.gender,
+          introduction: response.introduction,
+          name: response.name,
+          nickname: response.nickname,
+          password: response.password,
+          phone: response.phone,
+          isEmailAuthorized: 1,
+          isKakao: 1,
+          // birth: "1994-04-26",
+          // email: "jos9404@naver.com",
+          // gender: "M",
+          // introduction: "안녕하세요 저는 착한 사람입니다.",
+          // name: "지원석",
+          // nickname: "커플600일차",
+          // password: "1234",
+          // phone: "01099130059",
+        };
+        alert(JSON.stringify(values, null, 2));
+        axios
+          .post("http://i8a303.p.ssafy.io:8081/user", JSON.stringify(values), {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              // Accept: "application/json",
+              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+            },
+            withCredentials: true,
+          })
+          .then(values => {
+            if (values.data.statusCode === 200) {
+              const ACCESS_TOKEN = values.data.accessToken;
 
-            localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-            localStorage.getItem("token");
+              localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
+              localStorage.getItem("token");
 
-            alert("회원가입 되었습니다.");
-            navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
-          }
-          console.log(values);
-          navigate("/");
-        })
-        .catch((e) => {
-          if (e.response.data.statusCode === 409) {
-            alert("이미 가입된 이메일입니다.");
-          }
-        });
+              alert("회원가입 되었습니다.");
+              navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+            }
+            // console.log(values);
+            // navigate("/");
+          })
+          .catch(e => {
+            if (e.response.data.statusCode === 409) {
+              alert("이미 가입된 이메일입니다.");
+            }
+          });
+      } else {
+        alert("닉네임 중복확인 해주세요");
+      }
     },
   });
 
@@ -168,24 +180,26 @@ export default function SignUp() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            {/* <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          > */}
-
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  // autoComplete="given-name"
+                  fullWidth
+                  id="email"
+                  name="email"
+                  label="Email"
+                  value={formik.values.email}
+                  disabled
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
                   name="phone"
                   label="phone"
                   id="phone"
                   required
                   fullWidth
                   autoFocus
-                  // onBlur={formik.handleBlur}
                   value={formik.values.phone}
                   onChange={formik.handleChange}
                   error={formik.touched.phone && Boolean(formik.errors.phone)}
@@ -193,22 +207,7 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  id="email"
-                  name="email"
-                  label="Email"
-                  // // autoComplete="email"
-                  value={formik.values.email}
-                  // onChange={formik.handleChange}
-                  // error={formik.touched.email && Boolean(formik.errors.email)}
-                  // helperText={formik.touched.email && formik.errors.email}
-                  // onBlur={formik.handleBlur}
-                  disabled
-                  required
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -280,23 +279,26 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={10}>
                 <TextField
-                  autoComplete="given-name"
                   name="nickname"
                   required
                   fullWidth
                   id="nickname"
-                  label="nickname"
-                  autoFocus
-                  onChange={formik.handleChange}
-                  value={formik.values.nickname}
-                  error={
-                    formik.touched.nickname && Boolean(formik.errors.nickname)
-                  }
-                  helperText={formik.touched.nickname && formik.errors.nickname}
+                  label="닉네임"
+                  onChange={nicknameChange}
+                  value={nickname}
                   onBlur={formik.handleBlur}
                 />
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  variant="outlined"
+                  name="nicknameAuthorize"
+                  onClick={nicknameCheck}
+                >
+                  중복확인
+                </Button>
               </Grid>
               <Grid item xs={12}>
                 <FormControl>
