@@ -53,8 +53,8 @@ export default function SignIn() {
     validationSchema: validationSchema,
     onSubmit: response => {
       let values = {
-        email: "ssafy1@ssafy.com",
-        password: "1234",
+        email: response.email,
+        password: response.password,
       };
       alert(JSON.stringify(values, null, 2));
       axios

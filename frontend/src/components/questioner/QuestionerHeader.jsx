@@ -6,7 +6,6 @@ import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import PersonIcon from "@mui/icons-material/Person";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -47,20 +46,12 @@ export default function Header(props) {
         console.error(error);
       });
   };
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const toggleDrawer = (open) => (event) => {
-    setState({ ...state, left: open });
-  };
 
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
     console.log(link);
-    navigate(link, {
-      state: state,
-    });
+    navigate(link);
   }
 
   function logoutApi() {
@@ -80,15 +71,6 @@ export default function Header(props) {
   return (
     <div className="question-header">
       <Toolbar variant="" sx={{ height: "60px" }}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 3, color: " rgb(0, 0, 0)" }}
-          onClick={toggleDrawer(true)}
-        >
-          <MenuIcon />
-        </IconButton>
         <img
           src={Logo}
           alt="logo"
@@ -222,7 +204,7 @@ export default function Header(props) {
                   </ListItemIcon>
                   마이페이지
                 </MenuItem>
-                <MenuItem onClick={(e) => handlePage(e, "/questioner")}>
+                <MenuItem onClick={(e) => handlePage(e, "/")}>
                   <ListItemIcon>
                     <SwitchAccountIcon fontSize="small" />
                   </ListItemIcon>
