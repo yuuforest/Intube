@@ -32,6 +32,7 @@ export default function Questioner(props) {
 
   useEffect(() => {
     getInterviewList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchCondition, page]);
 
   const getInterviewList = () => {
