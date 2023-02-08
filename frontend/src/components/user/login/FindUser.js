@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
-import axios from "axios";
+import http from "api/Http";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -44,7 +44,7 @@ export default function SignIn() {
       name: "",
     },
     // validationSchema: validationSchema,
-    onSubmit: response => {
+    onSubmit: (response) => {
       let values = {
         // name: "지원석",
         // email: "jos9404@naver.com",
@@ -52,19 +52,13 @@ export default function SignIn() {
         email: response.email,
       };
       // alert(JSON.stringify(values, null, 2));
-      axios
-        .post(
-          "http://i8a303.p.ssafy.io:8081/user/find-password",
-          JSON.stringify(values),
-          {
-            headers: {
-              "Content-type": "application/json;charset=UTF-8",
-              // Accept: "application/json",
-              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
-            },
-            withCredentials: true,
-          }
-        )
+      http
+        .post("/user/find-password", JSON.stringify(values), {
+          headers: {
+            "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+          },
+          withCredentials: true,
+        })
         .then(({ data }) => {
           if (data.statusCode === 200) {
             console.log(data);
@@ -75,7 +69,7 @@ export default function SignIn() {
             navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 404) {
             alert("등록된 회원이 아닙니다...");
           }
@@ -91,7 +85,7 @@ export default function SignIn() {
   const nameChange = ({ target: { value } }) => setIdName(value);
   const phoneChange = ({ target: { value } }) => setIdPhone(value);
 
-  const findEmail = event => {
+  const findEmail = (event) => {
     event.preventDefault();
     let values = {
       // name: idName,
@@ -100,19 +94,13 @@ export default function SignIn() {
       phone: "01099130059",
     };
     // alert(JSON.stringify(values, null, 2));
-    axios
-      .post(
-        "http://i8a303.p.ssafy.io:8081/user/find-email",
-        JSON.stringify(values),
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            // Accept: "application/json",
-            "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
-          },
-          withCredentials: true,
-        }
-      )
+    http
+      .post("/user/find-email", JSON.stringify(values), {
+        headers: {
+          "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+        },
+        withCredentials: true,
+      })
       .then(({ data }) => {
         if (data.statusCode === 200) {
           console.log(data);
@@ -120,7 +108,7 @@ export default function SignIn() {
           setCheck(true);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         // if (e.response.data.statusCode === 401) {
         //   alert("비밀번호가 틀렸습니다.");
         // }

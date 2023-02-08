@@ -1,12 +1,12 @@
-import axios from "axios";
+import http from "api/Http";
 export function logout() {
   function deleteCookie(name) {
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:10 GMT;";
   }
   console.log("hi");
   console.log(localStorage.getItem("accessToken"));
-  axios
-    .delete("http://i8a303.p.ssafy.io:8081/auth/logout", {
+  http
+    .delete("/auth/logout", {
       headers: {
         "Content-type": "application/json;charset=UTF-8",
         // Accept: "application/json",
@@ -36,9 +36,9 @@ export function logout() {
         console.log("없는 유저");
       }
       if (e.response.data.status === 401) {
-        axios
+        http
           .get(
-            "http://i8a303.p.ssafy.io:8081/auth/issue",
+            "/auth/issue",
             {
               headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -49,8 +49,8 @@ export function logout() {
           .then(
             ({ data }) => localStorage.setItem("accessToken", data.accessToken),
             console.log("엑세스토큰 재발급 다시 로그아웃 버튼 눌러주세요"),
-            axios
-              .delete("http://i8a303.p.ssafy.io:8081  /auth/logout", {
+            http
+              .delete("/auth/logout", {
                 headers: {
                   "Content-type": "application/json;charset=UTF-8",
                   // Accept: "application/json",

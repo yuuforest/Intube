@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import http from "api/Http";
 // import { useDispatch } from "react-redux";
 // import { actionCreators as userActions } from "../redux/modules/user";
 import { useNavigate } from "react-router";
@@ -13,11 +13,11 @@ const Kakaoloading = () => {
   let params = new URL(href).searchParams;
   let code = params.get("code");
   const getKakaoToken = () => {
-    axios({
+    http({
       method: "GET",
-      url: `http://i8a303.p.ssafy.io:8081/auth/kakao/callback?code=${code}`,
+      url: `/auth/kakao/callback?code=${code}`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res); // 토큰이 넘어올 것임
 
         if (res.data.statusCode === 200) {
@@ -41,7 +41,7 @@ const Kakaoloading = () => {
           alert("회원가입 창으로 이동합니다.");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("소셜로그인 에러", err);
         window.alert("로그인에 실패하였습니다.");
         navigate("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄

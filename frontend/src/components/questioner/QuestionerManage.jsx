@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import http from "api/Http";
 
 import QuestionerList from "components/questioner/QuestionerList";
 import Pagination from "@mui/material/Pagination";
@@ -35,17 +35,13 @@ export default function Questioner(props) {
   }, [searchCondition, page]);
 
   const getInterviewList = () => {
-    axios
-      .post(
-        "http://i8a303.p.ssafy.io:8081/user/interviewer?page=" + page,
-        JSON.stringify(searchCondition),
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+    http
+      .post("/user/interviewer?page=" + page, JSON.stringify(searchCondition), {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((response) => {
         console.log(response.data);
         setInterviewList(response.data.content);

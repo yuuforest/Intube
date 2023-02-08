@@ -3,7 +3,7 @@ import CalendarComponent from "components/answerer/mypage/CalendarComponent";
 import Grid from "@mui/material/Grid";
 import CardList from "components/answerer/mypage/CardList";
 import Temperature from "components/answerer/mypage/Temperature";
-import instance from "api/APIController";
+import http from "api/Http";
 
 import "./QuestionerMyPage.css";
 
@@ -29,11 +29,11 @@ export default function AnswererMyPage() {
   });
 
   const routeInfo = {
-    route: '/questioner',
+    route: "/questioner",
     matchInfo: 4,
     applyInfo: 5,
     completeInfo: 6,
-  }
+  };
 
   const [calendarInfo, setCalendarInfo] = useState([]);
   const date = new Date();
@@ -43,10 +43,9 @@ export default function AnswererMyPage() {
   const userIntro = userInfo.introduction;
 
   const infoInterview = () => {
-    instance
-      .get("http://i8a303.p.ssafy.io:8081/user/interviewer/mypage", {
+    http
+      .get("/user/interviewer/mypage", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
@@ -81,7 +80,7 @@ export default function AnswererMyPage() {
         <h3>{userIntro}</h3>
         <Grid container spacing={6}>
           <Grid item xs={6}>
-            <CardList cardInfo={cardInfo} routeInfo={routeInfo}/>
+            <CardList cardInfo={cardInfo} routeInfo={routeInfo} />
             <h2 style={{ color: "#10316B" }}>인터뷰 온도</h2>
             <br />
             <Temperature />

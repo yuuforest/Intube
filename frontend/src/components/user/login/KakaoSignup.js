@@ -14,7 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
+import http from "api/Http";
 import { useNavigate } from "react-router";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -105,7 +105,7 @@ export default function SignUp() {
       passwordConfirm: "",
     },
     validationSchema: validationSchema,
-    onSubmit: response => {
+    onSubmit: (response) => {
       if (nicknameAuthorize) {
         let values = {
           birth: response.birth,
@@ -128,16 +128,16 @@ export default function SignUp() {
           // phone: "01099130059",
         };
         alert(JSON.stringify(values, null, 2));
-        axios
-          .post("http://i8a303.p.ssafy.io:8081/user", JSON.stringify(values), {
+        http
+          .post("/user", JSON.stringify(values), {
             headers: {
               "Content-type": "application/json;charset=UTF-8",
               // Accept: "application/json",
-              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+              "Access-Control-Allow-Origin": "https://intube.store:8443/api",
             },
             withCredentials: true,
           })
-          .then(values => {
+          .then((values) => {
             if (values.data.statusCode === 200) {
               const ACCESS_TOKEN = values.data.accessToken;
 
@@ -150,7 +150,7 @@ export default function SignUp() {
             // console.log(values);
             // navigate("/");
           })
-          .catch(e => {
+          .catch((e) => {
             if (e.response.data.statusCode === 409) {
               alert("이미 가입된 이메일입니다.");
             }
