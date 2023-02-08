@@ -1,7 +1,6 @@
 package com.ssafy.interview.api.controller;
 
 import com.ssafy.interview.api.request.conference.*;
-import com.ssafy.interview.api.response.conference.ConferenceInfoRes;
 import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
 import com.ssafy.interview.api.service.user.AuthService;
@@ -103,8 +102,6 @@ public class ConferenceController {
         conferenceService.endConference(dialogInfo.getConferenceID());
         // [Conference History Table]
         conferenceService.updateConferenceHistory(historyID, 4);
-        // [Dialog Table] 수정 필요
-        conferenceService.recordDialogInConference(dialogInfo);
 
         // [Applicant Table] Change Interview 생성 필요
 
@@ -139,19 +136,19 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @GetMapping("/info")
-    @ApiOperation(value = "Conference 방에 대한 정보 호출")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<ConferenceInfoRes> getConferenceInfo(@RequestParam(value = "interviewID") Long interviewID,
-                                                               @RequestParam(value = "conferenceID") Long conferenceID) {
-        // [Interview Table] + [Conference Table] + [User table]
-        ConferenceInfoRes conferenceInfo = conferenceService.getInfoConference(interviewID, conferenceID);
-        return ResponseEntity.status(200).body(conferenceInfo);
-    }
+//    @GetMapping("/info")
+//    @ApiOperation(value = "Conference 방에 대한 정보 호출")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<ConferenceInfoRes> getConferenceInfo(@RequestParam(value = "interviewID") Long interviewID,
+//                                                               @RequestParam(value = "conferenceID") Long conferenceID) {
+//        // [Interview Table] + [Conference Table] + [User table]
+//        ConferenceInfoRes conferenceInfo = conferenceService.getInfoConference(interviewID, conferenceID);
+//        return ResponseEntity.status(200).body(conferenceInfo);
+//    }
 
     @GetMapping("/user")
     @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")

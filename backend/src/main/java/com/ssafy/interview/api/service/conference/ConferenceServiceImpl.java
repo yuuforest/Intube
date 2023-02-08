@@ -1,7 +1,6 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.*;
-import com.ssafy.interview.api.response.conference.ConferenceInfoRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
@@ -37,11 +36,11 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     DialogRepository dialogRepository;
 
-    @Override
-    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
-        // [Conference 방 정보 조회]
-        return conferenceRepositoryCustom.findConferenceInfo(interviewID, conferenceID);
-    }
+//    @Override
+//    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
+//        // [Conference 방 정보 조회]
+//        return conferenceRepositoryCustom.findConferenceInfo(interviewID, conferenceID);
+//    }
 
     @Override
     public Conference startConference(Long interviewTimeID) {
