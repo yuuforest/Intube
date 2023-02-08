@@ -17,8 +17,7 @@ export default function QuestionListittem(props) {
     navigate(link, { state: { interview, userName } });
   }
 
-  const index = props.index;
-  function handlePageApply(e, link) {
+  function handlePageApply(e, link, index) {
     navigate(link, { state: { interview, index } });
   }
 
@@ -78,7 +77,7 @@ export default function QuestionListittem(props) {
           </Typography>
         </Grid>
         <Grid item xs={4}></Grid>
-        <Grid item>
+        <Grid item xs={3}>
           <div>
             <Chip
               label="모집중"
@@ -137,26 +136,28 @@ export default function QuestionListittem(props) {
               복사
             </Typography>
           </div>
-
-          <Button
-            variant="outlined"
-            sx={{ width: "100%", float: "left", mt: 2, height: 50 }}
-          >
-            <Grid
-              container
-              spacing={2}
-              justifyContent="space-between"
-              onClick={(e) => {
-                handlePageApply(e, "/questioner/apply");
-              }}
+          {props.interview.interviewTimeDetailResList.map((time, index) => (
+            <Button
+              variant="outlined"
+              sx={{ width: "100%", float: "left", mt: 2, height: 50 }}
+              key={time.id}
             >
-              <Grid item>지원자</Grid>
-              <Grid item>1명</Grid>
-              <Grid item>|</Grid>
-              <Grid item>합격자</Grid>
-              <Grid item>2명</Grid>
-            </Grid>
-          </Button>
+              <Grid
+                container
+                spacing={2}
+                justifyContent="space-between"
+                onClick={(e) => {
+                  handlePageApply(e, "/questioner/apply", index);
+                }}
+              >
+                <Grid item>지원자</Grid>
+                <Grid item>{time.apply_applicant_count}</Grid>
+                <Grid item>|</Grid>
+                <Grid item>합격자</Grid>
+                <Grid item>{time.wait_applicant_count}</Grid>
+              </Grid>
+            </Button>
+          ))}
         </Grid>
       </Grid>
     </MenuItem>
