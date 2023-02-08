@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/user").authenticated()
                 .antMatchers("/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
-                .antMatchers("/user/nickname", "/user/find-email", "user/find-password").permitAll()
+                .antMatchers("/user/nickname", "/user/find-email", "/user/find-password").permitAll()
     	        	    .anyRequest().permitAll()
                 .and().cors();
     }
