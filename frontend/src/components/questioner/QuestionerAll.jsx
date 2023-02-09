@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import http from "api/Http";
-
-import QuestionerList from "components/questioner/QuestionerList";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import QuestionerAllList from "components/questioner/QuestionerAllList";
 import Pagination from "@mui/material/Pagination";
 import NativeSelect from "@mui/material/NativeSelect";
+import Box from "@mui/material/Box";
 
 import "pages/questioner/Questioner.css";
 
@@ -38,7 +40,6 @@ export default function Questioner(props) {
     http
       .post("/user/interviewer?page=" + page, JSON.stringify(searchCondition), {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
@@ -47,30 +48,35 @@ export default function Questioner(props) {
         setTotalPage(response.data.totalPages);
       })
       .catch((error) => {
-        console.log(searchCondition);
         console.error(error);
       });
   };
 
   return (
-    <div>
-      <NativeSelect
-        defaultValue={0}
-        inputProps={{
-          name: "interview_state",
-        }}
-        sx={{ mx: 1, mb: 1 }}
-        onChange={handleChangeState}
-      >
-        <option value={0}>공고 전체</option>
-        <option value={4}>모집중</option>
-        <option value={5}>진행중</option>
-        <option value={6}>완료</option>
-      </NativeSelect>
-      <QuestionerList
+    <div hidden={props.value !== 0}>
+      <Stack spacing={2} direction="row">
+        <NativeSelect
+          defaultValue={0}
+          inputProps={{
+            name: "interview_state",
+          }}
+          sx={{ mx: 1, mb: 1, width: 1 / 8 }}
+          onChange={handleChangeState}
+        >
+          <option value={0}>공고 전체</option>
+          <option value={4}>모집중</option>
+          <option value={5}>진행중</option>
+          <option value={6}>완료</option>
+        </NativeSelect>
+        <Box sx={{ flexGrow: 1 }} />
+        <Button variant="text">등록일순</Button>
+        <Button variant="text">마감순</Button>
+        <Button variant="text">포인트순</Button>
+      </Stack>
+      <QuestionerAllList
         interviewList={interviewList}
         getInterviewList={getInterviewList}
-      ></QuestionerList>
+      ></QuestionerAllList>
 
       <Pagination
         count={totalPage}
