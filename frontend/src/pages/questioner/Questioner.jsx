@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import QuestionerAll from "components/questioner/QuestionerAll";
 import QuestionerHeader from "components/questioner/QuestionerHeader";
 import QuestionerApply from "components/questioner/QuestionerApply";
+import QuestionerNow from "components/questioner/QuestionerNow";
 
 export default function Questioner() {
   const [value, setValue] = React.useState(0);
@@ -51,6 +52,7 @@ export default function Questioner() {
           </Box>
           <QuestionerAll value={value}></QuestionerAll>
           <QuestionerApply value={value}></QuestionerApply>
+          <QuestionerNow value={value}></QuestionerNow>
         </Grid>
       </Grid>
     </div>
