@@ -71,7 +71,7 @@ export default function Conference() {
 
   useEffect(() => {
     http
-      .post("/conference/start?interviewTimeID=" + interview.id, {
+      .post("/conference/start?interviewTimeID=" + interview.id,{}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
