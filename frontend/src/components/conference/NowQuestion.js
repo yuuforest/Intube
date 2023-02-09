@@ -32,6 +32,8 @@ export default class NowQuestion extends Component {
       //하위컴포넌트가 받은 props값 적어주기(둘다)
       await this.setState({ message: this.props.question.question });
       this.sendQuestion();
+      console.log("지금상태");
+      console.log(this.state);
     }
   };
   sendQuestion() {
