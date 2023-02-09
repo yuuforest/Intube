@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *  인터뷰 모델 정의.
+ * 인터뷰 모델 정의.
  */
 @Entity
 @Getter
@@ -22,29 +22,29 @@ import java.util.List;
 @Builder
 public class InterviewTime extends BaseEntity {
 
-        @Temporal(TemporalType.TIMESTAMP)
-        @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
-        Date interview_start_time;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    Date interview_start_time;
 
-        @Builder.Default()
-        @Column(name = "modify_result_state")
-        int modifyResultState = 0;
+    @Builder.Default()
+    @Column(name = "modify_result_state") // 0 : 진행 전 / 1 : 진행 후 결과 수정 전 / 2 : All 완료(결과 수정 완료)
+    int modifyResultState = 0;
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "interview_id")
-        private Interview interview;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "interview_id")
+    private Interview interview;
 
-        @OneToOne(mappedBy = "interviewTime")
-        private Conference conference;
+    @OneToOne(mappedBy = "interviewTime")
+    private Conference conference;
 
-        @OneToMany(mappedBy = "interviewTime")
-        private List<Applicant> applicantList = new ArrayList<>();
+    @OneToMany(mappedBy = "interviewTime")
+    private List<Applicant> applicantList = new ArrayList<>();
 
-        @Builder
-        private InterviewTime(Date interview_start_time, Interview interview) {
-                Assert.notNull(interview_start_time, "interview_start_time must not be empty");
-                Assert.notNull(interview, "interview must not be empty");
-                this.interview_start_time = interview_start_time;
-                this.interview = interview;
-        }
+    @Builder
+    private InterviewTime(Date interview_start_time, Interview interview) {
+        Assert.notNull(interview_start_time, "interview_start_time must not be empty");
+        Assert.notNull(interview, "interview must not be empty");
+        this.interview_start_time = interview_start_time;
+        this.interview = interview;
+    }
 }

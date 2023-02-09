@@ -70,5 +70,10 @@ public class ResultServiceImpl implements ResultService {
         }
     }
 
+    @Override
+    public void createConferencResult(String eamil, Long interview_id, Long interview_time_id) {
+
+    }
+
 
 }

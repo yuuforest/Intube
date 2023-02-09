@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 @Setter
 public class ConferenceResult extends BaseEntity {
 
-    String text;
+    String content;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

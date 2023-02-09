@@ -34,5 +34,4 @@ public class Conference extends BaseEntity {
     @OneToMany(mappedBy = "conference")
     private List<ConferenceResult> conferenceResultList = new ArrayList<>();
 
-
 }

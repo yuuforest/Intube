@@ -4,6 +4,7 @@ package com.ssafy.interview.api.controller;
 import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.api.service.conference.ResultService;
+import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +12,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<List<DialogRes>> dialogInAll(@RequestParam(value="conferenceID") Long conferenceID) {
+    public ResponseEntity<List<DialogRes>> dialogInAll(@RequestParam(value = "conferenceID") Long conferenceID) {
         List<DialogRes> dialogs = resultService.dialogInAll(conferenceID);
         return ResponseEntity.status(200).body(dialogs);
     }
@@ -42,8 +45,8 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<List<DialogRes>> dialogInQuestion(@RequestParam(value="conferenceID") Long conferenceID,
-                                                            @RequestParam(value="questionID") Long questionID) {
+    public ResponseEntity<List<DialogRes>> dialogInQuestion(@RequestParam(value = "conferenceID") Long conferenceID,
+                                                            @RequestParam(value = "questionID") Long questionID) {
         List<DialogRes> dialogs = resultService.dialogInQuestion(conferenceID, questionID);
         return ResponseEntity.status(200).body(dialogs);
     }
@@ -69,6 +72,24 @@ public class ResultController {
     })
     public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestBody List<DialogModifyReq> dialogInfo) {
         resultService.updateAllDialog(dialogInfo);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PostMapping("/create")
+    @ApiOperation(value = "dialog에 있는 content 정리 후 conference result 생성")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> createConferenceResult(@RequestParam Long interview_id,
+                                                                             @RequestParam Long interview_time_id,
+                                                                             @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        resultService.createConferencResult(email, interview_id, interview_time_id);
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
