@@ -19,6 +19,8 @@ export default function Conference() {
   const interview = location.state.interview;
   const userName = location.state.userName;
   const [userInfo, setUserInfo] = useState([]);
+  const [conferenceID, setConferenceID] = useState(1);
+
   useEffect(() => {
     getUser();
   }, []);
@@ -49,8 +51,7 @@ export default function Conference() {
     setSubscriber(item);
   };
 
-  // const micstatus = useSelector(micState)
-  const [micState, setMicState] = React.useState(false);
+  const [micState, setMicState] = React.useState(true);
   const handleMicState = () => {
     setMicState(!micState);
   };
@@ -64,13 +65,27 @@ export default function Conference() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  // const changeMic = useCallback(() => {
-  //   dispatch(setMic());
-  // }, [dispatch, micState])
 
   useEffect(() => {
     dispatch(setMic());
   }, [micState, dispatch]);
+
+  useEffect(() => {
+    http
+      .post("/conference/start?interviewTimeID=" + interview.id, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log('컨퍼런스 아이디');
+        setConferenceID(response.data.conferenceID);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>
@@ -98,6 +113,7 @@ export default function Conference() {
             userInfo={userInfo}
             interview={interview}
             handleMicState={handleMicState}
+            conferenceID={conferenceID}
           ></AnswerWrite>
         </Grid>
         <Grid item xs={2}>

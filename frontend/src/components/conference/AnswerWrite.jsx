@@ -48,14 +48,12 @@ export default function AnswerWrite(props) {
     });
     
     if (micState) {
-      // props.handleMicState();
       dispatch(setMic());
       startListening();
       resetTranscript();
       setCurrentTime(moment().format("HH:mm:ss"));
     } else {
       dispatch(setMic());
-      // props.handleMicState();
       promise
         .then(function () {
           SpeechRecognition.stopListening();
@@ -97,9 +95,6 @@ export default function AnswerWrite(props) {
     <div>
       <p>Microphone: {listening ? "on" : "off"}</p>
       <p>{micState ? "적용" : "안됨"}</p>
-      {/* <button onClick={() => {dispatch(setMic()); console.log(micstatus); startListening(); resetTranscript()}}>Start</button>
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button> */}
       <p>{listening ? transcript : ""}</p>
     </div>
   );
