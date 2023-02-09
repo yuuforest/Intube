@@ -1,5 +1,4 @@
 import QuestionLIst from "components/conference/QuestionLIst";
-import NowQuestion from "components/conference/NowQuestion";
 import React, { useEffect, useState } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";

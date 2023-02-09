@@ -8,20 +8,18 @@ export default class NowQuestion extends Component {
       message: "",
     };
     this.chatScroll = React.createRef();
-
     this.sendQuestion = this.sendQuestion.bind(this);
   }
 
   componentDidMount() {
     this.props.user
       .getStreamManager()
-      .stream.session.on("signal:chat", (event) => {
+      .stream.session.on("signal:a", (event) => {
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
         messageList.push({
-          connectionId: event.from.connectionId,
-          nickname: data.nickname,
           message: data.message,
+          id: data.id,
         });
 
         this.setState({ messageList: messageList });
@@ -29,26 +27,26 @@ export default class NowQuestion extends Component {
   }
   componentDidUpdate = async (prevProps, prevState) => {
     if (this.props.question !== prevProps.question) {
-      //하위컴포넌트가 받은 props값 적어주기(둘다)
-      await this.setState({ message: this.props.question.question });
+      await this.setState({
+        message: this.props.question.question,
+        id: this.props.question.id,
+      });
       this.sendQuestion();
-      console.log("지금상태");
-      console.log(this.state);
     }
   };
   sendQuestion() {
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
-      if (message !== "" && message !== " ") {
-        const data = {
-          message: message,
-        };
-        this.props.user.getStreamManager().stream.session.signal({
-          data: JSON.stringify(data),
-          type: "chat",
-        });
-      }
+      const data = {
+        message: message,
+        id: this.state.id,
+      };
+      this.props.user.getStreamManager().stream.session.signal({
+        data: JSON.stringify(data),
+        type: "a",
+      });
     }
+
     this.setState({ message: "" });
   }
 
@@ -59,7 +57,7 @@ export default class NowQuestion extends Component {
           (data, i) =>
             i === this.state.messageList.length - 1 && (
               <Typography variant="h1" gutterBottom>
-                Q1. {data.message}
+                Q{data.id}. {data.message}
               </Typography>
             )
         )}
