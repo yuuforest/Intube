@@ -24,6 +24,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @Api(value = "Conference API", tags = {"Conference"})
@@ -82,14 +83,14 @@ public class ConferenceController {
                                                               @ApiIgnore Authentication authentication) {
         String userEmail = authService.getEmailByAuthentication(authentication);
         // 만약 interviewID가 Conference Table에 있으면 이미 존재하는 ConferenceID를 반환
-
-
-        // 만약 interviewID가 Conference Table에 없으면 새로 ConferenceID를 생성
-        // [Conference Table] 생성된 Conference 방에 대한 정보 저장
-        Conference conference = conferenceService.startConference(interviewTimeID);
+        Optional<Conference> conference = conferenceService.isConference(interviewTimeID);
+        if(conference.isEmpty()) {   // 만약 interviewID가 Conference Table에 없으면 새로 ConferenceID를 생성
+            // [Conference Table] 생성된 Conference 방에 대한 정보 저장
+            conference = Optional.ofNullable(conferenceService.startConference(interviewTimeID));
+        }
         // [Conference History Table] 질문자가 Conference 방에 참여 -> 참여 기록 생성
-        ConferenceHistory history = conferenceService.createConferenceHistory(conference.getId(), userEmail, 1);
-        return ResponseEntity.status(200).body(ConferenceStartRes.of(conference.getId(),  history.getId()));
+        ConferenceHistory history = conferenceService.createConferenceHistory(conference.get().getId(), userEmail, 1);
+        return ResponseEntity.status(200).body(ConferenceStartRes.of(conference.get().getId(),  history.getId()));
     }
 
     @PostMapping("/end")

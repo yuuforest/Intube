@@ -31,4 +31,5 @@ public class ExceptionAdvice {
     protected ResponseEntity<? extends BaseResponseBody> existApplicantException(ExistApplicantException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-131, e.getMessage() + " 재확인바랍니다."));
     }
+
 }

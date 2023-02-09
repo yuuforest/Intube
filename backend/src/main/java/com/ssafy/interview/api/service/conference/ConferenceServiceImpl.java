@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service("ConferenceService")
 public class ConferenceServiceImpl implements ConferenceService {
@@ -60,10 +61,16 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional
-    public void endConference(Long conference_id) {
+    public void endConference(Long conferenceID) {
         // [회의방 종료]
-        Conference conference = conferenceRepository.findById(conference_id).get();
+        Conference conference = conferenceRepository.findById(conferenceID).get();
         conference.setIs_active(2); // Conference 방 종료 (1)
+    }
+
+    @Override
+    public Optional<Conference> isConference(Long interviewTimeID) {
+        // [만약 interview time id에 해당하는 Conference가 있다면 Conference 정보를 반환]
+        return conferenceRepository.findByInterviewTime_Id(interviewTimeID);
     }
 
     @Override
