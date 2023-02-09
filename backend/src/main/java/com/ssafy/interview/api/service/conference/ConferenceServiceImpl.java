@@ -16,6 +16,7 @@ import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("ConferenceService")
@@ -147,8 +148,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional
     public void modifyApplicantState(Long interviewTimeID) {
-        List<Applicant> applicants = applicantRepository.findByInterview_time_id(interviewTimeID);
+        List<Applicant> applicants = applicantRepository.findByInterviewTime_Id(interviewTimeID);
         for (Applicant applicant : applicants) {
             applicant.setApplicantState(3);
         }

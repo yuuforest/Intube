@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface ApplicantRepository extends JpaRepository<Applicant, Long>, ApplicantRepositoryCustom { // 인터뷰 생성 Method
 
-    List<Applicant> findByInterview_time_id(Long interview_time_id);
+    List<Applicant> findByInterviewTime_Id(Long interview_time_id);
 }
