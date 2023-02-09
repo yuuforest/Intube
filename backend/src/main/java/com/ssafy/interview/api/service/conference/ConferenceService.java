@@ -1,7 +1,6 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.conference.*;
-import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
@@ -21,7 +20,7 @@ public interface ConferenceService {
     ConferenceHistory createConferenceHistory(Long conferenceID, String userEmail, int action);
     void updateConferenceHistory(Long historyID, int action);
     void kickConferenceHistory(KickUserInReq kickInfo);
-    List<User> userInConference(Long ConferenceID);
+//    List<User> userInConference(Long ConferenceID);
 
     // [Question Table]
     void createQuestionInConference(QuestionCreateInReq questionInfo);
@@ -29,6 +28,9 @@ public interface ConferenceService {
 
     // [Dialog Table]
     void recordQuestionInConference(RecordQuestionInReq questionInfo);
-    void recordDialogInConference(RecordDialogInReq dialogInfo);
+    void recordDialogInConference(String userEmail, RecordDialogInReq dialogInfo);
+
+    // [Interview Time Table]
+    void modifyApplicantState(Long interviewTimeID);
 
 }

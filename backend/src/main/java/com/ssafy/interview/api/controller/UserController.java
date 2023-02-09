@@ -89,7 +89,6 @@ public class UserController {
     @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보를 입력 받아 DB에 update한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 400, message = "잘못된 비밀번호"),
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
@@ -107,10 +106,6 @@ public class UserController {
         }
 
         User user = userService.findByEmail(email).get();
-        if (!authService.checkMatches(modifyInfo.getPassword(), user.getPassword())) {
-            // 비밀번호가 틀렸을 때
-            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Password"));
-        }
 
         userService.updateUser(modifyInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -274,25 +269,34 @@ public class UserController {
     @ApiOperation(value = "회원 포인트 수정", notes = "회원 정보와 포인트 값을 입력 받아 DB에 update한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "0미만이 되는 값"),
+            @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> modifyPoint(
-            @RequestBody @ApiParam(value = "포인트 정보", required = true) UserPointPutReq pointInfo) {
+            @RequestBody @ApiParam(value = "포인트 정보", required = true) UserPointPutReq pointInfo,
+            @ApiIgnore Authentication authentication) {
         logger.info("modifyPoint call!");
 
-        Optional<User> user = userService.findByEmail(pointInfo.getEmail());
+        String email = authService.getUserByAuthentication(authentication);
+
+        Optional<User> user = userService.findByEmail(email);
         if (!user.isPresent()) {
             // 맞는 회원이 없을 때
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
         }
 
-        if (pointInfo.getKey() == 1) {
-            // 증가
-            userService.updatePoint(pointInfo.getEmail(), pointInfo.getPoint());
-        } else {
-            // 감소
-            userService.updatePoint(pointInfo.getEmail(), -1 * pointInfo.getPoint());
+        try {
+            if (pointInfo.getKey() == 1) {
+                // 증가
+                userService.updatePoint(email, pointInfo.getPoint());
+            } else {
+                // 감소
+                userService.updatePoint(email, -1 * pointInfo.getPoint());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Value"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -302,25 +306,34 @@ public class UserController {
     @ApiOperation(value = "회원 온도 수정", notes = "회원 정보와 포인트 값을 입력 받아 DB에 update한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "0미만이 되는 값"),
+            @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> modifyTemperature(
-            @RequestBody @ApiParam(value = "회원 온도 정보", required = true) UserTemperaturePutReq temperatureInfo) {
+            @RequestBody @ApiParam(value = "회원 온도 정보", required = true) UserTemperaturePutReq temperatureInfo,
+            @ApiIgnore Authentication authentication) {
         logger.info("modifyTemperature call!");
 
-        Optional<User> user = userService.findByEmail(temperatureInfo.getEmail());
+        String email = authService.getUserByAuthentication(authentication);
+
+        Optional<User> user = userService.findByEmail(email);
         if (!user.isPresent()) {
             // 맞는 회원이 없을 때
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
         }
 
-        if (temperatureInfo.getKey() == 1) {
-            // 증가
-            userService.updateTemperature(temperatureInfo.getEmail(), temperatureInfo.getTemperature());
-        } else {
-            // 감소
-            userService.updateTemperature(temperatureInfo.getEmail(), -1 * temperatureInfo.getTemperature());
+        try {
+            if (temperatureInfo.getKey() == 1) {
+                // 증가
+                userService.updateTemperature(email, temperatureInfo.getTemperature());
+            } else {
+                // 감소
+                userService.updateTemperature(email, -1 * temperatureInfo.getTemperature());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Value"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -387,7 +400,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<Page<InterviewTimeLoadRes>> findInterviewByStateAndWord(@RequestBody InterviewSearchByStateReq interviewSearchByStateReq,
-                                                                                     @PageableDefault(size = 8) Pageable pageable, @ApiIgnore Authentication authentication) {
+                                                                                  @PageableDefault(size = 8) Pageable pageable, @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String email = userDetails.getUsername();
 

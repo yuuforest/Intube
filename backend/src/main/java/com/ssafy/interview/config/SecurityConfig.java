@@ -68,6 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .antMatchers("/user/me").authenticated()
                 .antMatchers("/user/image").authenticated()
+                .antMatchers(HttpMethod.PUT,"/user/point").authenticated()
+                .antMatchers(HttpMethod.PUT,"/user/temperature").authenticated()
                 .antMatchers("/user/interviewer/**").authenticated()
                 .antMatchers("/user/interviewee/mypage").authenticated()
                 .antMatchers("/user/interviewer").authenticated()
@@ -78,7 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/interviews/interviewer/expired-interview").authenticated()
                 .antMatchers(HttpMethod.GET, "/interviews/search/{interview_id}").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
-                .antMatchers("/conference").authenticated()
+                .antMatchers("/conference/start").authenticated()
+                .antMatchers("/conference/in").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/password").authenticated()
                 .antMatchers(HttpMethod.POST, "/interviews").authenticated()
                 .antMatchers(HttpMethod.POST, "/auth/check-password").authenticated()

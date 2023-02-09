@@ -192,15 +192,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updatePoint(String email, int point) {
+    public void updatePoint(String email, int point) throws Exception {
         User user = userRepository.findByEmail(email).get();
+        if ((user.getPoint() + point) < 0 )
+            throw new Exception("400");
         user.setPoint(user.getPoint()+point);
     }
 
     @Transactional
     @Override
-    public void updateTemperature(String email, double temperature) {
+    public void updateTemperature(String email, double temperature) throws Exception {
         User user = userRepository.findByEmail(email).get();
+        if ((user.getTemperature() + temperature) < 0 )
+            throw new Exception("400");
         user.setTemperature(user.getTemperature()+temperature);
     }
 

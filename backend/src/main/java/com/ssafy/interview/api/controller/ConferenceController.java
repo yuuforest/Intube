@@ -5,7 +5,6 @@ import com.ssafy.interview.api.response.conference.ConferenceStartRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
 import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
-import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
@@ -97,13 +96,14 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "historyID") Long historyID,
-                                                                    @RequestBody RecordDialogInReq dialogInfo) {
+                                                                    @RequestParam(value = "conferenceID") Long conferenceID,
+                                                                    @RequestParam(value = "interviewTimeID") Long interviewTimeID) {
         // [Conference Table]
-        conferenceService.endConference(dialogInfo.getConferenceID());
-        // [Conference History Table]
+        conferenceService.endConference(conferenceID);
+        // [Conference History Table] 답변자를 질문자가 다 내보낸 후, Conference를 종료할 수 있음
         conferenceService.updateConferenceHistory(historyID, 4);
-
-        // [Applicant Table] Change Interview 생성 필요
+        // [Applicant Table] interview_time_id 가 동일한 applicant의 상태를 3으로 변경
+        conferenceService.modifyApplicantState(interviewTimeID);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
@@ -150,18 +150,18 @@ public class ConferenceController {
 //        return ResponseEntity.status(200).body(conferenceInfo);
 //    }
 
-    @GetMapping("/user")
-    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<List<User>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
-        // [Conference History Table]
-        List<User> users = conferenceService.userInConference(conferenceID);
-        return ResponseEntity.status(200).body(users);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
-    }
+//    @GetMapping("/user")
+//    @ApiOperation(value = "현재 Conference 방에 참여중인 답변자 목록")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<List<User>> getUserInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+//        // [Conference History Table]
+//        List<User> users = conferenceService.userInConference(conferenceID);
+//        return ResponseEntity.status(200).body(users);
+//    }
 
     @PostMapping("/question")
     @ApiOperation(value = "Conference 진행 중 새로운 질문 추가")
@@ -186,7 +186,7 @@ public class ConferenceController {
     public ResponseEntity<List<Question>> getQuestionInConference(@RequestParam(value = "interviewID") Long interviewID) {
         // [Question Table]
         List<Question> questions = conferenceService.questionAllInConference(interviewID);
-        return ResponseEntity.status(200).body(questions);  // FE에서 필요한 정보가 확정되면 코드 수정 필요
+        return ResponseEntity.status(200).body(questions);
     }
 
     @PostMapping("/dialog/question")
@@ -209,9 +209,11 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo) {
+    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo,
+                                                                               @ApiIgnore Authentication authentication) {
+        String userEmail = authService.getUserByAuthentication(authentication);
         // [Dialog Table]
-        conferenceService.recordDialogInConference(dialogInfo);
+        conferenceService.recordDialogInConference(userEmail, dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
