@@ -237,6 +237,7 @@ public class AuthServiceImpl implements AuthService {
         return userDetails.getUsername();
     }
 
+    @Override
     public Long getIdByAuthentication(Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         return userDetails.getUser().getId();
