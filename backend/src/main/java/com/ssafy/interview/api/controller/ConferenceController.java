@@ -81,6 +81,10 @@ public class ConferenceController {
     public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewTimeID") Long interviewTimeID,
                                                               @ApiIgnore Authentication authentication) {
         String userEmail = authService.getUserByAuthentication(authentication);
+        // 만약 interviewID가 Conference Table에 있으면 이미 존재하는 ConferenceID를 반환
+
+
+        // 만약 interviewID가 Conference Table에 없으면 새로 ConferenceID를 생성
         // [Conference Table] 생성된 Conference 방에 대한 정보 저장
         Conference conference = conferenceService.startConference(interviewTimeID);
         // [Conference History Table] 질문자가 Conference 방에 참여 -> 참여 기록 생성
@@ -101,10 +105,10 @@ public class ConferenceController {
         // [Conference Table]
         conferenceService.endConference(conferenceID);
         // [Conference History Table] 답변자를 질문자가 다 내보낸 후, Conference를 종료할 수 있음
-        conferenceService.updateConferenceHistory(historyID, 4);
+        conferenceService.updateConferenceHistory(historyID, 0);
         // [Applicant Table] interview_time_id 가 동일한 applicant의 상태를 3으로 변경
         conferenceService.modifyApplicantState(interviewTimeID);
-
+        conferenceService.modifyInterviewTimeState(interviewTimeID);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
@@ -119,7 +123,7 @@ public class ConferenceController {
                                              @ApiIgnore Authentication authentication) {
         String userEmail = authService.getUserByAuthentication(authentication);
         // [Conference History Table]
-        ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userEmail, 2);
+        ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userEmail, 1);
         return ResponseEntity.status(200).body(history.getId());
     }
 
@@ -132,7 +136,7 @@ public class ConferenceController {
     })
     public ResponseEntity<? extends BaseResponseBody> outConference(@RequestParam(value = "historyID") Long historyID) {
         // [Conference History Table]
-        conferenceService.updateConferenceHistory(historyID, 3);
+        conferenceService.updateConferenceHistory(historyID, 0);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 

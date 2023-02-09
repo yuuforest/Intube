@@ -6,6 +6,7 @@ import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Applicant;
+import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.*;
 import com.ssafy.interview.db.repository.interview.ApplicantRepository;
@@ -63,7 +64,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         // [회의방 종료]
         Conference conference = conferenceRepository.findById(conference_id).get();
         conference.setIs_active(2); // Conference 방 종료 (1)
-//        conferenceRepository.save(conference);
     }
 
     @Override
@@ -84,7 +84,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         // [회의방에 대한 참가자들의 퇴장 기록]
         ConferenceHistory conferenceHistory = conferenceHistoryRepository.findById(historyID).get();
         conferenceHistory.setAction(action);
-//        conferenceHistoryRepository.save(conferenceHistory);
     }
 
     @Override
@@ -95,7 +94,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         ConferenceHistory conferenceHistory
                 = conferenceHistoryRepository.findByConference_idAndUser_idOrderByIdDesc(kickInfo.getConferenceID(), user.getId()).get(0);
         conferenceHistory.setAction(3);
-//        conferenceHistoryRepository.save(conferenceHistory);
     }
 
 //    @Override
@@ -145,7 +143,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         Dialog now = new Dialog();
         now.setUser(userRepository.findByEmail(userEmail).get());
         now.setConference(conferenceRepository.findById(dialogInfo.getConferenceID()).get());
-        if(dialogInfo.getQuestionID() == null) {
+        if(dialogInfo.getQuestionID() == -1) {
             now.setQuestion(null);
         } else {
             now.setQuestion(questionRepository.findById(dialogInfo.getQuestionID()).get());
@@ -163,5 +161,12 @@ public class ConferenceServiceImpl implements ConferenceService {
         for (Applicant applicant : applicants) {
             applicant.setApplicantState(3);
         }
+    }
+
+    @Override
+    @Transactional
+    public void modifyInterviewTimeState(Long interviewTimeID) {
+        InterviewTime interviewTime = interviewTimeRepository.findById(interviewTimeID).get();
+        interviewTime.setModifyResultState(1);
     }
 }

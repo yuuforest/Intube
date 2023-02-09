@@ -32,5 +32,6 @@ public interface ConferenceService {
 
     // [Interview Time Table]
     void modifyApplicantState(Long interviewTimeID);
+    void modifyInterviewTimeState(Long interviewTimeID);
 
 }

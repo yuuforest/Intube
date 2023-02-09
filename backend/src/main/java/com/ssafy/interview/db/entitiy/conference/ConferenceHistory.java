@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class ConferenceHistory extends BaseEntity {
 
-    int action;         // 1 방 생성 (질문자) 2 방에 참여 중 (답변자) 3 방에서 나감 (답변자) 4 방 종료 (질문자)
+    int action;         // 0 방에서 나감 1 방에 참여 중 
     @CreatedDate
     LocalDateTime start_time;
     @LastModifiedDate
