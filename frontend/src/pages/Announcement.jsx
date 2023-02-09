@@ -1,13 +1,9 @@
 import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import InterpreterModeIcon from "@mui/icons-material/InterpreterMode";
-import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import AnnouncementPost from "components/announcement/AnnouncementPost";
-
 import QuestionerHeader from "components/questioner/QuestionerHeader";
+import "pages/Announcement.css";
 
 export default function Announcement() {
   const [value, setValue] = React.useState(0);
@@ -18,26 +14,22 @@ export default function Announcement() {
   };
 
   return (
-    <div>
+    <div className="announcement">
       <QuestionerHeader></QuestionerHeader>
-      <Tabs value={value} onChange={handleChange} sx={{ mt: 3 }} centered>
+      <Tabs value={value} onChange={handleChange} sx={{ my: 3 }} centered>
         <Tab
-          icon={<InterpreterModeIcon />}
           label="종류선택"
           sx={{ width: 1 / 6, fontSize: 24, fontWeight: "bold" }}
         />
         <Tab
-          icon={<ContentPasteIcon />}
           label="공고입력"
           sx={{ width: 1 / 6, fontSize: 24, fontWeight: "bold" }}
         />
         <Tab
-          icon={<HelpOutlineIcon />}
           label="질문입력"
           sx={{ width: 1 / 6, fontSize: 24, fontWeight: "bold" }}
         />
         <Tab
-          icon={<PostAddOutlinedIcon />}
           label="등록완료"
           sx={{ width: 1 / 6, fontSize: 24, fontWeight: "bold" }}
         />
