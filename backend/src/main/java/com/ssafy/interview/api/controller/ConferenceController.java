@@ -1,7 +1,7 @@
 package com.ssafy.interview.api.controller;
 
 import com.ssafy.interview.api.request.conference.*;
-import com.ssafy.interview.api.response.conference.ConferenceStartRes;
+import com.ssafy.interview.api.response.conference.ConferenceInRes;
 import com.ssafy.interview.api.service.conference.ConferenceService;
 import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
@@ -79,18 +79,18 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewTimeID") Long interviewTimeID,
-                                                              @ApiIgnore Authentication authentication) {
+    public ResponseEntity<ConferenceInRes> startConference(@RequestParam(value="interviewTimeID") Long interviewTimeID,
+                                                           @ApiIgnore Authentication authentication) {
         String userEmail = authService.getUserByAuthentication(authentication);
         // 만약 interviewID가 Conference Table에 있으면 이미 존재하는 ConferenceID를 반환
-        Optional<Conference> conference = conferenceService.isConference(interviewTimeID);
+        Optional<Conference> conference = conferenceService.isConferenceByHost(interviewTimeID);
         if(conference.isEmpty()) {   // 만약 interviewID가 Conference Table에 없으면 새로 ConferenceID를 생성
             // [Conference Table] 생성된 Conference 방에 대한 정보 저장
             conference = Optional.ofNullable(conferenceService.startConference(interviewTimeID));
         }
         // [Conference History Table] 질문자가 Conference 방에 참여 -> 참여 기록 생성
         ConferenceHistory history = conferenceService.createConferenceHistory(conference.get().getId(), userEmail, 1);
-        return ResponseEntity.status(200).body(ConferenceStartRes.of(conference.get().getId(),  history.getId()));
+        return ResponseEntity.status(200).body(ConferenceInRes.of(conference.get().getId(),  history.getId()));
     }
 
     @PostMapping("/end")
@@ -120,12 +120,14 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<Long> inConference(@RequestParam(value = "conferenceID") Long conferenceID,
+    public ResponseEntity<ConferenceInRes> inConference(@RequestParam(value = "interviewTimeID") Long interviewTimeID,
                                              @ApiIgnore Authentication authentication) {
         String userEmail = authService.getUserByAuthentication(authentication);
+        // [Conference Table] 답변자가 들어가려는 Conference가 현재 실행 중인지 확인 -> 아직 생성되지 않았거나, 종료된 상태면 에러 코드 전달
+        Optional<Conference> conference = conferenceService.isConferenceByUser(interviewTimeID);
         // [Conference History Table]
-        ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userEmail, 1);
-        return ResponseEntity.status(200).body(history.getId());
+        ConferenceHistory history = conferenceService.createConferenceHistory(interviewTimeID, userEmail, 1);
+        return ResponseEntity.status(200).body(ConferenceInRes.of(conference.get().getId(), history.getId()));
     }
 
     @PutMapping("/out")

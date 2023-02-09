@@ -1,6 +1,7 @@
 package com.ssafy.interview.exception;
 
 import com.ssafy.interview.common.model.response.BaseResponseBody;
+import com.ssafy.interview.exception.conference.ExistConferenceException;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
 import com.ssafy.interview.exception.interview.ExistApplicantException;
@@ -30,6 +31,13 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<? extends BaseResponseBody> existApplicantException(ExistApplicantException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-131, e.getMessage() + " 재확인바랍니다."));
+    }
+
+    @ExceptionHandler(ExistConferenceException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ResponseEntity<? extends BaseResponseBody> existConferenceException(ExistConferenceException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-132, e.getMessage()
+                + " 현재 생성된 Conference 방이 존재하지 않습니다. "));
     }
 
 }
