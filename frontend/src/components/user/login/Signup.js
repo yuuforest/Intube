@@ -64,16 +64,12 @@ export default function SignUp() {
   };
   const verifyCheck = () => {
     EmailCheck(email, number);
-    // setemailAuthorize(localStorage.getItem("emailAuthorize"));
-    // console.log(emailAuthorize);
   };
   const [emailSecret, setEmailSecret] = useState(false);
   const [email, setEmail] = useState("");
   const emailChange = ({ target: { value } }) => setEmail(value);
   const [number, setNumber] = useState("");
   const numberChange = ({ target: { value } }) => setNumber(value);
-  // const [emailAuthorize, setemailAuthorize] = useState(false);
-  // const [nicknameAuthorize, setNicknameAuthorize] = useState(false);
   const [nickname, setNickname] = useState("");
   const nicknameChange = ({ target: { value } }) => setNickname(value);
 
@@ -126,7 +122,7 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
 
-    onSubmit: (response) => {
+    onSubmit: response => {
       if (localStorage.getItem("nicknameAuthorize")) {
         if (localStorage.getItem("emailAuthorize")) {
           let values = {
@@ -155,18 +151,17 @@ export default function SignUp() {
           http
             .post("/user", JSON.stringify(values), {
               headers: {
-                "Content-type": "application/json;charset=UTF-8",
-                // Accept: "application/json",
                 "Access-Control-Allow-Origin": "https://intube.store:8443/api",
               },
               withCredentials: true,
             })
-            .then((values) => {
+            .then(values => {
               console.log(values);
               alert("회원가입되었습니다.");
+              localStorage.clear();
               navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
             })
-            .catch((e) => {
+            .catch(e => {
               if (e.response.data.statusCode === 409) {
                 alert("이미 가입된 이메일입니다.");
               }
@@ -203,8 +198,6 @@ export default function SignUp() {
                   id="email"
                   name="email"
                   label="Email"
-                  // value={formik.values.email}
-                  // onChange={formik.handleChange}
                   value={email}
                   onChange={emailChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}

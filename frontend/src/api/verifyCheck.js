@@ -1,4 +1,4 @@
-import axios from "axios";
+import http from "api/Http";
 
 export function EmailCheck(email, number) {
   let values = {
@@ -10,9 +10,9 @@ export function EmailCheck(email, number) {
   console.log("hi");
   console.log(email);
   console.log(number);
-  axios
+  http
     .post(
-      "http://i8a303.p.ssafy.io:8081/auth/check-email",
+      "https://intube.store:8443/api/auth/check-email",
       JSON.stringify(values),
       {
         headers: {
