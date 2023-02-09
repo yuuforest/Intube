@@ -21,7 +21,7 @@ import java.util.Date;
 public class Applicant extends BaseEntity {
 
         @Builder.Default()
-        @Column(name = "applicant_state")
+        @Column(name = "applicant_state") // 0 : 신청가능(DB에선 삭제된 상태) / 1 : 대기 / 2 : 수락 / 3: 해당 인터뷰 시간때 완료
         int applicantState = 1;
 
         @ManyToOne(fetch = FetchType.LAZY)

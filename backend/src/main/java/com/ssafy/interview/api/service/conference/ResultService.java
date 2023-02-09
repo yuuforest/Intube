@@ -12,4 +12,7 @@ public interface ResultService {
     List<DialogRes> dialogInQuestion(Long conferenceID, Long questionID);
     void updateOneDialog(DialogModifyReq dialogInfo);
     void updateAllDialog(List<DialogModifyReq> dialogInfo);
+
+    // conference 종료 시 conference result 생성
+    void createConferencResult(String eamil, Long interview_id, Long interview_time_id);
 }
