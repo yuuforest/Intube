@@ -64,7 +64,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         // [회의방 종료]
         Conference conference = conferenceRepository.findById(conference_id).get();
         conference.setIs_active(2); // Conference 방 종료 (1)
-//        conferenceRepository.save(conference);
     }
 
     @Override
@@ -85,7 +84,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         // [회의방에 대한 참가자들의 퇴장 기록]
         ConferenceHistory conferenceHistory = conferenceHistoryRepository.findById(historyID).get();
         conferenceHistory.setAction(action);
-//        conferenceHistoryRepository.save(conferenceHistory);
     }
 
     @Override
@@ -96,7 +94,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         ConferenceHistory conferenceHistory
                 = conferenceHistoryRepository.findByConference_idAndUser_idOrderByIdDesc(kickInfo.getConferenceID(), user.getId()).get(0);
         conferenceHistory.setAction(3);
-//        conferenceHistoryRepository.save(conferenceHistory);
     }
 
 //    @Override
