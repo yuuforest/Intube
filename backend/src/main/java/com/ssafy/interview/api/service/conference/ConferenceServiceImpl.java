@@ -5,8 +5,10 @@ import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
+import com.ssafy.interview.db.entitiy.interview.Applicant;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.*;
+import com.ssafy.interview.db.repository.interview.ApplicantRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -14,7 +16,7 @@ import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("ConferenceService")
@@ -23,8 +25,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     ConferenceRepository conferenceRepository;
     @Autowired
     ConferenceHistoryRepository conferenceHistoryRepository;
-    @Autowired
-    ConferenceRepositoryCustom conferenceRepositoryCustom;
+//    @Autowired
+//    ConferenceRepositoryCustom conferenceRepositoryCustom;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -35,6 +37,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     QuestionRepository questionRepository;
     @Autowired
     DialogRepository dialogRepository;
+    @Autowired
+    ApplicantRepository applicantRepository;
 
 //    @Override
 //    public ConferenceInfoRes getInfoConference(Long interviewID, Long conferenceID) {
@@ -53,11 +57,12 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional
     public void endConference(Long conference_id) {
         // [회의방 종료]
         Conference conference = conferenceRepository.findById(conference_id).get();
         conference.setIs_active(2); // Conference 방 종료 (1)
-        conferenceRepository.save(conference);
+//        conferenceRepository.save(conference);
     }
 
     @Override
@@ -72,33 +77,35 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional
     public void updateConferenceHistory(Long historyID, int action) {
         // [회의방에 대한 참가자들의 퇴장 기록]
         ConferenceHistory conferenceHistory = conferenceHistoryRepository.findById(historyID).get();
         conferenceHistory.setAction(action);
-        conferenceHistoryRepository.save(conferenceHistory);
+//        conferenceHistoryRepository.save(conferenceHistory);
     }
 
     @Override
+    @Transactional
     public void kickConferenceHistory(KickUserInReq kickInfo) {
         // [질문자가 Conference에 참여중인 참가자를 퇴장시킴]
         User user = userRepository.findByEmail(kickInfo.getUserEmail()).get();
-        ConferenceHistory conferenceHistory     // QueryDSL로 최근 기록 딱 하나만 가져올 수도 있음 -> 코드를 변경해야 할까?
+        ConferenceHistory conferenceHistory
                 = conferenceHistoryRepository.findByConference_idAndUser_idOrderByIdDesc(kickInfo.getConferenceID(), user.getId()).get(0);
         conferenceHistory.setAction(3);
-        conferenceHistoryRepository.save(conferenceHistory);
+//        conferenceHistoryRepository.save(conferenceHistory);
     }
 
-    @Override
-    public List<User> userInConference(Long conferenceID) {
-        // [현재 Conference에 참여중인 User 목록 조회]
-        List<User> users = new ArrayList<>();
-        List<ConferenceHistory> histories = conferenceHistoryRepository.findByConference_idAndAction(conferenceID, 2);
-        for (ConferenceHistory history : histories) {
-            users.add(history.getUser());
-        }
-        return users;
-    }
+//    @Override
+//    public List<User> userInConference(Long conferenceID) {
+//        // [현재 Conference에 참여중인 User 목록 조회]
+//        List<User> users = new ArrayList<>();
+//        List<ConferenceHistory> histories = conferenceHistoryRepository.findByConference_idAndAction(conferenceID, 2);
+//        for (ConferenceHistory history : histories) {
+//            users.add(history.getUser());
+//        }
+//        return users;
+//    }
 
     @Override
     public void createQuestionInConference(QuestionCreateInReq questionInfo) {
@@ -141,5 +148,15 @@ public class ConferenceServiceImpl implements ConferenceService {
         now.setContent(dialogInfo.getContent());
         now.setTimestamp(dialogInfo.getTimestamp());
         dialogRepository.save(now);
+    }
+
+    @Override
+    @Transactional
+    public void modifyApplicantState(Long interviewTimeID) {
+        // [Conference 종료 시, applicant의 상태를 완료인 3으로 변경]
+        List<Applicant> applicants = applicantRepository.findByInterviewTime_Id(interviewTimeID);
+        for (Applicant applicant : applicants) {
+            applicant.setApplicantState(3);
+        }
     }
 }
