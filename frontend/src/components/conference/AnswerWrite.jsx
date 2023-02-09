@@ -14,8 +14,9 @@ export default function AnswerWrite(props) {
   const [currentTime, setCurrentTime] = React.useState(
     moment().format("HH:mm:ss")
   );
-  const userInfo = props.userInfo;
-  const conferId = props.interview.id;
+  // const userInfo = props.userInfo;
+  const conferId = props.conferenceId;
+  const questId = props.questId;
 
   const {
     transcript,
@@ -26,9 +27,8 @@ export default function AnswerWrite(props) {
 
   const speechInfo = {
     conferenceID: conferId,
-    questionID: 10,
+    questionID: questId,
     content: transcript,
-    userEmail: userInfo.email,
     timestamp: currentTime,
   };
 
@@ -60,29 +60,36 @@ export default function AnswerWrite(props) {
           return;
         })
         .then(function () {
-          console.log("speechInfo", speechInfo);
+          // console.log("speechInfo", speechInfo);
           return;
         })
         .then(function () {
-          instance
-            .post(
-              "/conference/dialog/user",
-              JSON.stringify(speechInfo),
-              // {
-              //   headers: {
-              //     "Content-type": "application/json;charset=UTF-8",
-              //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              //   },
-              // }
-            )
-            .then((response) => {
-              console.log('working', response)
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-            return;
-        })
+          if (transcript.trim() !== '') {
+            if (questId === undefined) {
+              speechInfo.questionID = -1;
+              console.log("speechInfo", speechInfo)
+            }
+            instance
+              .post(
+                "/conference/dialog/user",
+                JSON.stringify(speechInfo),
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                  },
+                }
+              )
+              .then((response) => {
+                console.log('working', response.data)
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+              return;
+            }
+          }
+
+        )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [micState, dispatch, resetTranscript, setCurrentTime, moment]);

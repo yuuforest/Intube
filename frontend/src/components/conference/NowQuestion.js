@@ -21,7 +21,7 @@ export default class NowQuestion extends Component {
           message: data.message,
           id: data.id,
         });
-
+        this.props.setQuestId(data.id)
         this.setState({ messageList: messageList });
       });
   }

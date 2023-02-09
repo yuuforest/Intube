@@ -19,6 +19,7 @@ export default function Conference() {
   const userName = location.state.userName;
   const [userInfo, setUserInfo] = useState([]);
   const [conferenceID, setConferenceID] = useState(1);
+  const [questId, setQuestId] = useState(undefined);
 
   useEffect(() => {
     getUser();
@@ -71,13 +72,13 @@ export default function Conference() {
 
   useEffect(() => {
     http
-      .post("/conference/start?interviewTimeID=" + interview.id,{}, {
+      .post("/conference/start?interviewTimeID=" + interview.interviewTimeRes.id,{}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
-        console.log('컨퍼런스 아이디');
+        console.log('컨퍼런스 아이디', response.data.conferenceID);
         setConferenceID(response.data.conferenceID);
       })
       .catch((error) => {
@@ -97,6 +98,7 @@ export default function Conference() {
             handleSubscriber={handleSubscriber}
             handleMicState={handleMicState}
             state={state}
+            setQuestId={setQuestId}
           ></VideoRoomComponents>
         </Grid>
         <Grid item xs={2}>
@@ -112,7 +114,9 @@ export default function Conference() {
             userInfo={userInfo}
             interview={interview}
             handleMicState={handleMicState}
-            conferenceID={conferenceID}
+            conferenceId={conferenceID}
+            questId={questId}
+            setQuestId={setQuestId}
           ></AnswerWrite>
         </Grid>
         <Grid item xs={2}>
