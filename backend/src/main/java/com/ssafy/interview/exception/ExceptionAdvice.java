@@ -5,6 +5,7 @@ import com.ssafy.interview.exception.conference.ExistConferenceException;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
 import com.ssafy.interview.exception.interview.ExistApplicantException;
+import com.ssafy.interview.exception.interview.InterviewTimeModifyResultDuplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<? extends BaseResponseBody> existApplicantException(ExistApplicantException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-131, e.getMessage() + " 재확인바랍니다."));
+    }
+
+    @ExceptionHandler(InterviewTimeModifyResultDuplicationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ResponseEntity<? extends BaseResponseBody> applicantDuplicationException(InterviewTimeModifyResultDuplicationException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(BaseResponseBody.of(-112, e.getMessage() + " 이미 실행이 종료된 회의방입니다. Result Controller Api 실행 X!"));
     }
 
     @ExceptionHandler(ExistConferenceException.class)

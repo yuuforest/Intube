@@ -80,7 +80,7 @@ public class ApplicantRepositoryImpl implements ApplicantRepositoryCustom {
         List<Long> findDoneId = jpaQueryFactory
                 .select(qApplicant.id)
                 .from(qApplicant)
-                .leftJoin(qApplicant.interviewTime, qInterviewTime)
+                .leftJoin(qApplicant.interviewTime, qInterviewTime).on(qApplicant.applicantState.eq(1))
                 .leftJoin(qInterviewTime.interview, qInterview).on(qInterview.id.eq(interview_id))
                 .fetch();
 

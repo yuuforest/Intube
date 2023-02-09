@@ -30,4 +30,12 @@ public interface InterviewTimeRepositoryCustom { // 인터뷰 생성 Method
      * @return 검색 결과
      */
     List<Date> findInterviewTimeByOwnerId(Long owner_id);
+
+    /**
+     * 회의방 종료가 중복되었을때 modify
+     *
+     * @param interview_time_id 해당 인터뷰 시간 Id
+     * @return 없으면 Null 있으면 해당 객체 결과
+     */
+    Boolean existModifyStateByState(Long interview_time_id);
 }

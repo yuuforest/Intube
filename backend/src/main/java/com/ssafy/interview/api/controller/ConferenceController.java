@@ -218,7 +218,7 @@ public class ConferenceController {
     })
     public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo,
                                                                                @ApiIgnore Authentication authentication) {
-        String userEmail = authService.getUserByAuthentication(authentication);
+        String userEmail = authService.getEmailByAuthentication(authentication);
         // [Dialog Table]
         conferenceService.recordDialogInConference(userEmail, dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
