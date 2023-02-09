@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import http from "api/Http";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import Checkbox from "@mui/material/Checkbox";
-import http from "api/Http";
+import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 
-import "components/questioner/QuestionerApply.css";
-
-export default function QuestionerApply(props) {
+export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
 
   const handleChangeQuestionIndex = (event) => {
@@ -23,7 +22,7 @@ export default function QuestionerApply(props) {
   };
 
   const [timeindex, setTimeindex] = useState(0);
-  const [timeid, setTimeid] = useState(-1);
+  const [timeid, setTimeid] = useState(0);
 
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
@@ -45,7 +44,7 @@ export default function QuestionerApply(props) {
     http
       .post(
         "/user/interviewer?page=0",
-        JSON.stringify({ interview_state: 4, word: "" }),
+        JSON.stringify({ interview_state: 5, word: "" }),
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -53,11 +52,10 @@ export default function QuestionerApply(props) {
         }
       )
       .then((response) => {
-        console.log(response.data.content);
-        setInterviewList(response.data.content);
         if (timeid === -1) {
           setTimeid(interviewList[0].interviewTimeDetailResList[0].id);
         }
+        setInterviewList(response.data.content);
       })
       .catch((error) => {
         console.error(error);
@@ -83,30 +81,8 @@ export default function QuestionerApply(props) {
       });
   };
 
-  const acceptHandeler = (e) => {
-    http
-      .put(
-        "/user/interviewer/accept-applicant?applicant_id=" +
-          e.target.value +
-          "&applicant_state=2",
-        {},
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        getAnswererList();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
-    <div hidden={props.value !== 1}>
+    <div hidden={props.value !== 2}>
       {interviewList.length > 0 && (
         <div>
           <FormControl sx={{ mr: 3, background: "white" }}>
@@ -122,7 +98,6 @@ export default function QuestionerApply(props) {
               ))}
             </Select>
           </FormControl>
-
           <FormControl sx={{ mr: 3, background: "white" }}>
             <Select
               value={timeindex}
@@ -138,6 +113,7 @@ export default function QuestionerApply(props) {
               )}
             </Select>
           </FormControl>
+
           <div className="question-list">
             <List>
               <ListItem>
@@ -147,9 +123,6 @@ export default function QuestionerApply(props) {
                   justifyContent="center"
                   spacing={3}
                 >
-                  <Grid item xs={1} sx={{ textAlign: "center" }}>
-                    <Checkbox />
-                  </Grid>
                   <Grid item xs={3} sx={{ textAlign: "center" }}>
                     <Typography variant="subtitle2">지원자</Typography>
                   </Grid>
@@ -180,11 +153,7 @@ export default function QuestionerApply(props) {
                       justifyContent="center"
                       spacing={3}
                     >
-                      <Grid item xs={1} sx={{ textAlign: "center" }}>
-                        <Typography variant="subtitle2">
-                          <Checkbox />
-                        </Typography>
-                      </Grid>
+                      <Grid item xs={1} sx={{ textAlign: "center" }}></Grid>
                       <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Avatar sx={{ float: "left", mr: 2 }}>
                           {answerer.email[0]}
@@ -208,24 +177,7 @@ export default function QuestionerApply(props) {
                         </Typography>
                       </Grid>
                       <Grid item xs={2} sx={{ textAlign: "center" }}>
-                        {answerer.applicant_state === 1 ? (
-                          <div>
-                            <Button
-                              variant="outlined"
-                              value={answerer.id}
-                              onClick={acceptHandeler}
-                            >
-                              합격
-                            </Button>
-                            <Button variant="outlined" sx={{ ml: 2 }}>
-                              불합격
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button variant="outlined" value={answerer.id}>
-                            합격
-                          </Button>
-                        )}
+                        <Button variant="outlined">평가하기</Button>
                       </Grid>
                     </Grid>
                   </ListItem>
@@ -233,6 +185,22 @@ export default function QuestionerApply(props) {
                 </div>
               ))}
             </List>
+            <Button
+              variant="outlined"
+              startIcon={<VideocamIcon />}
+              sx={{ backgroundColor: "white", m: 3 }}
+              size="large"
+            >
+              인터뷰 방만들기
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<ContentPasteGoIcon />}
+              sx={{ backgroundColor: "white", m: 3 }}
+              size="large"
+            >
+              인터뷰 종료하기
+            </Button>
           </div>
         </div>
       )}

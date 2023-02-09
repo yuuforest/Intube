@@ -15,6 +15,7 @@ export default function QuestionerAllListitem(props) {
         "/interviews/interviewer/expired-interview?interview_id=" +
           props.interview.id +
           "&interview_state=5",
+        {},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -65,97 +66,81 @@ export default function QuestionerAllListitem(props) {
             </Typography>
           </Grid>
           <Grid item xs={5}>
-            {props.interview_state === 4 ? (
-              <div>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    mt: 2,
-                    mr: 2,
-                    float: "right",
-                    pointerEvents: "auto",
-                  }}
-                  onClick={onClickDeadline}
-                >
-                  마감
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    mt: 2,
-                    mr: 2,
-                    float: "right",
-                  }}
-                >
-                  |
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    mt: 2,
-                    mr: 2,
-                    float: "right",
-                  }}
-                >
-                  수정
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    mt: 2,
-                    mr: 2,
-                    float: "right",
-                  }}
-                >
-                  |
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    mt: 2,
-                    mr: 2,
-                    float: "right",
-                  }}
-                >
-                  복사
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    float: "right",
-                    mr: 2,
-                    pointerEvents: "auto",
-                  }}
-                >
-                  <QuestionerTag state={props.interview.interview_state} />
-                </Typography>
-              </div>
-            ) : (
-              <div>
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    float: "right",
-                    mr: 2,
-                    pointerEvents: "auto",
-                  }}
-                >
-                  <QuestionerTag state={props.interview.interview_state} />
-                </Typography>
-              </div>
-            )}
+            <div>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  mt: 2,
+                  mr: 2,
+                  float: "right",
+                  pointerEvents: "auto",
+                }}
+                onClick={onClickDeadline}
+              >
+                마감
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  mt: 2,
+                  mr: 2,
+                  float: "right",
+                }}
+              >
+                |
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  mt: 2,
+                  mr: 2,
+                  float: "right",
+                }}
+              >
+                수정
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  mt: 2,
+                  mr: 2,
+                  float: "right",
+                }}
+              >
+                |
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  mt: 2,
+                  mr: 2,
+                  float: "right",
+                }}
+              >
+                복사
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  float: "right",
+                  mr: 2,
+                  pointerEvents: "auto",
+                }}
+              >
+                <QuestionerTag state={props.interview.interview_state} />
+              </Typography>
+            </div>
           </Grid>
         </Grid>
       </AccordionSummary>
@@ -167,7 +152,7 @@ export default function QuestionerAllListitem(props) {
               <div key={time.id}>
                 <div>
                   {time.interview_start_time} : {time.apply_applicant_count}/
-                  {time.modifyResultState}
+                  {time.wait_applicant_count}
                 </div>
               </div>
             ))}
