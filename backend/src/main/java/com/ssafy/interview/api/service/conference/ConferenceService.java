@@ -6,6 +6,7 @@ import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ConferenceService {
 
@@ -14,7 +15,8 @@ public interface ConferenceService {
 
     // [Conference Table]
     Conference startConference(Long interviewID);  // Conference 방 처음 생성
-    void endConference(Long conference_id);
+    void endConference(Long conferenceID);
+    Optional<Conference> isConference(Long interviewTimeID);
 
     // [Conference History Table]
     ConferenceHistory createConferenceHistory(Long conferenceID, String userEmail, int action);
