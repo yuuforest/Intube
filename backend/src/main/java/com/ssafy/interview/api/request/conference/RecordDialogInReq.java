@@ -10,8 +10,6 @@ import lombok.Setter;
 @ApiModel("recordDialogInReq")
 public class RecordDialogInReq {
 
-    @ApiModelProperty(name = "User Email")
-    String userEmail;
     @ApiModelProperty(name = "Conference ID")
     Long conferenceID;
     @ApiModelProperty(name = "Question ID")

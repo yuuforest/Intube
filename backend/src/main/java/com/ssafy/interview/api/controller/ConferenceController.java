@@ -209,9 +209,11 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo) {
+    public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo,
+                                                                               @ApiIgnore Authentication authentication) {
+        String userEmail = authService.getUserByAuthentication(authentication);
         // [Dialog Table]
-        conferenceService.recordDialogInConference(dialogInfo);
+        conferenceService.recordDialogInConference(userEmail, dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 

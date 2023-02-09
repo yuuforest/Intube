@@ -28,7 +28,7 @@ public interface ConferenceService {
 
     // [Dialog Table]
     void recordQuestionInConference(RecordQuestionInReq questionInfo);
-    void recordDialogInConference(RecordDialogInReq dialogInfo);
+    void recordDialogInConference(String userEmail, RecordDialogInReq dialogInfo);
 
     // [Interview Time Table]
     void modifyApplicantState(Long interviewTimeID);
