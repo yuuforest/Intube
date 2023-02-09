@@ -81,7 +81,7 @@ public class ConferenceController {
     })
     public ResponseEntity<ConferenceInRes> startConference(@RequestParam(value="interviewTimeID") Long interviewTimeID,
                                                            @ApiIgnore Authentication authentication) {
-        String userEmail = authService.getUserByAuthentication(authentication);
+        String userEmail = authService.getEmailByAuthentication(authentication);
         // 만약 interviewID가 Conference Table에 있으면 이미 존재하는 ConferenceID를 반환
         Optional<Conference> conference = conferenceService.isConferenceByHost(interviewTimeID);
         if(conference.isEmpty()) {   // 만약 interviewID가 Conference Table에 없으면 새로 ConferenceID를 생성
@@ -122,7 +122,7 @@ public class ConferenceController {
     })
     public ResponseEntity<ConferenceInRes> inConference(@RequestParam(value = "interviewTimeID") Long interviewTimeID,
                                              @ApiIgnore Authentication authentication) {
-        String userEmail = authService.getUserByAuthentication(authentication);
+        String userEmail = authService.getEmailByAuthentication(authentication);
         // [Conference Table] 답변자가 들어가려는 Conference가 현재 실행 중인지 확인 -> 아직 생성되지 않았거나, 종료된 상태면 에러 코드 전달
         Optional<Conference> conference = conferenceService.isConferenceByUser(interviewTimeID);
         // [Conference History Table]
