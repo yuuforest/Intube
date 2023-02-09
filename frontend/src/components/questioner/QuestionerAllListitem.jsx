@@ -8,8 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import QuestionerTag from "components/questioner/QuestionerTag";
 import http from "api/Http";
 
-export default function QuestionListitem(props) {
-  console.log(props);
+export default function QuestionerAllListitem(props) {
   const onClickDeadline = (e) => {
     http
       .put(

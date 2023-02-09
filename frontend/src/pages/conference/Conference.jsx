@@ -1,5 +1,4 @@
 import QuestionLIst from "components/conference/QuestionLIst";
-import NowQuestion from "components/conference/NowQuestion";
 import React, { useEffect, useState } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";
@@ -97,6 +96,7 @@ export default function Conference() {
             navigate={navigate}
             handleSubscriber={handleSubscriber}
             handleMicState={handleMicState}
+            state={state}
           ></VideoRoomComponents>
         </Grid>
         <Grid item xs={2}>
@@ -106,7 +106,6 @@ export default function Conference() {
           />
         </Grid>
         <Grid item xs={10}>
-          <NowQuestion state={state} />
           <AnswerWrite
             state={state}
             micState={micState}
