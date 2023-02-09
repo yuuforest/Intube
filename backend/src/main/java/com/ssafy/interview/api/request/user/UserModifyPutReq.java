@@ -17,8 +17,6 @@ public class UserModifyPutReq {
 
     @ApiModelProperty(name="유저 ID(email)", example="ssafy@ssafy.com")
     String email;
-    @ApiModelProperty(name="유저 Password", example="1234")
-    String password;
     @ApiModelProperty(name="유저 name", example="이싸피")
     String name;
     @ApiModelProperty(name="유저 nickname", example="아몰랑!")
