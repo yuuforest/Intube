@@ -15,11 +15,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function InterviewListItemDetail(props) {
+  console.log(props.interview);
   const menu = [
     { title: "내용", content: props.interview.description },
     {
       title: "인터뷰 시간",
-      content: props.interview.apply_start_time,
+      content: props.interview.interviewTimeRes.interview_start_time,
     },
     { title: "소요시간", content: props.interview.estimated_time },
     {

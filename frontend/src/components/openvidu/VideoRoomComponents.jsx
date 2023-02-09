@@ -32,7 +32,7 @@ class VideoRoomComponent extends Component {
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = "Session" + props.interview.id;
+    let sessionName = "Session" + props.interview.interviewTimeRes.id;
     let userName = props.userName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
