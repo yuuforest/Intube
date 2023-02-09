@@ -5,10 +5,16 @@ import Select from "@mui/material/Select";
 import http from "api/Http";
 
 export default function QuestionerApply(props) {
-  const [index, setIndex] = useState(0);
+  const [questionindex, setQuestionIndex] = useState(0);
 
-  const handleChangeIndex = (event) => {
-    setIndex(event.target.value);
+  const handleChangeQuestionIndex = (event) => {
+    setQuestionIndex(event.target.value);
+  };
+
+  const [timeindex, setTimeindex] = useState(0);
+
+  const handleChangeTimeindex = (event) => {
+    setTimeindex(event.target.value);
   };
 
   const [interviewList, setInterviewList] = useState([]);
@@ -41,8 +47,12 @@ export default function QuestionerApply(props) {
     <div hidden={props.value !== 1}>
       {interviewList.length > 0 && (
         <div>
-          <FormControl>
-            <Select value={index} onChange={handleChangeIndex} defaultValue={0}>
+          <FormControl sx={{ mr: 3, background: "white" }}>
+            <Select
+              value={questionindex}
+              onChange={handleChangeQuestionIndex}
+              defaultValue={0}
+            >
               {interviewList.map((interview, index) => (
                 <MenuItem value={index} key={interview.id}>
                   {interview.title}
@@ -50,12 +60,17 @@ export default function QuestionerApply(props) {
               ))}
             </Select>
           </FormControl>
-          <FormControl>
-            <Select value={index} onChange={handleChangeIndex} defaultValue={0}>
-              {interviewList[0].interviewTimeDetailResList.map(
-                (interview, index) => (
-                  <MenuItem value={index} key={interview.id}>
-                    {interview.title}
+
+          <FormControl sx={{ mr: 3, background: "white" }}>
+            <Select
+              value={timeindex}
+              onChange={handleChangeTimeindex}
+              defaultValue={0}
+            >
+              {interviewList[questionindex].interviewTimeDetailResList.map(
+                (time, index) => (
+                  <MenuItem value={index} key={time.id}>
+                    {time.interview_start_time}
                   </MenuItem>
                 )
               )}
