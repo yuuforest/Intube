@@ -12,7 +12,7 @@ export default function Main() {
   const handleChangeWord = (event) => {
     console.log(event.target.value);
     setSearchCondition({
-      category_name: " ",
+      category_name: "",
       word: event.target.value,
     });
   };

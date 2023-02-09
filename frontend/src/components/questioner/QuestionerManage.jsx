@@ -43,7 +43,6 @@ export default function Questioner(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
       })
@@ -68,7 +67,10 @@ export default function Questioner(props) {
         <option value={5}>진행중</option>
         <option value={6}>완료</option>
       </NativeSelect>
-      <QuestionerList interviewList={interviewList}></QuestionerList>
+      <QuestionerList
+        interviewList={interviewList}
+        getInterviewList={getInterviewList}
+      ></QuestionerList>
 
       <Pagination
         count={totalPage}
