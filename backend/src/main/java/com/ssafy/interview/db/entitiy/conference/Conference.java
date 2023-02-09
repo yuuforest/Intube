@@ -23,7 +23,8 @@ public class Conference extends BaseEntity {
     LocalDateTime call_start_time;
     @LastModifiedDate
     LocalDateTime call_end_time;
-    int is_active;  // 0 방 종료 1 방 활성화
+    @Column(name = "is_active")
+    int active;  // 0 방 종료 1 방 활성화
 
     @OneToOne
     @JoinColumn(name = "interview_time_id")

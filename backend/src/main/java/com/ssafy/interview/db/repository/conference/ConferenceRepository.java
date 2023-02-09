@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     Optional<Conference> findByInterviewTime_Id(Long interview_time_id);
+    Optional<Conference> findByInterviewTime_IdAndActiveLike(Long interview_time_id, int active);
 }
