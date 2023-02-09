@@ -232,9 +232,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String getUserByAuthentication(Authentication authentication) {
+    public String getEmailByAuthentication(Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         return userDetails.getUsername();
+    }
+
+    public Long getIdByAuthentication(Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        return userDetails.getUser().getId();
     }
 
     @Override

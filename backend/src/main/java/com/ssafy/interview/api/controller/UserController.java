@@ -98,7 +98,7 @@ public class UserController {
             @ApiIgnore Authentication authentication) {
         logger.info("modify call!");
 
-        String email = authService.getUserByAuthentication(authentication);
+        String email = authService.getEmailByAuthentication(authentication);
 
         if (!email.equals(modifyInfo.getEmail())) {
             // 토큰에 저장된 email과 요청을 보낸 email이 다를 때
@@ -124,7 +124,7 @@ public class UserController {
             @ApiIgnore Authentication authentication) throws IOException {
         logger.info("uploadImage call!");
 
-        String email = authService.getUserByAuthentication(authentication);
+        String email = authService.getEmailByAuthentication(authentication);
 
         String img = s3Uploader.upload(image, "profile");
         logger.info("url >>> " + img);
@@ -147,7 +147,7 @@ public class UserController {
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
-        String email = authService.getUserByAuthentication(authentication);
+        String email = authService.getEmailByAuthentication(authentication);
 
         User user = userService.findByEmail(email).get();
         return ResponseEntity.status(200).body(UserRes.of(200, "Success", user));
@@ -200,7 +200,7 @@ public class UserController {
             @ApiIgnore Authentication authentication) {
         logger.info("modifyPassword call!");
 
-        String email = authService.getUserByAuthentication(authentication);
+        String email = authService.getEmailByAuthentication(authentication);
 
         if (!email.equals(passwordInfo.getEmail())) {
             // 토큰에 저장된 email과 요청을 보낸 email이 다를 때
@@ -270,18 +270,14 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "0미만이 되는 값"),
-            @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> modifyPoint(
-            @RequestBody @ApiParam(value = "포인트 정보", required = true) UserPointPutReq pointInfo,
-            @ApiIgnore Authentication authentication) {
+            @RequestBody @ApiParam(value = "포인트 정보", required = true) UserPointPutReq pointInfo) {
         logger.info("modifyPoint call!");
 
-        String email = authService.getUserByAuthentication(authentication);
-
-        Optional<User> user = userService.findByEmail(email);
+        Optional<User> user = userService.findByEmail(pointInfo.getEmail());
         if (!user.isPresent()) {
             // 맞는 회원이 없을 때
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
@@ -290,10 +286,10 @@ public class UserController {
         try {
             if (pointInfo.getKey() == 1) {
                 // 증가
-                userService.updatePoint(email, pointInfo.getPoint());
+                userService.updatePoint(pointInfo.getEmail(), pointInfo.getPoint());
             } else {
                 // 감소
-                userService.updatePoint(email, -1 * pointInfo.getPoint());
+                userService.updatePoint(pointInfo.getEmail(), -1 * pointInfo.getPoint());
             }
         } catch (Exception e) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Value"));
@@ -307,18 +303,14 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "0미만이 되는 값"),
-            @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> modifyTemperature(
-            @RequestBody @ApiParam(value = "회원 온도 정보", required = true) UserTemperaturePutReq temperatureInfo,
-            @ApiIgnore Authentication authentication) {
+            @RequestBody @ApiParam(value = "회원 온도 정보", required = true) UserTemperaturePutReq temperatureInfo) {
         logger.info("modifyTemperature call!");
 
-        String email = authService.getUserByAuthentication(authentication);
-
-        Optional<User> user = userService.findByEmail(email);
+        Optional<User> user = userService.findByEmail(temperatureInfo.getEmail());
         if (!user.isPresent()) {
             // 맞는 회원이 없을 때
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Invalid User"));
@@ -327,10 +319,10 @@ public class UserController {
         try {
             if (temperatureInfo.getKey() == 1) {
                 // 증가
-                userService.updateTemperature(email, temperatureInfo.getTemperature());
+                userService.updateTemperature(temperatureInfo.getEmail(), temperatureInfo.getTemperature());
             } else {
                 // 감소
-                userService.updateTemperature(email, -1 * temperatureInfo.getTemperature());
+                userService.updateTemperature(temperatureInfo.getEmail(), -1 * temperatureInfo.getTemperature());
             }
         } catch (Exception e) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Value"));
@@ -351,7 +343,7 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> withdraw(@ApiIgnore Authentication authentication) throws Exception {
         logger.info("withdraw call!");
         try {
-            String email = authService.getUserByAuthentication(authentication);
+            String email = authService.getEmailByAuthentication(authentication);
 
             User user = userService.findByEmail(email).get();
 

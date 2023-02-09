@@ -80,7 +80,7 @@ public class ConferenceController {
     })
     public ResponseEntity<ConferenceStartRes> startConference(@RequestParam(value="interviewTimeID") Long interviewTimeID,
                                                               @ApiIgnore Authentication authentication) {
-        String userEmail = authService.getUserByAuthentication(authentication);
+        String userEmail = authService.getEmailByAuthentication(authentication);
         // 만약 interviewID가 Conference Table에 있으면 이미 존재하는 ConferenceID를 반환
 
 
@@ -121,7 +121,7 @@ public class ConferenceController {
     })
     public ResponseEntity<Long> inConference(@RequestParam(value = "conferenceID") Long conferenceID,
                                              @ApiIgnore Authentication authentication) {
-        String userEmail = authService.getUserByAuthentication(authentication);
+        String userEmail = authService.getEmailByAuthentication(authentication);
         // [Conference History Table]
         ConferenceHistory history = conferenceService.createConferenceHistory(conferenceID, userEmail, 1);
         return ResponseEntity.status(200).body(history.getId());
@@ -215,7 +215,7 @@ public class ConferenceController {
     })
     public ResponseEntity<? extends BaseResponseBody> recordDialogInConference(@RequestBody RecordDialogInReq dialogInfo,
                                                                                @ApiIgnore Authentication authentication) {
-        String userEmail = authService.getUserByAuthentication(authentication);
+        String userEmail = authService.getEmailByAuthentication(authentication);
         // [Dialog Table]
         conferenceService.recordDialogInConference(userEmail, dialogInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
