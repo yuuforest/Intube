@@ -2,7 +2,7 @@ import axios from "axios";
 // import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  baseURL: "http://i8a303.p.ssafy.io:8081",
+  baseURL: "https://intube.store:8443/api",
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     withCredentials: true,
@@ -36,7 +36,7 @@ instance.interceptors.response.use(
     if (error.response.status === 401) {
       axios
         .get(
-          "http://i8a303.p.ssafy.io:8081/auth/issue",
+          "https://intube.store:8443/api/auth/issue",
           {
             headers: {
               "Content-Type": "application/json; charset=utf-8",
@@ -49,7 +49,7 @@ instance.interceptors.response.use(
           console.log("엑세스토큰 :", localStorage.getItem("accessToken"))
           // console.log(data)
         )
-        .catch((e) => {
+        .catch(e => {
           if (e.response.data.statusCode === 401) {
             // navigate("/");
             localStorage.clear();

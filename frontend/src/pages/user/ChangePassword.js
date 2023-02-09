@@ -13,8 +13,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import instance from "api/APIController";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
-import axios from "axios";
+// import { useEffect, useState } from "react";
+// import http from "api/Http";
 
 function Copyright(props) {
   return (
@@ -36,26 +36,26 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
-  const [userInfo, setUserInfo] = useState({ name: "" });
-  useEffect(() => {
-    getUser();
-  }, []);
-  const getUser = () => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then(response => {
-        setUserInfo(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
+export default function ChangePassword() {
+  // const [userInfo, setUserInfo] = useState({ name: "" });
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
+  // const getUser = () => {
+  //   http
+  //     .get("/user/me", {
+  //       headers: {
+  //         "Content-type": "application/json;charset=UTF-8",
+  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //       },
+  //     })
+  //     .then(response => {
+  //       setUserInfo(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // };
   const navigate = useNavigate();
 
   const validationSchema = yup.object({
@@ -82,7 +82,7 @@ export default function SignUp() {
       newpasswordConfirm: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (response) => {
+    onSubmit: response => {
       // let values = {
       //   password: "1234",
       //   newpassword: "01099130059",
@@ -101,30 +101,24 @@ export default function SignUp() {
         newPassword: response.newpasswordConfirm,
       };
 
-      alert(JSON.stringify(data, null, 2));
+      // alert(JSON.stringify(data, null, 2));
       console.log(localStorage.getItem("accessToken"));
       instance
-        .put(
-          "http://i8a303.p.ssafy.io:8081/user/password",
-          JSON.stringify(data),
-          {
-            headers: {
-              "Content-type": "application/json;charset=UTF-8",
-              // Accept: "application/json",
-              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            withCredentials: true,
-          }
-        )
-        .then((values) => {
+        .put("/api/user/password", JSON.stringify(data), {
+          headers: {
+            "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          withCredentials: true,
+        })
+        .then(values => {
           if (values.data.statusCode === 200) {
             alert("비밀번호가 변경되었습니다. 다시 로그인 해주세요");
             localStorage.clear();
             navigate("/");
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
           if (e.response.data.status === 401) {
             console.log("인증실패 다시 로그인해주세요");

@@ -25,7 +25,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import Drawer from "@mui/material/Drawer";
 import Sidebar from "components/common/Sidebar";
-import axios from "axios";
 
 import "components/common/Header.css";
 

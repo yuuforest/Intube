@@ -123,12 +123,10 @@ export default function SignUp() {
           // password: "1234",
           // phone: "01099130059",
         };
-        alert(JSON.stringify(values, null, 2));
+        // alert(JSON.stringify(values, null, 2));
         http
           .post("/user", JSON.stringify(values), {
             headers: {
-              "Content-type": "application/json;charset=UTF-8",
-              // Accept: "application/json",
               "Access-Control-Allow-Origin": "https://intube.store:8443/api",
             },
             withCredentials: true,

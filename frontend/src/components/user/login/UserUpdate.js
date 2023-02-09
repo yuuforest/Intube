@@ -20,7 +20,7 @@ import http from "api/Http";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { VerifyNickname } from "api/verifyNickname";
-import { Paper } from "@mui/material";
+// import { Paper } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -102,10 +102,10 @@ export default function SignUp() {
         };
         alert(JSON.stringify(values, null, 2));
         instance
-          .put("http://i8a303.p.ssafy.io:8081/user", JSON.stringify(values), {
+          .put("/api/user", JSON.stringify(values), {
             headers: {
               "Content-type": "application/json;charset=UTF-8",
-              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+              "Access-Control-Allow-Origin": "https://intube.store:8443/api",
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
             withCredentials: true,
@@ -172,7 +172,7 @@ export default function SignUp() {
       console.log(value);
     }
     http({
-      url: "http://i8a303.p.ssafy.io:8081/user/image",
+      url: "https://intube.store:8443/api/user/image",
       method: "post",
       headers: {
         "Content-Type": "multipart/form-data",
@@ -201,10 +201,9 @@ export default function SignUp() {
   }, [userImg]);
   const getUser = async () => {
     // const data =
-    await axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    await http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })

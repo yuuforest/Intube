@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import http from "api/Http";
 import { KAKAO_AUTH_URL } from "components/user/login/OAuth";
+import Swal from "sweetalert2";
 
 function Copyright(props) {
   return (
