@@ -68,7 +68,7 @@ public class InterviewApplicantDetailRes extends InterviewLoadRes {
         this.owner_email = user.getEmail();
         this.owner_name = user.getName();
         this.owner_phone = user.getPhone();
-        this.interviewTimeRes = new InterviewTimeRes(interviewTime.getId(), interviewTime.getInterview_start_time());
+        this.interviewTimeRes = new InterviewTimeRes(interviewTime);
     }
 }
 

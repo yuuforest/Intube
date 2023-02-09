@@ -45,5 +45,9 @@ public interface InterviewService {
     InterviewDetailRes detailInterview(String email, Long interview_time_id);
 
     // 인터뷰 공고 마감
-    void updateInterviewState(Long interview_id, int interviewState);
+    void updateInterviewState(String email, Long interview_id, int interviewState);
+
+    // 인터뷰 삭제하기
+    void deleteInterview(String email, Long interview_id);
+
 }

@@ -65,4 +65,11 @@ public interface ApplicantRepositoryCustom { // 인터뷰 생성 Method
      * @return 조회 결과
      */
     Optional<List<Tuple>> countInterviewByApplicantState(Long user_id);
+
+    /**
+     * 인터뷰 공고 마감 시 대기 중인 신청자 전체 삭제
+     *
+     * @param interview_id      인터뷰 Id
+     */
+    void deleteByInterviewId(Long interview_id);
 }

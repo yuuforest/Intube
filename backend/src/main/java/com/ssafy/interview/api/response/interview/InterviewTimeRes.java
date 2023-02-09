@@ -27,9 +27,13 @@ public class InterviewTimeRes {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     Date interview_start_time;
 
+    @ApiModelProperty(name = "modify_result_state")
+    int modifyResultState;
+
     @QueryProjection
     public InterviewTimeRes(InterviewTime interviewTime) {
         this.id = interviewTime.getId();
         this.interview_start_time = interviewTime.getInterview_start_time();
+        this.modifyResultState = interviewTime.getModifyResultState();
     }
 }
