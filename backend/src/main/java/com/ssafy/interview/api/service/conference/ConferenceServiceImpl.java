@@ -143,7 +143,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         Dialog now = new Dialog();
         now.setUser(userRepository.findByEmail(userEmail).get());
         now.setConference(conferenceRepository.findById(dialogInfo.getConferenceID()).get());
-        if(dialogInfo.getQuestionID() == null) {
+        if(dialogInfo.getQuestionID() == -1) {
             now.setQuestion(null);
         } else {
             now.setQuestion(questionRepository.findById(dialogInfo.getQuestionID()).get());

@@ -1,6 +1,5 @@
 package com.ssafy.interview.db.entitiy.conference;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class Conference extends BaseEntity {
     LocalDateTime call_start_time;
     @LastModifiedDate
     LocalDateTime call_end_time;
-    int is_active;  // 1 방 활성화 2 방 종료
+    int is_active;  // 0 방 종료 1 방 활성화
 
     @OneToOne
     @JoinColumn(name = "interview_time_id")
