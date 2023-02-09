@@ -22,6 +22,7 @@ import "./VideoRoomComponent.css";
 import OpenViduLayout from "./layout/openvidu-layout";
 import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
+import NowQuestion from "components/conference/NowQuestion";
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
@@ -644,6 +645,18 @@ class VideoRoomComponent extends Component {
               </div>
             )}
         </div>
+        {localUser !== undefined &&
+          localUser.getStreamManager() !== undefined && (
+            <div className="OT_root OT_publisher custom-class">
+              <NowQuestion
+                user={localUser}
+                chatDisplay={this.state.chatDisplay}
+                close={this.toggleChat}
+                messageReceived={this.checkNotification}
+                question={this.props.state}
+              />
+            </div>
+          )}
       </div>
     );
   }

@@ -82,6 +82,7 @@ export default function Conference() {
             navigate={navigate}
             handleSubscriber={handleSubscriber}
             handleMicState={handleMicState}
+            state={state}
           ></VideoRoomComponents>
         </Grid>
         <Grid item xs={2}>
@@ -91,7 +92,6 @@ export default function Conference() {
           />
         </Grid>
         <Grid item xs={10}>
-          <NowQuestion state={state} />
           <AnswerWrite
             state={state}
             micState={micState}
