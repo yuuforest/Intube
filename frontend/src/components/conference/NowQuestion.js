@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Typography from "@mui/material/Typography";
 export default class NowQuestion extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class NowQuestion extends Component {
           message: data.message,
           id: data.id,
         });
-        this.props.setQuestId(data.id)
+        this.props.setQuestId(data.id);
         this.setState({ messageList: messageList });
       });
   }
@@ -52,11 +53,11 @@ export default class NowQuestion extends Component {
 
   render() {
     return (
-      <div className="message-wrap" ref={this.chatScroll}>
+      <div ref={this.chatScroll}>
         {this.state.messageList.map(
           (data, i) =>
             i === this.state.messageList.length - 1 && (
-              <Typography variant="h1" gutterBottom>
+              <Typography variant="h4" gutterBottom>
                 Q{data.id}. {data.message}
               </Typography>
             )

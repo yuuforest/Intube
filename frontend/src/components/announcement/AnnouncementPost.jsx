@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import http from "api/Http";
-
+import Grid from "@mui/material/Grid";
 import AnnouncementStep4 from "./AnnouncementStep4";
 import AnnouncementStep1 from "./AnnouncementStep1";
 import AnnouncementStep2 from "./AnnouncementStep2";
@@ -136,25 +136,28 @@ export default function AnnouncementSteps(props) {
   };
 
   return (
-    <div>
+    <div className="post">
       <AnnouncementStep1
         value={props.value}
         handleChange={props.handleChange}
         interview={interview}
         step1Handeler={step1Handeler}
       ></AnnouncementStep1>
+
       <AnnouncementStep2
         value={props.value}
         handleChange={props.handleChange}
         interview={interview}
         step2Handeler={step2Handeler}
       ></AnnouncementStep2>
+
       <AnnouncementStep3
         value={props.value}
         interview={interview}
         handleChange={props.handleChange}
         step3Handeler={step3Handeler}
       ></AnnouncementStep3>
+
       <AnnouncementStep4
         value={props.value}
         interview={interview}

@@ -52,10 +52,11 @@ export default function QuestionerNow(props) {
         }
       )
       .then((response) => {
+        setInterviewList(response.data.content);
+
         if (timeid === -1) {
           setTimeid(interviewList[0].interviewTimeDetailResList[0].id);
         }
-        setInterviewList(response.data.content);
       })
       .catch((error) => {
         console.error(error);

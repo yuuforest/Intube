@@ -56,7 +56,7 @@ export default function QuestionerApply(props) {
         console.log(response.data.content);
         setInterviewList(response.data.content);
         if (timeid === -1) {
-          setTimeid(interviewList[0].interviewTimeDetailResList[0].id);
+          setTimeid(response.data.content[0].interviewTimeDetailResList[0].id);
         }
       })
       .catch((error) => {
