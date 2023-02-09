@@ -27,13 +27,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
-    
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private AuthService authService;
-    
+
     // Password 인코딩 방식에 BCrypt 암호화 방식 사용
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -74,6 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/interviewee").authenticated()
                 .antMatchers("/interviews/apply/**").authenticated()
                 .antMatchers("/interviews/cancel/**").authenticated()
+                .antMatchers("/interviews/delete").authenticated()
+                .antMatchers("/interviews/interviewer/expired-interview").authenticated()
                 .antMatchers(HttpMethod.GET, "/interviews/search/{interview_id}").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user").authenticated()
                 .antMatchers("/conference").authenticated()
@@ -85,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers("/user/nickname", "/user/find-email", "/user/find-password").permitAll()
-    	        	    .anyRequest().permitAll()
+                .anyRequest().permitAll()
                 .and().cors();
     }
 }

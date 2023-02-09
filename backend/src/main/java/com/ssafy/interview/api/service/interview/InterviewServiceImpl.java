@@ -189,9 +189,35 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
-    public void updateInterviewState(Long interview_id, int interviewState) {
+    public void updateInterviewState(String email, Long interview_id, int interviewState) {
+        User user = userRepository.findByEmail(email).get();
+
+        // 로그인한 유저와 인터뷰 작성자가 동일한지 확인
+        if (!interviewRepository.existInterviewByUserId(user.getId(), interview_id)) {
+            throw new ApplicantAndOwnerDuplicationException(user.getName() + "님! 작성자와 동일하지 않은 유저입니다.");
+        }
+
+        // 인터뷰 마감 상태로 변경
         Interview interview = interviewRepository.findById(interview_id).orElseThrow(() -> new IllegalArgumentException("해당 인터뷰 공고는 없습니다. id=" + interview_id));
         interview.updateInterviewState(interviewState);
+
+        // 해당 인터뷰 대기 중인 신청자 삭제
+        applicantRepository.deleteByInterviewId(interview_id);
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteInterview(String email, Long interview_id) {
+        User user = userRepository.findByEmail(email).get();
+
+        // 로그인한 유저와 작성자가 동일인인지 확인
+        if (!interviewRepository.existInterviewByUserId(user.getId(), interview_id)) {
+            throw new ApplicantAndOwnerDuplicationException(user.getName() + "님! 작성자와 동일하지 않은 유저입니다.");
+        }
+
+        // 해당 인터뷰 삭제
+        interviewRepository.deleteById(interview_id);
     }
 
     /**

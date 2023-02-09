@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteApplicant(String email, Long applicant_id) {
         User user = userRepository.findByEmail(email).get();
         Applicant applicant = applicantRepository.findById(applicant_id).orElseThrow(() -> new IllegalArgumentException("해당 신청자는 없습니다. id=" + applicant_id));
