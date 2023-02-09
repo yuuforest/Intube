@@ -150,7 +150,7 @@ public class AuthServiceImpl implements AuthService {
         // 2. 쿠키에 저장 - response header 넣어서 보냄
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .domain("intube.store")
-                .maxAge(refreshExpireTime)
+                .maxAge(refreshExpireTime/1000)
                 .path("/")
                 .secure(true)
                 .sameSite("None")
