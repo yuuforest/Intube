@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import http from "api/Http";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -55,22 +55,21 @@ export default function MainInterviewListItemDetail(props) {
   };
 
   const handleClickApply = () => {
-    axios
+    http
       .post(
-        "http://i8a303.p.ssafy.io:8081/interviews/apply/" + applyTime,
+        "/interviews/apply/" + applyTime,
         {},
         {
           headers: {
-            "Content-type": "application/json;charset=UTF-8",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       )
       .then((response) => {
-        console.log(response);
+        alert("등록완료");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        alert(error.response.data.message);
       });
   };
 

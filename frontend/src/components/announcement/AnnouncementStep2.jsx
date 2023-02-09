@@ -187,6 +187,7 @@ export default function AnnouncementStep2(props) {
             rows={2}
             value={description}
             onChange={descriptionHandeler}
+            placeholder="인터뷰 내용이나 정보를 입력해주세요"
           />
         </Grid>
       </Grid>

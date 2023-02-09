@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import http from "api/Http";
 import { useNavigate } from "react-router-dom";
 import { logout } from "api/logout";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -31,13 +32,12 @@ import "components/common/Header.css";
 export default function Header(props) {
   const [userInfo, setUserInfo] = useState({ name: "" });
   useEffect(() => {
-    getUser();
+    if (localStorage.getItem("accessToken") !== null) getUser();
   }, []);
   const getUser = () => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
@@ -220,12 +220,12 @@ export default function Header(props) {
                   </Typography>
 
                   <Typography variant="subtitle1" gutterBottom>
-                    질문자
+                    답변자
                   </Typography>
                 </div>
 
                 <Divider />
-                <MenuItem onClick={handleCloseAvatar}>
+                <MenuItem onClick={e => handlePage(e, "answerer/mypage")}>
                   <ListItemIcon>
                     <PersonIcon fontSize="small" />
                   </ListItemIcon>

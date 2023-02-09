@@ -12,7 +12,7 @@ import {
   setMic,
   // micState
 } from "store/counter/micSlice.js";
-import instance from "api/APIController";
+import http from "api/Http";
 
 export default function Conference() {
   const location = useLocation();
@@ -23,10 +23,9 @@ export default function Conference() {
     getUser();
   }, []);
   const getUser = () => {
-    instance
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })

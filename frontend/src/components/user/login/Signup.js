@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
+import http from "api/Http";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { verifySend } from "api/verifySend";
 import { EmailCheck } from "api/verifyCheck";
@@ -122,7 +122,7 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
 
-    onSubmit: response => {
+    onSubmit: (response) => {
       if (localStorage.getItem("nicknameAuthorize")) {
         if (localStorage.getItem("emailAuthorize")) {
           let values = {
@@ -148,27 +148,22 @@ export default function SignUp() {
           };
 
           // alert(JSON.stringify(values, null, 2));
-          axios
-            .post(
-              "http://i8a303.p.ssafy.io:8081/user",
-              JSON.stringify(values),
-              {
-                headers: {
-                  "Content-type": "application/json;charset=UTF-8",
-                  // Accept: "application/json",
-                  "Access-Control-Allow-Origin":
-                    "http://i8a303.p.ssafy.io:8081",
-                },
-                withCredentials: true,
-              }
-            )
-            .then(values => {
+          http
+            .post("/user", JSON.stringify(values), {
+              headers: {
+                "Content-type": "application/json;charset=UTF-8",
+                // Accept: "application/json",
+                "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+              },
+              withCredentials: true,
+            })
+            .then((values) => {
               console.log(values);
               alert("회원가입되었습니다.");
               localStorage.clear();
               navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
             })
-            .catch(e => {
+            .catch((e) => {
               if (e.response.data.statusCode === 409) {
                 alert("이미 가입된 이메일입니다.");
               }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { logout } from "api/logout";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -17,11 +16,12 @@ import Tooltip from "@mui/material/Tooltip";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import Logout from "@mui/icons-material/Logout";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
+import VideoFileOutlinedIcon from "@mui/icons-material/VideoFileOutlined";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
-
+import http from "api/Http";
 import Logo from "assets/logo2.png";
 
 import "components/questioner/QuestionerHeader.css";
@@ -32,10 +32,9 @@ export default function Header(props) {
     getUser();
   }, []);
   const getUser = () => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
@@ -132,8 +131,18 @@ export default function Header(props) {
                 }}
               >
                 <Button
+                  startIcon={<VideoFileOutlinedIcon />}
+                  variant="outlined"
+                  onClick={(e) => handlePage(e, "/questioner")}
+                  sx={{ mr: 5 }}
+                >
+                  인터뷰 관리
+                </Button>
+
+                <Button
                   variant="outlined"
                   startIcon={<VideoCallOutlinedIcon />}
+                  onClick={(e) => handlePage(e, "/announcement")}
                 >
                   공고 만들기
                 </Button>
@@ -198,7 +207,7 @@ export default function Header(props) {
                 </div>
 
                 <Divider />
-                <MenuItem onClick={handleCloseAvatar}>
+                <MenuItem onClick={(e) => handlePage(e, "/questioner/mypage")}>
                   <ListItemIcon>
                     <PersonIcon fontSize="small" />
                   </ListItemIcon>

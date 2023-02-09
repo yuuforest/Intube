@@ -46,14 +46,7 @@ export default function AnswerWrite(props) {
         reject();
       }
     });
-
-    promise
-      .then(function () {
-        console.log("Success, You are a GEEK");
-      })
-      .catch(function () {
-        console.log("Some error has occurred");
-      });
+    
     if (micState) {
       dispatch(setMic());
       startListening();

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import http from "api/Http";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -12,13 +12,7 @@ import Typography from "@mui/material/Typography";
 import InterviewTag from "components/common/InterviewTag";
 import "components/main/interview/MainInterviewListItemDetail.css";
 import { useEffect, useState } from "react";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
-
-const NewAlert = React.forwardRef(function NewAlert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export default function InterviewListItemDetail(props) {
   const menu = [
@@ -52,16 +46,6 @@ export default function InterviewListItemDetail(props) {
     props.setOpen(false);
   };
 
-  const [alertOpen, setAlertOpen] = React.useState(false);
-
-  const handleAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setAlertOpen(false);
-  };
-
   // 방입장
   const interview = props.interview;
   const navigate = useNavigate();
@@ -70,10 +54,9 @@ export default function InterviewListItemDetail(props) {
   }
   const [userName, setUserName] = useState([]);
   useEffect(() => {
-    axios
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+    http
+      .get("/user/me", {
         headers: {
-          "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
@@ -161,16 +144,6 @@ export default function InterviewListItemDetail(props) {
         )}
         <Button onClick={handleClose}>닫기</Button>
       </DialogActions>
-
-      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
-        <NewAlert
-          onClose={handleAlertClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          신청을 완료했습니다.!
-        </NewAlert>
-      </Snackbar>
     </Dialog>
   );
 }

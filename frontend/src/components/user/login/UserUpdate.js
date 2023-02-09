@@ -16,7 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import instance from "api/APIController";
-import axios from "axios";
+import http from "api/Http";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { VerifyNickname } from "api/verifyNickname";
@@ -171,7 +171,7 @@ export default function SignUp() {
     for (let value of formData.values()) {
       console.log(value);
     }
-    axios({
+    http({
       url: "http://i8a303.p.ssafy.io:8081/user/image",
       method: "post",
       headers: {

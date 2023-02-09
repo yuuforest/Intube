@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MainInterviewList from "components/main/interview/MainInterviewList";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
-import axios from "axios";
+import http from "api/Http";
 
 export default function MainInterview(props) {
   const [selectedValue, setSelectedValue] = React.useState("");
@@ -26,22 +26,19 @@ export default function MainInterview(props) {
   };
 
   const getInterview = () => {
-    axios
+    http
       .post(
-        "http://i8a303.p.ssafy.io:8081/interviews/search?page=" +
-          page +
-          "&sort=" +
-          selectedValue,
+        "/interviews/search?page=" + page + "&sort=" + selectedValue,
         JSON.stringify(props.searchCondition),
         {
           headers: {
-            "Content-type": "application/json;charset=UTF-8",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       )
       .then((response) => {
-        console.log(response);
+        console.log(response.data.content);
+        console.log(props.searchCondition);
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
       })

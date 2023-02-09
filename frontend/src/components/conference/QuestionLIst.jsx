@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import http from "api/Http";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -8,17 +8,12 @@ import Typography from "@mui/material/Typography";
 export default function QuestionLIst(props) {
   const [questionList, setQuestionList] = useState([]);
   useEffect(() => {
-    axios
-      .get(
-        "http://i8a303.p.ssafy.io:8081/conference/question?interviewID=" +
-          props.interview.id,
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+    http
+      .get("/conference/question?interviewID=" + props.interview.id, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((response) => {
         console.log(response);
         setQuestionList(response.data);

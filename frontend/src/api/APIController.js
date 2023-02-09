@@ -49,7 +49,7 @@ instance.interceptors.response.use(
           console.log("엑세스토큰 :", localStorage.getItem("accessToken"))
           // console.log(data)
         )
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 401) {
             // navigate("/");
             localStorage.clear();
