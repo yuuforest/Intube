@@ -47,6 +47,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 //    }
 
     @Override
+    @Transactional
     public Conference startConference(Long interviewTimeID) {
         // [회의방 생성]
         Conference conference = new Conference();
@@ -66,6 +67,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional
     public ConferenceHistory createConferenceHistory(Long conferenceID, String userEmail, int action) {
         // [회의방에 대한 참가자들의 입장 기록]
         ConferenceHistory conferenceHistory = new ConferenceHistory();
@@ -108,6 +110,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 //    }
 
     @Override
+    @Transactional
     public void createQuestionInConference(QuestionCreateInReq questionInfo) {
         // [Conference 진행 중에 Interview 내에서 새로운 질문 추가]
         Question question = new Question();
@@ -123,6 +126,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional
     public void recordQuestionInConference(RecordQuestionInReq questionInfo) {
         // [Conference 진행 중 각 질문이 시작한 시간 기록]
         Dialog dialog = new Dialog();
@@ -135,10 +139,11 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void recordDialogInConference(RecordDialogInReq dialogInfo) {
+    @Transactional
+    public void recordDialogInConference(String userEmail, RecordDialogInReq dialogInfo) {
         // [Conference 진행 중 발언자가 발언한 내용과 그에 대한 정보 기록]
         Dialog now = new Dialog();
-        now.setUser(userRepository.findByEmail(dialogInfo.getUserEmail()).get());
+        now.setUser(userRepository.findByEmail(userEmail).get());
         now.setConference(conferenceRepository.findById(dialogInfo.getConferenceID()).get());
         if(dialogInfo.getQuestionID() == null) {
             now.setQuestion(null);
