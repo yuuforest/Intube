@@ -213,7 +213,7 @@ public class AuthController {
             @ApiIgnore Authentication authentication) throws Exception {
         logger.info("checkPassword call!");
         try {
-            String email = authService.getUserByAuthentication(authentication);
+            String email = authService.getEmailByAuthentication(authentication);
 
             User user = userService.findByEmail(email).get();
 
@@ -241,7 +241,7 @@ public class AuthController {
     public ResponseEntity<BaseResponseBody> logout(@ApiIgnore Authentication authentication) throws Exception {
         logger.info("logout call!");
         try {
-            String email = authService.getUserByAuthentication(authentication);
+            String email = authService.getEmailByAuthentication(authentication);
 
             User user = userService.findByEmail(email).get();
 

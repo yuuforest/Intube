@@ -35,7 +35,10 @@ public interface AuthService {
     void deleteAuthKey(String key);
 
     // 로그인한 유저의 이메일 가져오기
-    String getUserByAuthentication(Authentication authentication);
+    String getEmailByAuthentication(Authentication authentication);
+
+    // 로그인한 유저의 id 가져오기
+    Long getIdByAuthentication(Authentication authentication);
 
     // 암호화된 코드 equal check
     boolean checkMatches(String input, String data);
