@@ -28,6 +28,7 @@
     "react-speech-recognition": "^3.10.0",
     "redux": "^4.2.1",
     "styled-components": "^5.3.6",
+    "sweetalert2": "^11.7.1",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

@@ -58,7 +58,7 @@ export default function Sidebar(props) {
     {
       text: "프로필수정",
       icon: <AutoFixHighIcon />,
-      link: "/",
+      link: "/checkpassword",
     },
   ];
 
@@ -90,7 +90,7 @@ export default function Sidebar(props) {
             src={Logo}
             alt="logo"
             width="130px"
-            onClick={(e) => handlePage(e, "", "/")}
+            onClick={e => handlePage(e, "", "/")}
           />
         </Toolbar>
 
@@ -98,7 +98,7 @@ export default function Sidebar(props) {
           <List>
             {answererMenu.map((item, index) => (
               <div key={index}>
-                <ListItem onClick={(e) => handlePage(e, item.state, item.link)}>
+                <ListItem onClick={e => handlePage(e, item.state, item.link)}>
                   <ListItemButton>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.text} />
