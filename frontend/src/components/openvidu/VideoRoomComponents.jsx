@@ -654,6 +654,7 @@ class VideoRoomComponent extends Component {
                 close={this.toggleChat}
                 messageReceived={this.checkNotification}
                 question={this.props.state}
+                setQuestId={this.props.setQuestId}
               />
             </div>
           )}

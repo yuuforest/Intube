@@ -15,7 +15,7 @@ export default function QuestionLIst(props) {
         },
       })
       .then((response) => {
-        console.log(response);
+        console.log('질문리스트', response.data);
         setQuestionList(response.data);
       })
       .catch((error) => {
