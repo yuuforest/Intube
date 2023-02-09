@@ -14,5 +14,5 @@ public interface ResultService {
     void updateAllDialog(List<DialogModifyReq> dialogInfo);
 
     // conference 종료 시 conference result 생성
-    void createConferencResult(String eamil, Long interview_id, Long interview_time_id);
+    void createConferencResult(Long user_id, Long interview_id, Long interview_time_id);
 }

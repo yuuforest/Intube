@@ -49,4 +49,15 @@ public class InterviewTimeRepositoryImpl implements InterviewTimeRepositoryCusto
         }
         return conductInterviewTimeList;
     }
+
+    @Override
+    public Boolean existModifyStateByState(Long interview_time_id) {
+        Long fetchOne = jpaQueryFactory
+                .select(qInterviewTime.id)
+                .from(qInterviewTime)
+                .where(qInterviewTime.id.eq(interview_time_id), qInterviewTime.modifyResultState.eq(1))
+                .fetchFirst(); // limit 1
+
+        return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
+    }
 }

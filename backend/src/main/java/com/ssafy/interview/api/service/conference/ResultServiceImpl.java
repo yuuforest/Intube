@@ -2,9 +2,12 @@ package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
+import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.repository.conference.DialogRepository;
+import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
+import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ public class ResultServiceImpl implements ResultService {
     DialogRepository dialogRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    InterviewTimeRepository interviewTimeRepository;
 
     @Override
     public List<DialogRes> dialogInAll(Long conferenceID) {
@@ -74,8 +79,25 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void createConferencResult(String eamil, Long interview_id, Long interview_time_id) {
+    public void createConferencResult(Long user_id, Long interview_id, Long interview_time_id) {
+        User user = userRepository.findById(user_id).get();
 
+        // 중복 종료 체크!!!
+        DuplicateInterviewTimeModifyState(user.getName(), user_id, interview_time_id);
+
+    }
+
+    /**
+     * 인터뷰 신청여부 중복확인 - 작성자와 동일인인 경우
+     *
+     * @param name         로그인한 유저 이름
+     * @param user_id      중복검사 할 로그인 Id
+     * @param interview_time_id 해당 인터뷰 Id
+     */
+    private void DuplicateInterviewTimeModifyState(String name, Long user_id, Long interview_time_id) {
+        if (interviewTimeRepository.existModifyStateByState(interview_time_id)) {
+            throw new ApplicantAndOwnerDuplicationException(name + "님!");
+        }
     }
 
 
