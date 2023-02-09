@@ -48,10 +48,11 @@ export default function InterviewListItemDetail(props) {
   };
 
   // 방입장
+  const position = 2
   const interview = props.interview;
   const navigate = useNavigate();
   function onClickEnter(e) {
-    navigate("/conference", { state: { interview, userName } });
+    navigate("/conference", { state: { interview, userName, position } });
   }
   const [userName, setUserName] = useState([]);
   useEffect(() => {

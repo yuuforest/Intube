@@ -17,6 +17,7 @@ export default function Conference() {
   const location = useLocation();
   const interview = location.state.interview;
   const userName = location.state.userName;
+  const positionId = location.state.position
   const [userInfo, setUserInfo] = useState([]);
   const [conferenceID, setConferenceID] = useState(1);
   const [questId, setQuestId] = useState(undefined);
@@ -117,6 +118,7 @@ export default function Conference() {
             conferenceId={conferenceID}
             questId={questId}
             setQuestId={setQuestId}
+            positionId={positionId}
           ></AnswerWrite>
         </Grid>
         <Grid item xs={2}>
