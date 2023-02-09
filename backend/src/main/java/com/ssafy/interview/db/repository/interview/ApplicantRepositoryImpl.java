@@ -76,6 +76,14 @@ public class ApplicantRepositoryImpl implements ApplicantRepositoryCustom {
     }
 
     @Override
+    public void deleteByInterviewId(Long interview_id) {
+        long affectedRows = jpaQueryFactory
+                .delete(qApplicant)
+                .where(qApplicant.interviewTime.interview.id.eq(interview_id))
+                .execute();
+    }
+
+    @Override
     public Boolean existApplicantByUserId(Long user_id, Long interview_time_id) {
         Long fetchOne = jpaQueryFactory
                 .select(qApplicant.id)

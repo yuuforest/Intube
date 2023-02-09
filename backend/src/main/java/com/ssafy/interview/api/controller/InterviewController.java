@@ -111,8 +111,12 @@ public class InterviewController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> expiredInterview(@RequestParam Long interview_id,
-                                                                       @RequestParam int interview_state) {
-        interviewService.updateInterviewState(interview_id, interview_state);
+                                                                       @RequestParam int interview_state,
+                                                                       @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        interviewService.updateInterviewState(email, interview_id, interview_state);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
@@ -131,6 +135,23 @@ public class InterviewController {
 
         //유저 email, interview_time_id로 해당 인터뷰를 신청하는 코드
         interviewService.deleteApplicant(tokenEmail, interview_time_id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "해당 인터뷰 삭제", notes = "해당 인터뷰의 id를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> refuseApplicant(@RequestParam Long interview_id,
+                                                                      @ApiIgnore Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String email = userDetails.getUsername();
+
+        interviewService.deleteInterview(email, interview_id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }

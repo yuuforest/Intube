@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
             body.add("grant_type", "authorization_code");
             body.add("client_id", "dc6c7559412fd1c77ad3e0a798803e27");
-            body.add("redirect_uri", "http://localhost:3000/signup");
+            body.add("redirect_uri", "https://intube.store:8443/auth/kakao/callback");
             body.add("code", code);
 
             // HTTP 요청 보내기
@@ -149,11 +149,11 @@ public class AuthServiceImpl implements AuthService {
 
         // 2. 쿠키에 저장 - response header 넣어서 보냄
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .domain("i8a303.p.ssafy.io")
+                .domain("intube.store")
                 .maxAge(refreshExpireTime)
                 .path("/")
-//                .secure(true)
-//                .sameSite("None")
+                .secure(true)
+                .sameSite("None")
                 .httpOnly(true)
                 .build();
 
