@@ -1,4 +1,4 @@
-import axios from "axios";
+import http from "api/Http";
 
 export async function VerifyNickname(nickname) {
   let params = {
@@ -7,9 +7,9 @@ export async function VerifyNickname(nickname) {
     nickname: nickname,
   };
   console.log(nickname);
-  let test = await axios
+  let test = await http
     .get(
-      "http://i8a303.p.ssafy.io:8081/user/nickname",
+      "https://intube.store:8443/api/user/nickname",
       { params },
       {
         headers: {

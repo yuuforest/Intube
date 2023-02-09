@@ -1,13 +1,13 @@
-import axios from "axios";
+import http from "api/Http";
 
 export function verifySend(email) {
   let values = {
     email: email,
   };
   console.log("hi");
-  axios
+  http
     .post(
-      "http://i8a303.p.ssafy.io:8081/auth/send-email",
+      "https://intube.store:8443/api/auth/send-email",
       JSON.stringify(values),
       {
         headers: {

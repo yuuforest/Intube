@@ -11,7 +11,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router";
-import APIController from "api/APIController";
 import instance from "api/APIController";
 
 function Copyright(props) {
@@ -37,7 +36,7 @@ const theme = createTheme();
 export default function CheckPassword() {
   function getUserInfo() {
     instance
-      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+      .get("/user/me", {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           // Accept: "application/json",
@@ -90,23 +89,18 @@ export default function CheckPassword() {
         // password: "5678",
       };
       // alert(JSON.stringify(values, null, 2));
-      APIController.post(
-        "http://i8a303.p.ssafy.io:8081/auth/check-password",
-        JSON.stringify(values),
-        {
+      instance
+        .post("/auth/check-password", JSON.stringify(values), {
           headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+            "Access-Control-Allow-Origin": "https://intube.store:8443/api",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
           withCredentials: true,
-        }
-      )
+        })
         .then(Response => {
           console.log(Response);
           if (Response.data.statusCode === 200) {
             navigate("/userupdate"); // 비밀번호 확인 되었으니 회원정보 수정 창으로
-            console.log(localStorage.getItem("email"));
           }
         })
         .catch(e => {
@@ -136,9 +130,6 @@ export default function CheckPassword() {
               alignItems: "center",
             }}
           >
-            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
             <Typography component="h1" variant="h5">
               비밀번호 확인
             </Typography>
