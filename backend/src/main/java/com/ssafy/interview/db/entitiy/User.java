@@ -52,6 +52,6 @@ public class User extends BaseEntity {
     int point = 0;
 
     @Builder.Default()
-    String profile_url = "user.png";
+    String profile_url = "profile/user.png";
 
 }
