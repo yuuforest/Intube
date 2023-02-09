@@ -2,7 +2,7 @@ import axios from "axios";
 // import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  baseURL: "http://http://i8a303.p.ssafy.io:8081",
+  baseURL: "http://i8a303.p.ssafy.io:8081",
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     withCredentials: true,
@@ -36,7 +36,7 @@ instance.interceptors.response.use(
     if (error.response.status === 401) {
       axios
         .get(
-          "http://http://i8a303.p.ssafy.io:8081/auth/issue",
+          "http://i8a303.p.ssafy.io:8081/auth/issue",
           {
             headers: {
               "Content-Type": "application/json; charset=utf-8",

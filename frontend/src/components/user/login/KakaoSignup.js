@@ -51,12 +51,8 @@ export default function SignUp() {
       alert("닉네임을 기입해주세요!");
     } else {
       VerifyNickname(nickname);
-      setNicknameAuthorize(localStorage.getItem("nicknameAuthorize"));
-      console.log(localStorage.getItem("nicknameAuthorize"));
-      localStorage.removeItem("nicknameAuthorize");
     }
   };
-  const [nicknameAuthorize, setNicknameAuthorize] = useState(false);
   const [nickname, setNickname] = useState("");
   const nicknameChange = ({ target: { value } }) => setNickname(value);
 
@@ -106,7 +102,7 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: response => {
-      if (nicknameAuthorize) {
+      if (localStorage.getItem("nicknameAuthorize")) {
         let values = {
           birth: response.birth,
           email: response.email,
@@ -139,16 +135,14 @@ export default function SignUp() {
           })
           .then(values => {
             if (values.data.statusCode === 200) {
-              const ACCESS_TOKEN = values.data.accessToken;
+              // const ACCESS_TOKEN = values.data.accessToken;
 
-              localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-              localStorage.getItem("token");
-
+              // localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
+              // localStorage.getItem("token");
+              localStorage.clear();
               alert("회원가입 되었습니다.");
               navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
             }
-            // console.log(values);
-            // navigate("/");
           })
           .catch(e => {
             if (e.response.data.statusCode === 409) {

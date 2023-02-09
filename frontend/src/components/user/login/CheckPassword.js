@@ -106,7 +106,7 @@ export default function CheckPassword() {
           console.log(Response);
           if (Response.data.statusCode === 200) {
             navigate("/userupdate"); // 비밀번호 확인 되었으니 회원정보 수정 창으로
-            console.log(localStorage.getItem("email"));
+            // console.log(localStorage.getItem("email"));
           }
         })
         .catch(e => {

@@ -10,10 +10,17 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import instance from "api/APIController";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { VerifyNickname } from "api/verifyNickname";
+import { Paper } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -82,92 +89,80 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: response => {
-      let values = {
-        birth: response.birth,
-        email: response.email,
-        gender: response.gender,
-        introduction: response.introduction,
-        name: response.name,
-        nickname: response.nickname,
-        password: localStorage.getItem("password"),
-        phone: response.phone,
-        // birth: "1994-04-26",
-        // email: "jos9404@naver.com",
-        // gender: "M",
-        // introduction: "안녕하세요 저는 착한 사람입니다.",
-        // name: "지원석",
-        // nickname: "커플600일차",
-        // password: localStorage.getItem("password"),
-        // phone: "01099130059",
-      };
-      alert(JSON.stringify(values, null, 2));
-      instance
-        .put("http://i8a303.p.ssafy.io:8081/user", JSON.stringify(values), {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          withCredentials: true,
-        })
-        .then(values => {
-          console.log(values);
-          if (values.data.statusCode === 200) {
-            alert("비밀번호가 변경되었습니다. 다시 로그인해주세요");
-            navigate("/");
-          }
-        })
-        .catch(e => {
-          if (e.response.data.statusCode === 400) {
-            alert("잘못된 비밀번호입니다.");
-          }
-          if (e.response.data.statusCode === 401) {
-            console.log("권한 없음. 다시 로그인해주세요");
-            localStorage.clear();
-            navigate("/"); // 에러페이지로 이동
-          }
-          if (e.response.data.statusCode === 403) {
-            alert("403 Forbidden");
-            localStorage.clear();
-            navigate("/"); // 에러페이지로 이동
-          }
-          if (e.response.data.statusCode === 500) {
-            console.log("서버 에러. 다시 로그인해주세요");
-            localStorage.clear();
-            navigate("/"); // 에러페이지로 이동
-          }
-        });
+      if (localStorage.getItem("nicknameAuthorize")) {
+        let values = {
+          birth: response.birth,
+          email: response.email,
+          gender: response.gender,
+          introduction: response.introduction,
+          name: response.name,
+          nickname: nickname,
+          // password: userInfo,
+          phone: response.phone,
+        };
+        alert(JSON.stringify(values, null, 2));
+        instance
+          .put("http://i8a303.p.ssafy.io:8081/user", JSON.stringify(values), {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              "Access-Control-Allow-Origin": "http://i8a303.p.ssafy.io:8081",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            withCredentials: true,
+          })
+          .then(values => {
+            console.log(values);
+            if (values.data.statusCode === 200) {
+              alert("비밀번호가 변경되었습니다. 다시 로그인해주세요");
+              navigate("/");
+            }
+          })
+          .catch(e => {
+            if (e.response.data.statusCode === 400) {
+              alert("잘못된 비밀번호입니다.");
+            }
+            if (e.response.data.statusCode === 401) {
+              console.log("권한 없음. 다시 로그인해주세요");
+              localStorage.clear();
+              navigate("/"); // 에러페이지로 이동
+            }
+            if (e.response.data.statusCode === 403) {
+              alert("403 Forbidden");
+              localStorage.clear();
+              navigate("/"); // 에러페이지로 이동
+            }
+            if (e.response.data.statusCode === 500) {
+              console.log("서버 에러. 다시 로그인해주세요");
+              localStorage.clear();
+              navigate("/"); // 에러페이지로 이동
+            }
+          });
+      }
     },
   });
   const [image, setImg] = useState("");
 
   const onChangeImg = async event => {
     event.preventDefault();
-    // console.log(event);
-    // console.log("image", event.target.files[0]);
     setImg(event.target.files[0]);
-    // const formData = new FormData();
-    // formData.append();
-    // console.log(formData);
-    // const response = await axios.post(
-    //   "http://i8a303.p.ssafy.io:8081/user/image",
-    //   {
-    //     headers: {
-    //       // "Content-Type": "application/json; charset=utf-8",
-    //       "Content-Type": "multipart/form-data",
-    //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    //     },
-    //   },
-    //   { withCredentials: true },
-    //   formData
-    // );
-    // console.log(response);
+    console.log(userImg);
   };
 
+  const [nickname, setNickname] = useState("");
+  const nicknameChange = ({ target: { value } }) => setNickname(value);
+  //닉네임 변경하기 함수
+  const nicknameCheck = () => {
+    if (nickname === "") {
+      alert("닉네임을 기입해주세요!");
+    } else {
+      VerifyNickname(nickname);
+    }
+  };
+  //이미지 변경 함수
   const handleImg = () => {
     const formData = new FormData();
     formData.append("image", image);
-    // console.log(image);
+    console.log(localStorage.getItem("accessToken"));
     /*key 확인하기 */
     for (let key of formData.keys()) {
       console.log(key);
@@ -176,22 +171,19 @@ export default function SignUp() {
     for (let value of formData.values()) {
       console.log(value);
     }
-    axios
-      .post(
-        "http://i8a303.p.ssafy.io:8081/user/image",
-        {
-          headers: {
-            accept: "application/json;charset=utf-8",
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        },
-        { withCredentials: true },
-        formData
-      )
+    axios({
+      url: "http://i8a303.p.ssafy.io:8081/user/image",
+      method: "post",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      data: formData,
+    })
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         if (data.statusCode === 200) {
+          console.log("변경완료");
         }
       })
       .catch(e => {
@@ -201,7 +193,35 @@ export default function SignUp() {
         console.log(e);
       });
   };
-  React.useEffect(() => {});
+
+  //이미지를 쓰기위해서 useeffect로 db에 있는 기존 이미지를 데리고 오기.
+  const [userImg, setUserImg] = useState({ name: "" });
+  useEffect(() => {
+    getUser();
+  }, [userImg]);
+  const getUser = async () => {
+    // const data =
+    await axios
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then(response => {
+        console.log(response.data.profile_url);
+        // const profile = response.data.profile_url.substr(8);
+        // console.log(profile);
+        setUserImg(
+          `https://303-intube.s3.ap-northeast-2.amazonaws.com/${response.data.profile_url}`
+        );
+      })
+      .catch(error => {
+        if (error.response.status === 401) {
+          console.log("엑세스 토큰 없음~");
+        }
+      });
+  };
   function deleteUser() {}
 
   return (
@@ -225,14 +245,14 @@ export default function SignUp() {
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <img src={localStorage.getItem("profile_url")} alt="dfdf"></img>
+                <img src={userImg} alt="왜안돼"></img>
               </Grid>
               <Grid item xs={6}>
                 <input
                   type="file"
                   accept="image/jpg,impge/png,image/jpeg,image/gif"
                   id="file"
-                  // value={image}
+                  // value={userImg || ""}
                   name="file"
                   // value={img || ""}
                   onChange={onChangeImg}
@@ -313,33 +333,52 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={10}>
                 <TextField
                   name="nickname"
                   required
                   fullWidth
                   id="nickname"
-                  label="nickname"
+                  label="닉네임"
                   // autoFocus
-                  onChange={formik.handleChange}
-                  value={formik.values.nickname}
-                  error={
-                    formik.touched.nickname && Boolean(formik.errors.nickname)
-                  }
-                  helperText={formik.touched.nickname && formik.errors.nickname}
+                  onChange={nicknameChange}
+                  value={nickname}
                   onBlur={formik.handleBlur}
                 />
               </Grid>
+              <Grid item xs={2}>
+                <Button
+                  variant="outlined"
+                  name="nicknameAuthorize"
+                  onClick={nicknameCheck}
+                >
+                  중복확인
+                </Button>
+              </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="gender"
-                  label="gender"
-                  id="gender"
-                  onChange={formik.handleChange}
-                  value={formik.values.gender}
-                />
+                <FormControl>
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Gender
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="gender"
+                    value={formik.values.gender}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      value="F"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="M"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField

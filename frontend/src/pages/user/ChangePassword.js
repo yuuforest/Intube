@@ -13,6 +13,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import instance from "api/APIController";
 import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -35,6 +37,25 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [userInfo, setUserInfo] = useState({ name: "" });
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = () => {
+    axios
+      .get("http://i8a303.p.ssafy.io:8081/user/me", {
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then(response => {
+        setUserInfo(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   const navigate = useNavigate();
 
   const validationSchema = yup.object({

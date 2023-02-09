@@ -56,7 +56,7 @@ export default function SignIn() {
         email: response.email,
         password: response.password,
       };
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       axios
         .post(
           "http://i8a303.p.ssafy.io:8081/auth/login",
