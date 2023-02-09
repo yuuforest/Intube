@@ -104,7 +104,7 @@ public class ConferenceController {
         conferenceService.updateConferenceHistory(historyID, 4);
         // [Applicant Table] interview_time_id 가 동일한 applicant의 상태를 3으로 변경
         conferenceService.modifyApplicantState(interviewTimeID);
-
+        conferenceService.modifyInterviewTimeState(interviewTimeID);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 

@@ -6,6 +6,7 @@ import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Applicant;
+import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.*;
 import com.ssafy.interview.db.repository.interview.ApplicantRepository;
@@ -163,5 +164,12 @@ public class ConferenceServiceImpl implements ConferenceService {
         for (Applicant applicant : applicants) {
             applicant.setApplicantState(3);
         }
+    }
+
+    @Override
+    @Transactional
+    public void modifyInterviewTimeState(Long interviewTimeID) {
+        InterviewTime interviewTime = interviewTimeRepository.findById(interviewTimeID).get();
+        interviewTime.setModifyResultState(1);
     }
 }
