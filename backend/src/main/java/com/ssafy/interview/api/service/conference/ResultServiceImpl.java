@@ -4,6 +4,7 @@ import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.repository.conference.DialogRepository;
+import com.ssafy.interview.db.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class ResultServiceImpl implements ResultService {
 
     @Autowired
     DialogRepository dialogRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public List<DialogRes> dialogInAll(Long conferenceID) {

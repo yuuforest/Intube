@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.util.Assert;
 
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@DynamicInsert
 @NoArgsConstructor
 public class ConferenceResult extends BaseEntity {
 
@@ -35,8 +37,9 @@ public class ConferenceResult extends BaseEntity {
     private Question question;
 
     @Builder
-    private ConferenceResult(String content) {
+    private ConferenceResult(String content, Question question) {
         Assert.hasText(content, "content must not be empty");
         this.content = content;
+        this.question = question;
     }
 }
