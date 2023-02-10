@@ -11,6 +11,7 @@
 //   let userName = "OpenVidu_User" + Math.floor(Math.random() * 100);
 //   return <div>VideoRoomComponents</div>;
 // }
+import QuestionLIst from "components/conference/QuestionLIst";
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
@@ -73,6 +74,9 @@ class VideoRoomComponent extends Component {
     if (props.positionId === 2) {
       this.role = "SUBSCRIBER";
     }
+
+    console.log("asa");
+    console.log(props.interviewId);
   }
 
   handleMicState() {
@@ -262,7 +266,7 @@ class VideoRoomComponent extends Component {
   leaveSession() {
     const mySession = this.state.session;
 
-    if (mySession) {
+    if (mySession && this.role === "PUBLISHER") {
       mySession.disconnect();
     }
 
@@ -628,6 +632,26 @@ class VideoRoomComponent extends Component {
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         />
+        <Card sx={{ minWidth: 275, mt: 2 }}>
+          <CardContent
+            sx={{
+              textAlign: "center",
+              height: "40px",
+            }}
+          >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <NowQuestion
+                  user={localUser}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
+                  question={this.props.state}
+                  setQuestId={this.props.setQuestId}
+                />
+              )}
+          </CardContent>
+        </Card>
         <div id="layout" className="bounds2">
           {this.state.subscribers.map((sub, i) => (
             <div
@@ -669,26 +693,6 @@ class VideoRoomComponent extends Component {
         </div>
 
         <Card sx={{ minWidth: 275, mt: 2 }}>
-          <CardContent
-            sx={{
-              textAlign: "center",
-              height: "40px",
-            }}
-          >
-            {localUser !== undefined &&
-              localUser.getStreamManager() !== undefined && (
-                <NowQuestion
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                  question={this.props.state}
-                  setQuestId={this.props.setQuestId}
-                />
-              )}
-          </CardContent>
-        </Card>
-        <Card sx={{ minWidth: 275, mt: 2 }}>
           <CardContent sx={{}}>
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
@@ -702,6 +706,11 @@ class VideoRoomComponent extends Component {
               )}
           </CardContent>
         </Card>
+        <QuestionLIst
+          handleChangeQuestion={this.props.handleChangeQuestion}
+          interviewId={this.props.interviewId}
+          positionId={this.props.positionId}
+        />
       </div>
     );
   }
@@ -729,7 +738,10 @@ class VideoRoomComponent extends Component {
   async createSession(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "conference/sessions",
-      { customSessionId: sessionId },
+      {
+        customSessionId: sessionId,
+        recordingMode: "ALWAYS",
+      },
       {
         headers: { "Content-Type": "application/json" },
       }
