@@ -12,12 +12,12 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
-  // const position = 2
-  // const navigate = useNavigate();
+  const position = 1;
+  const navigate = useNavigate();
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
     setTimeid(
@@ -87,9 +87,34 @@ export default function QuestionerNow(props) {
       });
   };
 
-  // function onClickEnter(e) {
-  //   navigate("/conference", { state: { interview, userName, position, conferenceID } });
-  // }
+  const [conferenceID, setConferenceID] = useState([]);
+
+  console.log(interviewList[questionindex]);
+  const onClickEnter = async (e) => {
+    const interviewId = interviewList[questionindex].id;
+    const interviewTimeId = timeid;
+    await http
+      .post(
+        "/conference/start?interviewTimeID=" + interviewTimeId,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("컨퍼런스 아이디", response.data.conferenceID);
+        setConferenceID(response.data.conferenceID);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    navigate("/conference", {
+      state: { interviewId, interviewTimeId, position, conferenceID },
+    });
+  };
 
   return (
     <div hidden={props.value !== 2}>
@@ -200,6 +225,7 @@ export default function QuestionerNow(props) {
               startIcon={<VideocamIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
               size="large"
+              onClick={onClickEnter}
             >
               인터뷰 방만들기
             </Button>

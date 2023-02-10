@@ -13,10 +13,10 @@ import http from "api/Http";
 
 export default function Conference() {
   const location = useLocation();
-  const interview = location.state.interview;
-  const userName = location.state.userName;
-  const positionId = location.state.position
-  const conferenceID = location.state.conferenceID
+  const interviewId = location.state.interviewId;
+  const interviewTimeId = location.state.interviewTimeId;
+  const positionId = location.state.position;
+  const conferenceID = location.state.conferenceID;
   const [userInfo, setUserInfo] = useState([]);
   const [questId, setQuestId] = useState(undefined);
 
@@ -60,20 +60,17 @@ export default function Conference() {
     dispatch(setMic());
   }, [micState, dispatch]);
 
+  const [userName, setUserName] = useState([]);
   useEffect(() => {
     http
-      .post(
-        "/conference/start?interviewTimeID=" + interview.interviewTimeRes.id,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+      .get("/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
       .then((response) => {
-        console.log("컨퍼런스 아이디", response.data.conferenceID);
-        // setConferenceID(response.data.conferenceID);
+        console.log(response.data);
+        setUserName(response.data.name);
       })
       .catch((error) => {
         console.error(error);
@@ -86,19 +83,20 @@ export default function Conference() {
       <Grid container spacing={2} justifyContent="space-between">
         <Grid item xs={9}>
           <VideoRoomComponents
-            interview={interview}
+            interviewTimeId={interviewTimeId}
             userName={userName}
             navigate={navigate}
             handleMicState={handleMicState}
             state={state}
             setQuestId={setQuestId}
             myAnswer={myAnswer}
+            positionId={positionId}
           ></VideoRoomComponents>
         </Grid>
         <Grid item>
           <QuestionLIst
             handleChangeQuestion={handleChangeQuestion}
-            interview={interview}
+            interviewId={interviewId}
             positionId={positionId}
           />
         </Grid>
@@ -110,7 +108,6 @@ export default function Conference() {
             state={state}
             micState={micState}
             userInfo={userInfo}
-            interview={interview}
             handleMicState={handleMicState}
             conferenceId={conferenceID}
             questId={questId}
