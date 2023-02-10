@@ -269,8 +269,8 @@ class VideoRoomComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+      sessionName: "Session" + this.props.interview.interviewTimeRes.id,
+      userName: this.props.userName,
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -437,7 +437,6 @@ class VideoRoomComponent extends Component {
 
   async switchCamera() {
     try {
-      console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
       if (!this.state.isRecord) {
         axios
           .post(
@@ -627,16 +626,7 @@ class VideoRoomComponent extends Component {
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         />
-        <div id="layout" className="bounds">
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                <StreamComponent
-                  user={localUser}
-                  handleNickname={this.nicknameChanged}
-                />
-              </div>
-            )}
+        <div id="layout" className="bounds2">
           {this.state.subscribers.map((sub, i) => (
             <div
               key={i}
@@ -664,6 +654,38 @@ class VideoRoomComponent extends Component {
               </div>
             )}
         </div>
+        <div id="layout" className="bounds">
+          {localUser !== undefined &&
+            localUser.getStreamManager() !== undefined && (
+              <div className="OT_root OT_publisher custom-class" id="localUser">
+                <StreamComponent
+                  user={localUser}
+                  handleNickname={this.nicknameChanged}
+                />
+              </div>
+            )}
+        </div>
+
+        <Card sx={{ minWidth: 275, mt: 2 }}>
+          <CardContent
+            sx={{
+              textAlign: "center",
+              height: "40px",
+            }}
+          >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <NowQuestion
+                  user={localUser}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
+                  question={this.props.state}
+                  setQuestId={this.props.setQuestId}
+                />
+              )}
+          </CardContent>
+        </Card>
         <Card sx={{ minWidth: 275, mt: 2 }}>
           <CardContent
             sx={{

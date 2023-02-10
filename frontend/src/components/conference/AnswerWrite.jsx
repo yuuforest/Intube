@@ -4,7 +4,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { useDispatch } from "react-redux";
 import { setMic } from "store/counter/micSlice.js";
-import instance from 'api/APIController';
+import instance from "api/APIController";
 import moment from "moment";
 
 export default function AnswerWrite(props) {
@@ -46,7 +46,7 @@ export default function AnswerWrite(props) {
         reject();
       }
     });
-    
+
     if (micState) {
       dispatch(setMic());
       startListening();
@@ -54,6 +54,7 @@ export default function AnswerWrite(props) {
       setCurrentTime(moment().format("HH:mm:ss"));
     } else {
       dispatch(setMic());
+      props.setMyAnswer({ name: props.userInfo.name, answer: transcript });
       promise
         .then(function () {
           SpeechRecognition.stopListening();
@@ -64,32 +65,28 @@ export default function AnswerWrite(props) {
           return;
         })
         .then(function () {
-          if (transcript.trim() !== '') {
+          if (transcript.trim() !== "") {
             if (questId === undefined) {
               speechInfo.questionID = -1;
-              console.log("speechInfo", speechInfo)
+              console.log("speechInfo", speechInfo);
             }
             instance
-              .post(
-                "/conference/dialog/user",
-                JSON.stringify(speechInfo),
-                {
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                  },
-                }
-              )
+              .post("/conference/dialog/user", JSON.stringify(speechInfo), {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              })
               .then((response) => {
-                console.log('working', response.data)
+                console.log("working", response.data);
               })
               .catch((error) => {
                 console.error(error);
               });
-              return;
-            }
+            return;
           }
-
-        )
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [micState, dispatch, resetTranscript, setCurrentTime, moment]);
