@@ -15,7 +15,7 @@ public interface ConferenceService {
 
     // [Conference Table]
     Conference startConference(Long interviewID);  // Conference 방 처음 생성
-    void endConference(Long conferenceID, String url);
+    void endConference(Long conferenceID);
     Optional<Conference> isConferenceByHost(Long interviewTimeID);
     Optional<Conference> isConferenceByUser(Long interviewTimeID);
 
@@ -26,7 +26,7 @@ public interface ConferenceService {
 //    List<User> userInConference(Long ConferenceID);
 
     // [Question Table]
-    void createQuestionInConference(QuestionCreateInReq questionInfo);
+//    void createQuestionInConference(QuestionCreateInReq questionInfo);
     List<Question> questionAllInConference(Long interviewID);
 
     // [Dialog Table]
