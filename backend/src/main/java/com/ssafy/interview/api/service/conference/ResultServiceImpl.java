@@ -4,20 +4,21 @@ import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
+import com.ssafy.interview.db.entitiy.conference.ConferenceResult;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
+import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.ConferenceRepository;
+import com.ssafy.interview.db.repository.conference.ConferenceResultRepository;
 import com.ssafy.interview.db.repository.conference.DialogRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
+import com.ssafy.interview.exception.interview.InterviewTimeModifyResultDuplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("ResultService")
 public class ResultServiceImpl implements ResultService {
@@ -30,6 +31,8 @@ public class ResultServiceImpl implements ResultService {
     InterviewTimeRepository interviewTimeRepository;
     @Autowired
     ConferenceRepository conferenceRepository;
+    @Autowired
+    ConferenceResultRepository conferenceResultRepository;
 
     @Override
     public List<DialogRes> dialogInAll(Long conferenceID) {
@@ -85,21 +88,22 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
+    @Transactional
     public void createConferencResult(Long user_id, Long interview_id, Long interview_time_id) {
         User user = userRepository.findById(user_id).get();
 
         // 중복 종료 체크!!!
         DuplicateInterviewTimeModifyState(user.getName(), user_id, interview_time_id);
 
-        Long conference_id = conferenceRepository.findByInterviewTime_Id(interview_time_id).get().getId();
+        Conference conference = conferenceRepository.findByInterviewTime_Id(interview_time_id).get();
 
         // dialog 가져오기
-        List<Dialog> dialogList = dialogRepository.findAllByConferenceId(conference_id);
-        HashMap<Long, String> resultMap = new HashMap<>();
+        List<Dialog> dialogList = dialogRepository.findAllByConferenceId(conference.getId());
+        HashMap<Question, String> resultMap = new LinkedHashMap<>();
         String header = null;
         String content = null;
+        String nullQuestion = "";
         for (Dialog curDialog : dialogList) {
-            Long question_id = curDialog.getQuestion() == null ? 0 : curDialog.getQuestion().getId();
             if (curDialog.getUser().getId() != user_id) { // header 갱신
                 header = "[" + curDialog.getUser().getName() + "(답변자)" + "   /   " + curDialog.getTimestamp() + "]" + "<br>";
             } else {
@@ -107,15 +111,30 @@ public class ResultServiceImpl implements ResultService {
             }
             content = ": " + curDialog.getContent() + "<br><br>";
 
-            if (!resultMap.containsKey(question_id)) { // question_id의 존재에 따라 text를 계속 저장해준다
-                resultMap.put(question_id, header + content);
+            if (curDialog.getQuestion() == null) {
+                nullQuestion += (header + content);
             } else {
-                String text = resultMap.get(question_id);
-                text += (header + content);
-                resultMap.replace(question_id, text);
+                Question question = curDialog.getQuestion();
+
+                if (!resultMap.containsKey(question)) { // question_id의 존재에 따라 text를 계속 저장해준다
+                    resultMap.put(question, header + content);
+                } else {
+                    String text = resultMap.get(question);
+                    text += (header + content);
+                    resultMap.replace(question, text);
+                }
             }
         }
 
+        // Question Id 가 null인 경우 저장
+        conferenceResultRepository.save(ConferenceResult.builder().content(nullQuestion).conference(conference).build());
+
+        // Question 별 정리한 text로 conferenceResult 생성
+        Set<Map.Entry<Question, String>> setMap = resultMap.entrySet();
+
+        for (Map.Entry<Question, String> entry : setMap) {
+            conferenceResultRepository.save(ConferenceResult.builder().content(entry.getValue()).conference(conference).question(entry.getKey()).build());
+        }
 
     }
 
@@ -128,9 +147,8 @@ public class ResultServiceImpl implements ResultService {
      */
     private void DuplicateInterviewTimeModifyState(String name, Long user_id, Long interview_time_id) {
         if (interviewTimeRepository.existModifyStateByState(interview_time_id)) {
-            throw new ApplicantAndOwnerDuplicationException(name + "님!");
+            throw new InterviewTimeModifyResultDuplicationException(name + "님!");
         }
     }
-
 
 }

@@ -37,9 +37,11 @@ public class ConferenceResult extends BaseEntity {
     private Question question;
 
     @Builder
-    private ConferenceResult(String content, Question question) {
+    private ConferenceResult(String content, Conference conference, Question question) {
         Assert.hasText(content, "content must not be empty");
+        Assert.notNull(content, "conference must not be empty");
         this.content = content;
+        this.conference = conference;
         this.question = question;
     }
 }
