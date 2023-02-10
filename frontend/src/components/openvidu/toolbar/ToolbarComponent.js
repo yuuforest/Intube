@@ -18,6 +18,8 @@ import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import IconButton from "@mui/material/IconButton";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import http from "api/Http";
+
 
 // import { connect } from 'react-redux';
 // import * as actions from 'redux/actions/stateChange';
@@ -37,6 +39,7 @@ export default class ToolbarComponent extends Component {
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
+    this.storeResult = this.storeResult.bind(this);
   }
 
   handleMicState() {
@@ -78,11 +81,62 @@ export default class ToolbarComponent extends Component {
     this.props.toggleChat();
   }
 
+  storeResult(positionId) {
+    if (positionId === 1) {
+      http
+      .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
+      '&conferenceID=' +  this.props.conferenceID + '&interviewTimeID=' + this.props.interviewTimeID,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then(() => {
+        localStorage.removeItem('historyID')
+        http
+          .post("/result/create?interview_id=" + this.props.interviewId + '&interview_time_id=' + this.props.interviewTimeID,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+          .then(() => {
+            console.log('필립까지 완료')
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          )
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    } else {
+      http
+      .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
+      '&conferenceID=' +  this.props.conferenceID + '&interviewTimeID=' + this.props.interviewTimeID,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then(() => {
+        localStorage.removeItem('historyID')
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+  }
+
   render() {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    const positionId = this.props.positionId;
     // const { storeMic, changeStoreState } = this.props
-
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
@@ -165,7 +219,7 @@ export default class ToolbarComponent extends Component {
             <IconButton
               color="secondary"
               className="navButton"
-              onClick={this.leaveSession}
+              onClick={() => {this.leaveSession(); this.storeResult(positionId);}}
               id="navLeaveButton"
             >
               <PowerSettingsNew />

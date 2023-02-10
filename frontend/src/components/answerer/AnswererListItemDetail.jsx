@@ -72,6 +72,7 @@ export default function InterviewListItemDetail(props) {
       )
       .then((response) => {
         console.log("컨퍼런스 아이디", response.data.conferenceID);
+        localStorage.setItem('historyID', response.data.historyID)
         setConferenceID(response.data.conferenceID);
         setMeetingIn(true);
       })

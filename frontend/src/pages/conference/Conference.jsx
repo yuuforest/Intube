@@ -91,6 +91,8 @@ export default function Conference() {
             setQuestId={setQuestId}
             myAnswer={myAnswer}
             positionId={positionId}
+            conferenceId={conferenceID}
+            interviewId={interviewId}
           ></VideoRoomComponents>
         </Grid>
         <Grid item>

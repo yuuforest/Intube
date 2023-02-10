@@ -25,8 +25,10 @@ import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import NowQuestion from "components/conference/NowQuestion";
 import NowAnswer from "components/conference/NowAnswer";
+
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
+
 
 class VideoRoomComponent extends Component {
   constructor(props) {
@@ -623,6 +625,10 @@ class VideoRoomComponent extends Component {
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
           handleMicState={this.handleMicState}
+          positionId={this.props.positionId}
+          conferenceId={this.props.conferenceID}
+          interviewTimeID={this.props.interviewTimeID}
+          interviewId={this.props.interviewId}
         />
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}

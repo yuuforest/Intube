@@ -104,8 +104,8 @@ export default function QuestionerNow(props) {
         }
       )
       .then((response) => {
-        console.log("컨퍼런스 아이디", response.data.conferenceID);
         setConferenceID(response.data.conferenceID);
+        localStorage.setItem('historyID', response.data.historyID)
       })
       .catch((error) => {
         console.error(error);
