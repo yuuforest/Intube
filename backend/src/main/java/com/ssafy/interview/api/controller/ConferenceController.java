@@ -55,7 +55,6 @@ public class ConferenceController {
             throws OpenViduJavaClientException, OpenViduHttpException {
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
-//        System.out.println(session.getSessionId());
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
     }
 
@@ -88,6 +87,7 @@ public class ConferenceController {
             // [Conference Table] 생성된 Conference 방에 대한 정보 저장
             conference = Optional.ofNullable(conferenceService.startConference(interviewTimeID));
         }
+        System.out.println(conference.get());
         // [Conference History Table] 질문자가 Conference 방에 참여 -> 참여 기록 생성
         ConferenceHistory history = conferenceService.createConferenceHistory(conference.get().getId(), userEmail, 1);
         return ResponseEntity.status(200).body(ConferenceInRes.of(conference.get().getId(),  history.getId()));
@@ -102,9 +102,10 @@ public class ConferenceController {
     })
     public ResponseEntity<? extends BaseResponseBody> endConference(@RequestParam(value = "historyID") Long historyID,
                                                                     @RequestParam(value = "conferenceID") Long conferenceID,
-                                                                    @RequestParam(value = "interviewTimeID") Long interviewTimeID) {
+                                                                    @RequestParam(value = "interviewTimeID") Long interviewTimeID,
+                                                                    @RequestParam(value = "videoUrl") String videoUrl) {
         // [Conference Table]
-        conferenceService.endConference(conferenceID);
+        conferenceService.endConference(conferenceID, videoUrl);
         // [Conference History Table] 답변자를 질문자가 다 내보낸 후, Conference를 종료할 수 있음
         conferenceService.updateConferenceHistory(historyID, 0);
         // [Applicant Table] interview_time_id 가 동일한 applicant의 상태를 3으로 변경

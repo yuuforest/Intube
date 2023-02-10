@@ -25,6 +25,8 @@ public class Conference extends BaseEntity {
     LocalDateTime call_end_time;
     @Column(name = "is_active")
     int active;  // 0 방 종료 1 방 활성화
+    @Column(name = "video_url")
+    String video_url;
 
     @OneToOne
     @JoinColumn(name = "interview_time_id")
