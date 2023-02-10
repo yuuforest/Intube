@@ -33,4 +33,5 @@ public interface UserService {
 	Optional<User> findPassword(String name, String email);
 	void updatePoint(String email, int point) throws Exception;
 	void updateTemperature(String email, double temperature) throws Exception;
+	void updateIsKakao(String email) throws Exception;
 }
