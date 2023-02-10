@@ -104,7 +104,7 @@ export default function ChangePassword() {
       // alert(JSON.stringify(data, null, 2));
       console.log(localStorage.getItem("accessToken"));
       instance
-        .put("/api/user/password", JSON.stringify(data), {
+        .put("/user/password", JSON.stringify(data), {
           headers: {
             "Access-Control-Allow-Origin": "https://intube.store:8443/api",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

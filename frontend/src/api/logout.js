@@ -25,7 +25,7 @@ export function logout() {
         window.location.replace("/");
       }
     })
-    .catch((e) => {
+    .catch(e => {
       if (e.response.data.status === 400) {
         alert("비밀번호가 틀렸습니다.");
       }
@@ -70,7 +70,7 @@ export function logout() {
                 }
               })
           )
-          .catch((e) => {
+          .catch(e => {
             if (e.response.data.statusCode === 401) {
               localStorage.clear();
               deleteCookie("refreshToken");
@@ -81,7 +81,7 @@ export function logout() {
           });
         // alert("등록된 회원이 아닙니다.");
       }
-      console.log(e, "아오");
+      console.log(e, "아오 ");
     });
 }
 

@@ -12,7 +12,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import http from "api/Http";
 import { KAKAO_AUTH_URL } from "components/user/login/OAuth";
-import Swal from "sweetalert2";
+import swal from "sweetalert2";
+// import { Paper } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -69,15 +70,16 @@ export default function SignIn() {
             localStorage.setItem("accessToken", data.accessToken);
             console.log(data);
             console.log("엑세스토큰 :", localStorage.getItem("accessToken"));
+
             window.location.replace("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
         .catch(e => {
           if (e.response.data.statusCode === 401) {
-            alert("비밀번호가 틀렸습니다.");
+            swal.fire("비밀번호가 틀렸습니다.", "", "error");
           }
           if (e.response.data.statusCode === 404) {
-            alert("등록된 회원이 아닙니다.");
+            swal.fire("등록된 회원이 아닙니다.", "", "error");
           }
           console.log(e);
         });
