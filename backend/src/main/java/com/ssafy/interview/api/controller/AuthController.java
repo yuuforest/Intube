@@ -135,6 +135,9 @@ public class AuthController {
             // 이미 카카오 회원가입을 한 회원인지 그냥 회원가입을 한 회원인지 확인
             int statusCode = authService.getKakaoRegisterInfo(kakaoUserInfoDto);
 
+            // 로그아웃 처리했던 코드 되돌리기
+            authService.deleteAuthKey(email + "-BlackList");
+
             // jwt 토큰을 만들고 로그인
             String accessToken = JwtTokenUtil.getAccessToken(email);
             String refreshToken = JwtTokenUtil.getRefreshToken(email);
