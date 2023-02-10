@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import http from "api/Http";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+// import EvaluatePerson from "components/user/login/EvaluatePerson";
 
 function Copyright(props) {
   return (
@@ -37,6 +38,16 @@ const theme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
+
+  // // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  // const [modalOpen, setModalOpen] = useState(false);
+
+  // const openModal = () => {
+  //   setModalOpen(true);
+  // };
+  // const closeModal = () => {
+  //   setModalOpen(false);
+  // };
 
   const formik = useFormik({
     initialValues: {
@@ -88,10 +99,10 @@ export default function SignIn() {
   const findEmail = event => {
     event.preventDefault();
     let values = {
-      // name: idName,
-      // phone: idPhone,
-      name: "지원석",
-      phone: "01099130059",
+      name: idName,
+      phone: idPhone,
+      // name: "지원석",
+      // phone: "01099130059",
     };
     // alert(JSON.stringify(values, null, 2));
     http
@@ -219,6 +230,15 @@ export default function SignIn() {
                   비밀번호 찾기
                 </Button>
               </Grid>
+              {/* <Grid item xs={4}>
+                <Button
+                  onClick={openModal}
+                  variant="contained"
+                  sx={{ mt: 1, mb: 2 }}
+                >
+                  sweetalertTest
+                </Button>
+              </Grid> */}
             </Grid>
           </Box>
         </form>

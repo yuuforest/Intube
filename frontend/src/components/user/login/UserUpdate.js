@@ -20,6 +20,7 @@ import http from "api/Http";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { VerifyNickname } from "api/verifyNickname";
+import swal from "sweetalert2";
 // import { Paper } from "@mui/material";
 
 function Copyright(props) {
@@ -89,55 +90,59 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: response => {
-      if (localStorage.getItem("nicknameAuthorize")) {
-        let values = {
-          birth: response.birth,
-          email: response.email,
-          gender: response.gender,
-          introduction: response.introduction,
-          name: response.name,
-          nickname: nickname,
-          // password: userInfo,
-          phone: response.phone,
-        };
-        alert(JSON.stringify(values, null, 2));
-        instance
-          .put("/api/user", JSON.stringify(values), {
-            headers: {
-              "Content-type": "application/json;charset=UTF-8",
-              "Access-Control-Allow-Origin": "https://intube.store:8443/api",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-            withCredentials: true,
-          })
-          .then(values => {
-            console.log(values);
-            if (values.data.statusCode === 200) {
-              alert("비밀번호가 변경되었습니다. 다시 로그인해주세요");
-              navigate("/");
-            }
-          })
-          .catch(e => {
-            if (e.response.data.statusCode === 400) {
-              alert("잘못된 비밀번호입니다.");
-            }
-            if (e.response.data.statusCode === 401) {
-              console.log("권한 없음. 다시 로그인해주세요");
-              localStorage.clear();
-              navigate("/"); // 에러페이지로 이동
-            }
-            if (e.response.data.statusCode === 403) {
-              alert("403 Forbidden");
-              localStorage.clear();
-              navigate("/"); // 에러페이지로 이동
-            }
-            if (e.response.data.statusCode === 500) {
-              console.log("서버 에러. 다시 로그인해주세요");
-              localStorage.clear();
-              navigate("/"); // 에러페이지로 이동
-            }
-          });
-      }
+      const nicknameLast = nickname !== "" ? nickname : BEFORE_NICKNAME;
+      let values = {
+        birth: response.birth,
+        email: response.email,
+        gender: response.gender,
+        introduction: response.introduction,
+        name: response.name,
+        nickname: nicknameLast,
+        // password: userInfo,
+        phone: response.phone,
+      };
+      alert(JSON.stringify(values, null, 2));
+      instance
+        .put("/user", JSON.stringify(values), {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          withCredentials: true,
+        })
+        .then(values => {
+          console.log(values);
+          if (values.data.statusCode === 200) {
+            swal.fire(
+              "회원정보가 수정되었습니다.",
+              "다시 로그인 해주세요!",
+              "success"
+            );
+            localStorage.clear();
+            navigate("/");
+          }
+        })
+        .catch(e => {
+          if (e.response.data.statusCode === 400) {
+            swal.fire("잘못된 비밀번호입니다.", "error");
+          }
+          if (e.response.data.statusCode === 401) {
+            console.log("권한 없음. 다시 로그인해주세요");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
+          }
+          if (e.response.data.statusCode === 403) {
+            alert("403 Forbidden");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
+          }
+          if (e.response.data.statusCode === 500) {
+            console.log("서버 에러. 다시 로그인해주세요");
+            localStorage.clear();
+            navigate("/"); // 에러페이지로 이동
+          }
+        });
     },
   });
   const [image, setImg] = useState("");
@@ -172,7 +177,7 @@ export default function SignUp() {
       console.log(value);
     }
     http({
-      url: "https://intube.store:8443/api/user/image",
+      url: "/user/image",
       method: "post",
       headers: {
         "Content-Type": "multipart/form-data",
@@ -198,7 +203,7 @@ export default function SignUp() {
   const [userImg, setUserImg] = useState({ name: "" });
   useEffect(() => {
     getUser();
-  }, [userImg]);
+  }, [setUserImg]);
   const getUser = async () => {
     // const data =
     await http
@@ -335,7 +340,6 @@ export default function SignUp() {
               <Grid item xs={10}>
                 <TextField
                   name="nickname"
-                  required
                   fullWidth
                   id="nickname"
                   label="닉네임"
@@ -387,7 +391,6 @@ export default function SignUp() {
                   fullWidth
                   id="introduction"
                   label="introduction"
-                  autoFocus
                   multiline
                   onChange={formik.handleChange}
                   value={formik.values.introduction}

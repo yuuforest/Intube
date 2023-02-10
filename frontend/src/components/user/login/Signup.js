@@ -21,7 +21,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Timer from "components/user/login/Timer";
 
 function Copyright(props) {
   return (
@@ -51,10 +52,6 @@ export default function SignUp() {
       alert("닉네임을 기입해주세요!");
     } else {
       VerifyNickname(nickname);
-      // setNicknameAuthorize(localStorage.getItem("nicknameAuthorize"));
-      // console.log(localStorage.getItem("nicknameAuthorize"));
-      // console.log(nicknameAuthorize);
-      // localStorage.removeItem("nicknameAuthorize");
     }
   };
   const verifyEmail = () => {
@@ -66,13 +63,16 @@ export default function SignUp() {
     EmailCheck(email, number);
   };
   const [emailSecret, setEmailSecret] = useState(false);
+  const [timeRender, setTimeRender] = useState(false);
   const [email, setEmail] = useState("");
   const emailChange = ({ target: { value } }) => setEmail(value);
   const [number, setNumber] = useState("");
   const numberChange = ({ target: { value } }) => setNumber(value);
   const [nickname, setNickname] = useState("");
   const nicknameChange = ({ target: { value } }) => setNickname(value);
-
+  useEffect(() => {
+    setTimeRender(true);
+  }, [verifyEmail]);
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -210,13 +210,17 @@ export default function SignUp() {
                 <Button
                   variant="outlined"
                   endIcon={<VerifiedUserIcon />}
-                  onClick={verifyEmail}
+                  onClick={() => {
+                    verifyEmail();
+                    setTimeRender(!timeRender);
+                  }}
+                  //
                 >
                   인증하기
                 </Button>
               </Grid>
 
-              <Grid item xs={9}>
+              <Grid item xs={7}>
                 {emailSecret ? (
                   <TextField
                     fullWidth
@@ -229,6 +233,11 @@ export default function SignUp() {
                 ) : (
                   false
                 )}
+              </Grid>
+              <Grid item xs={2}>
+                {/* {emailSecret ? <Timer /> : false} */}
+                {emailSecret ? timeRender ? <Timer /> : false : false}
+                {/* {} */}
               </Grid>
               <Grid item xs={3}>
                 {emailSecret ? (
@@ -243,22 +252,6 @@ export default function SignUp() {
                 ) : (
                   false
                 )}
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  name="phone"
-                  label="phone"
-                  id="phone"
-                  required
-                  fullWidth
-                  autoFocus
-                  value={formik.values.phone}
-                  onChange={formik.handleChange}
-                  error={formik.touched.phone && Boolean(formik.errors.phone)}
-                  helperText={formik.touched.phone && formik.errors.phone}
-                  onBlur={formik.handleBlur}
-                />
               </Grid>
 
               <Grid item xs={12}>

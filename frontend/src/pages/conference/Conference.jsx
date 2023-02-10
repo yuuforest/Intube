@@ -1,4 +1,3 @@
-import QuestionLIst from "components/conference/QuestionLIst";
 import React, { useEffect, useState } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";
@@ -60,47 +59,23 @@ export default function Conference() {
     dispatch(setMic());
   }, [micState, dispatch]);
 
-  const [userName, setUserName] = useState([]);
-  useEffect(() => {
-    http
-      .get("/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setUserName(response.data.name);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div>
       <Grid container spacing={2} justifyContent="space-between">
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           <VideoRoomComponents
             interviewTimeId={interviewTimeId}
-            userName={userName}
+            userName={userInfo.userName}
             navigate={navigate}
             handleMicState={handleMicState}
             state={state}
             setQuestId={setQuestId}
             myAnswer={myAnswer}
             positionId={positionId}
-            conferenceId={conferenceID}
             interviewId={interviewId}
-          ></VideoRoomComponents>
-        </Grid>
-        <Grid item>
-          <QuestionLIst
             handleChangeQuestion={handleChangeQuestion}
-            interviewId={interviewId}
-            positionId={positionId}
-          />
+            conferenceId={conferenceID}
+          ></VideoRoomComponents>
         </Grid>
       </Grid>
       <Grid container spacing={2} justifyContent="space-between">

@@ -13,6 +13,7 @@ import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import { useNavigate } from "react-router-dom";
+import EvaluatePerson from "components/questioner/EvaluatePerson";
 
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
@@ -115,6 +116,39 @@ export default function QuestionerNow(props) {
       state: { interviewId, interviewTimeId, position, conferenceID },
     });
   };
+  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [evalname, setevalname] = useState(false);
+  const [evalemail, setevalemail] = useState(false);
+
+  const openModal = (e, name, email, id) => {
+    setevalname(name);
+    setevalemail(email);
+    setModalOpen(true);
+
+    http
+      .put(
+        "/user/interviewer/accept-applicant?applicant_id=" +
+          id +
+          "&applicant_state=3",
+        {},
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   // useEffect(() => {
   //   http
@@ -192,7 +226,7 @@ export default function QuestionerNow(props) {
                       인터뷰온도
                     </Typography>
                   </Grid>
-                  <Grid item xs={2} sx={{ textAlign: "center" }}>
+                  <Grid item xs={3} sx={{ textAlign: "center" }}>
                     <Typography variant="subtitle2" gutterBottom>
                       평가
                     </Typography>
@@ -209,7 +243,6 @@ export default function QuestionerNow(props) {
                       justifyContent="center"
                       spacing={3}
                     >
-                      <Grid item xs={1} sx={{ textAlign: "center" }}></Grid>
                       <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Avatar sx={{ float: "left", mr: 2 }}>
                           {answerer.email[0]}
@@ -232,8 +265,24 @@ export default function QuestionerNow(props) {
                           {answerer.temperature}
                         </Typography>
                       </Grid>
-                      <Grid item xs={2} sx={{ textAlign: "center" }}>
-                        <Button variant="outlined">평가하기</Button>
+                      <Grid item xs={3} sx={{ textAlign: "center" }}>
+                        {answerer.applicant_state === 2 ? (
+                          <Button
+                            variant="outlined"
+                            onClick={(e) =>
+                              openModal(
+                                e,
+                                answerer.name,
+                                answerer.email,
+                                answerer.id
+                              )
+                            }
+                          >
+                            평가하기
+                          </Button>
+                        ) : (
+                          <Button variant="contained">평가완료</Button>
+                        )}
                       </Grid>
                     </Grid>
                   </ListItem>
@@ -241,6 +290,7 @@ export default function QuestionerNow(props) {
                 </div>
               ))}
             </List>
+
             <Button
               variant="outlined"
               startIcon={<VideocamIcon />}
@@ -261,6 +311,21 @@ export default function QuestionerNow(props) {
           </div>
         </div>
       )}
+
+      <React.Fragment>
+        {/* //header 부분에 텍스트를 입력한다. */}
+        <EvaluatePerson
+          open={modalOpen}
+          close={closeModal}
+          header="가제: 답변자님을 평가해주세요🙂🤗(완료버튼을 누르면 되돌릴 수 없습니다!)"
+          name={evalname}
+          email={evalemail}
+          setModalOpen={setModalOpen}
+        >
+          {/* // EvalPerson.js <main> {props.children} </main>에 내용이입력된다. 리액트 함수형 모달  */}
+          이건 안나오는 부분
+        </EvaluatePerson>
+      </React.Fragment>
     </div>
   );
 }
