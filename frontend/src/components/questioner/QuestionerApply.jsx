@@ -19,6 +19,9 @@ export default function QuestionerApply(props) {
 
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
+    setTimeid(
+      interviewList[event.target.value].interviewTimeDetailResList[0].id
+    );
     setTimeindex(0);
   };
 
@@ -37,9 +40,10 @@ export default function QuestionerApply(props) {
   const [interviewList, setInterviewList] = useState([]);
 
   useEffect(() => {
+    console.log("변경!");
     getInterviewList();
     getAnswererList();
-  }, [questionindex, timeindex]);
+  }, [questionindex, timeindex, props.value]);
 
   const getInterviewList = () => {
     http
