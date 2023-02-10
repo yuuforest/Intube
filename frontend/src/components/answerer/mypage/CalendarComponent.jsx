@@ -9,7 +9,7 @@ import MatchList from './MatchList.jsx';
 export default function CalendarComponent(props) {
   const [value, onChange] = useState(new Date());
   const interviewList = props.calendarInfo
-
+  console.log('check', interviewList[0].interviewTimeRes.interview_start_time.slice(0,10))
 
   return (
     <div
@@ -24,7 +24,7 @@ export default function CalendarComponent(props) {
       showNeighboringMonth={false}
       tileClassName={({ date, view }) => {
         if (interviewList.find((x) => 
-        x.interview_start_time.slice(0,10) === moment(date).format("YYYY-MM-DD"))) {
+        x.interviewTimeRes.interview_start_time.slice(0,10) === moment(date).format("YYYY-MM-DD"))) {
           return "highlight";
         }
       }}
@@ -34,7 +34,7 @@ export default function CalendarComponent(props) {
            <MatchList 
            position={props.position}
            matchInfo={interviewList.filter(
-            (x) => x.interview_start_time.slice(0,10) === moment(value).format("YYYY-MM-DD"))} 
+            (x) => x.interviewTimeRes.interview_start_time.slice(0,10) === moment(value).format("YYYY-MM-DD"))} 
            />
          </div>
     </div>
