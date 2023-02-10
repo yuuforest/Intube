@@ -6,10 +6,14 @@ export default class NowQuestion extends Component {
     super(props);
     this.state = {
       messageList: [],
-      message: "",
+      answer: "",
+      name: "",
     };
     this.chatScroll = React.createRef();
-    this.sendQuestion = this.sendQuestion.bind(this);
+    this.sendAnswer = this.sendAnswer.bind(this);
+
+    console.log("dddd");
+    console.log(props.myAnswer.answer);
   }
 
   componentDidMount() {
@@ -19,28 +23,27 @@ export default class NowQuestion extends Component {
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
         messageList.push({
-          message: data.message,
-          id: data.id,
+          answer: data.answer,
+          name: data.name,
         });
-        this.props.setQuestId(data.id);
         this.setState({ messageList: messageList });
       });
   }
   componentDidUpdate = async (prevProps, prevState) => {
-    if (this.props.myAnswer !== prevProps.myAnswer) {
+    if (this.props.myAnswer.answer !== prevProps.myAnswer.answer) {
       await this.setState({
-        answer: this.props.question.answer,
-        name: this.props.question.name,
+        answer: this.props.myAnswer.answer,
+        name: this.props.myAnswer.name,
       });
-      this.sendQuestion();
+      this.sendAnswer();
     }
   };
-  sendQuestion() {
-    if (this.props.user && this.state.message) {
-      let message = this.state.message.replace(/ +(?= )/g, "");
+  sendAnswer() {
+    if (this.props.user && this.state.answer) {
+      let answer = this.state.answer.replace(/ +(?= )/g, "");
       const data = {
-        message: message,
-        id: this.state.id,
+        answer: answer,
+        name: this.state.name,
       };
       this.props.user.getStreamManager().stream.session.signal({
         data: JSON.stringify(data),
@@ -48,20 +51,17 @@ export default class NowQuestion extends Component {
       });
     }
 
-    this.setState({ message: "" });
+    this.setState({ answer: "", name: "" });
   }
 
   render() {
     return (
       <div ref={this.chatScroll}>
-        {this.state.messageList.map(
-          (data, i) =>
-            i === this.state.messageList.length - 1 && (
-              <Typography variant="h4" gutterBottom>
-                Q{data.id}. {data.message}
-              </Typography>
-            )
-        )}
+        {this.state.messageList.map((data, i) => (
+          <Typography variant="subtile2" gutterBottom>
+            {data.name} : {data.answer}
+          </Typography>
+        ))}
       </div>
     );
   }
