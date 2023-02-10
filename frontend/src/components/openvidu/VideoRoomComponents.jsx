@@ -24,7 +24,7 @@ import OpenViduLayout from "./layout/openvidu-layout";
 import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import NowQuestion from "components/conference/NowQuestion";
-
+import NowAnswer from "components/conference/NowAnswer";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
 
@@ -252,9 +252,6 @@ class VideoRoomComponent extends Component {
         this.updateLayout();
       }
     );
-    console.log("여기서 참여자 집어넣을거임");
-    console.log(this.remotes);
-    this.handleSubscriber(this.remotes);
   }
 
   leaveSession() {
@@ -695,13 +692,12 @@ class VideoRoomComponent extends Component {
           >
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
-                <NowQuestion
+                <NowAnswer
                   user={localUser}
                   chatDisplay={this.state.chatDisplay}
                   close={this.toggleChat}
                   messageReceived={this.checkNotification}
-                  question={this.props.state}
-                  setQuestId={this.props.setQuestId}
+                  myAnswer={this.props.myAnswer}
                 />
               )}
           </CardContent>
