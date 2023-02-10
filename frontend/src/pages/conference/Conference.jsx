@@ -2,10 +2,8 @@ import QuestionLIst from "components/conference/QuestionLIst";
 import React, { useEffect, useState } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useLocation, useNavigate } from "react-router-dom";
-import AnswererList from "components/conference/AnswererList";
 import { useDispatch } from "react-redux";
 import {
   setMic,
@@ -21,6 +19,8 @@ export default function Conference() {
   const [userInfo, setUserInfo] = useState([]);
   const [conferenceID, setConferenceID] = useState(1);
   const [questId, setQuestId] = useState(undefined);
+
+  const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
 
   useEffect(() => {
     getUser();
@@ -39,17 +39,6 @@ export default function Conference() {
       .catch((error) => {
         console.error(error);
       });
-  };
-
-  const [subscriber, setSubscriber] = React.useState([
-    {
-      nickname: "",
-      connectionId: "",
-    },
-  ]);
-
-  const handleSubscriber = (item) => {
-    setSubscriber(item);
   };
 
   const [micState, setMicState] = React.useState(true);
@@ -73,44 +62,51 @@ export default function Conference() {
 
   useEffect(() => {
     http
-      .post("/conference/start?interviewTimeID=" + interview.interviewTimeRes.id,{}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "/conference/start?interviewTimeID=" + interview.interviewTimeRes.id,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((response) => {
-        console.log('컨퍼런스 아이디', response.data.conferenceID);
+        console.log("컨퍼런스 아이디", response.data.conferenceID);
         setConferenceID(response.data.conferenceID);
       })
       .catch((error) => {
         console.error(error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     <div>
-      <Grid container spacing={2}>
-        <Grid item xs={10}>
+      <Grid container spacing={2} justifyContent="space-between">
+        <Grid item xs={9}>
           <VideoRoomComponents
             interview={interview}
             userName={userName}
             navigate={navigate}
-            handleSubscriber={handleSubscriber}
             handleMicState={handleMicState}
             state={state}
             setQuestId={setQuestId}
+            myAnswer={myAnswer}
           ></VideoRoomComponents>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item>
           <QuestionLIst
             handleChangeQuestion={handleChangeQuestion}
             interview={interview}
             positionId={positionId}
           />
         </Grid>
+      </Grid>
+      <Grid container spacing={2} justifyContent="space-between">
         <Grid item xs={10}>
           <AnswerWrite
+            setMyAnswer={setMyAnswer}
             state={state}
             micState={micState}
             userInfo={userInfo}
@@ -121,10 +117,6 @@ export default function Conference() {
             setQuestId={setQuestId}
             positionId={positionId}
           ></AnswerWrite>
-        </Grid>
-        <Grid item xs={2}>
-          <AnswererList subscriber={subscriber}></AnswererList>
-          <Button variant="outlined">종료</Button>
         </Grid>
       </Grid>
     </div>

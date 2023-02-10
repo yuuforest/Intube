@@ -10,7 +10,6 @@ import Videocam from "@mui/icons-material/Videocam";
 import VideocamOff from "@mui/icons-material/VideocamOff";
 import Fullscreen from "@mui/icons-material/Fullscreen";
 import FullscreenExit from "@mui/icons-material/FullscreenExit";
-import SwitchVideoIcon from "@mui/icons-material/SwitchVideo";
 import PictureInPicture from "@mui/icons-material/PictureInPicture";
 import ScreenShare from "@mui/icons-material/ScreenShare";
 import StopScreenShare from "@mui/icons-material/StopScreenShare";
@@ -94,7 +93,7 @@ export default class ToolbarComponent extends Component {
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
           <div id="navSessionInfo">
-            <img id="header_img" alt="OpenVidu Logo" src={logo} />
+            <img id="header_img" alt="OpenVidu Logo" src={logo} width="130px" />
 
             {this.props.sessionId && (
               <div id="titleContent">

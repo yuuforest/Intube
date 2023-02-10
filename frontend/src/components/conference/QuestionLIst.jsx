@@ -4,6 +4,8 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 export default function QuestionLIst(props) {
   const [questionList, setQuestionList] = useState([]);
@@ -16,7 +18,7 @@ export default function QuestionLIst(props) {
         },
       })
       .then((response) => {
-        console.log('질문리스트', response.data);
+        console.log("질문리스트", response.data);
         setQuestionList(response.data);
       })
       .catch((error) => {
@@ -27,20 +29,23 @@ export default function QuestionLIst(props) {
   return (
     <div>
       { positionId === 1 ?
-        <div>
-        <Typography variant="h5" gutterBottom sx={{ mt: 3 }}>
-          질문리스트
-        </Typography>
-        <FormGroup>
-          {questionList.map((question) => (
-            <FormControlLabel
-              control={<Checkbox />}
-              label={question.content}
-              onChange={props.handleChangeQuestion(question)}
-            />
-          ))}
-        </FormGroup>
-      </div>
+      <Card sx={{ mt: 10, mr: 3, maxWidth: 300 }}>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            질문리스트
+          </Typography>
+          <FormGroup>
+            {questionList.map((question, index) => (
+              <FormControlLabel
+                control={<Checkbox />}
+                key={index}
+                label={question.content}
+                onChange={props.handleChangeQuestion(question)}
+              />
+            ))}
+          </FormGroup>
+        </CardContent>
+      </Card>
       :
       null}
     </div>
