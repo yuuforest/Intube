@@ -684,12 +684,7 @@ class VideoRoomComponent extends Component {
           </CardContent>
         </Card>
         <Card sx={{ minWidth: 275, mt: 2 }}>
-          <CardContent
-            sx={{
-              textAlign: "center",
-              height: "40px",
-            }}
-          >
+          <CardContent sx={{}}>
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
                 <NowAnswer

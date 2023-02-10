@@ -58,7 +58,7 @@ export default class NowQuestion extends Component {
     return (
       <div ref={this.chatScroll}>
         {this.state.messageList.map((data, i) => (
-          <Typography variant="subtile2" gutterBottom>
+          <Typography variant="subtile2" component="div" gutterBottom>
             {data.name} : {data.answer}
           </Typography>
         ))}
