@@ -60,27 +60,6 @@ export default function Conference() {
     dispatch(setMic());
   }, [micState, dispatch]);
 
-  useEffect(() => {
-    http
-      .post(
-        "/conference/start?interviewTimeID=" + interview.interviewTimeRes.id,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("컨퍼런스 아이디", response.data.conferenceID);
-        // setConferenceID(response.data.conferenceID);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div>
       <Grid container spacing={2} justifyContent="space-between">
