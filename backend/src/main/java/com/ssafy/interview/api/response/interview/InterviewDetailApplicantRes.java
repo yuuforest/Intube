@@ -27,8 +27,8 @@ public class InterviewDetailApplicantRes extends InterviewLoadRes {
     @ApiModelProperty(name = "Estimated Time")
     String estimated_time;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    Date interview_start_time;
+    @ApiModelProperty(name = "interviewTimeRes")
+    InterviewTimeRes interviewTimeRes;
 
     @ApiModelProperty(name = "Apply End Time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
@@ -70,7 +70,7 @@ public class InterviewDetailApplicantRes extends InterviewLoadRes {
         this.owner_name = user.getName();
         this.owner_phone = user.getPhone();
         this.applicant_state = applicant.getApplicantState();
-        this.interview_start_time = interviewTime.getInterview_start_time();
+        this.interviewTimeRes = new InterviewTimeRes(interviewTime);
     }
 }
 
