@@ -126,7 +126,7 @@ public class ConferenceController {
         // [Conference Table] 답변자가 들어가려는 Conference가 현재 실행 중인지 확인 -> 아직 생성되지 않았거나, 종료된 상태면 에러 코드 전달
         Optional<Conference> conference = conferenceService.isConferenceByUser(interviewTimeID);
         // [Conference History Table]
-        ConferenceHistory history = conferenceService.createConferenceHistory(interviewTimeID, userEmail, 1);
+        ConferenceHistory history = conferenceService.createConferenceHistory(conference.get().getId(), userEmail, 1);
         return ResponseEntity.status(200).body(ConferenceInRes.of(conference.get().getId(), history.getId()));
     }
 
