@@ -13,7 +13,6 @@ import com.ssafy.interview.db.repository.interview.ApplicantRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
-import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import com.ssafy.interview.exception.conference.ExistConferenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     UserRepository userRepository;
     @Autowired
     InterviewTimeRepository interviewTimeRepository;
-    @Autowired
-    InterviewRepository interviewRepository;
+//    @Autowired
+//    InterviewRepository interviewRepository;
     @Autowired
     QuestionRepository questionRepository;
     @Autowired
@@ -62,11 +61,10 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional
-    public void endConference(Long conferenceID, String url) {
+    public void endConference(Long conferenceID) {
         // [회의방 종료]
         Conference conference = conferenceRepository.findById(conferenceID).get();
         conference.setActive(0); // Conference 방 종료
-        conference.setVideo_url(url);
     }
 
     @Override
@@ -112,7 +110,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         User user = userRepository.findByEmail(kickInfo.getUserEmail()).get();
         ConferenceHistory conferenceHistory
                 = conferenceHistoryRepository.findByConference_idAndUser_idOrderByIdDesc(kickInfo.getConferenceID(), user.getId()).get(0);
-        conferenceHistory.setAction(3);
+        conferenceHistory.setAction(0);
     }
 
 //    @Override
@@ -126,15 +124,15 @@ public class ConferenceServiceImpl implements ConferenceService {
 //        return users;
 //    }
 
-    @Override
-    @Transactional
-    public void createQuestionInConference(QuestionCreateInReq questionInfo) {
-        // [Conference 진행 중에 Interview 내에서 새로운 질문 추가]
-        Question question = new Question();
-        question.setInterview(interviewRepository.findById(questionInfo.getInterviewID()).get());
-        question.setContent(questionInfo.getContent());
-        questionRepository.save(question);
-    }
+//    @Override
+//    @Transactional
+//    public void createQuestionInConference(QuestionCreateInReq questionInfo) {
+//        // [Conference 진행 중에 Interview 내에서 새로운 질문 추가]
+//        Question question = new Question();
+//        question.setInterview(interviewRepository.findById(questionInfo.getInterviewID()).get());
+//        question.setContent(questionInfo.getContent());
+//        questionRepository.save(question);
+//    }
 
     @Override
     public List<Question> questionAllInConference(Long interviewID) {
@@ -185,6 +183,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional
     public void modifyInterviewTimeState(Long interviewTimeID) {
+        // [Conference 종료 시, interview Time의 상태를 "진행 후 결과 수정 전"인 1로 변경]
         InterviewTime interviewTime = interviewTimeRepository.findById(interviewTimeID).get();
         interviewTime.setModifyResultState(1);
     }

@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateTemperature(String email, double temperature) throws Exception {
         User user = userRepository.findByEmail(email).get();
-        if ((user.getTemperature() + temperature) < 0 )
+        if ((user.getTemperature() + temperature) < 0 ||( user.getTemperature() + temperature) > 100 )
             throw new Exception("400");
         user.setTemperature(user.getTemperature()+temperature);
     }
