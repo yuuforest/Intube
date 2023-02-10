@@ -61,7 +61,7 @@ public class AuthController {
         logger.info("login call!");
         try {
             // 로그아웃 처리했던 코드 되돌리기
-            authService.deleteAuthKey(loginInfo.getEmail()+"-BlackList");
+            authService.deleteAuthKey(loginInfo.getEmail() + "-BlackList");
 
             // Access, Refresh token 생성
             Map<String, String> tokens = authService.getToken(loginInfo);
@@ -111,7 +111,7 @@ public class AuthController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> kakaoCallback(@RequestParam String code) throws Exception{
+    public ResponseEntity<?> kakaoCallback(@RequestParam String code) throws Exception {
         logger.info("kakaoCallback call!");
         try {
             // URL에 포함된 code를 이용하여 액세스 토큰 발급
@@ -127,16 +127,13 @@ public class AuthController {
             if (!user.isPresent()) {
                 // 회원가입한 적 없는 유저일 때 email을 반환한다.
                 return ResponseEntity.ok()
-                        .body(UserEmailPostRes.of(404, "You need to register!",
-                                email));
+                        .body(KakaoInfoPostRes.of(404, "You need to register!",
+                                email, null, null, null)
+                        );
             }
 
             // 이미 카카오 회원가입을 한 회원인지 그냥 회원가입을 한 회원인지 확인
             int statusCode = authService.getKakaoRegisterInfo(kakaoUserInfoDto);
-            if (statusCode == 201) {
-                // is_kakao 수정
-                userService.updateIsKakao(email);
-            }
 
             // jwt 토큰을 만들고 로그인
             String accessToken = JwtTokenUtil.getAccessToken(email);
@@ -145,6 +142,13 @@ public class AuthController {
             // refresh token 저장
             ResponseCookie cookie = authService.setRefreshToken(email, refreshToken);
 
+            if (statusCode == 201) {
+                // is_kakao 수정
+                userService.updateIsKakao(email);
+                return ResponseEntity.status(statusCode)
+                        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                        .body(UserLoginPostRes.of(statusCode, "Connect Kakao Login", accessToken));
+            }
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(UserLoginPostRes.of(statusCode, "Success", accessToken));
