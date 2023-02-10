@@ -171,18 +171,18 @@ public class ConferenceController {
 //        return ResponseEntity.status(200).body(users);
 //    }
 
-    @PostMapping("/question")
-    @ApiOperation(value = "Conference 진행 중 새로운 질문 추가")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends BaseResponseBody> createQuestionInConference(@RequestBody QuestionCreateInReq questionInfo) {
-        // [Question Table]
-        conferenceService.createQuestionInConference(questionInfo);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-    }
+//    @PostMapping("/question")
+//    @ApiOperation(value = "Conference 진행 중 새로운 질문 추가")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<? extends BaseResponseBody> createQuestionInConference(@RequestBody QuestionCreateInReq questionInfo) {
+//        // [Question Table]
+//        conferenceService.createQuestionInConference(questionInfo);
+//        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+//    }
 
     @GetMapping("/question")
     @ApiOperation(value = "관련 Interview의 질문 목록 조회")

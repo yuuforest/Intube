@@ -26,7 +26,7 @@ public interface ConferenceService {
 //    List<User> userInConference(Long ConferenceID);
 
     // [Question Table]
-    void createQuestionInConference(QuestionCreateInReq questionInfo);
+//    void createQuestionInConference(QuestionCreateInReq questionInfo);
     List<Question> questionAllInConference(Long interviewID);
 
     // [Dialog Table]
