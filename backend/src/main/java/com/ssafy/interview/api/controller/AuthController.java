@@ -134,10 +134,6 @@ public class AuthController {
 
             // 이미 카카오 회원가입을 한 회원인지 그냥 회원가입을 한 회원인지 확인
             int statusCode = authService.getKakaoRegisterInfo(kakaoUserInfoDto);
-            if (statusCode == 201) {
-                // is_kakao 수정
-                userService.updateIsKakao(email);
-            }
 
             // jwt 토큰을 만들고 로그인
             String accessToken = JwtTokenUtil.getAccessToken(email);
@@ -146,6 +142,13 @@ public class AuthController {
             // refresh token 저장
             ResponseCookie cookie = authService.setRefreshToken(email, refreshToken);
 
+            if (statusCode == 201) {
+                // is_kakao 수정
+                userService.updateIsKakao(email);
+                return ResponseEntity.status(statusCode)
+                        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                        .body(UserLoginPostRes.of(statusCode, "Connect Kakao Login", accessToken));
+            }
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(UserLoginPostRes.of(statusCode, "Success", accessToken));
