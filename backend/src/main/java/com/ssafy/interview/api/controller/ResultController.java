@@ -93,7 +93,7 @@ public class ResultController {
                                                                              @ApiIgnore Authentication authentication) {
         // 질문자와 다른 인증토큰인 경우
         if (!email.equals(authService.getEmailByAuthentication(authentication))) {
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "인터뷰가 종료되었습니다!(Result Controller Check)"));
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "답변자님! 인터뷰가 종료되었습니다!(Result Controller Check)"));
         }
 
         Long user_id = authService.getIdByAuthentication(authentication);

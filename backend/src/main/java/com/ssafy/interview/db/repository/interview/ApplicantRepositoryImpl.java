@@ -81,7 +81,8 @@ public class ApplicantRepositoryImpl implements ApplicantRepositoryCustom {
                 .select(qApplicant.id)
                 .from(qApplicant)
                 .leftJoin(qApplicant.interviewTime, qInterviewTime).on(qApplicant.applicantState.eq(1))
-                .leftJoin(qInterviewTime.interview, qInterview).on(qInterview.id.eq(interview_id))
+                .leftJoin(qInterviewTime.interview, qInterview)
+                .where(qApplicant.interviewTime.interview.id.eq(interview_id))
                 .fetch();
 
         long affectedRows = jpaQueryFactory

@@ -3,7 +3,9 @@ package com.ssafy.interview.api.service.conference;
 import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.User;
+import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
+import com.ssafy.interview.db.repository.conference.ConferenceRepository;
 import com.ssafy.interview.db.repository.conference.DialogRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("ResultService")
 public class ResultServiceImpl implements ResultService {
@@ -24,6 +28,8 @@ public class ResultServiceImpl implements ResultService {
     UserRepository userRepository;
     @Autowired
     InterviewTimeRepository interviewTimeRepository;
+    @Autowired
+    ConferenceRepository conferenceRepository;
 
     @Override
     public List<DialogRes> dialogInAll(Long conferenceID) {
@@ -85,13 +91,32 @@ public class ResultServiceImpl implements ResultService {
         // 중복 종료 체크!!!
         DuplicateInterviewTimeModifyState(user.getName(), user_id, interview_time_id);
 
+        Long conference_id = conferenceRepository.findByInterviewTime_Id(interview_time_id).get().getId();
+
+        // dialog 가져오기
+        List<Dialog> dialogList = dialogRepository.findAllByConferenceId(conference_id);
+        HashMap<Long, String> resultMap = new HashMap<>();
+        String text = null;
+        String header = null;
+        for (Dialog curDialog : dialogList) {
+            Long question_id = curDialog.getQuestion() == null ? 0 : curDialog.getQuestion().getId();
+            if(curDialog.getUser().getId() != user_id){
+//                header = "[답변자 - " + curDialog.getUser().getName()+ "  /  "+curDialog.getTimestamp()+;
+            }
+
+            if(!resultMap.containsKey(question_id)){ // question_id가 없는 경우
+//                text = curDialog.getUser().getName() + ""
+            }
+        }
+
+
     }
 
     /**
      * 인터뷰 신청여부 중복확인 - 작성자와 동일인인 경우
      *
-     * @param name         로그인한 유저 이름
-     * @param user_id      중복검사 할 로그인 Id
+     * @param name              로그인한 유저 이름
+     * @param user_id           중복검사 할 로그인 Id
      * @param interview_time_id 해당 인터뷰 Id
      */
     private void DuplicateInterviewTimeModifyState(String name, Long user_id, Long interview_time_id) {
