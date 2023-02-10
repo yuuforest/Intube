@@ -22,7 +22,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // import { connect } from 'react-redux';
 // import * as actions from 'redux/actions/stateChange';
 
-const logo = require("assets/logo.png");
+const logo = require("assets/logo2.png");
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -69,12 +69,6 @@ export default class ToolbarComponent extends Component {
     if (this.state.record === "primary") this.setState({ record: "warning" });
     else this.setState({ record: "primary" });
   }
-
-  componentDidUpdate = async (prevProps, prevState) => {
-    if (this.recordState !== prevProps.recordState) {
-      console.log("asdasd");
-    }
-  };
 
   leaveSession() {
     this.props.leaveSession();
