@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import CardList from "components/answerer/mypage/CardList";
 import Temperature from "components/answerer/mypage/Temperature";
 import http from "api/Http";
+import QuestionerHeader from "components/questioner/QuestionerHeader"
 
 import "./QuestionerMyPage.css";
 
@@ -71,6 +72,7 @@ export default function AnswererMyPage() {
 
   return (
     <div className="Mypage">
+      <QuestionerHeader></QuestionerHeader>
       <div id="sidebar"></div>
       <div id="info">
         <h1>{userName}</h1>
