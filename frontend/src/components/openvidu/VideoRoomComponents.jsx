@@ -33,7 +33,7 @@ class VideoRoomComponent extends Component {
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = "Session" + props.interview.interviewTimeRes.id;
+    let sessionName = "Session" + props.interviewTimeId;
     let userName = props.userName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
@@ -68,6 +68,11 @@ class VideoRoomComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
+
+    this.role = "PUBLISHER";
+    if (props.positionId === 2) {
+      this.role = "SUBSCRIBER";
+    }
   }
 
   handleMicState() {
@@ -266,7 +271,7 @@ class VideoRoomComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      sessionName: "Session" + this.props.interview.interviewTimeRes.id,
+      sessionName: "Session" + this.props.interviewTimeId,
       userName: this.props.userName,
       localUser: undefined,
     });
@@ -439,7 +444,7 @@ class VideoRoomComponent extends Component {
           .post(
             "https://intube.store:443/openvidu/api/recordings/start",
             JSON.stringify({
-              session: "Session" + this.props.interview.interviewTimeRes.id,
+              session: "Session" + this.props.interviewTimeId,
               name: "MyRecording",
               hasAudio: true,
               hasVideo: true,
@@ -738,7 +743,9 @@ class VideoRoomComponent extends Component {
         "conference/sessions/" +
         sessionId +
         "/connections",
-      {},
+      {
+        role: this.role,
+      },
       {
         headers: { "Content-Type": "application/json" },
       }

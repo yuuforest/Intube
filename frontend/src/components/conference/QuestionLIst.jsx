@@ -9,10 +9,10 @@ import CardContent from "@mui/material/CardContent";
 
 export default function QuestionLIst(props) {
   const [questionList, setQuestionList] = useState([]);
-  const positionId = props.positionId
+  const positionId = props.positionId;
   useEffect(() => {
     http
-      .get("/conference/question?interviewID=" + props.interview.id, {
+      .get("/conference/question?interviewID=" + props.interviewId, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -28,27 +28,25 @@ export default function QuestionLIst(props) {
   }, []);
   return (
     <div>
-      { positionId === 1 ?
-      <Card sx={{ mt: 10, mr: 3, maxWidth: 300 }}>
-        <CardContent>
-          <Typography variant="h5" gutterBottom>
-            질문리스트
-          </Typography>
-          <FormGroup>
-            {questionList.map((question, index) => (
-              <FormControlLabel
-                control={<Checkbox />}
-                key={index}
-                label={question.content}
-                onChange={props.handleChangeQuestion(question)}
-              />
-            ))}
-          </FormGroup>
-        </CardContent>
-      </Card>
-      :
-      null}
+      {positionId === 1 ? (
+        <Card sx={{ mt: 10, mr: 3, maxWidth: 300 }}>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              질문리스트
+            </Typography>
+            <FormGroup>
+              {questionList.map((question, index) => (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  key={index}
+                  label={question.content}
+                  onChange={props.handleChangeQuestion(question)}
+                />
+              ))}
+            </FormGroup>
+          </CardContent>
+        </Card>
+      ) : null}
     </div>
-
   );
 }
