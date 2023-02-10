@@ -88,7 +88,7 @@ export default function QuestionerNow(props) {
       });
   };
 
-  const [conferenceID, setConferenceID] = useState([]);
+  // const [conferenceID, setConferenceID] = useState(1);
 
   console.log(interviewList[questionindex]);
   const onClickEnter = async (e) => {
@@ -105,16 +105,17 @@ export default function QuestionerNow(props) {
         }
       )
       .then((response) => {
-        setConferenceID(response.data.conferenceID);
+        const conferenceID = response.data.conferenceID
         localStorage.setItem('historyID', response.data.historyID)
+        navigate("/conference", {
+          state: { interviewId, interviewTimeId, position, conferenceID },
+        })
       })
       .catch((error) => {
         console.error(error);
       });
 
-    navigate("/conference", {
-      state: { interviewId, interviewTimeId, position, conferenceID },
-    });
+ 
   };
   // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
   const [modalOpen, setModalOpen] = useState(false);

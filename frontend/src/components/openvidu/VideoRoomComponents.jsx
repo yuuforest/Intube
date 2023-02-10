@@ -38,6 +38,7 @@ class VideoRoomComponent extends Component {
     this.layout = new OpenViduLayout();
     let sessionName = "Session" + props.interviewTimeId;
     let userName = props.userName;
+    const interviewId = props.interviewId;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -71,6 +72,7 @@ class VideoRoomComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
+    this.storeResult = this.storeResult.bind(this);
 
     this.role = "PUBLISHER";
     if (props.positionId === 2) {
@@ -79,6 +81,10 @@ class VideoRoomComponent extends Component {
 
     console.log("asa");
     console.log(props.interviewId);
+  }
+
+  storeResult() {
+    this.props.storeResult();
   }
 
   handleMicState() {
@@ -629,10 +635,11 @@ class VideoRoomComponent extends Component {
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
           handleMicState={this.handleMicState}
-          positionId={this.props.positionId}
-          conferenceId={this.props.conferenceID}
-          interviewTimeID={this.props.interviewTimeID}
-          interviewId={this.props.interviewId}
+          // positionId={this.props.positionId}
+          // conferenceId={this.props.conferenceID}
+          // interviewTimeID={interviewTimeID}
+          // interviewId={interviewId}
+          storeResult={this.storeResult}
         />
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
