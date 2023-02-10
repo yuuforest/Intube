@@ -74,7 +74,7 @@ export default function Header(props) {
           src={Logo}
           alt="logo"
           width="130px"
-          onClick={(e) => handlePage(e, "/")}
+          onClick={(e) => handlePage(e, "/questioner")}
         />
         <Box sx={{ flexGrow: 1 }} />
         {props.handleChangeWord !== undefined && (
