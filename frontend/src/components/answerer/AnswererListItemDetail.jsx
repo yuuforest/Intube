@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function InterviewListItemDetail(props) {
-  console.log(props.interview);
   const menu = [
     { title: "내용", content: props.interview.description },
     {
@@ -50,6 +49,7 @@ export default function InterviewListItemDetail(props) {
   // 방입장
   const position = 2
   const interview = props.interview;
+  console.log(interview);
   const navigate = useNavigate();
   function onClickEnter(e) {
     navigate("/conference", { state: { interview, userName, position } });

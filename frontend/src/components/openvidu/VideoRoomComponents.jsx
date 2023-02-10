@@ -18,7 +18,8 @@ import ChatComponent from "./chat/ChatComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import StreamComponent from "./stream/StreamComponent";
 import "./VideoRoomComponent.css";
-
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import OpenViduLayout from "./layout/openvidu-layout";
 import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
@@ -44,6 +45,8 @@ class VideoRoomComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
+      isRecord: false,
+      recordId: "",
     };
 
     this.navigate = this.props.navigate;
@@ -434,38 +437,56 @@ class VideoRoomComponent extends Component {
 
   async switchCamera() {
     try {
-      const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
-            audioSource: undefined,
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: localUser.isAudioActive(),
-            publishVideo: localUser.isVideoActive(),
-            mirror: true,
+      console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+      if (!this.state.isRecord) {
+        axios
+          .post(
+            "https://intube.store:443/openvidu/api/recordings/start",
+            JSON.stringify({
+              session: "Session" + this.props.interview.interviewTimeRes.id,
+              name: "MyRecording",
+              hasAudio: true,
+              hasVideo: true,
+              outputMode: "COMPOSED",
+              recordingLayout: "BEST_FIT",
+              resolution: "1280x720",
+              frameRate: 25,
+              shmSize: 536870912,
+              ignoreFailedStreams: false,
+            }),
+            {
+              headers: {
+                Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+                "Content-type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            this.setState({ isRecord: true });
+            this.setState({ recordId: response.data.id });
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error(error);
           });
-
-          //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(
-            this.state.localUser.getStreamManager()
-          );
-          await this.state.session.publish(newPublisher);
-          this.state.localUser.setStreamManager(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice,
-            localUser: localUser,
+      } else {
+        axios
+          .post(
+            "https://intube.store:443/openvidu/api/recordings/stop/" +
+              this.state.recordId,
+            {},
+            {
+              headers: {
+                Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data.url);
+          })
+          .catch((error) => {
+            console.error(error);
           });
-        }
       }
     } catch (e) {
       console.error(e);
@@ -602,12 +623,10 @@ class VideoRoomComponent extends Component {
           toggleChat={this.toggleChat}
           handleMicState={this.handleMicState}
         />
-
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         />
-
         <div id="layout" className="bounds">
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
@@ -645,19 +664,26 @@ class VideoRoomComponent extends Component {
               </div>
             )}
         </div>
-        {localUser !== undefined &&
-          localUser.getStreamManager() !== undefined && (
-            <div className="OT_root OT_publisher custom-class">
-              <NowQuestion
-                user={localUser}
-                chatDisplay={this.state.chatDisplay}
-                close={this.toggleChat}
-                messageReceived={this.checkNotification}
-                question={this.props.state}
-                setQuestId={this.props.setQuestId}
-              />
-            </div>
-          )}
+        <Card sx={{ minWidth: 275, mt: 2 }}>
+          <CardContent
+            sx={{
+              textAlign: "center",
+              height: "40px",
+            }}
+          >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <NowQuestion
+                  user={localUser}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
+                  question={this.props.state}
+                  setQuestId={this.props.setQuestId}
+                />
+              )}
+          </CardContent>
+        </Card>
       </div>
     );
   }

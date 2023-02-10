@@ -18,17 +18,17 @@ import Tooltip from "@mui/material/Tooltip";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import IconButton from "@mui/material/IconButton";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 // import { connect } from 'react-redux';
 // import * as actions from 'redux/actions/stateChange';
-
 
 const logo = require("assets/logo.png");
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false, };
+    this.state = { fullscreen: false, record: "primary" };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -41,7 +41,7 @@ export default class ToolbarComponent extends Component {
   }
 
   handleMicState() {
-    this.props.handleMicState()
+    this.props.handleMicState();
   }
 
   micStatusChanged() {
@@ -67,7 +67,15 @@ export default class ToolbarComponent extends Component {
 
   switchCamera() {
     this.props.switchCamera();
+    if (this.state.record === "primary") this.setState({ record: "warning" });
+    else this.setState({ record: "primary" });
   }
+
+  componentDidUpdate = async (prevProps, prevState) => {
+    if (this.recordState !== prevProps.recordState) {
+      console.log("asdasd");
+    }
+  };
 
   leaveSession() {
     this.props.leaveSession();
@@ -100,7 +108,10 @@ export default class ToolbarComponent extends Component {
               color="inherit"
               className="navButton"
               id="navMicButton"
-              onClick={() => {this.micStatusChanged(); this.handleMicState();}}
+              onClick={() => {
+                this.micStatusChanged();
+                this.handleMicState();
+              }}
             >
               {localUser !== undefined && localUser.isAudioActive() ? (
                 <Mic />
@@ -141,11 +152,11 @@ export default class ToolbarComponent extends Component {
             )}
 
             <IconButton
-              color="inherit"
+              color={this.state.record}
               className="navButton"
               onClick={this.switchCamera}
             >
-              <SwitchVideoIcon />
+              <FiberManualRecordIcon />
             </IconButton>
             <IconButton
               color="inherit"
