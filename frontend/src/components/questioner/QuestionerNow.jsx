@@ -12,10 +12,12 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
+// import { useNavigate } from "react-router-dom";
 
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
-
+  // const position = 2
+  // const navigate = useNavigate();
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
     setTimeid(
@@ -84,6 +86,10 @@ export default function QuestionerNow(props) {
         console.error(error);
       });
   };
+
+  // function onClickEnter(e) {
+  //   navigate("/conference", { state: { interview, userName, position, conferenceID } });
+  // }
 
   return (
     <div hidden={props.value !== 2}>

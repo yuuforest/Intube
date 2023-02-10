@@ -17,6 +17,7 @@ export default function AnswerWrite(props) {
   // const userInfo = props.userInfo;
   const conferId = props.conferenceId;
   const questId = props.questId;
+  const positionId = props.positionId;
 
   const {
     transcript,
@@ -97,9 +98,15 @@ export default function AnswerWrite(props) {
 
   return (
     <div>
-      <p>Microphone: {listening ? "on" : "off"}</p>
-      <p>{micState ? "적용" : "안됨"}</p>
-      <p>{listening ? transcript : ""}</p>
+      { positionId === 1 ?
+      <div>
+        <p>Microphone: {listening ? "on" : "off"}</p>
+        <p>{micState ? "적용" : "안됨"}</p>
+        <p>{listening ? transcript : ""}</p>
+      </div>
+      :
+      null
+      }
     </div>
   );
 }

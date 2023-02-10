@@ -37,7 +37,28 @@ export default function AnswererMyPage() {
     completeInfo: 3,
   };
 
-  const [calendarInfo, setCalendarInfo] = useState([]);
+  const [calendarInfo, setCalendarInfo] = useState([{
+    applicant_state: 2,
+    apply_end_time: "2023-02-10 02:11",
+    apply_start_time: "2023-02-10 02:11",
+    category_name: "1:1",
+    description: "유제품 좋아하는 사람?",
+    download_expiration: null,
+    end_standard_age: 53,
+    estimated_time: "12",
+    gender: "M",
+    id: 39,
+    interviewTimeRes: {id: 31, interview_start_time: '2023-02-10 13:13', modifyResultState: 0},
+    interview_state: 5,
+    max_people: 12,
+    owner_email: "ssafy1@ssafy.com",
+    owner_id: 10,
+    owner_name: "영싸피",
+    owner_phone: "01022222222",
+    standard_point: 11,
+    start_standard_age: 20,
+    title: "유제품 맛테스트 조사",
+  }]);
   const date = new Date();
 
   // 나중에 정부 수정할 때
@@ -56,7 +77,7 @@ export default function AnswererMyPage() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+
         setUserInfo(response.data);
         setCardInfo({
           match: response.data.conduct_interview_count,

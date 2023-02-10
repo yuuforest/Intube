@@ -9,6 +9,7 @@ import CardContent from "@mui/material/CardContent";
 
 export default function QuestionLIst(props) {
   const [questionList, setQuestionList] = useState([]);
+  const positionId = props.positionId
   useEffect(() => {
     http
       .get("/conference/question?interviewID=" + props.interview.id, {
@@ -26,22 +27,28 @@ export default function QuestionLIst(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <Card sx={{ mt: 10, mr: 3, maxWidth: 300 }}>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          질문리스트
-        </Typography>
-        <FormGroup>
-          {questionList.map((question, index) => (
-            <FormControlLabel
-              control={<Checkbox />}
-              key={index}
-              label={question.content}
-              onChange={props.handleChangeQuestion(question)}
-            />
-          ))}
-        </FormGroup>
-      </CardContent>
-    </Card>
+    <div>
+      { positionId === 1 ?
+      <Card sx={{ mt: 10, mr: 3, maxWidth: 300 }}>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            질문리스트
+          </Typography>
+          <FormGroup>
+            {questionList.map((question, index) => (
+              <FormControlLabel
+                control={<Checkbox />}
+                key={index}
+                label={question.content}
+                onChange={props.handleChangeQuestion(question)}
+              />
+            ))}
+          </FormGroup>
+        </CardContent>
+      </Card>
+      :
+      null}
+    </div>
+
   );
 }

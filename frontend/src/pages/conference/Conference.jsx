@@ -15,8 +15,9 @@ export default function Conference() {
   const location = useLocation();
   const interview = location.state.interview;
   const userName = location.state.userName;
+  const positionId = location.state.position
+  const conferenceID = location.state.conferenceID
   const [userInfo, setUserInfo] = useState([]);
-  const [conferenceID, setConferenceID] = useState(1);
   const [questId, setQuestId] = useState(undefined);
 
   const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
@@ -72,7 +73,7 @@ export default function Conference() {
       )
       .then((response) => {
         console.log("컨퍼런스 아이디", response.data.conferenceID);
-        setConferenceID(response.data.conferenceID);
+        // setConferenceID(response.data.conferenceID);
       })
       .catch((error) => {
         console.error(error);
@@ -98,6 +99,7 @@ export default function Conference() {
           <QuestionLIst
             handleChangeQuestion={handleChangeQuestion}
             interview={interview}
+            positionId={positionId}
           />
         </Grid>
       </Grid>
@@ -113,6 +115,7 @@ export default function Conference() {
             conferenceId={conferenceID}
             questId={questId}
             setQuestId={setQuestId}
+            positionId={positionId}
           ></AnswerWrite>
         </Grid>
       </Grid>
