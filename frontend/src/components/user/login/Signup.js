@@ -235,7 +235,9 @@ export default function SignUp() {
                 )}
               </Grid>
               <Grid item xs={2}>
+                {/* {emailSecret ? <Timer /> : false} */}
                 {emailSecret ? timeRender ? <Timer /> : false : false}
+                {/* {} */}
               </Grid>
               <Grid item xs={3}>
                 {emailSecret ? (

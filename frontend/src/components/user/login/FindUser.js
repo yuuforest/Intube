@@ -14,7 +14,7 @@ import { useFormik } from "formik";
 import http from "api/Http";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import EvaluatePerson from "components/user/login/EvaluatePerson";
+// import EvaluatePerson from "components/user/login/EvaluatePerson";
 
 function Copyright(props) {
   return (
@@ -39,15 +39,15 @@ const theme = createTheme();
 export default function SignIn() {
   const navigate = useNavigate();
 
-  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-  const [modalOpen, setModalOpen] = useState(false);
+  // // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  // const [modalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+  // const openModal = () => {
+  //   setModalOpen(true);
+  // };
+  // const closeModal = () => {
+  //   setModalOpen(false);
+  // };
 
   const formik = useFormik({
     initialValues: {
@@ -230,7 +230,7 @@ export default function SignIn() {
                   비밀번호 찾기
                 </Button>
               </Grid>
-              <Grid item xs={4}>
+              {/* <Grid item xs={4}>
                 <Button
                   onClick={openModal}
                   variant="contained"
@@ -238,23 +238,12 @@ export default function SignIn() {
                 >
                   sweetalertTest
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </form>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-      <React.Fragment>
-        {/* //header 부분에 텍스트를 입력한다. */}
-        <EvaluatePerson
-          open={modalOpen}
-          close={closeModal}
-          header="가제: 답변자님을 평가해주세요🙂🤗(완료버튼을 누르면 되돌릴 수 없습니다!)"
-        >
-          {/* // EvalPerson.js <main> {props.children} </main>에 내용이입력된다. 리액트 함수형 모달  */}
-          이건 안나옴
-        </EvaluatePerson>
-      </React.Fragment>
     </ThemeProvider>
   );
 }

@@ -13,12 +13,13 @@ import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import { useNavigate } from "react-router-dom";
+import EvaluatePerson from "components/questioner/EvaluatePerson";
 
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
   const position = 1;
   const navigate = useNavigate();
-  const handleChangeQuestionIndex = (event) => {
+  const handleChangeQuestionIndex = event => {
     setQuestionIndex(event.target.value);
     setTimeid(
       interviewList[event.target.value].interviewTimeDetailResList[0].id
@@ -56,14 +57,14 @@ export default function QuestionerNow(props) {
           },
         }
       )
-      .then((response) => {
+      .then(response => {
         setInterviewList(response.data.content);
 
         if (timeid === -1) {
           setTimeid(interviewList[0].interviewTimeDetailResList[0].id);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   };
@@ -78,11 +79,11 @@ export default function QuestionerNow(props) {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
         setAnsewererList(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   };
@@ -90,7 +91,7 @@ export default function QuestionerNow(props) {
   const [conferenceID, setConferenceID] = useState([]);
 
   console.log(interviewList[questionindex]);
-  const onClickEnter = async (e) => {
+  const onClickEnter = async e => {
     const interviewId = interviewList[questionindex].id;
     const interviewTimeId = timeid;
     await http
@@ -103,17 +104,30 @@ export default function QuestionerNow(props) {
           },
         }
       )
-      .then((response) => {
+      .then(response => {
         console.log("컨퍼런스 아이디", response.data.conferenceID);
         setConferenceID(response.data.conferenceID);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
 
     navigate("/conference", {
       state: { interviewId, interviewTimeId, position, conferenceID },
     });
+  };
+  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [evalname, setevalname] = useState(false);
+  const [evalemail, setevalemail] = useState(false);
+
+  const openModal = (e, name, email) => {
+    setevalname(name);
+    setevalemail(email);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -179,7 +193,7 @@ export default function QuestionerNow(props) {
                 </Grid>
               </ListItem>
               <Divider />
-              {AnsewererList.map((answerer) => (
+              {AnsewererList.map(answerer => (
                 <div className="list-item" key={answerer.id}>
                   <ListItem>
                     <Grid
@@ -212,7 +226,14 @@ export default function QuestionerNow(props) {
                         </Typography>
                       </Grid>
                       <Grid item xs={2} sx={{ textAlign: "center" }}>
-                        <Button variant="outlined">평가하기</Button>
+                        <Button
+                          variant="outlined"
+                          onClick={e =>
+                            openModal(e, answerer.name, answerer.email)
+                          }
+                        >
+                          평가하기
+                        </Button>
                       </Grid>
                     </Grid>
                   </ListItem>
@@ -220,6 +241,20 @@ export default function QuestionerNow(props) {
                 </div>
               ))}
             </List>
+            <React.Fragment>
+              {/* //header 부분에 텍스트를 입력한다. */}
+              <EvaluatePerson
+                open={modalOpen}
+                close={closeModal}
+                header="가제: 답변자님을 평가해주세요🙂🤗(완료버튼을 누르면 되돌릴 수 없습니다!)"
+                name={evalname}
+                email={evalemail}
+                setModalOpen={setModalOpen}
+              >
+                {/* // EvalPerson.js <main> {props.children} </main>에 내용이입력된다. 리액트 함수형 모달  */}
+                이건 안나오는 부분
+              </EvaluatePerson>
+            </React.Fragment>
             <Button
               variant="outlined"
               startIcon={<VideocamIcon />}

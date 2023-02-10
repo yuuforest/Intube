@@ -1,4 +1,4 @@
-import "components/user/login/EvaluatePerson.css";
+import "components/questioner/EvaluatePerson.css";
 import React, { useState } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -9,7 +9,7 @@ import http from "api/Http";
 
 const EvalPerson = props => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-  const { open, close, header } = props;
+  const { open, close, header, name, email } = props;
 
   const [Honest, setHonest] = useState("");
   const setHonestChange = event => {
@@ -24,7 +24,7 @@ const EvalPerson = props => {
     setNextChance(event.target.value);
   };
 
-  const [closeButton, setcloseButton] = useState(true);
+  // const [closeButton, setcloseButton] = useState(true);
 
   const countApi = async () => {
     const count = (Number(Honest) + Number(Ontime) + Number(NextChance)) / 6;
@@ -34,7 +34,7 @@ const EvalPerson = props => {
     const temperature = count >= 0 ? count : -count;
     console.log("tempoerature: " + temperature);
     let data = {
-      email: "ssafy3@ssafy.com",
+      email: email,
       temperature: temperature,
       key: key,
     };
@@ -58,7 +58,7 @@ const EvalPerson = props => {
           <main>
             <FormControl>
               <FormLabel id="demo-form-control-label-placement" sx={{ mt: 1 }}>
-                ___ 님이 성실하게 답변해주셨나요?????
+                {name}님이 성실하게 답변해주셨나요?????
               </FormLabel>
               <RadioGroup
                 row
@@ -78,7 +78,7 @@ const EvalPerson = props => {
                 />
               </RadioGroup>
               <FormLabel id="demo-form-control-label-placement">
-                ___ 님이 시간약속을 잘 지켜주셨나요?????
+                {name}님이 시간약속을 잘 지켜주셨나요?????
               </FormLabel>
               <RadioGroup
                 row
@@ -98,7 +98,7 @@ const EvalPerson = props => {
                 />
               </RadioGroup>
               <FormLabel id="demo-form-control-label-placement">
-                ___ 님과 다음에도 인터뷰를 진행하고 싶으신가요?????
+                {name}님과 다음에도 인터뷰를 진행하고 싶으신가요?????
               </FormLabel>
               <RadioGroup
                 row
@@ -120,19 +120,15 @@ const EvalPerson = props => {
             </FormControl>
           </main>
           <footer>
-            {closeButton ? (
-              <button
-                className="close"
-                onClick={() => {
-                  countApi();
-                  setcloseButton(false);
-                }}
-              >
-                답변 완료😁
-              </button>
-            ) : (
-              false
-            )}
+            <button
+              className="close"
+              onClick={() => {
+                countApi();
+                props.setModalOpen(false);
+              }}
+            >
+              답변 완료😁
+            </button>
           </footer>
         </section>
       ) : null}
