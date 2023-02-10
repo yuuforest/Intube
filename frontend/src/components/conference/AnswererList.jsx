@@ -5,8 +5,8 @@ export default function AnswererList(props) {
   return (
     <div>
       입장한 사람
-      {props.subscriber.map((sub) => (
-        <div>
+      {props.subscriber.map((sub, index) => (
+        <div key={index}>
           {sub.connectionId}
           {sub.nickname}
         </div>
