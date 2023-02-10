@@ -14,6 +14,7 @@ import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.interview.QuestionRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.db.repository.interview.InterviewRepository;
+import com.ssafy.interview.exception.conference.ExistConferenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,23 +55,34 @@ public class ConferenceServiceImpl implements ConferenceService {
         // [회의방 생성]
         Conference conference = new Conference();
         conference.setInterviewTime(interviewTimeRepository.findById(interviewTimeID).get());
-        conference.setIs_active(1); // Conference 방 시작 (1)
+        conference.setActive(1); // Conference 방 시작 (1)
         conferenceRepository.save(conference);  // Conference 생성
         return conference;
     }
 
     @Override
     @Transactional
-    public void endConference(Long conferenceID) {
+    public void endConference(Long conferenceID, String url) {
         // [회의방 종료]
         Conference conference = conferenceRepository.findById(conferenceID).get();
-        conference.setIs_active(2); // Conference 방 종료 (1)
+        conference.setActive(0); // Conference 방 종료
+        conference.setVideo_url(url);
     }
 
     @Override
-    public Optional<Conference> isConference(Long interviewTimeID) {
+    public Optional<Conference> isConferenceByHost(Long interviewTimeID) {
         // [만약 interview time id에 해당하는 Conference가 있다면 Conference 정보를 반환]
         return conferenceRepository.findByInterviewTime_Id(interviewTimeID);
+    }
+
+    @Override
+    public Optional<Conference> isConferenceByUser(Long interviewTimeID) {
+        Optional<Conference> conference = conferenceRepository.findByInterviewTime_IdAndActiveLike(interviewTimeID, 1);
+        if(conference.isPresent()) {
+            return conference;
+        } else {
+            throw new ExistConferenceException("현재 인터뷰 방이 생성되지 않았습니다. ");
+        }
     }
 
     @Override

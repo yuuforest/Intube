@@ -8,15 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("ConferenceStartPostRes")
-public class ConferenceStartRes {
+public class ConferenceInRes {
 
     @ApiModelProperty(name="Conference ID")
     Long conferenceID;
     @ApiModelProperty(name="ConferenceHistory ID")
     Long historyID;
 
-    public static ConferenceStartRes of(Long conferenceID, Long historyID) {
-        ConferenceStartRes res = new ConferenceStartRes();
+    public static ConferenceInRes of(Long conferenceID, Long historyID) {
+        ConferenceInRes res = new ConferenceInRes();
         res.setConferenceID(conferenceID);
         res.setHistoryID(historyID);
         return res;

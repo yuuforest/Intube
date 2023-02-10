@@ -1,6 +1,7 @@
 package com.ssafy.interview.exception;
 
 import com.ssafy.interview.common.model.response.BaseResponseBody;
+import com.ssafy.interview.exception.conference.ExistConferenceException;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
 import com.ssafy.interview.exception.interview.ExistApplicantException;
@@ -37,6 +38,13 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ResponseEntity<? extends BaseResponseBody> applicantDuplicationException(InterviewTimeModifyResultDuplicationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(BaseResponseBody.of(-112, e.getMessage() + " 이미 실행이 종료된 회의방입니다. Result Controller Api 실행 X!"));
+    }
+
+    @ExceptionHandler(ExistConferenceException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ResponseEntity<? extends BaseResponseBody> existConferenceException(ExistConferenceException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-132, e.getMessage()
+                + " 현재 생성된 Conference 방이 존재하지 않습니다. "));
     }
 
 }
