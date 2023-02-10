@@ -37,6 +37,7 @@ export default function Announcement() {
       <AnnouncementPost
         value={value}
         handleChange={handleChange}
+        setValue={setValue}
       ></AnnouncementPost>
     </div>
   );

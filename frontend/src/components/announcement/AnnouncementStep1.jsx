@@ -11,6 +11,7 @@ export default function AnnouncementStep1(props) {
       <Grid container spacing={10} justifyContent="center" alignItems="center">
         <Grid item xs={4}>
           <Box
+            onClick={(e) => props.step1Handeler(e, "1:1")}
             sx={{
               "&:hover": {
                 backgroundColor: "primary.main",
@@ -22,6 +23,7 @@ export default function AnnouncementStep1(props) {
         </Grid>
         <Grid item xs={4}>
           <Box
+            onClick={(e) => props.step1Handeler(e, "1:N")}
             sx={{
               "&:hover": {
                 backgroundColor: "primary.main",
@@ -34,6 +36,7 @@ export default function AnnouncementStep1(props) {
         </Grid>
         <Grid item xs={4}>
           <Box
+            onClick={(e) => props.step1Handeler(e, "AVATA")}
             sx={{
               "&:hover": {
                 backgroundColor: "primary.main",

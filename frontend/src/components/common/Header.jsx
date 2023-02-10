@@ -25,6 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import Drawer from "@mui/material/Drawer";
 import Sidebar from "components/common/Sidebar";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import "components/common/Header.css";
 
@@ -69,6 +70,27 @@ export default function Header(props) {
   function logoutApi() {
     logout();
   }
+
+  const handlePoint = () => {
+    http
+      .put(
+        "/user/point",
+        JSON.stringify({ email: userInfo.email, point: 500, key: 1 }),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        getUser();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   //로그인 후
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -255,6 +277,13 @@ export default function Header(props) {
                     <Logout fontSize="small" />
                   </ListItemIcon>
                   로그아웃
+                </MenuItem>
+                <Divider />
+                <MenuItem sx={{ px: 2 }} onClick={handlePoint}>
+                  <Avatar>
+                    <AttachMoneyIcon />
+                  </Avatar>
+                  {userInfo.point}
                 </MenuItem>
               </Menu>
             </React.Fragment>

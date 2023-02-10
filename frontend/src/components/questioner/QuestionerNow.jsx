@@ -20,11 +20,14 @@ export default function QuestionerNow(props) {
   // const navigate = useNavigate();
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
+    setTimeid(
+      interviewList[event.target.value].interviewTimeDetailResList[0].id
+    );
     setTimeindex(0);
   };
 
   const [timeindex, setTimeindex] = useState(0);
-  const [timeid, setTimeid] = useState(0);
+  const [timeid, setTimeid] = useState(-1);
 
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
@@ -40,7 +43,7 @@ export default function QuestionerNow(props) {
   useEffect(() => {
     getInterviewList();
     getAnswererList();
-  }, [questionindex, timeindex]);
+  }, [questionindex, timeindex, props.value]);
 
   const getInterviewList = () => {
     http
