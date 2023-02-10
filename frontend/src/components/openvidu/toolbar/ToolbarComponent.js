@@ -10,7 +10,6 @@ import Videocam from "@mui/icons-material/Videocam";
 import VideocamOff from "@mui/icons-material/VideocamOff";
 import Fullscreen from "@mui/icons-material/Fullscreen";
 import FullscreenExit from "@mui/icons-material/FullscreenExit";
-import SwitchVideoIcon from "@mui/icons-material/SwitchVideo";
 import PictureInPicture from "@mui/icons-material/PictureInPicture";
 import ScreenShare from "@mui/icons-material/ScreenShare";
 import StopScreenShare from "@mui/icons-material/StopScreenShare";
@@ -18,17 +17,17 @@ import Tooltip from "@mui/material/Tooltip";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import IconButton from "@mui/material/IconButton";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 // import { connect } from 'react-redux';
 // import * as actions from 'redux/actions/stateChange';
 
-
-const logo = require("assets/logo.png");
+const logo = require("assets/logo2.png");
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false, };
+    this.state = { fullscreen: false, record: "primary" };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.screenShare = this.screenShare.bind(this);
@@ -41,7 +40,7 @@ export default class ToolbarComponent extends Component {
   }
 
   handleMicState() {
-    this.props.handleMicState()
+    this.props.handleMicState();
   }
 
   micStatusChanged() {
@@ -67,6 +66,8 @@ export default class ToolbarComponent extends Component {
 
   switchCamera() {
     this.props.switchCamera();
+    if (this.state.record === "primary") this.setState({ record: "warning" });
+    else this.setState({ record: "primary" });
   }
 
   leaveSession() {
@@ -86,7 +87,7 @@ export default class ToolbarComponent extends Component {
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
           <div id="navSessionInfo">
-            <img id="header_img" alt="OpenVidu Logo" src={logo} />
+            <img id="header_img" alt="OpenVidu Logo" src={logo} width="130px" />
 
             {this.props.sessionId && (
               <div id="titleContent">
@@ -100,7 +101,10 @@ export default class ToolbarComponent extends Component {
               color="inherit"
               className="navButton"
               id="navMicButton"
-              onClick={() => {this.micStatusChanged(); this.handleMicState();}}
+              onClick={() => {
+                this.micStatusChanged();
+                this.handleMicState();
+              }}
             >
               {localUser !== undefined && localUser.isAudioActive() ? (
                 <Mic />
@@ -141,11 +145,11 @@ export default class ToolbarComponent extends Component {
             )}
 
             <IconButton
-              color="inherit"
+              color={this.state.record}
               className="navButton"
               onClick={this.switchCamera}
             >
-              <SwitchVideoIcon />
+              <FiberManualRecordIcon />
             </IconButton>
             <IconButton
               color="inherit"

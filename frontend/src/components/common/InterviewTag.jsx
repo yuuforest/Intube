@@ -41,7 +41,7 @@ export default function InterviewListItemTag(props) {
           color="primary"
         />
       )}
-      {props.interview.category_name === "avatar" && (
+      {props.interview.category_name === "AVATA" && (
         <Chip
           label="아바타 인터뷰"
           size="small"

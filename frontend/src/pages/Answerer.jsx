@@ -49,7 +49,6 @@ export default function Answerer() {
         },
       })
       .then((response) => {
-        console.log(searchCondition);
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
       })

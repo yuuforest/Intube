@@ -1,14 +1,14 @@
 .announcement-select {
-  justify-content: center;
-  text-align: center;
+  margin-top: 100px;
 }
+
 .announcement-write {
-  width: 55%;
-  margin: auto;
+  background-color: white;
+  padding: 50px;
 }
 .announcement-apply {
-  width: 70%;
-  margin: auto;
+  background-color: white;
+  padding: 50px;
 }
 #title-input {
   text-align: center;
@@ -17,4 +17,10 @@
 #number-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.post {
+  background-color: #f2f7ff;
+  width: 70%;
+  margin: auto;
 }

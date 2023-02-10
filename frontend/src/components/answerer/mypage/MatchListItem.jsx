@@ -12,9 +12,15 @@ export default function MatchListItem(props) {
   return (
     <div>
       <p onClick={handleClickOpen}>
-        {props.interview.interview_start_time.slice(11)}: {props.interview.title}
+        {props.interview.interviewTimeRes.interview_start_time.slice(11)}: {props.interview.title}
       </p>
-      {
+      <AnswererListItemDetail
+        open={open}
+        setOpen={setOpen}
+        interview={props.interview}
+      />
+
+      {/* {
         props.position === 1
         ?
         <AnswererListItemDetail
@@ -29,7 +35,7 @@ export default function MatchListItem(props) {
           setOpen={setOpen}
           interview={props.interview}
         />
-      }
+      } */}
     </div>
   );
 }

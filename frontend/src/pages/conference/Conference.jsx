@@ -1,12 +1,9 @@
 import QuestionLIst from "components/conference/QuestionLIst";
-import NowQuestion from "components/conference/NowQuestion";
 import React, { useEffect, useState } from "react";
 import AnswerWrite from "components/conference/AnswerWrite";
 import VideoRoomComponents from "components/openvidu/VideoRoomComponents";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useLocation, useNavigate } from "react-router-dom";
-import AnswererList from "components/conference/AnswererList";
 import { useDispatch } from "react-redux";
 import {
   setMic,
@@ -16,9 +13,15 @@ import http from "api/Http";
 
 export default function Conference() {
   const location = useLocation();
-  const interview = location.state.interview;
-  const userName = location.state.userName;
+  const interviewId = location.state.interviewId;
+  const interviewTimeId = location.state.interviewTimeId;
+  const positionId = location.state.position;
+  const conferenceID = location.state.conferenceID;
   const [userInfo, setUserInfo] = useState([]);
+  const [questId, setQuestId] = useState(undefined);
+
+  const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
+
   useEffect(() => {
     getUser();
   }, []);
@@ -38,18 +41,6 @@ export default function Conference() {
       });
   };
 
-  const [subscriber, setSubscriber] = React.useState([
-    {
-      nickname: "",
-      connectionId: "",
-    },
-  ]);
-
-  const handleSubscriber = (item) => {
-    setSubscriber(item);
-  };
-
-  // const micstatus = useSelector(micState)
   const [micState, setMicState] = React.useState(true);
   const handleMicState = () => {
     setMicState(!micState);
@@ -64,44 +55,65 @@ export default function Conference() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  // const changeMic = useCallback(() => {
-  //   dispatch(setMic());
-  // }, [dispatch, micState])
 
   useEffect(() => {
     dispatch(setMic());
   }, [micState, dispatch]);
 
+  const [userName, setUserName] = useState([]);
+  useEffect(() => {
+    http
+      .get("/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUserName(response.data.name);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
-      <Grid container spacing={2}>
-        <Grid item xs={10}>
+      <Grid container spacing={2} justifyContent="space-between">
+        <Grid item xs={9}>
           <VideoRoomComponents
-            interview={interview}
+            interviewTimeId={interviewTimeId}
             userName={userName}
             navigate={navigate}
-            handleSubscriber={handleSubscriber}
             handleMicState={handleMicState}
+            state={state}
+            setQuestId={setQuestId}
+            myAnswer={myAnswer}
+            positionId={positionId}
           ></VideoRoomComponents>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item>
           <QuestionLIst
             handleChangeQuestion={handleChangeQuestion}
-            interview={interview}
+            interviewId={interviewId}
+            positionId={positionId}
           />
         </Grid>
+      </Grid>
+      <Grid container spacing={2} justifyContent="space-between">
         <Grid item xs={10}>
-          <NowQuestion state={state} />
           <AnswerWrite
+            setMyAnswer={setMyAnswer}
             state={state}
             micState={micState}
             userInfo={userInfo}
-            interview={interview}
+            handleMicState={handleMicState}
+            conferenceId={conferenceID}
+            questId={questId}
+            setQuestId={setQuestId}
+            positionId={positionId}
           ></AnswerWrite>
-        </Grid>
-        <Grid item xs={2}>
-          <AnswererList subscriber={subscriber}></AnswererList>
-          <Button variant="outlined">종료</Button>
         </Grid>
       </Grid>
     </div>

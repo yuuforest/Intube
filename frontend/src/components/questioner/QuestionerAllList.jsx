@@ -1,13 +1,13 @@
 import React from "react";
 
-import QuestionListitem from "components/questioner/QuestionListitem";
+import QuestionerAllListitem from "components/questioner/QuestionerAllListitem";
 
-export default function QuestionerList(props) {
+export default function QuestionerAllList(props) {
   return (
     <div>
       {props.interviewList.map((interview, index) => (
         <div key={index}>
-          <QuestionListitem
+          <QuestionerAllListitem
             interview={interview}
             index={index}
             getInterviewList={props.getInterviewList}

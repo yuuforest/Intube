@@ -19,7 +19,7 @@ export default function InterviewListItemDetail(props) {
     { title: "내용", content: props.interview.description },
     {
       title: "인터뷰 시간",
-      content: props.interview.apply_start_time,
+      content: props.interview.interviewTimeRes.interview_start_time,
     },
     { title: "소요시간", content: props.interview.estimated_time },
     {
@@ -47,25 +47,37 @@ export default function InterviewListItemDetail(props) {
   };
 
   // 방입장
-  const interview = props.interview;
+  const position = 2;
+  const interviewId = props.interview;
+  const interviewTimeId = props.interview.interviewTimeRes.id;
+  const [conferenceID, setConferenceID] = useState(0);
+  const [meetingIn, setMeetingIn] = useState(false);
   const navigate = useNavigate();
   function onClickEnter(e) {
-    navigate("/conference", { state: { interview, userName } });
+    navigate("/conference", {
+      state: { interviewId, interviewTimeId, position, conferenceID },
+    });
   }
-  const [userName, setUserName] = useState([]);
+
   useEffect(() => {
     http
-      .get("/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "/conference/in?interviewTimeID=" + props.interview.interviewTimeRes.id,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((response) => {
-        console.log(response.data);
-        setUserName(response.data.name);
+        console.log("컨퍼런스 아이디", response.data.conferenceID);
+        setConferenceID(response.data.conferenceID);
+        setMeetingIn(true);
       })
       .catch((error) => {
         console.error(error);
+        setMeetingIn(false);
       });
   }, []);
 
@@ -139,9 +151,11 @@ export default function InterviewListItemDetail(props) {
         {props.interview.applicant_state === 1 && (
           <Button onClick={handleClose}>취소하기</Button>
         )}
-        {props.interview.applicant_state === 2 && (
-          <Button onClick={onClickEnter}>입장하기</Button>
-        )}
+        {meetingIn
+          ? props.interview.applicant_state === 2 && (
+              <Button onClick={onClickEnter}>입장하기</Button>
+            )
+          : null}
         <Button onClick={handleClose}>닫기</Button>
       </DialogActions>
     </Dialog>

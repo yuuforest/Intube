@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CalendarComponent from "components/answerer/mypage/CalendarComponent";
+import QuestionCalendar from 'components/questioner/mypage/QuestionCalendar.jsx'
 import Grid from "@mui/material/Grid";
 import CardList from "components/answerer/mypage/CardList";
 import Temperature from "components/answerer/mypage/Temperature";
@@ -86,7 +86,7 @@ export default function AnswererMyPage() {
             <Temperature />
           </Grid>
           <Grid item xs={6}>
-            <CalendarComponent position={2} calendarInfo={calendarInfo} />
+            <QuestionCalendar position={2} calendarInfo={calendarInfo} />
           </Grid>
         </Grid>
       </div>

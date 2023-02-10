@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment"
-// import GetList from "../../../json/answerer_list_state2.json";
-import './CalendarComponent.css'
-import MatchList from './MatchList.jsx';
+import './QuestionCalendar.css'
+import MatchList from 'components/answerer/mypage/MatchList';
 
 export default function CalendarComponent(props) {
   const [value, onChange] = useState(new Date());
   const interviewList = props.calendarInfo
-  console.log('check', interviewList[0].interviewTimeRes.interview_start_time.slice(0,10))
+
 
   return (
     <div
@@ -24,7 +23,7 @@ export default function CalendarComponent(props) {
       showNeighboringMonth={false}
       tileClassName={({ date, view }) => {
         if (interviewList.find((x) => 
-        x.interviewTimeRes.interview_start_time.slice(0,10) === moment(date).format("YYYY-MM-DD"))) {
+        x.interviewTimeDetailResList.find((y) => y.interview_start_time.slice(0,10) === moment(date).format("YYYY-MM-DD")))) {
           return "highlight";
         }
       }}
@@ -33,8 +32,8 @@ export default function CalendarComponent(props) {
            <p>{moment(value).format("YYYY년 MM월 DD일")}</p>
            <MatchList 
            position={props.position}
-           matchInfo={interviewList.filter(
-            (x) => x.interviewTimeRes.interview_start_time.slice(0,10) === moment(value).format("YYYY-MM-DD"))} 
+           matchInfo={interviewList.map(
+            (x) => x.filter((y) => y.interviewTimeDetailResList.interview_start_time.slice(0,10) === moment(value).format("YYYY-MM-DD")))} 
            />
          </div>
     </div>

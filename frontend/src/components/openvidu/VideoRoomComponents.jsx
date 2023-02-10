@@ -18,11 +18,13 @@ import ChatComponent from "./chat/ChatComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import StreamComponent from "./stream/StreamComponent";
 import "./VideoRoomComponent.css";
-
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import OpenViduLayout from "./layout/openvidu-layout";
 import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
-
+import NowQuestion from "components/conference/NowQuestion";
+import NowAnswer from "components/conference/NowAnswer";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
 
@@ -31,7 +33,7 @@ class VideoRoomComponent extends Component {
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = "Session" + props.interview.id;
+    let sessionName = "Session" + props.interviewTimeId;
     let userName = props.userName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
@@ -43,6 +45,8 @@ class VideoRoomComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
+      isRecord: false,
+      recordId: "",
     };
 
     this.navigate = this.props.navigate;
@@ -64,6 +68,11 @@ class VideoRoomComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
+
+    this.role = "PUBLISHER";
+    if (props.positionId === 2) {
+      this.role = "SUBSCRIBER";
+    }
   }
 
   handleMicState() {
@@ -248,9 +257,6 @@ class VideoRoomComponent extends Component {
         this.updateLayout();
       }
     );
-    console.log("여기서 참여자 집어넣을거임");
-    console.log(this.remotes);
-    this.handleSubscriber(this.remotes);
   }
 
   leaveSession() {
@@ -265,8 +271,8 @@ class VideoRoomComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+      sessionName: "Session" + this.props.interviewTimeId,
+      userName: this.props.userName,
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -433,38 +439,55 @@ class VideoRoomComponent extends Component {
 
   async switchCamera() {
     try {
-      const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
-            audioSource: undefined,
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: localUser.isAudioActive(),
-            publishVideo: localUser.isVideoActive(),
-            mirror: true,
+      if (!this.state.isRecord) {
+        axios
+          .post(
+            "https://intube.store:443/openvidu/api/recordings/start",
+            JSON.stringify({
+              session: "Session" + this.props.interviewTimeId,
+              name: "MyRecording",
+              hasAudio: true,
+              hasVideo: true,
+              outputMode: "COMPOSED",
+              recordingLayout: "BEST_FIT",
+              resolution: "1280x720",
+              frameRate: 25,
+              shmSize: 536870912,
+              ignoreFailedStreams: false,
+            }),
+            {
+              headers: {
+                Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+                "Content-type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            this.setState({ isRecord: true });
+            this.setState({ recordId: response.data.id });
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error(error);
           });
-
-          //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(
-            this.state.localUser.getStreamManager()
-          );
-          await this.state.session.publish(newPublisher);
-          this.state.localUser.setStreamManager(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice,
-            localUser: localUser,
+      } else {
+        axios
+          .post(
+            "https://intube.store:443/openvidu/api/recordings/stop/" +
+              this.state.recordId,
+            {},
+            {
+              headers: {
+                Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data.url);
+          })
+          .catch((error) => {
+            console.error(error);
           });
-        }
       }
     } catch (e) {
       console.error(e);
@@ -601,22 +624,11 @@ class VideoRoomComponent extends Component {
           toggleChat={this.toggleChat}
           handleMicState={this.handleMicState}
         />
-
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         />
-
-        <div id="layout" className="bounds">
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                <StreamComponent
-                  user={localUser}
-                  handleNickname={this.nicknameChanged}
-                />
-              </div>
-            )}
+        <div id="layout" className="bounds2">
           {this.state.subscribers.map((sub, i) => (
             <div
               key={i}
@@ -644,6 +656,52 @@ class VideoRoomComponent extends Component {
               </div>
             )}
         </div>
+        <div id="layout" className="bounds">
+          {localUser !== undefined &&
+            localUser.getStreamManager() !== undefined && (
+              <div className="OT_root OT_publisher custom-class" id="localUser">
+                <StreamComponent
+                  user={localUser}
+                  handleNickname={this.nicknameChanged}
+                />
+              </div>
+            )}
+        </div>
+
+        <Card sx={{ minWidth: 275, mt: 2 }}>
+          <CardContent
+            sx={{
+              textAlign: "center",
+              height: "40px",
+            }}
+          >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <NowQuestion
+                  user={localUser}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
+                  question={this.props.state}
+                  setQuestId={this.props.setQuestId}
+                />
+              )}
+          </CardContent>
+        </Card>
+        <Card sx={{ minWidth: 275, mt: 2 }}>
+          <CardContent sx={{}}>
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <NowAnswer
+                  user={localUser}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
+                  myAnswer={this.props.myAnswer}
+                />
+              )}
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -685,7 +743,9 @@ class VideoRoomComponent extends Component {
         "conference/sessions/" +
         sessionId +
         "/connections",
-      {},
+      {
+        role: this.role,
+      },
       {
         headers: { "Content-Type": "application/json" },
       }
