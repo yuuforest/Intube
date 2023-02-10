@@ -48,11 +48,13 @@ export default function AnnouncementSteps(props) {
   const [needPoint, setNeedPoint] = React.useState();
 
   const step1Handeler = (e, data) => {
+    console.log(data);
     setInterview((interview) => {
       let newCondition = { ...interview };
       newCondition.category_name = data;
       return newCondition;
     });
+    props.setValue(1);
   };
 
   const step2Handeler = (

@@ -6,9 +6,15 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import QuestionerTag from "components/questioner/QuestionerTag";
+import { useNavigate } from "react-router-dom";
 import http from "api/Http";
 
 export default function QuestionerAllListitem(props) {
+  const navigate = useNavigate();
+  function handlePage(e, link) {
+    console.log(link);
+    navigate(link);
+  }
   const onClickDeadline = (e) => {
     http
       .put(
@@ -24,6 +30,7 @@ export default function QuestionerAllListitem(props) {
       )
       .then((response) => {
         props.getInterviewList();
+        handlePage(e, "/questioner");
       })
       .catch((error) => {
         console.error(error);

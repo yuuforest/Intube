@@ -56,6 +56,7 @@ export default function AnswererMyPage() {
         },
       })
       .then((response) => {
+        console.log(response.data);
         setUserInfo(response.data);
         setCardInfo({
           match: response.data.conduct_interview_count,
