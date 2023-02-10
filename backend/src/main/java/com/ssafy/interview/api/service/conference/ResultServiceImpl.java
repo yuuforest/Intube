@@ -96,16 +96,23 @@ public class ResultServiceImpl implements ResultService {
         // dialog 가져오기
         List<Dialog> dialogList = dialogRepository.findAllByConferenceId(conference_id);
         HashMap<Long, String> resultMap = new HashMap<>();
-        String text = null;
         String header = null;
+        String content = null;
         for (Dialog curDialog : dialogList) {
             Long question_id = curDialog.getQuestion() == null ? 0 : curDialog.getQuestion().getId();
-            if(curDialog.getUser().getId() != user_id){
-//                header = "[답변자 - " + curDialog.getUser().getName()+ "  /  "+curDialog.getTimestamp()+;
+            if (curDialog.getUser().getId() != user_id) { // header 갱신
+                header = "[" + curDialog.getUser().getName() + "(답변자)" + "   /   " + curDialog.getTimestamp() + "]" + "<br>";
+            } else {
+                header = "[" + curDialog.getUser().getName() + "(질문자)" + "   /   " + curDialog.getTimestamp() + "]" + "<br>";
             }
+            content = ": " + curDialog.getContent() + "<br><br>";
 
-            if(!resultMap.containsKey(question_id)){ // question_id가 없는 경우
-//                text = curDialog.getUser().getName() + ""
+            if (!resultMap.containsKey(question_id)) { // question_id의 존재에 따라 text를 계속 저장해준다
+                resultMap.put(question_id, header + content);
+            } else {
+                String text = resultMap.get(question_id);
+                text += (header + content);
+                resultMap.replace(question_id, text);
             }
         }
 
