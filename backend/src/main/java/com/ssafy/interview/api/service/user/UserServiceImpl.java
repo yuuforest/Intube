@@ -208,6 +208,13 @@ public class UserServiceImpl implements UserService {
         user.setTemperature(user.getTemperature()+temperature);
     }
 
+    @Transactional
+    @Override
+    public void updateIsKakao(String email) throws Exception {
+        User user = userRepository.findByEmail(email).get();
+        user.setIs_kakao(1);
+    }
+
     /**
      * 내가 작성한 인터뷰가 맞는지 여부 확인
      *

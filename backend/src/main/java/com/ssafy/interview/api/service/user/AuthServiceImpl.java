@@ -187,28 +187,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, String> getKakaoRegisterInfo(KakaoUserInfoDto kakaoUserInfoDto) {
+    public int getKakaoRegisterInfo(KakaoUserInfoDto kakaoUserInfoDto) {
         String email = kakaoUserInfoDto.getKakaoAccount().getEmail();
 
-        Optional<User> user = userRepository.findKakaoUser(email, 1);
+        Optional<User> user = userRepository.findKakaoUser(email, 0);
         if (user.isPresent()) {
-            return null;
+            // 일반 회원가입을 한 회원
+            return 201;
         }
 
-        String nickname = null;
-        String profile = null;
-        if (kakaoUserInfoDto.getKakaoProperties() != null) {
-            nickname = kakaoUserInfoDto.getKakaoProperties().getNickname();
-            profile = kakaoUserInfoDto.getKakaoProperties().getProfileImage();
-        }
-        String gender = kakaoUserInfoDto.getKakaoAccount().getGender();
-
-        Map<String, String> response = new HashMap<>();
-        response.put("email", email);
-        response.put("nickname", nickname);
-        response.put("profile", profile);
-        response.put("gender", gender);
-        return response;
+        return 200;
     }
 
     @Override

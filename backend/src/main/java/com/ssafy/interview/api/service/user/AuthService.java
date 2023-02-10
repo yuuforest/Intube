@@ -22,7 +22,7 @@ public interface AuthService {
 
     String issueToken(Cookie cookie) throws NullPointerException;
 
-    Map<String, String> getKakaoRegisterInfo(KakaoUserInfoDto kakaoUserInfoDto);
+    int getKakaoRegisterInfo(KakaoUserInfoDto kakaoUserInfoDto);
 
     // redis에 저장된 값 가져오기
     String getAuthKey(String key);
