@@ -29,7 +29,7 @@ export default function QuestionLIst(props) {
   return (
     <div>
       {positionId === 1 ? (
-        <Card sx={{ mt: 10, mr: 3, maxWidth: 300 }}>
+        <Card sx={{ mt: 12, ml: 3, mr: 5, width: 300 }}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               질문리스트
