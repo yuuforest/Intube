@@ -1,6 +1,7 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.result.DialogModifyReq;
+import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
@@ -136,6 +137,11 @@ public class ResultServiceImpl implements ResultService {
             conferenceResultRepository.save(ConferenceResult.builder().content(entry.getValue()).conference(conference).question(entry.getKey()).build());
         }
 
+    }
+
+    @Override
+    public List<ConferenceResultDetailRes> searchConferencResult(Long user_id, Long interview_time_id) {
+        return null;
     }
 
     /**
