@@ -106,6 +106,7 @@ export default function Conference() {
           <QuestionLIst
             handleChangeQuestion={handleChangeQuestion}
             interview={interview}
+            positionId={positionId}
           />
         </Grid>
         <Grid item xs={10}>
