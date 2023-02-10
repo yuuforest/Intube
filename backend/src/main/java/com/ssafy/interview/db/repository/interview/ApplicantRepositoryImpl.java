@@ -44,7 +44,7 @@ public class ApplicantRepositoryImpl implements ApplicantRepositoryCustom {
                 .select(new QApplicantDetailRes(qApplicant, qUser))
                 .from(qApplicant)
                 .leftJoin(qApplicant.user, qUser)
-                .where(qApplicant.interviewTime.id.eq(interview_time_id), qApplicant.applicantState.in(1, 2))
+                .where(qApplicant.interviewTime.id.eq(interview_time_id))
                 .fetch();
     }
 
