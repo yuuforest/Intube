@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.Optional;
+
 @Data
 @AllArgsConstructor
 @DynamicInsert
@@ -32,8 +34,10 @@ public class ConferenceResultRes {
     public ConferenceResultRes(ConferenceResult conferenceResult, Question question) {
         this.id = conferenceResult.getId();
         this.result_content = conferenceResult.getContent();
-        this.question_id = question.getId();
-        this.question_content = question.getContent();
+        if (question != null) {
+            this.question_id = question.getId();
+            this.question_content = question.getContent();
+        }
     }
 
 }

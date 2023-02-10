@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel("ConferenceResultRes")
 public class ConferenceResultDetailRes {

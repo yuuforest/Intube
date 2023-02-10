@@ -16,5 +16,5 @@ public interface ResultService {
 
     // conference 종료 시 conference result 생성
     void createConferencResult(Long user_id, Long interview_id, Long interview_time_id);
-    List<ConferenceResultDetailRes> searchConferencResult(Long user_id, Long interview_time_id);
+    ConferenceResultDetailRes searchConferencResult(Long user_id, Long interview_id, Long interview_time_id);
 }

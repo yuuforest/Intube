@@ -2,6 +2,7 @@ package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
+import com.ssafy.interview.api.response.result.ConferenceResultRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
@@ -11,6 +12,7 @@ import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.ConferenceRepository;
 import com.ssafy.interview.db.repository.conference.ConferenceResultRepository;
 import com.ssafy.interview.db.repository.conference.DialogRepository;
+import com.ssafy.interview.db.repository.interview.InterviewRepository;
 import com.ssafy.interview.db.repository.interview.InterviewTimeRepository;
 import com.ssafy.interview.db.repository.user.UserRepository;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
@@ -34,6 +36,8 @@ public class ResultServiceImpl implements ResultService {
     ConferenceRepository conferenceRepository;
     @Autowired
     ConferenceResultRepository conferenceResultRepository;
+    @Autowired
+    InterviewRepository interviewRepository;
 
     @Override
     public List<DialogRes> dialogInAll(Long conferenceID) {
@@ -94,7 +98,7 @@ public class ResultServiceImpl implements ResultService {
         User user = userRepository.findById(user_id).get();
 
         // 중복 종료 체크!!!
-        DuplicateInterviewTimeModifyState(user.getName(), user_id, interview_time_id);
+        DuplicateInterviewTimeModifyState(user.getName(), interview_time_id);
 
         Conference conference = conferenceRepository.findByInterviewTime_Id(interview_time_id).get();
 
@@ -140,20 +144,40 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public List<ConferenceResultDetailRes> searchConferencResult(Long user_id, Long interview_time_id) {
-        return null;
+    public ConferenceResultDetailRes searchConferencResult(Long user_id, Long interview_id, Long interview_time_id) {
+        User user = userRepository.findById(user_id).get();
+
+        // 내가 작성한 인터뷰가 맞는지 여부 확인
+        equalOwnerIdAndUserId(user.getName(), user_id, interview_id);
+
+        ConferenceResultDetailRes conferenceResultDetailRes = conferenceRepository.findConferenceResultDetailRes(interview_time_id);
+        conferenceResultDetailRes.setConferenceResultRes(conferenceResultRepository.findConferenceResultRes(conferenceResultDetailRes.getConference_id()));
+
+        return conferenceResultDetailRes;
     }
 
     /**
-     * 인터뷰 신청여부 중복확인 - 작성자와 동일인인 경우
+     * 이미 끝난 인터뷰 회의방인지 확인
      *
      * @param name              로그인한 유저 이름
-     * @param user_id           중복검사 할 로그인 Id
      * @param interview_time_id 해당 인터뷰 Id
      */
-    private void DuplicateInterviewTimeModifyState(String name, Long user_id, Long interview_time_id) {
+    private void DuplicateInterviewTimeModifyState(String name, Long interview_time_id) {
         if (interviewTimeRepository.existModifyStateByState(interview_time_id)) {
             throw new InterviewTimeModifyResultDuplicationException(name + "님!");
+        }
+    }
+
+    /**
+     * 내가 작성한 인터뷰가 맞는지 여부 확인
+     *
+     * @param name         로그인한 유저 이름
+     * @param user_id      중복검사 할 로그인 Id
+     * @param interview_id 해당 인터뷰 Id
+     */
+    private void equalOwnerIdAndUserId(String name, Long user_id, Long interview_id) {
+        if (!interviewRepository.existInterviewByUserId(user_id, interview_id)) {
+            throw new ApplicantAndOwnerDuplicationException(name + "님! 작성자와 일치하지않아 권한이 없습니다.");
         }
     }
 

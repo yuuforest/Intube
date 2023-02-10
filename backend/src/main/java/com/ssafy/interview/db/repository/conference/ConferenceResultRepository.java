@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ConferenceResultRepository extends JpaRepository<ConferenceResult, Long> {
+public interface ConferenceResultRepository extends JpaRepository<ConferenceResult, Long>, ConferenceResultRepositoryCustom {
 
 }

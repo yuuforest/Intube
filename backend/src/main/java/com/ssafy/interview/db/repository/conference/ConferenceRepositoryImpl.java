@@ -1,6 +1,29 @@
 package com.ssafy.interview.db.repository.conference;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
+import com.ssafy.interview.api.response.result.QConferenceResultDetailRes;
+import com.ssafy.interview.db.entitiy.conference.QConference;
+import com.ssafy.interview.db.entitiy.conference.QConferenceResult;
+import com.ssafy.interview.db.entitiy.interview.QInterviewTime;
+import com.ssafy.interview.db.entitiy.interview.QQuestion;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
+
+    @Autowired
+    private JPAQueryFactory jpaQueryFactory;
+
+    QConference qConference = QConference.conference;
+    QInterviewTime qInterviewTime = QInterviewTime.interviewTime;
+    @Override
+    public ConferenceResultDetailRes findConferenceResultDetailRes(Long interview_time_id) {
+        return jpaQueryFactory
+                .select(new QConferenceResultDetailRes(qConference))
+                .from(qConference)
+                .where(qConference.interviewTime.id.eq(interview_time_id))
+                .fetchFirst();
+    }
 
 //    @Autowired
 //    private JPAQueryFactory jpaQueryFactory;
