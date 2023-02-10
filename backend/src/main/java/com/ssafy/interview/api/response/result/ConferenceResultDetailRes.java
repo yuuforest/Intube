@@ -33,7 +33,7 @@ public class ConferenceResultDetailRes {
     @QueryProjection
     public ConferenceResultDetailRes(Conference conference) {
         this.conference_id = conference.getId();
-//        this.video_url = conference.get
+        this.video_url = conference.getVideo_url();
     }
 
 }
