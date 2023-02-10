@@ -61,11 +61,10 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional
-    public void endConference(Long conferenceID, String url) {
+    public void endConference(Long conferenceID) {
         // [회의방 종료]
         Conference conference = conferenceRepository.findById(conferenceID).get();
         conference.setActive(0); // Conference 방 종료
-        conference.setVideo_url(url);
     }
 
     @Override
