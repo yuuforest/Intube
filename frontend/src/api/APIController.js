@@ -34,6 +34,7 @@ instance.interceptors.response.use(
       alert("비밀번호 오류");
     }
     if (error.response.status === 401) {
+      console.log("액세스토큰 만료 RefreshToken가져오는 작업");
       axios
         .get(
           "https://intube.store:8443/api/auth/issue",
