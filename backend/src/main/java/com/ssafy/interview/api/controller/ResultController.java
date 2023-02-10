@@ -87,14 +87,13 @@ public class ResultController {
             @ApiResponse(code = 409, message = "사용자 다름"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> createConferenceResult(@RequestParam String email,
-                                                                             @RequestParam Long interview_id,
+    public ResponseEntity<? extends BaseResponseBody> createConferenceResult(@RequestParam Long interview_id,
                                                                              @RequestParam Long interview_time_id,
                                                                              @ApiIgnore Authentication authentication) {
         // 질문자와 다른 인증토큰인 경우
-        if (!email.equals(authService.getEmailByAuthentication(authentication))) {
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "답변자님! 인터뷰가 종료되었습니다!(Result Controller Check)"));
-        }
+//        if (!email.equals(authService.getEmailByAuthentication(authentication))) {
+//            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "답변자님! 인터뷰가 종료되었습니다!(Result Controller Check)"));
+//        }
 
         Long user_id = authService.getIdByAuthentication(authentication);
 
@@ -103,5 +102,21 @@ public class ResultController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
+    @GetMapping("/search")
+    @ApiOperation(value = "conference result 불러오기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 409, message = "사용자 다름"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> searchConferenceResult(@RequestParam Long interview_time_id,
+                                                                             @ApiIgnore Authentication authentication) {
+        Long user_id = authService.getIdByAuthentication(authentication);
+
+        resultService.searchConferencResult(user_id, interview_time_id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
 
 }
