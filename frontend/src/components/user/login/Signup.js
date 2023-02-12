@@ -33,8 +33,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        INTUBE
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -189,7 +189,7 @@ export default function SignUp() {
             }}
           >
             <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              Sign up
+              회원가입
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={9}>
@@ -235,9 +235,7 @@ export default function SignUp() {
                 )}
               </Grid>
               <Grid item xs={2}>
-                {/* {emailSecret ? <Timer /> : false} */}
                 {emailSecret ? timeRender ? <Timer /> : false : false}
-                {/* {} */}
               </Grid>
               <Grid item xs={3}>
                 {emailSecret ? (
@@ -322,6 +320,7 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
+
               <Grid item xs={10}>
                 <TextField
                   name="nickname"
@@ -344,6 +343,7 @@ export default function SignUp() {
                   중복확인
                 </Button>
               </Grid>
+
               <Grid item xs={12}>
                 <FormControl>
                   <FormLabel id="demo-controlled-radio-buttons-group">
@@ -403,7 +403,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/user/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
