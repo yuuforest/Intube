@@ -5,8 +5,8 @@ export default class NowQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messageList: [],
-      message: "",
+      messageList: ["질문이 시작되면 이곳에 질문이 나옵니다"],
+      message: "질문이 시작되면 이곳에 질문이 나옵니다",
     };
     this.chatScroll = React.createRef();
     this.sendQuestion = this.sendQuestion.bind(this);
@@ -48,6 +48,16 @@ export default class NowQuestion extends Component {
       });
     }
 
+    let answer = this.state.message.replace(/ +(?= )/g, "");
+    const data = {
+      answer: answer,
+      name: "질문",
+    };
+    this.props.user.getStreamManager().stream.session.signal({
+      data: JSON.stringify(data),
+      type: "b",
+    });
+
     this.setState({ message: "" });
   }
 
@@ -57,8 +67,14 @@ export default class NowQuestion extends Component {
         {this.state.messageList.map(
           (data, i) =>
             i === this.state.messageList.length - 1 && (
-              <Typography variant="h4" gutterBottom>
-                Q{data.id}. {data.message}
+              <Typography
+                variant="h4"
+                gutterBottom
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                현재 질문 : {data.message}
               </Typography>
             )
         )}

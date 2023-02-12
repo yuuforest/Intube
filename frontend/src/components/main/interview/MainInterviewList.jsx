@@ -2,7 +2,8 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 //
 import MainInterviewListItem from "components/main/interview/MainInterviewListItem";
 //
@@ -19,11 +20,19 @@ export default function MainInterviewList(props) {
                 <MainInterviewListItem interview={interview} />
               </Grid>
             ))}
+          {props.interviewList.length === 0 && (
+            <Alert
+              severity="error"
+              sx={{
+                justifyContent: "center",
+                margin: "auto",
+              }}
+            >
+              검색결과가 없습니다
+            </Alert>
+          )}
         </Grid>
       </Container>
-      {props.interviewList.length === 0 && (
-        <CircularProgress sx={{ position: "absolute", top: "50%" }} />
-      )}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import http from "api/Http";
-import Grid from "@mui/material/Grid";
 import AnnouncementStep4 from "./AnnouncementStep4";
 import AnnouncementStep1 from "./AnnouncementStep1";
 import AnnouncementStep2 from "./AnnouncementStep2";
@@ -103,37 +102,38 @@ export default function AnnouncementSteps(props) {
 
   const step4Handeler = () => {
     http
-      .post("/interviews?questionContentList=", JSON.stringify(interview), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .put(
+        "/user/point",
+        JSON.stringify({
+          email: userInfo.email,
+          point: needPoint,
+          key: 0,
+        }),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then(() => {
         http
-          .put(
-            "/user/point",
-            JSON.stringify({
-              email: userInfo.email,
-              point: needPoint,
-              key: 0,
-            }),
-            {
-              headers: {
-                "Content-type": "application/json;charset=UTF-8",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          )
+          .post("/interviews", JSON.stringify(interview), {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          })
           .then(() => {
             alert("등록성공");
             navigate("/");
           })
           .catch((error) => {
-            console.error(error);
+            console.log(error);
+            alert("입력안한 정보가 있습니다");
           });
       })
       .catch((error) => {
-        console.error(error);
+        alert("포인트가 부족합니다");
       });
   };
 
