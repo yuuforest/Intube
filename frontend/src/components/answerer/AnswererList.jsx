@@ -1,5 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
+import Alert from "@mui/material/Alert";
 import Container from "@mui/material/Container";
 import AnswererListItem from "components/answerer/AnswererListItem";
 import "components/answerer/AnswererList.css";
@@ -14,6 +15,17 @@ export default function AnswererList(props) {
               <AnswererListItem interview={interview} />
             </Grid>
           ))}
+          {props.interviewList.length === 0 && (
+            <Alert
+              severity="error"
+              sx={{
+                justifyContent: "center",
+                margin: "auto",
+              }}
+            >
+              검색결과가 없습니다
+            </Alert>
+          )}
         </Grid>
       </Container>
     </div>

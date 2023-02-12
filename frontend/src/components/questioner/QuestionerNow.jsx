@@ -50,7 +50,25 @@ export default function QuestionerNow(props) {
   useEffect(() => {
     getInterviewList();
     getAnswererList();
+    getUser();
   }, [questionindex, timeindex, props.value]);
+
+  const [userInfo, setUserInfo] = useState([]);
+  const getUser = () => {
+    http
+      .get("/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("userInfo", response.data);
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const getInterviewList = () => {
     http
@@ -118,7 +136,7 @@ export default function QuestionerNow(props) {
       });
 
     navigate("/conference", {
-      state: { interviewId, interviewTimeId, position, conferenceID },
+      state: { interviewId, interviewTimeId, position, conferenceID, userInfo },
     });
   };
   // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)

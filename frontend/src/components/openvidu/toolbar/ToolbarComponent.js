@@ -4,8 +4,9 @@ import "./ToolbarComponent.css";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 
-import Mic from "@mui/icons-material/Mic";
-import MicOff from "@mui/icons-material/MicOff";
+import Button from "@mui/material/Button";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import StopIcon from "@mui/icons-material/Stop";
 import Videocam from "@mui/icons-material/Videocam";
 import VideocamOff from "@mui/icons-material/VideocamOff";
 import Fullscreen from "@mui/icons-material/Fullscreen";
@@ -97,22 +98,31 @@ export default class ToolbarComponent extends Component {
           </div>
 
           <div className="buttonsContent">
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navMicButton"
-              onClick={() => {
-                this.micStatusChanged();
-                this.handleMicState();
-              }}
-            >
-              {localUser !== undefined && localUser.isAudioActive() ? (
-                <Mic />
-              ) : (
-                <MicOff color="secondary" />
-              )}
-            </IconButton>
-
+            {localUser !== undefined && localUser.isAudioActive() ? (
+              <Button
+                color="inherit"
+                variant="outlined"
+                onClick={() => {
+                  this.micStatusChanged();
+                  this.handleMicState();
+                }}
+                startIcon={<StopIcon />}
+              >
+                발언 종료
+              </Button>
+            ) : (
+              <Button
+                color="inherit"
+                variant="outlined"
+                onClick={() => {
+                  this.micStatusChanged();
+                  this.handleMicState();
+                }}
+                startIcon={<PlayArrowIcon />}
+              >
+                발언 시작
+              </Button>
+            )}
             <IconButton
               color="inherit"
               className="navButton"
@@ -125,7 +135,6 @@ export default class ToolbarComponent extends Component {
                 <VideocamOff color="secondary" />
               )}
             </IconButton>
-
             <IconButton
               color="inherit"
               className="navButton"
@@ -137,13 +146,11 @@ export default class ToolbarComponent extends Component {
                 <ScreenShare />
               )}
             </IconButton>
-
             {localUser !== undefined && localUser.isScreenShareActive() && (
               <IconButton onClick={this.stopScreenShare} id="navScreenButton">
                 <StopScreenShare color="secondary" />
               </IconButton>
             )}
-
             <IconButton
               color={this.state.record}
               className="navButton"
