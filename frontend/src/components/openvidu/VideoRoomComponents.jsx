@@ -266,9 +266,27 @@ class VideoRoomComponent extends Component {
   leaveSession() {
     const mySession = this.state.session;
 
-    if (mySession && this.role === "PUBLISHER") {
+    if (mySession) {
       mySession.disconnect();
     }
+
+    axios
+      .delete(
+        "https://intube.store:443/openvidu/api/sessions/" +
+          "Session" +
+          this.props.interviewTimeId,
+        {
+          headers: {
+            Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     // Empty all properties...
     this.OV = null;
@@ -325,7 +343,8 @@ class VideoRoomComponent extends Component {
 
   subscribeToStreamCreated() {
     this.state.session.on("streamCreated", (event) => {
-      const subscriber = this.state.session.subscribe(event.stream, undefined);
+      const subscriber = this.state.session.subscribe(event.stream);
+
       // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
@@ -343,13 +362,6 @@ class VideoRoomComponent extends Component {
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
       }
-    });
-    this.state.session.on("publisherStartSpeaking", (event) => {
-      console.log("User " + event.connection.connectionId + " start speaking");
-    });
-
-    this.state.session.on("publisherStopSpeaking", (event) => {
-      console.log("User " + event.connection.connectionId + " stop speaking");
     });
   }
 
@@ -755,9 +767,7 @@ class VideoRoomComponent extends Component {
         "conference/sessions/" +
         sessionId +
         "/connections",
-      {
-        role: this.role,
-      },
+      {},
       {
         headers: { "Content-Type": "application/json" },
       }
