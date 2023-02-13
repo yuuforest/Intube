@@ -38,4 +38,12 @@ public interface InterviewTimeRepositoryCustom { // 인터뷰 생성 Method
      * @return 없으면 Null 있으면 해당 객체 결과
      */
     Boolean existModifyStateByState(Long interview_time_id);
+
+    /**
+     * 인터뷰 시간 중 아직 평가나 결과 수정이 안된 시간이 있는지 확인
+     *
+     * @param interview_id 해당 인터뷰 Id
+     * @return 검색 결과
+     */
+    Boolean existInterviewTimeByInterviewId(Long interview_id);
 }

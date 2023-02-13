@@ -96,6 +96,7 @@ public class ApplicantRepositoryImpl implements ApplicantRepositoryCustom {
         Long fetchOne = jpaQueryFactory
                 .select(qApplicant.id)
                 .from(qApplicant)
+//                .leftJoin(qApplicant.interviewTime, qInterviewTime)
                 .where(qApplicant.interviewTime.id.eq(interview_time_id), qApplicant.applicantState.eq(2))
                 .fetchFirst(); // limit 1
 

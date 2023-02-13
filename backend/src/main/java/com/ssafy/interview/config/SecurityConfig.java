@@ -76,6 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/interviews/cancel/**").authenticated()
                 .antMatchers("/interviews/delete").authenticated()
                 .antMatchers("/interviews/interviewer/expired-interview").authenticated()
+                .antMatchers("/interviews/interviewer/finish-interview").authenticated()
+                .antMatchers("/interviews/interviewer/finish-result").authenticated()
                 .antMatchers("/result/create").authenticated()
                 .antMatchers("/result/search").authenticated()
                 .antMatchers("/result/modify").authenticated()
