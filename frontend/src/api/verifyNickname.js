@@ -21,7 +21,7 @@ export async function VerifyNickname(nickname) {
     .then(({ data }) => {
       if (data.statusCode === 200) {
         localStorage.setItem("nicknameAuthorize", true);
-        // console.log(localStorage.getItem("nicknameAuthorize"));
+        console.log(localStorage.getItem("nicknameAuthorize"));
         alert("사용 가능한 닉네임입니다.");
       }
     })

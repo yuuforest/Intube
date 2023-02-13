@@ -20,6 +20,7 @@ import http from "api/Http";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { VerifyNickname } from "api/verifyNickname";
+import { DeleteUser } from "components/user/login/DeleteUser";
 import swal from "sweetalert2";
 // import { Paper } from "@mui/material";
 
@@ -189,6 +190,27 @@ export default function SignUp() {
         // console.log(data);
         if (data.statusCode === 200) {
           console.log("변경완료");
+          swal
+            .fire({
+              title: "프로필 사진이 변경되었습니다.",
+              text: "메인으로 이동하시겠습니까?",
+              icon: "success",
+
+              showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+              confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+              cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
+              confirmButtonText: "메인으로 이동", // confirm 버튼 텍스트 지정
+              cancelButtonText: "계속 진행하기", // cancel 버튼 텍스트 지정
+
+              // reverseButtons: true, // 버튼 순서 거꾸로
+            })
+            .then(result => {
+              // 만약 Promise리턴을 받으면,
+              if (result.isConfirmed) {
+                // 만약 모달창에서 confirm 버튼을 눌렀다면
+                navigate("/"); // 에러페이지로 이동
+              }
+            });
         }
       })
       .catch(e => {
@@ -226,7 +248,9 @@ export default function SignUp() {
         }
       });
   };
-  function deleteUser() {}
+  function deleteUser() {
+    DeleteUser();
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -241,17 +265,20 @@ export default function SignUp() {
           }}
         >
           <form onSubmit={formik.handleSubmit}>
-            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
-            <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{ mb: 2, display: "center" }}
+            >
               회원정보 수정
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={2}></Grid>
+              <Grid item xs={10}>
                 <img src={userImg} alt="왜안돼"></img>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={3}></Grid>
+              <Grid item xs={9}>
                 <input
                   type="file"
                   accept="image/jpg,impge/png,image/jpeg,image/gif"
@@ -262,7 +289,8 @@ export default function SignUp() {
                   onChange={onChangeImg}
                 ></input>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}></Grid>
+              <Grid item xs={8}>
                 <Button onClick={handleImg} variant="contained">
                   프로필 변경하기
                 </Button>

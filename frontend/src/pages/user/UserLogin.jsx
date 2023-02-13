@@ -13,7 +13,8 @@ import * as yup from "yup";
 import http from "api/Http";
 import { KAKAO_AUTH_URL } from "components/user/login/OAuth";
 import swal from "sweetalert2";
-// import { Paper } from "@mui/material";
+import kakaoImg from "assets/kakaoLogin.png";
+import "./UserLogin.css";
 
 function Copyright(props) {
   return (
@@ -24,8 +25,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        INTUBE
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -94,8 +95,13 @@ export default function SignIn() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+    <ThemeProvider className="back" theme={theme}>
+      <Container
+        className="contain"
+        component="main"
+        maxWidth="xs"
+        sx={{ mt: 10 }}
+      >
         <form onSubmit={formik.handleSubmit}>
           <CssBaseline />
           <Box
@@ -104,13 +110,14 @@ export default function SignIn() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              // border: "1px solid black",
             }}
           >
             {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar> */}
             <Typography component="h1" variant="h5">
-              Sign in
+              LOG IN
             </Typography>
 
             <TextField
@@ -149,21 +156,21 @@ export default function SignIn() {
               label="Remember me"
             /> */}
             <Grid container>
+              <Grid item xs={1}></Grid>
               <Grid item xs={4}>
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <Button
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 2, mb: 2 }}
+                >
                   LOG IN
                 </Button>
               </Grid>
-              <Grid item xs={8}>
-                <Button
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  // href={KAKAO_AUTH_URL}
-                  onClick={kakaoLogin}
-                >
-                  Log in for Kakao
-                </Button>
+              <Grid item xs={4} sx={{ mt: 2, mb: 2 }}>
+                <img src={kakaoImg} alt="d" onClick={kakaoLogin}></img>
               </Grid>
+              <Grid item xs={2}></Grid>
             </Grid>
             <Grid container>
               <Grid item xs>
