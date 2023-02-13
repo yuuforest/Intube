@@ -98,7 +98,7 @@ export default function AnswerWrite(props) {
 
   return (
     <div>
-      { positionId === 1 ?
+      {/* { positionId === 1 ?
       <div>
         <p>Microphone: {listening ? "on" : "off"}</p>
         <p>{micState ? "적용" : "안됨"}</p>
@@ -106,7 +106,7 @@ export default function AnswerWrite(props) {
       </div>
       :
       null
-      }
+      } */}
     </div>
   );
 }

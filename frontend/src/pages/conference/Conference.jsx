@@ -8,7 +8,7 @@ import {
   setMic,
   // micState
 } from "store/counter/micSlice.js";
-import http from "api/Http";
+import instance from "api/APIController";
 
 export default function Conference() {
   const location = useLocation();
@@ -38,7 +38,7 @@ export default function Conference() {
 
   const storeResult = () => {
     if (positionId === 1) {
-      http
+      instance
       .post("/result/create?interview_id=" + interviewId + '&interview_time_id=' + interviewTimeId,
       {},
       {
@@ -47,7 +47,7 @@ export default function Conference() {
         },
       })
       .then(() => {
-        http
+        instance
           .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
           '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
           {}, 
@@ -68,7 +68,7 @@ export default function Conference() {
       }
       )
     } else {
-        http
+      instance
         .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
         '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
         {}, 
