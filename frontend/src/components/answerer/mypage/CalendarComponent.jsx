@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment"
-// import GetList from "../../../json/answerer_list_state2.json";
 import './CalendarComponent.css'
 import MatchList from './MatchList.jsx';
 
 export default function CalendarComponent(props) {
   const [value, onChange] = useState(new Date());
   const interviewList = props.calendarInfo
-  console.log('check', interviewList[0].interviewTimeRes.interview_start_time.slice(0,10))
 
   return (
-    <div
-    // style={{float:'right', margin:'0 200px'}}
-    >
+    <div>
       <Calendar
       id="calendar"
       onChange={onChange}
