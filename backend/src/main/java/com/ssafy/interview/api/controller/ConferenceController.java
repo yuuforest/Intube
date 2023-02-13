@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -253,9 +252,8 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<LocalDateTime> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
-        // [Conference Table] conference 시작 시간을 조회
-        LocalDateTime time = conferenceService.getStartTimeInConference(conferenceID);
+    public ResponseEntity<String> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+        String time = conferenceService.getStartTimeInConference(conferenceID).toString().split("T")[1];
         return ResponseEntity.status(200).body(time);
     }
 }
