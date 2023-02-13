@@ -20,7 +20,6 @@ const marks = [
 ];
 
 // 나중에 정보 불러오고 수정하기
-const mytemp = 45.2;
 // if (mytemp > 30) {
 //   color = yellow[600]
 // } else {
@@ -31,7 +30,8 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function DiscreteSliderMarks() {
+export default function DiscreteSliderMarks(props) {
+  const mytemp = props.temp;
   return (
     <Box sx={{ width: 300 }}>
       <Slider

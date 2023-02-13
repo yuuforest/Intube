@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 // import { useLocation } from "react-router-dom";
 import CalendarComponent from "components/answerer/mypage/CalendarComponent";
 import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
 import CardList from "components/answerer/mypage/CardList";
-import Temperature from "components/answerer/mypage/Temperature";
+import Box from "@mui/material/Box";
 import instance from "api/APIController";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Header from "components/common/Header";
+import Typography from "@mui/material/Typography";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import "./AnswererMyPage.css";
 
@@ -105,25 +109,102 @@ export default function AnswererMyPage() {
   return (
     <div className="Mypage">
       <Header></Header>
-      <div id="sidebar"></div>
-      <div id="info">
-        <h1>{userName}</h1>
-        <h3>
-          {userAge}세 / {userInfo.gender === "M" ? "남성" : "여성"}
-        </h3>
-        <h3>{userIntro}</h3>
-        <Grid container spacing={6}>
-          <Grid item xs={6}>
-            <CardList cardInfo={cardInfo} routeInfo={routeInfo} />
-            <h2 style={{ color: "#10316B" }}>인터뷰 온도</h2>
-            <br />
-            <Temperature />
-          </Grid>
-          <Grid item xs={6}>
-            <CalendarComponent position={1} calendarInfo={calendarInfo} />
+      <Grid container spacing={6} justifyContent="space-between" sx={{ mt: 5 }}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Avatar
+                sx={{
+                  width: 240,
+                  height: 240,
+                }}
+                alt="profile"
+                src={
+                  "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
+                  userInfo.profile_url
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <h1>{userName}</h1>
+              <h3>
+                {userAge}세 / {userInfo.gender === "M" ? "남성" : "여성"}
+              </h3>
+              <h3>{userIntro}</h3>
+              <Avatar sx={{ mr: 2, mt: 2, float: "left" }}>
+                <AttachMoneyIcon />
+              </Avatar>
+              <Typography variant="h4" sx={{ mt: 2 }}>
+                {userInfo.point
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <CardList cardInfo={cardInfo} routeInfo={routeInfo} />
+              <Typography variant="h4" sx={{ my: 3, color: "#10316B" }}>
+                인터뷰 온도
+              </Typography>
+              <Box
+                sx={{
+                  width: userInfo.temperature + "%",
+                  textAlign: "right",
+                  height: 10,
+                }}
+              >
+                {userInfo.temperature}℃
+              </Box>
+              <Box
+                sx={{
+                  width: userInfo.temperature + "%",
+                  textAlign: "right",
+                  color: "primary.dark",
+                  height: 30,
+                }}
+              >
+                <ArrowDropDownIcon sx={{ fontSize: 40 }} />
+              </Box>
+
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "95%",
+                  height: 30,
+                  borderRadius: 20,
+                  backgroundColor: "lightgrey",
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    width: userInfo.temperature + "%",
+                    height: 30,
+                    borderRadius: 20,
+                    backgroundColor: "primary.dark",
+                  }}
+                />
+              </Box>
+            </Grid>
           </Grid>
         </Grid>
-      </div>
+        <Grid item xs={4}>
+          <CalendarComponent position={1} calendarInfo={calendarInfo} />
+        </Grid>
+        <Grid item xs={1}></Grid>
+      </Grid>
+
+      <Grid
+        container
+        spacing={6}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{ mt: 3 }}
+      >
+        <Grid item xs={2}></Grid>
+        <Grid item xs={5}></Grid>
+        <Grid item xs={5}></Grid>
+      </Grid>
     </div>
   );
 }

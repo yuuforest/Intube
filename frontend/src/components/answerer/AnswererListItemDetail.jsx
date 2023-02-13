@@ -13,6 +13,7 @@ import InterviewTag from "components/common/InterviewTag";
 import "components/main/interview/MainInterviewListItemDetail.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function InterviewListItemDetail(props) {
   const menu = [
@@ -98,6 +99,39 @@ export default function InterviewListItemDetail(props) {
         console.error(error);
       });
   };
+  const handleDelete = () => {
+    props.setOpen(false);
+    Swal.fire({
+      title: "정말로 취소 하시겠습니까?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "예",
+      denyButtonText: "아니오",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        instance
+          .delete("/interviews/cancel/" + props.interview.interviewTimeRes.id, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          })
+          .then((response) => {
+            props.getInterviewList();
+            Swal.fire({
+              title: "취소완료",
+              text: "",
+              icon: "success",
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (result.isDenied) {
+        Swal.fire("네", "", "info");
+      }
+    });
+  };
 
   return (
     <Dialog
@@ -126,7 +160,7 @@ export default function InterviewListItemDetail(props) {
                   {menu.title}
                 </Typography>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={9} sx={{ my: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   {menu.content}
                 </Typography>
@@ -171,7 +205,7 @@ export default function InterviewListItemDetail(props) {
 
       <DialogActions>
         {props.interview.applicant_state === 1 && (
-          <Button onClick={handleClose}>취소하기</Button>
+          <Button onClick={handleDelete}>취소하기</Button>
         )}
         {meetingIn
           ? props.interview.applicant_state === 2 && (

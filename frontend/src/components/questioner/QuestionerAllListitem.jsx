@@ -71,6 +71,40 @@ export default function QuestionerAllListitem(props) {
       });
   };
 
+  const onClickDelete = (e) => {
+    Swal.fire({
+      title: "정말로 삭제하시겠습니까?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "삭제",
+      denyButtonText: `취소`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        http
+          .delete("/interviews/delete?interview_id=" + props.interview.id, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          })
+          .then((response) => {
+            props.getInterviewList();
+            Swal.fire({
+              title: "삭제완료",
+              text: "",
+              icon: "success",
+            });
+            handlePage(e, "/questioner");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (result.isDenied) {
+        Swal.fire("취소되었습니다", "", "info");
+      }
+    });
+  };
+
   return (
     <Accordion>
       <AccordionSummary
@@ -108,7 +142,7 @@ export default function QuestionerAllListitem(props) {
           </Grid>
           <Grid item xs={5}>
             <div>
-              {props.interview.interview_state !== 6 && (
+              {props.interview.interview_state === 4 && (
                 <div>
                   <Typography
                     variant="subtitle1"
@@ -162,6 +196,7 @@ export default function QuestionerAllListitem(props) {
                     |
                   </Typography>
                   <Typography
+                    onClick={onClickDelete}
                     variant="subtitle1"
                     gutterBottom
                     sx={{
@@ -171,7 +206,7 @@ export default function QuestionerAllListitem(props) {
                       float: "right",
                     }}
                   >
-                    복사
+                    삭제
                   </Typography>
                 </div>
               )}
