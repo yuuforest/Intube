@@ -8,6 +8,7 @@ import {
   setMic,
   // micState
 } from "store/counter/micSlice.js";
+import http from "api/Http";
 
 export default function Conference() {
   const location = useLocation();
@@ -16,9 +17,7 @@ export default function Conference() {
   const interviewTimeId = location.state.interviewTimeId;
   const positionId = location.state.position;
   const conferenceID = location.state.conferenceID;
-
   const [questId, setQuestId] = useState(undefined);
-
   const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
 
   const [micState, setMicState] = React.useState(true);
@@ -36,10 +35,60 @@ export default function Conference() {
 
   const dispatch = useDispatch();
 
+
+  const storeResult = () => {
+    if (positionId === 1) {
+      http
+      .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
+      '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then(() => {
+        localStorage.removeItem('historyID')
+        http
+          .post("/result/create?interview_id=" + interviewId + '&interview_time_id=' + interviewTimeId,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+          .then(() => {
+            console.log('필립까지 완료')
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          )
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    } else {
+      http
+      .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
+      '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then(() => {
+        localStorage.removeItem('historyID')
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+  }
+
   useEffect(() => {
     dispatch(setMic());
-    console.log("하이");
-    console.log(userInfo);
   }, [micState, dispatch]);
 
   return (
@@ -57,6 +106,8 @@ export default function Conference() {
             positionId={positionId}
             interviewId={interviewId}
             handleChangeQuestion={handleChangeQuestion}
+            conferenceId={conferenceID}
+            storeResult={storeResult}
           ></VideoRoomComponents>
         </Grid>
       </Grid>

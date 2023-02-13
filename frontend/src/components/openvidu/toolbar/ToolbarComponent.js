@@ -19,6 +19,8 @@ import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import IconButton from "@mui/material/IconButton";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+// import http from "api/Http";
+
 
 // import { connect } from 'react-redux';
 // import * as actions from 'redux/actions/stateChange';
@@ -38,6 +40,12 @@ export default class ToolbarComponent extends Component {
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
+    this.storeResult = this.storeResult.bind(this);
+    this.storeResult = this.storeResult.bind(this);
+  }
+
+  storeResult() {
+    this.props.storeResult();
   }
 
   handleMicState() {
@@ -82,8 +90,8 @@ export default class ToolbarComponent extends Component {
   render() {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    // const positionId = this.props.positionId;
     // const { storeMic, changeStoreState } = this.props
-
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
@@ -172,7 +180,7 @@ export default class ToolbarComponent extends Component {
             <IconButton
               color="secondary"
               className="navButton"
-              onClick={this.leaveSession}
+              onClick={() => {this.leaveSession(); this.storeResult();}}
               id="navLeaveButton"
             >
               <PowerSettingsNew />
