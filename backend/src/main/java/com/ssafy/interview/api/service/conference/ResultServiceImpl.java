@@ -182,6 +182,13 @@ public class ResultServiceImpl implements ResultService {
         return dialogRepository.findDialogDetailRes(conference.getId());
     }
 
+    @Override
+    @Transactional
+    public void deleteDialog(Long dialog_id) {
+        // 해당 Dialog 삭제
+        dialogRepository.deleteById(dialog_id);
+    }
+
     /**
      * 이미 끝난 인터뷰 회의방인지 확인
      *
