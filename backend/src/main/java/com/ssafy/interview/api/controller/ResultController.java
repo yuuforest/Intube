@@ -134,7 +134,7 @@ public class ResultController {
     }
 
     @GetMapping("/search/dialog")
-    @ApiOperation(value = "conference result 수정하기 위해 불러오기")
+    @ApiOperation(value = "dialog 수정하기 위해 불러오기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 404, message = "사용자 없음"),
@@ -147,6 +147,18 @@ public class ResultController {
         Long user_id = authService.getIdByAuthentication(authentication);
 
         return ResponseEntity.status(200).body(resultService.searchDialogDetailRes(user_id, interview_id, interview_time_id));
+    }
+
+    @DeleteMapping("/delete/dialog")
+    @ApiOperation(value = "해당 결과 내용 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 403, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteDialog(@RequestParam Long dialog_id, @ApiIgnore Authentication authentication) {
+        resultService.updateConferenceResult(resultModifyReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
 }

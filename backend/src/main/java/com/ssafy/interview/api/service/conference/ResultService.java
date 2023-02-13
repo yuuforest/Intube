@@ -22,4 +22,5 @@ public interface ResultService {
     ConferenceResultDetailRes searchConferenceResult(Long user_id, Long interview_id, Long interview_time_id);
     void updateConferenceResult(ResultModifyReq resultModifyReq);
     List<DialogDetailRes> searchDialogDetailRes(Long user_id, Long interview_id, Long interview_time_id);
+    void deleteDialog(Long dialog_id);
 }
