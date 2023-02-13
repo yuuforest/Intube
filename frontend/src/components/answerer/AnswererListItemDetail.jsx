@@ -73,7 +73,7 @@ export default function InterviewListItemDetail(props) {
       )
       .then((response) => {
         console.log("컨퍼런스 아이디", response.data.conferenceID);
-        localStorage.setItem('historyID', response.data.historyID)
+        localStorage.setItem("historyID", response.data.historyID);
         setConferenceID(response.data.conferenceID);
         setMeetingIn(true);
       })
@@ -122,10 +122,14 @@ export default function InterviewListItemDetail(props) {
               justifyContent="center"
             >
               <Grid item xs={3}>
-                <p>{menu.title} : </p>
+                <Typography variant="subtitle1" gutterBottom>
+                  {menu.title}
+                </Typography>
               </Grid>
               <Grid item xs={9}>
-                <p> {menu.content}</p>
+                <Typography variant="subtitle1" gutterBottom>
+                  {menu.content}
+                </Typography>
                 {index === 0 && props.interview.applicant_state === 0 ? (
                   <Alert severity="error" sx={{ mb: 1 }}>
                     <Typography variant="subtitle1" gutterBottom>

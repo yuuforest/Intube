@@ -31,7 +31,7 @@ import NowQuestion from "components/conference/NowQuestion";
 import NowAnswer from "components/conference/NowAnswer";
 
 var localUser = new UserModel();
-const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
+const APPLICATION_SERVER_URL = "https://intube.store:443/api/";
 
 class VideoRoomComponent extends Component {
   constructor(props) {
@@ -297,7 +297,7 @@ class VideoRoomComponent extends Component {
     if (this.role === "PUBLISHER") {
       axios
         .delete(
-          "https://intube.store:443/openvidu/api/sessions/" +
+          "https://intube.store:8443/openvidu/api/sessions/" +
             "Session" +
             this.props.interviewTimeId,
           {
@@ -383,26 +383,9 @@ class VideoRoomComponent extends Component {
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
 
-    axios
-      .get(
-        "https://intube.store:443/openvidu/api/sessions/" +
-          "Session" +
-          this.props.interviewTimeId,
-        {
-          headers: {
-            Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        this.navigate("/");
-        window.location.reload();
-      });
-
     this.state.session.on("streamDestroyed", (event) => {
+      console.log(event);
+
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       setTimeout(() => {
@@ -493,7 +476,7 @@ class VideoRoomComponent extends Component {
       if (!this.state.isRecord) {
         axios
           .post(
-            "https://intube.store:443/openvidu/api/recordings/start",
+            "https://intube.store:8443/openvidu/api/recordings/start",
             JSON.stringify({
               session: "Session" + this.props.interviewTimeId,
               name: "MyRecording",
@@ -524,7 +507,7 @@ class VideoRoomComponent extends Component {
       } else {
         axios
           .post(
-            "https://intube.store:443/openvidu/api/recordings/stop/" +
+            "https://intube.store:8443/openvidu/api/recordings/stop/" +
               this.state.recordId,
             {},
             {
@@ -751,26 +734,28 @@ class VideoRoomComponent extends Component {
                   />
                 </div>
               )}
-            <Paper
-              elevation={3}
-              sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
-            >
-              <Typography variant="h6" gutterBottom>
-                인터뷰 내용
-              </Typography>
-              <div className="paper-contents">
-                {localUser !== undefined &&
-                  localUser.getStreamManager() !== undefined && (
-                    <NowAnswer
-                      user={localUser}
-                      chatDisplay={this.state.chatDisplay}
-                      close={this.toggleChat}
-                      messageReceived={this.checkNotification}
-                      myAnswer={this.props.myAnswer}
-                    />
-                  )}
-              </div>
-            </Paper>
+            {this.role === "PUBLISHER" && (
+              <Paper
+                elevation={3}
+                sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
+              >
+                <Typography variant="h6" gutterBottom>
+                  인터뷰 내용
+                </Typography>
+                <div className="paper-contents">
+                  {localUser !== undefined &&
+                    localUser.getStreamManager() !== undefined && (
+                      <NowAnswer
+                        user={localUser}
+                        chatDisplay={this.state.chatDisplay}
+                        close={this.toggleChat}
+                        messageReceived={this.checkNotification}
+                        myAnswer={this.props.myAnswer}
+                      />
+                    )}
+                </div>
+              </Paper>
+            )}
           </Grid>
           <Grid item xs={4}>
             <QuestionLIst
