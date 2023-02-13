@@ -33,7 +33,6 @@ import NowAnswer from "components/conference/NowAnswer";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
 
-
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
@@ -344,7 +343,6 @@ class VideoRoomComponent extends Component {
   }
 
   deleteSubscriber(stream) {
-    console.log("야야야야");
     const remoteUsers = this.state.subscribers;
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream
@@ -384,6 +382,26 @@ class VideoRoomComponent extends Component {
 
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
+
+    axios
+      .get(
+        "https://intube.store:443/openvidu/api/sessions/" +
+          "Session" +
+          this.props.interviewTimeId,
+        {
+          headers: {
+            Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        this.navigate("/");
+        window.location.reload();
+      });
+
     this.state.session.on("streamDestroyed", (event) => {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
