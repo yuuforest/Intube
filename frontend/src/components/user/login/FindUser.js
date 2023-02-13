@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -15,6 +14,7 @@ import http from "api/Http";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import swal from "sweetalert2";
+import Header from "components/common/Header";
 
 function Copyright(props) {
   return (
@@ -120,107 +120,118 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <form onSubmit={findEmail}>
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              아이디 / 비밀번호 찾기
-            </Typography>
+    <div>
+      <Header></Header>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <form onSubmit={findEmail}>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+                아이디 / 비밀번호 찾기
+              </Typography>
 
-            <TextField
-              margin="normal"
-              autoComplete="name"
-              name="name"
-              required
-              fullWidth
-              id="name"
-              label="이름"
-              autoFocus
-              value={idName}
-              onChange={nameChange}
-            />
-            <TextField
-              // margin="normal"
-              name="phone"
-              label="휴대폰 번호"
-              id="phone"
-              required
-              fullWidth
-              autoFocus
-              value={idPhone}
-              onChange={phoneChange}
-            />
-            <Grid container>
-              <Grid item xs={4}>
-                <Button type="submit" variant="contained" sx={{ mt: 2, mb: 2 }}>
-                  아이디 찾기
-                </Button>
+              <TextField
+                margin="normal"
+                autoComplete="name"
+                name="name"
+                required
+                fullWidth
+                id="name"
+                label="이름"
+                autoFocus
+                value={idName}
+                onChange={nameChange}
+              />
+              <TextField
+                // margin="normal"
+                name="phone"
+                label="휴대폰 번호"
+                id="phone"
+                required
+                fullWidth
+                autoFocus
+                value={idPhone}
+                onChange={phoneChange}
+              />
+              <Grid container>
+                <Grid item xs={4}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 2, mb: 2 }}
+                  >
+                    아이디 찾기
+                  </Button>
+                </Grid>
+                <Grid item xs={4} sx={{ mt: 1.5, mb: 2 }}>
+                  {check && <span>{id}</span>}
+                </Grid>
               </Grid>
-              <Grid item xs={4} sx={{ mt: 1.5, mb: 2 }}>
-                {check && <span>{id}</span>}
-              </Grid>
-            </Grid>
-          </Box>
-        </form>
+            </Box>
+          </form>
 
-        <form onSubmit={formik.handleSubmit}>
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              autoComplete="name"
-              name="name"
-              required
-              fullWidth
-              id="name"
-              label="이름"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
-              onBlur={formik.handleBlur}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="이메일 주소"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              onBlur={formik.handleBlur}
-            />
-            <Grid container>
-              <Grid item xs={4}>
-                <Button type="submit" variant="contained" sx={{ mt: 1, mb: 2 }}>
-                  비밀번호 찾기
-                </Button>
+          <form onSubmit={formik.handleSubmit}>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <TextField
+                autoComplete="name"
+                name="name"
+                required
+                fullWidth
+                id="name"
+                label="이름"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+                onBlur={formik.handleBlur}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="이메일 주소"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                onBlur={formik.handleBlur}
+              />
+              <Grid container>
+                <Grid item xs={4}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 1, mb: 2 }}
+                  >
+                    비밀번호 찾기
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
-        </form>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+            </Box>
+          </form>
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
+    </div>
   );
 }

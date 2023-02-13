@@ -74,6 +74,9 @@ export default function SignUp() {
   useEffect(() => {
     setTimeRender(true);
   }, [verifyEmail]);
+
+  // useEffect(() => {}, [verifyEmail]);
+
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -368,7 +371,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControl>
                   <FormLabel id="demo-controlled-radio-buttons-group">
-                    성별(생물학적 성별)
+                    성별
                   </FormLabel>
                   <RadioGroup
                     row

@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -14,8 +13,6 @@ import * as yup from "yup";
 import instance from "api/APIController";
 import { useNavigate } from "react-router";
 import swal from "sweetalert2";
-// import { useEffect, useState } from "react";
-// import http from "api/Http";
 
 function Copyright(props) {
   return (
@@ -149,101 +146,105 @@ export default function ChangePassword() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <form onSubmit={formik.handleSubmit}>
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+    <div>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <form onSubmit={formik.handleSubmit}>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar> */}
-            <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              비밀번호 변경
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="현재 비밀번호"
-                  type="password"
-                  id="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                  helperText={formik.touched.password && formik.errors.password}
-                />
+              <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+                비밀번호 변경
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="현재 비밀번호"
+                    type="password"
+                    id="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.password && Boolean(formik.errors.password)
+                    }
+                    helperText={
+                      formik.touched.password && formik.errors.password
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="newpassword"
+                    label="새로운 비밀번호"
+                    type="password"
+                    id="newpassword"
+                    onChange={formik.handleChange}
+                    value={formik.values.newpassword}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.newpassword &&
+                      Boolean(formik.errors.newpassword)
+                    }
+                    helperText={
+                      formik.touched.newpassword && formik.errors.newpassword
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="newpasswordConfirm"
+                    label="새로운 비밀번호 확인"
+                    type="password"
+                    id="newpasswordConfirm"
+                    onChange={formik.handleChange}
+                    value={formik.values.newpasswordConfirm}
+                    // onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.newpasswordConfirm &&
+                      Boolean(formik.errors.newpasswordConfirm)
+                    }
+                    helperText={
+                      formik.touched.newpasswordConfirm &&
+                      formik.errors.newpasswordConfirm
+                    }
+                    onBlur={formik.handleBlur}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    비밀번호 변경하기
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="newpassword"
-                  label="새로운 비밀번호"
-                  type="password"
-                  id="newpassword"
-                  onChange={formik.handleChange}
-                  value={formik.values.newpassword}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.newpassword &&
-                    Boolean(formik.errors.newpassword)
-                  }
-                  helperText={
-                    formik.touched.newpassword && formik.errors.newpassword
-                  }
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="newpasswordConfirm"
-                  label="새로운 비밀번호 확인"
-                  type="password"
-                  id="newpasswordConfirm"
-                  onChange={formik.handleChange}
-                  value={formik.values.newpasswordConfirm}
-                  // onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.newpasswordConfirm &&
-                    Boolean(formik.errors.newpasswordConfirm)
-                  }
-                  helperText={
-                    formik.touched.newpasswordConfirm &&
-                    formik.errors.newpasswordConfirm
-                  }
-                  onBlur={formik.handleBlur}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  비밀번호 변경하기
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
-        </form>
+            </Box>
+          </form>
 
-        {/* </Box> */}
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+          {/* </Box> */}
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </ThemeProvider>
+    </div>
   );
 }

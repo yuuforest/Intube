@@ -9,7 +9,7 @@ export default function Main() {
     category_name: "",
     word: "",
   });
-  const handleChangeWord = (event) => {
+  const handleChangeWord = event => {
     console.log(event.target.value);
     setSearchCondition({
       category_name: "",
