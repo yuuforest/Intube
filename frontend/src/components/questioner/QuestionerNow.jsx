@@ -157,17 +157,21 @@ export default function QuestionerNow(props) {
         }
       )
       .then((response) => {
-        const conferenceID = response.data.conferenceID
-        localStorage.setItem('historyID', response.data.historyID)
+        const conferenceID = response.data.conferenceID;
+        localStorage.setItem("historyID", response.data.historyID);
         navigate("/conference", {
-          state: { userInfo, interviewId, interviewTimeId, position, conferenceID },
-        })
+          state: {
+            userInfo,
+            interviewId,
+            interviewTimeId,
+            position,
+            conferenceID,
+          },
+        });
       })
       .catch((error) => {
         console.error(error);
       });
-
- 
   };
 
   const openModal = (e, name, email, id) => {
