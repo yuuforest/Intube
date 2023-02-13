@@ -119,7 +119,7 @@ export default function QuestionModify() {
             controls
             className="question-modify-video"
           />
-          <Paper elevation={3} sx={{ mt: 4, ml: 2, height: 320 }}>
+          <Paper elevation={3} sx={{ mt: 4, ml: 2 }}>
             <Typography variant="h6" gutterBottom>
               인터뷰 질문
             </Typography>
