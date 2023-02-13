@@ -22,8 +22,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        INTUBE
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -124,7 +124,7 @@ export default function CheckPassword() {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 15,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -153,7 +153,7 @@ export default function CheckPassword() {
                 <Button
                   type="submit"
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 2, mb: 2 }}
                   onClick={getUserInfo}
                 >
                   비밀번호 확인
@@ -162,7 +162,7 @@ export default function CheckPassword() {
             </Grid>
           </Box>
         </form>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 4, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

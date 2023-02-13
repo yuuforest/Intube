@@ -109,7 +109,7 @@ export default function SignUp() {
           gender: response.gender,
           introduction: response.introduction,
           name: response.name,
-          nickname: response.nickname,
+          nickname: nickname,
           password: response.password,
           phone: response.phone,
           isEmailAuthorized: 1,

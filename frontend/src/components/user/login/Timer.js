@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./Timer.css";
 
 const getSeconds = time => {
   const seconds = Number(time % 60);
@@ -27,8 +28,8 @@ const Timer = () => {
     }
   }, [time]);
   return (
-    <div>
-      <div>
+    <div className="timer">
+      <div className="picker">
         <span>{parseInt(time / 60)}</span>
         <span> : </span>
         <span>{getSeconds(time)}</span>
