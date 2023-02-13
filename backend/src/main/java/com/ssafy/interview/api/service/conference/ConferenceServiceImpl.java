@@ -5,7 +5,6 @@ import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
-import com.ssafy.interview.db.entitiy.interview.Applicant;
 import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.db.repository.conference.*;
@@ -177,15 +176,15 @@ public class ConferenceServiceImpl implements ConferenceService {
         dialogRepository.save(now);
     }
 
-    @Override
-    @Transactional
-    public void modifyApplicantState(Long interviewTimeID) {
-        // [Conference 종료 시, applicant의 상태를 완료인 3으로 변경]
-        List<Applicant> applicants = applicantRepository.findByInterviewTime_Id(interviewTimeID);
-        for (Applicant applicant : applicants) {
-            applicant.setApplicantState(3);
-        }
-    }
+//    @Override
+//    @Transactional
+//    public void modifyApplicantState(Long interviewTimeID) {
+//        // [Conference 종료 시, applicant의 상태를 완료인 3으로 변경]
+//        List<Applicant> applicants = applicantRepository.findByInterviewTime_Id(interviewTimeID);
+//        for (Applicant applicant : applicants) {
+//            applicant.setApplicantState(3);
+//        }
+//    }
 
     @Override
     @Transactional

@@ -108,7 +108,7 @@ public class ConferenceController {
         // [Conference History Table] 답변자를 질문자가 다 내보낸 후, Conference를 종료할 수 있음
         conferenceService.updateConferenceHistory(historyID, 0);
         // [Applicant Table] interview_time_id 가 동일한 applicant의 상태를 3으로 변경
-        conferenceService.modifyApplicantState(interviewTimeID);
+//        conferenceService.modifyApplicantState(interviewTimeID);
         conferenceService.modifyInterviewTimeState(interviewTimeID);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
