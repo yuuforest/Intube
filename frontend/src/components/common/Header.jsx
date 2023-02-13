@@ -42,10 +42,10 @@ export default function Header(props) {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
-      .then((response) => {
+      .then(response => {
         setUserInfo(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response.status === 401) {
           console.log("로그아웃 상태, 토큰이 없어서 401에러가 맞음. 걱정마셈");
         }
@@ -54,7 +54,7 @@ export default function Header(props) {
   const [state, setState] = React.useState({
     left: false,
   });
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = open => event => {
     setState({ ...state, left: open });
   };
 
@@ -83,11 +83,11 @@ export default function Header(props) {
           },
         }
       )
-      .then((response) => {
+      .then(response => {
         console.log(response);
         getUser();
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   };
@@ -95,7 +95,7 @@ export default function Header(props) {
   //로그인 후
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClickAvatar = (event) => {
+  const handleClickAvatar = event => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseAvatar = () => {
@@ -118,7 +118,7 @@ export default function Header(props) {
           src={Logo}
           alt="logo"
           width="130px"
-          onClick={(e) => handlePage(e, "/")}
+          onClick={e => handlePage(e, "/")}
         />
         <Box sx={{ flexGrow: 1 }} />
         {props.handleChangeWord !== undefined && (
@@ -151,143 +151,133 @@ export default function Header(props) {
             size="large"
             color="inherit"
             sx={{ mr: 2 }}
-            onClick={(e) => handlePage(e, "/user/login")}
+            onClick={e => handlePage(e, "/user/login")}
           >
             <LoginOutlinedIcon />
           </IconButton>
         )}
         {/* ------ 로그인 후 -------- */}
 
-        {localStorage.getItem("accessToken") != null &&
-          // <Avatar>{userInfo.email[0]}</Avatar>
-          (console.log(
-            localStorage.getItem("accessToken"),
-            "엑세스토큰 있음. 로그인 상태 맞음?"
-            // eslint-disable-next-line no-sequences
-          ),
-          (
-            <React.Fragment>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Tooltip title="인터뷰 찾기">
-                  <IconButton
-                    size={"large"}
-                    onClick={(e) => handlePage(e, "/")}
-                  >
-                    <ContentPasteSearchIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="공고 만들기">
-                  <IconButton
-                    size={"large"}
-                    onClick={(e) => handlePage(e, "/announcement")}
-                  >
-                    <VideoCallOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Account info">
-                  <IconButton
-                    onClick={handleClickAvatar}
-                    size="small"
-                    sx={{ ml: 2 }}
-                    aria-controls={open ? "account-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                  >
-                    <Avatar
-                      sx={{ width: 42, height: 42 }}
-                      alt="profile"
-                      src={
-                        "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
-                        userInfo.profile_url
-                      }
-                    />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleCloseAvatar}
-                onClick={handleCloseAvatar}
-                sx={{ width: "300px" }}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    width: "500px",
-                    mt: 1.5,
-                    "&:before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <div className="sidebar-profile">
+        {localStorage.getItem("accessToken") != null && (
+          <React.Fragment>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Tooltip title="인터뷰 찾기">
+                <IconButton size={"large"} onClick={e => handlePage(e, "/")}>
+                  <ContentPasteSearchIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="공고 만들기">
+                <IconButton
+                  size={"large"}
+                  onClick={e => handlePage(e, "/announcement")}
+                >
+                  <VideoCallOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Account info">
+                <IconButton
+                  onClick={handleClickAvatar}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={open ? "account-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                >
                   <Avatar
-                    sx={{ height: 82, width: 82, margin: "auto" }}
+                    sx={{ width: 42, height: 42 }}
                     alt="profile"
                     src={
                       "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
                       userInfo.profile_url
                     }
                   />
-                  <Typography variant="h5" gutterBottom>
-                    {userInfo.name}
-                  </Typography>
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleCloseAvatar}
+              onClick={handleCloseAvatar}
+              sx={{ width: "300px" }}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  width: "500px",
+                  mt: 1.5,
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <div className="sidebar-profile">
+                <Avatar
+                  sx={{ height: 82, width: 82, margin: "auto" }}
+                  alt="profile"
+                  src={
+                    "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
+                    userInfo.profile_url
+                  }
+                />
+                <Typography variant="h5" gutterBottom>
+                  {userInfo.name}
+                </Typography>
 
-                  <Typography variant="subtitle1" gutterBottom>
-                    답변자
-                  </Typography>
-                </div>
+                <Typography variant="subtitle1" gutterBottom>
+                  답변자
+                </Typography>
+              </div>
 
-                <Divider />
-                <MenuItem onClick={(e) => handlePage(e, "answerer/mypage")}>
-                  <ListItemIcon>
-                    <PersonIcon fontSize="small" />
-                  </ListItemIcon>
-                  마이페이지
-                </MenuItem>
-                <MenuItem onClick={(e) => handlePage(e, "/questioner")}>
-                  <ListItemIcon>
-                    <SwitchAccountIcon fontSize="small" />
-                  </ListItemIcon>
-                  사용자 전환
-                </MenuItem>
-                <MenuItem onClick={logoutApi}>
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  로그아웃
-                </MenuItem>
-                <Divider />
-                <MenuItem sx={{ px: 2 }} onClick={handlePoint}>
-                  <Avatar>
-                    <AttachMoneyIcon />
-                  </Avatar>
-                  {userInfo.point}
-                </MenuItem>
-              </Menu>
-            </React.Fragment>
-          ))}
+              <Divider />
+              <MenuItem onClick={e => handlePage(e, "answerer/mypage")}>
+                <ListItemIcon>
+                  <PersonIcon fontSize="small" />
+                </ListItemIcon>
+                마이페이지
+              </MenuItem>
+              <MenuItem onClick={e => handlePage(e, "/questioner")}>
+                <ListItemIcon>
+                  <SwitchAccountIcon fontSize="small" />
+                </ListItemIcon>
+                사용자 전환
+              </MenuItem>
+              <MenuItem onClick={logoutApi}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                로그아웃
+              </MenuItem>
+              <Divider />
+              <MenuItem sx={{ px: 2 }} onClick={handlePoint}>
+                <Avatar>
+                  <AttachMoneyIcon />
+                </Avatar>
+                {userInfo.point}
+              </MenuItem>
+            </Menu>
+          </React.Fragment>
+        )}
       </Toolbar>
 
       <Drawer anchor="left" open={state["left"]} onClose={toggleDrawer(false)}>
