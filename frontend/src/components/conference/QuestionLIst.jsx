@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import http from "api/Http";
+import instance from "api/APIController";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -11,7 +11,7 @@ export default function QuestionLIst(props) {
   const [questionList, setQuestionList] = useState([]);
   const positionId = props.positionId;
   useEffect(() => {
-    http
+    instance
       .get("/conference/question?interviewID=" + props.interviewId, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

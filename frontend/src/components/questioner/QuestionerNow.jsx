@@ -22,9 +22,11 @@ export default function QuestionerNow(props) {
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
+    const interviewId = interviewList[questionindex].id;
+    const interviewTimeId = timeid;
     console.log(link);
     navigate(link, {
-      state: { timeid, interviewList, questionindex, timeindex },
+      state: { timeid, interviewList, questionindex, timeindex, interviewId, interviewTimeId},
     });
   }
 

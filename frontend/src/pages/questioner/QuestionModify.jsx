@@ -3,23 +3,41 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import QuestionerHeader from "components/questioner/QuestionerHeader";
 import ReactPlayer from "react-player/lazy";
+// import http from 'api/Http'
 
 import "pages/questioner/Questioner.css";
 import { Divider, Grid, Typography, Paper, Button } from "@mui/material";
+import { CompareSharp } from "@mui/icons-material";
+import instance from "api/APIController";
 
 export default function QuestionModify() {
   const location = useLocation();
   const id = location.state.timeid;
   const interviewList = location.state.interviewList;
   const questionindex = location.state.questionindex;
+  const interviewId = location.state.interviewId;
+  const interviewTimeId = location.state.interviewTimeId;
   const timeindex = location.state.timeindex;
   const interview = interviewList[questionindex];
   const [videoURL, setVideoURL] = useState("");
   useEffect(() => {
     getVideo();
+    getScript();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [content, setContent] = useState([])
+  const [comment, setComment] = useState("내용")
+  const questionList = content.map((x) => (
+    x.question_content === null?
+    <p
+    onClick={() => {setComment(x.result_content);}} key={x.id}
+    >INTRO</p>:
+    <p 
+    onClick={() => {setComment(x.result_content);}} key={x.id}
+    >
+      {x.question_content}</p>
+  ))
   const getVideo = () => {
     axios
       .get("https://intube.store/openvidu/api/recordings/Session" + id, {
@@ -33,6 +51,25 @@ export default function QuestionModify() {
         console.error(error);
       });
   };
+
+  const getScript = () => {
+    instance
+    .get("/result/search?interview_id=" + interviewId + '&interview_time_id=' + interviewTimeId,  {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-type": "application/json;charset=UTF-8",
+      },
+    })
+    .then((response) => {
+      console.log('데이터', response.data);
+      setContent(response.data.conferenceResultRes)
+      setComment(response.data.conferenceResultRes[0].result_content)
+      
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
 
   return (
     <div className="question-modify">
@@ -69,8 +106,13 @@ export default function QuestionModify() {
           />
           <Paper elevation={3} sx={{ mt: 4, ml: 2, height: 320 }}>
             <Typography variant="h6" gutterBottom>
+              인터뷰 질문
+            </Typography>
+            <div>{questionList}</div>
+            <Typography variant="h6" gutterBottom>
               인터뷰 내용
             </Typography>
+            <div dangerouslySetInnerHTML={ {__html: comment} }></div>
           </Paper>
         </Grid>
       </Grid>
