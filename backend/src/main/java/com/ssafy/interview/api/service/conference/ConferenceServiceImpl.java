@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,6 +82,12 @@ public class ConferenceServiceImpl implements ConferenceService {
         } else {
             throw new ExistConferenceException("현재 인터뷰 방이 생성되지 않았습니다. ");
         }
+    }
+
+    @Override
+    public LocalDateTime getStartTimeInConference(Long conferenceID) {
+        Conference conference = conferenceRepository.findById(conferenceID).get();
+        return conference.getCall_start_time();
     }
 
     @Override

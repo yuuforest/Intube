@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -243,5 +244,18 @@ public class ConferenceController {
         // [Conference History Table] conferenceID와 userEmail에 해당하는 기록 불러와서 내림차순으로 정렬한 후, 맨 위에 있는 정보를 변경하는 방법
         conferenceService.kickConferenceHistory(kickInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PutMapping("/startInfo")
+    @ApiOperation(value = "Conference 시작 시간 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<LocalDateTime> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+        // [Conference Table] conference 시작 시간을 조회
+        LocalDateTime time = conferenceService.getStartTimeInConference(conferenceID);
+        return ResponseEntity.status(200).body(time);
     }
 }
