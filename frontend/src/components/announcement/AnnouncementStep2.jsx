@@ -160,6 +160,8 @@ export default function AnnouncementStep2(props) {
         sx={{ my: 3 }}
         value={title}
         onChange={titleHandeler}
+        error={title === "" ? true : false}
+        helperText={title === "" && "필수 입력 입니다."}
       />
 
       <Typography variant="h5" gutterBottom sx={{ mb: 0, float: "left" }}>
@@ -181,6 +183,8 @@ export default function AnnouncementStep2(props) {
         </Grid>
         <Grid item xs={9}>
           <TextField
+            error={description === "" ? true : false}
+            helperText={description === "" && "필수 입력 입니다."}
             variant="outlined"
             sx={{ width: "80%" }}
             multiline
@@ -214,6 +218,8 @@ export default function AnnouncementStep2(props) {
             sx={{ width: "80%" }}
             value={estimatedTime}
             onChange={estimatedTimeHandeler}
+            error={estimatedTime === "" ? true : false}
+            helperText={estimatedTime === "" && "필수 입력 입니다."}
           />
         </Grid>
       </Grid>
@@ -231,7 +237,10 @@ export default function AnnouncementStep2(props) {
           </Typography>
         </Grid>
         <Grid item xs={9}>
-          <FormControl>
+          <FormControl
+            error={gender === "" ? true : false}
+            helperText={gender === "" && "필수 입력 입니다."}
+          >
             <FormLabel id="demo-row-radio-buttons-group-label">성별</FormLabel>
             <RadioGroup
               row
@@ -324,6 +333,8 @@ export default function AnnouncementStep2(props) {
             sx={{ width: "80%" }}
             value={maxPeople}
             onChange={maxPeopleHandeler}
+            error={point === "" ? true : false}
+            helperText={point === "" && "필수 입력 입니다."}
           />
         </Grid>
       </Grid>
@@ -352,6 +363,8 @@ export default function AnnouncementStep2(props) {
             sx={{ width: "80%" }}
             value={point}
             onChange={pointHandeler}
+            error={point === "" ? true : false}
+            helperText={point === "" && "필수 입력 입니다."}
           />
           <Alert severity="error" sx={{ mt: 3, width: "80%" }}>
             <Typography variant="subtitle1" gutterBottom>
