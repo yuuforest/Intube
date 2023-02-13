@@ -17,13 +17,21 @@ import EvaluatePerson from "components/questioner/EvaluatePerson";
 
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
+  const [timeindex, setTimeindex] = useState(0);
   const position = 1;
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
     console.log(link);
-    navigate(link, { state: timeid });
+    navigate(link, {
+      state: { timeid, interviewList, questionindex, timeindex },
+    });
   }
+
+  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [evalname, setevalname] = useState(false);
+  const [evalemail, setevalemail] = useState(false);
 
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
@@ -33,7 +41,6 @@ export default function QuestionerNow(props) {
     setTimeindex(0);
   };
 
-  const [timeindex, setTimeindex] = useState(0);
   const [timeid, setTimeid] = useState(-1);
 
   const handleChangeTimeindex = (event, id) => {
@@ -51,7 +58,7 @@ export default function QuestionerNow(props) {
     getInterviewList();
     getAnswererList();
     getUser();
-  }, [questionindex, timeindex, props.value]);
+  }, [questionindex, timeindex, props.value, modalOpen]);
 
   const [userInfo, setUserInfo] = useState([]);
   const getUser = () => {
@@ -112,9 +119,30 @@ export default function QuestionerNow(props) {
       });
   };
 
+  const endInterview = () => {
+    http
+      .put(
+        "/interviews/interviewer/expired-interview?interview_id=" +
+          interviewList[questionindex].id +
+          "&interview_state=6",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        alert(response.data.message);
+        props.setValue(0);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const [conferenceID, setConferenceID] = useState([]);
 
-  console.log(interviewList[questionindex]);
   const onClickEnter = (e) => {
     const interviewId = interviewList[questionindex].id;
     const interviewTimeId = timeid;
@@ -139,10 +167,6 @@ export default function QuestionerNow(props) {
       state: { interviewId, interviewTimeId, position, conferenceID, userInfo },
     });
   };
-  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-  const [modalOpen, setModalOpen] = useState(false);
-  const [evalname, setevalname] = useState(false);
-  const [evalemail, setevalemail] = useState(false);
 
   const openModal = (e, name, email, id) => {
     setevalname(name);
@@ -205,7 +229,15 @@ export default function QuestionerNow(props) {
               )}
             </Select>
           </FormControl>
-
+          <Button
+            variant="outlined"
+            startIcon={<ContentPasteGoIcon />}
+            sx={{ backgroundColor: "white", float: "right" }}
+            size="large"
+            onClick={endInterview}
+          >
+            인터뷰 완료
+          </Button>
           <div className="question-list">
             <List>
               <ListItem>
@@ -301,7 +333,7 @@ export default function QuestionerNow(props) {
             >
               인터뷰 방만들기
             </Button>
-            \
+
             <Button
               variant="outlined"
               startIcon={<ContentPasteGoIcon />}
