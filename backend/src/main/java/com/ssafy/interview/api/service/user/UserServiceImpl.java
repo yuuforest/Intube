@@ -162,7 +162,8 @@ public class UserServiceImpl implements UserService {
                     case 1: // 신청 대기
                         intervieweeRes.setApply_interview_count(tuple.get(qApplicant.id.count()));
                         break; // 인터뷰 완료
-                    case 3: intervieweeRes.setComplete_interview_count(tuple.get(qApplicant.id.count()));
+                    case 3:
+                        intervieweeRes.setComplete_interview_count(tuple.get(qApplicant.id.count()));
                 }
             }
         }
@@ -194,18 +195,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePoint(String email, int point) throws Exception {
         User user = userRepository.findByEmail(email).get();
-        if ((user.getPoint() + point) < 0 )
+        if ((user.getPoint() + point) < 0 || point < 0)
             throw new Exception("400");
-        user.setPoint(user.getPoint()+point);
+        user.setPoint(user.getPoint() + point);
     }
 
     @Transactional
     @Override
     public void updateTemperature(String email, double temperature) throws Exception {
         User user = userRepository.findByEmail(email).get();
-        if ((user.getTemperature() + temperature) < 0 ||( user.getTemperature() + temperature) > 100 )
+        if ((user.getTemperature() + temperature) < 0 || (user.getTemperature() + temperature) > 100 || temperature < 0)
             throw new Exception("400");
-        user.setTemperature(user.getTemperature()+temperature);
+        user.setTemperature(user.getTemperature() + temperature);
     }
 
     @Transactional
