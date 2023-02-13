@@ -245,7 +245,7 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @PutMapping("/startInfo")
+    @GetMapping("/startInfo")
     @ApiOperation(value = "Conference 시작 시간 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
