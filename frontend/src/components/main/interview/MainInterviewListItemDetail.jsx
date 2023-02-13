@@ -107,7 +107,9 @@ export default function MainInterviewListItemDetail(props) {
               justifyContent="center"
             >
               <Grid item xs={3}>
-                <p>{menu.title} : </p>
+                <Typography variant="subtitle1" gutterBottom>
+                  {menu.title} :
+                </Typography>
               </Grid>
               <Grid item xs={9}>
                 {menu.title === "인터뷰 시간" ? (
@@ -128,7 +130,9 @@ export default function MainInterviewListItemDetail(props) {
                     <p> ? </p>
                   )
                 ) : (
-                  <p> {menu.content}</p>
+                  <Typography variant="subtitle1" gutterBottom>
+                    {menu.content}
+                  </Typography>
                 )}
                 {index === 0 && props.interview.applicant_state === 0 ? (
                   <Alert severity="error" sx={{ mb: 1 }}>

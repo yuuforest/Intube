@@ -5,6 +5,7 @@ import AnnouncementStep4 from "./AnnouncementStep4";
 import AnnouncementStep1 from "./AnnouncementStep1";
 import AnnouncementStep2 from "./AnnouncementStep2";
 import AnnouncementStep3 from "./AnnouncementStep3";
+import Swal from "sweetalert2";
 import "./AnnouncementPost.css";
 
 export default function AnnouncementSteps(props) {
@@ -124,7 +125,14 @@ export default function AnnouncementSteps(props) {
             },
           })
           .then(() => {
-            alert("등록성공");
+            Swal.fire({
+              title: "공고가 등록되었습니다",
+              text: "",
+              icon: "success",
+
+              confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+              confirmButtonText: "메인으로 이동", // confirm 버튼 텍스트 지정
+            });
             navigate("/");
           })
           .catch((error) => {
@@ -133,7 +141,15 @@ export default function AnnouncementSteps(props) {
           });
       })
       .catch((error) => {
-        alert("포인트가 부족합니다");
+        Swal.fire({
+          title: "포인트가 부족합니다",
+          text: "",
+          icon: "error",
+
+          confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+          confirmButtonText: "포인트 수정", // confirm 버튼 텍스트 지정
+        });
+        props.setValue(1);
       });
   };
 

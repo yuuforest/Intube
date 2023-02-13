@@ -2,7 +2,7 @@ import axios from "axios";
 // import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  baseURL: "https://intube.store:8443/api",
+  baseURL: "https://intube.store/api",
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     withCredentials: true,
@@ -50,7 +50,7 @@ instance.interceptors.response.use(
           console.log("엑세스토큰 :", localStorage.getItem("accessToken"))
           // console.log(data)
         )
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 401) {
             // navigate("/");
             localStorage.clear();

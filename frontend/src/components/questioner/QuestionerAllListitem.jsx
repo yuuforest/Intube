@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import QuestionerTag from "components/questioner/QuestionerTag";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import http from "api/Http";
 
@@ -31,6 +32,38 @@ export default function QuestionerAllListitem(props) {
       )
       .then((response) => {
         props.getInterviewList();
+        Swal.fire({
+          title: "마감완료",
+          text: "",
+          icon: "success",
+        });
+        handlePage(e, "/questioner");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const onClickBack = (e) => {
+    http
+      .put(
+        "/interviews/interviewer/expired-interview?interview_id=" +
+          props.interview.id +
+          "&interview_state=" +
+          (props.interview.interview_state - 1),
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        props.getInterviewList();
+        Swal.fire({
+          title: "수정완료",
+          text: "",
+          icon: "success",
+        });
         handlePage(e, "/questioner");
       })
       .catch((error) => {
@@ -112,6 +145,7 @@ export default function QuestionerAllListitem(props) {
                       mr: 2,
                       float: "right",
                     }}
+                    onClick={onClickBack}
                   >
                     수정
                   </Typography>
