@@ -72,4 +72,12 @@ public interface ApplicantRepositoryCustom { // 인터뷰 생성 Method
      * @param interview_id      인터뷰 Id
      */
     void deleteByInterviewId(Long interview_id);
+
+    /**
+     * 평가가 완료가 안된 신청자가 있는지 확인!
+     *
+     * @param interview_time_id 해당 인터뷰 시간 Id
+     * @return 검색 결과
+     */
+    Boolean existApplicantByInterviewTimeId(Long interview_time_id);
 }

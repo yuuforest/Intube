@@ -2,6 +2,7 @@ package com.ssafy.interview.db.entitiy.interview;
 
 import com.ssafy.interview.db.entitiy.BaseEntity;
 import com.ssafy.interview.db.entitiy.User;
+import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +28,8 @@ import java.util.List;
 @Builder
 @EntityListeners(value = {AuditingEntityListener.class}) // JPA 내부에서 엔티티 객체가 생성/변경되는 것을 감지하는 역할
 public class Interview extends BaseEntity {
+
+
     String title;
 
     String description;
@@ -77,16 +81,16 @@ public class Interview extends BaseEntity {
     private Interview(String title, String description, String estimated_time, int start_standard_age,
                       int end_standard_age, char gender, int max_people, int standard_point,
                       Date apply_end_time, Date download_expiration, User user, InterviewCategory interviewCategory) {
-        Assert.hasText(title, "title must not be empty");
-        Assert.hasText(description, "description must not be empty");
-        Assert.hasText(estimated_time, "estimated_time must not be empty");
-        Assert.notNull(gender, "gender must not be empty");
-        Assert.notNull(max_people, "max_people must not be empty");
-        Assert.notNull(standard_point, "standard_point must not be empty");
-        Assert.notNull(apply_end_time, "apply_end_time must not be empty");
-        Assert.notNull(download_expiration, "download_expiration must not be empty");
-        Assert.notNull(user, "user must not be empty");
-        Assert.notNull(interviewCategory, "interviewCategory must not be empty");
+//        Assert.hasText(title, "title must not be empty");
+//        Assert.hasText(description, "description must not be empty");
+//        Assert.hasText(estimated_time, "estimated_time must not be empty");
+//        Assert.notNull(gender, "gender must not be empty");
+//        Assert.notNull(max_people, "max_people must not be empty");
+//        Assert.notNull(standard_point, "standard_point must not be empty");
+//        Assert.notNull(apply_end_time, "apply_end_time must not be empty");
+//        Assert.notNull(download_expiration, "download_expiration must not be empty");
+//        Assert.notNull(user, "user must not be empty");
+//        Assert.notNull(interviewCategory, "interviewCategory must not be empty");
         this.title = title;
         this.description = description;
         this.estimated_time = estimated_time;

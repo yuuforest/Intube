@@ -2,9 +2,12 @@ package com.ssafy.interview.api.controller;
 
 import com.ssafy.interview.api.request.interview.InterviewSaveReq;
 import com.ssafy.interview.api.request.interview.InterviewSearchReq;
+import com.ssafy.interview.api.request.interview.InterviewStateReq;
+import com.ssafy.interview.api.request.interview.InterviewTimeStateReq;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
 import com.ssafy.interview.api.service.interview.InterviewService;
+import com.ssafy.interview.api.service.user.AuthService;
 import com.ssafy.interview.common.auth.SsafyUserDetails;
 import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.interview.Interview;
@@ -19,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -32,6 +36,9 @@ public class InterviewController {
     @Autowired
     InterviewService interviewService;
 
+    @Autowired
+    AuthService authService;
+
     @PostMapping
     @ApiOperation(value = "인터뷰 공고 생성", notes = "<strong>email, InterviewSaveReq, questionContentList</strong>를 통해 인터뷰를 생성 한다.")
     @ApiResponses({
@@ -40,7 +47,7 @@ public class InterviewController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> create(@RequestBody @ApiParam(value = "공고생성 정보", required = true) InterviewSaveReq registerInfo,
+    public ResponseEntity<? extends BaseResponseBody> create(@RequestBody @Valid InterviewSaveReq registerInfo,
                                                              @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String tokenEmail = userDetails.getUsername();
@@ -152,6 +159,40 @@ public class InterviewController {
         String email = userDetails.getUsername();
 
         interviewService.deleteInterview(email, interview_id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PutMapping("/interviewer/finish-result")
+    @ApiOperation(value = "인터뷰 시간에 따른 상태를 완료로 변경", notes = "해당 인터뷰 시간의 id와 result state를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 403, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateModifyResultState(@RequestBody InterviewTimeStateReq interviewTimeStateReq,
+                                                                              @ApiIgnore Authentication authentication) {
+        Long user_id = authService.getIdByAuthentication(authentication);
+
+        interviewService.updateModifyResultState(user_id, interviewTimeStateReq);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PutMapping("/interviewer/finish-interview")
+    @ApiOperation(value = "인터뷰 공고 상태를 완료로 변경", notes = "해당 인터뷰 시간의 id와 result state를 입력 받는다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 403, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateInterviewState(@RequestBody InterviewStateReq interviewStateReq,
+                                                                              @ApiIgnore Authentication authentication) {
+        Long user_id = authService.getIdByAuthentication(authentication);
+
+        interviewService.updateEndToInterviewState(user_id, interviewStateReq);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }

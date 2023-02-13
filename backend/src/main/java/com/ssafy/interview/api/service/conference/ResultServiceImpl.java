@@ -1,6 +1,7 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.result.DialogModifyReq;
+import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
 import com.ssafy.interview.api.response.result.ConferenceResultRes;
 import com.ssafy.interview.api.response.result.DialogRes;
@@ -94,7 +95,7 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     @Transactional
-    public void createConferencResult(Long user_id, Long interview_id, Long interview_time_id) {
+    public void createConferenceResult(Long user_id, Long interview_id, Long interview_time_id) {
         User user = userRepository.findById(user_id).get();
 
         // 중복 종료 체크!!!
@@ -135,16 +136,18 @@ public class ResultServiceImpl implements ResultService {
         conferenceResultRepository.save(ConferenceResult.builder().content(nullQuestion).conference(conference).build());
 
         // Question 별 정리한 text로 conferenceResult 생성
-        Set<Map.Entry<Question, String>> setMap = resultMap.entrySet();
+        if (!resultMap.isEmpty()) {
+            Set<Map.Entry<Question, String>> setMap = resultMap.entrySet();
 
-        for (Map.Entry<Question, String> entry : setMap) {
-            conferenceResultRepository.save(ConferenceResult.builder().content(entry.getValue()).conference(conference).question(entry.getKey()).build());
+            for (Map.Entry<Question, String> entry : setMap) {
+                conferenceResultRepository.save(ConferenceResult.builder().content(entry.getValue()).conference(conference).question(entry.getKey()).build());
+            }
         }
 
     }
 
     @Override
-    public ConferenceResultDetailRes searchConferencResult(Long user_id, Long interview_id, Long interview_time_id) {
+    public ConferenceResultDetailRes searchConferenceResult(Long user_id, Long interview_id, Long interview_time_id) {
         User user = userRepository.findById(user_id).get();
 
         // 내가 작성한 인터뷰가 맞는지 여부 확인
@@ -154,6 +157,15 @@ public class ResultServiceImpl implements ResultService {
         conferenceResultDetailRes.setConferenceResultRes(conferenceResultRepository.findConferenceResultRes(conferenceResultDetailRes.getConference_id()));
 
         return conferenceResultDetailRes;
+    }
+
+    @Override
+    @Transactional
+    public void updateConferenceResult(ResultModifyReq resultModifyReq) {
+        ConferenceResult conferenceResult = conferenceResultRepository.findById(resultModifyReq.getResult_id()).orElseThrow(() -> new IllegalArgumentException("해당 결과 아이디는 없습니다. id=" + resultModifyReq.getResult_id()));
+
+        // 해당 질문에 따른 결과 수정
+        conferenceResult.updateConferenceResult(resultModifyReq.getResult_content());
     }
 
     /**
