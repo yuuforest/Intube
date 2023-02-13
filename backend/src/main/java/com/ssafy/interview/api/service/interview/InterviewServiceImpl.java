@@ -1,9 +1,6 @@
 package com.ssafy.interview.api.service.interview;
 
-import com.ssafy.interview.api.request.interview.InterviewSaveReq;
-import com.ssafy.interview.api.request.interview.InterviewSearchByApplicantStateReq;
-import com.ssafy.interview.api.request.interview.InterviewSearchByStateReq;
-import com.ssafy.interview.api.request.interview.InterviewSearchReq;
+import com.ssafy.interview.api.request.interview.*;
 import com.ssafy.interview.api.response.interview.InterviewApplicantDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewDetailRes;
 import com.ssafy.interview.api.response.interview.InterviewLoadRes;
@@ -22,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -99,7 +97,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional
     public void createInterviewTime(Interview interview, List<Date> interviewTimeList) {
-        List<InterviewTime> interviewTimes = new ArrayList<>();
+        List<@Valid InterviewTime> interviewTimes = new ArrayList<>();
 
         for (Date interview_start_time : interviewTimeList) {
             InterviewTime interviewTime = InterviewTime.builder().interview_start_time(interview_start_time)
@@ -114,7 +112,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional
     public void createQuestion(Interview interview, List<String> questionList) {
-        List<Question> questions = new ArrayList<>();
+        List<@Valid Question> questions = new ArrayList<>();
 
         for (String content : questionList) {
             Question question = Question.builder().content(content).interview(interview).build();
@@ -218,6 +216,26 @@ public class InterviewServiceImpl implements InterviewService {
 
         // 해당 인터뷰 삭제
         interviewRepository.deleteById(interview_id);
+    }
+
+    @Override
+    @Transactional
+    public void updateModifyResultState(Long user_id, InterviewTimeStateReq interviewTimeStateReq) {
+        User user = userRepository.findById(user_id).get();
+
+        // 평가하지 않은 답변자 확인
+        if (applicantRepository.existApplicantByInterviewTimeId(interviewTimeStateReq.getInterview_time_id())) {
+            new ExistApplicantException(user.getName() + "님! 아직 평가하지 않은 답변자가 존재합니다.");
+        }
+
+        // 인터뷰 시간에 따른 결과 수정 상태 완료로 변경
+        InterviewTime interviewTime = interviewTimeRepository.findById(interviewTimeStateReq.getInterview_time_id()).orElseThrow(() -> new IllegalArgumentException("해당 인터뷰 공고에 따른 시간은 없습니다."));
+        interviewTime.setModifyResultState(interviewTimeStateReq.getModify_result_state());
+    }
+
+    @Override
+    public void updateEndToInterviewState(Long user_id, InterviewStateReq interviewStateReq) {
+        User user = userRepository.findById(user_id).get();
     }
 
     /**

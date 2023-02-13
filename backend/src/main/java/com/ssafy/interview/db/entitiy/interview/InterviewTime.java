@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,7 @@ public class InterviewTime extends BaseEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    @NotNull(message = "인터뷰 시작시간을 확인해주세요.")
     Date interview_start_time;
 
     @Builder.Default()
@@ -42,8 +44,8 @@ public class InterviewTime extends BaseEntity {
 
     @Builder
     private InterviewTime(Date interview_start_time, Interview interview) {
-        Assert.notNull(interview_start_time, "interview_start_time must not be empty");
-        Assert.notNull(interview, "interview must not be empty");
+//        Assert.notNull(interview_start_time, "interview_start_time must not be empty");
+//        Assert.notNull(interview, "interview must not be empty");
         this.interview_start_time = interview_start_time;
         this.interview = interview;
     }

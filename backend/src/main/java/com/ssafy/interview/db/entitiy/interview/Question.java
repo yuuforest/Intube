@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -21,6 +23,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class Question extends BaseEntity {
 
+
+        @NotBlank(message = "인터뷰 질문 내용을 입력해주세요.")
         String content;
 
         @JsonIgnore
@@ -30,8 +34,8 @@ public class Question extends BaseEntity {
 
         @Builder
         private Question(String content, Interview interview) {
-                Assert.notNull(content, "content must not be empty");
-                Assert.notNull(interview, "interview must not be empty");
+//                Assert.notNull(content, "content must not be empty");
+//                Assert.notNull(interview, "interview must not be empty");
                 this.content = content;
                 this.interview = interview;
         }
