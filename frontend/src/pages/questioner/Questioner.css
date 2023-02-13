@@ -3,3 +3,10 @@
 
   height: 100vh;
 }
+
+.question-modify {
+  text-align: center;
+}
+.question-modify-video {
+  margin: auto;
+}

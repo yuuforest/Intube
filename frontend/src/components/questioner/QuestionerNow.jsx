@@ -18,7 +18,13 @@ import EvaluatePerson from "components/questioner/EvaluatePerson";
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
   const position = 1;
+  // 페이지 이동
   const navigate = useNavigate();
+  function handlePage(e, link) {
+    console.log(link);
+    navigate(link, { state: timeid });
+  }
+
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
     setTimeid(
@@ -44,7 +50,25 @@ export default function QuestionerNow(props) {
   useEffect(() => {
     getInterviewList();
     getAnswererList();
+    getUser();
   }, [questionindex, timeindex, props.value]);
+
+  const [userInfo, setUserInfo] = useState([]);
+  const getUser = () => {
+    http
+      .get("/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("userInfo", response.data);
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const getInterviewList = () => {
     http
@@ -91,10 +115,10 @@ export default function QuestionerNow(props) {
   // const [conferenceID, setConferenceID] = useState(1);
 
   console.log(interviewList[questionindex]);
-  const onClickEnter = async (e) => {
+  const onClickEnter = (e) => {
     const interviewId = interviewList[questionindex].id;
     const interviewTimeId = timeid;
-    await http
+    http
       .post(
         "/conference/start?interviewTimeID=" + interviewTimeId,
         {},
@@ -150,27 +174,6 @@ export default function QuestionerNow(props) {
   const closeModal = () => {
     setModalOpen(false);
   };
-
-  // useEffect(() => {
-  //   http
-  //     .post(
-  //       "/conference/start?interviewTimeID=" + interview.interviewTimeRes.id,
-  //       {},
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log("컨퍼런스 아이디", response.data.conferenceID);
-  //       // setConferenceID(response.data.conferenceID);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   return (
     <div hidden={props.value !== 2}>
@@ -291,7 +294,6 @@ export default function QuestionerNow(props) {
                 </div>
               ))}
             </List>
-
             <Button
               variant="outlined"
               startIcon={<VideocamIcon />}
@@ -301,13 +303,15 @@ export default function QuestionerNow(props) {
             >
               인터뷰 방만들기
             </Button>
+            \
             <Button
               variant="outlined"
               startIcon={<ContentPasteGoIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
               size="large"
+              onClick={(e) => handlePage(e, "/questioner/modify")}
             >
-              인터뷰 종료하기
+              인터뷰 결과 수정
             </Button>
           </div>
         </div>

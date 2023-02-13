@@ -12,37 +12,13 @@ import http from "api/Http";
 
 export default function Conference() {
   const location = useLocation();
+  const userInfo = location.state.userInfo;
   const interviewId = location.state.interviewId;
   const interviewTimeId = location.state.interviewTimeId;
   const positionId = location.state.position;
   const conferenceID = location.state.conferenceID;
-  const [userInfo, setUserInfo] = useState([]);
   const [questId, setQuestId] = useState(undefined);
-
   const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
-
-  console.log('conferenceID', conferenceID)
-  console.log('interviewTimeId', interviewTimeId)
-  
-
-  useEffect(() => {
-    getUser();
-  }, []);
-  const getUser = () => {
-    http
-      .get("/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        console.log("userInfo", response.data);
-        setUserInfo(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   const [micState, setMicState] = React.useState(true);
   const handleMicState = () => {
@@ -116,12 +92,12 @@ export default function Conference() {
   }, [micState, dispatch]);
 
   return (
-    <div>
+    <div className="conference">
       <Grid container spacing={2} justifyContent="space-between">
         <Grid item xs={12}>
           <VideoRoomComponents
             interviewTimeId={interviewTimeId}
-            userName={userInfo.userName}
+            userName={userInfo.name}
             navigate={navigate}
             handleMicState={handleMicState}
             state={state}

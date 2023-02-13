@@ -18,6 +18,7 @@ import Conference from "pages/conference/Conference";
 import UserMyPage from "pages/answerer/AnswererMyPage";
 import QuestionerMyPage from "pages/questioner/QuestionerMyPage";
 import QuestionerVideo from "pages/questioner/QuestionerVideo";
+import QuestionModify from "pages/questioner/QuestionModify";
 function App() {
   return (
     <BrowserRouter>
@@ -38,6 +39,7 @@ function App() {
         <Route path={"announcement"} element={<Announcement />}></Route>
         <Route path={"conference"} element={<Conference />}></Route>
         <Route path={"questioner/video"} element={<QuestionerVideo />}></Route>
+        <Route path={"questioner/modify"} element={<QuestionModify />}></Route>
         <Route
           path={"questioner/mypage"}
           element={<QuestionerMyPage />}

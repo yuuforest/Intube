@@ -41,7 +41,7 @@ export default function InterviewListItemDetail(props) {
       content: props.interview.owner_name + "\n" + props.interview.owner_phone,
     },
   ];
-
+  const [userInfo, setUserInfo] = useState([]);
   const handleClose = () => {
     props.setOpen(false);
   };
@@ -55,11 +55,12 @@ export default function InterviewListItemDetail(props) {
   const navigate = useNavigate();
   function onClickEnter(e) {
     navigate("/conference", {
-      state: { interviewId, interviewTimeId, position, conferenceID },
+      state: { userInfo, interviewId, interviewTimeId, position, conferenceID },
     });
   }
 
   useEffect(() => {
+    getUser();
     http
       .post(
         "/conference/in?interviewTimeID=" + props.interview.interviewTimeRes.id,
@@ -81,6 +82,22 @@ export default function InterviewListItemDetail(props) {
         setMeetingIn(false);
       });
   }, []);
+
+  const getUser = () => {
+    http
+      .get("/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("userInfo", response.data);
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <Dialog
