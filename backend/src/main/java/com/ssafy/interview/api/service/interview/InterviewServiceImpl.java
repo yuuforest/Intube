@@ -12,6 +12,7 @@ import com.ssafy.interview.db.repository.interview.*;
 import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
 import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
 import com.ssafy.interview.exception.interview.ExistApplicantException;
+import com.ssafy.interview.exception.interview.ExistInterviewTimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -225,17 +226,27 @@ public class InterviewServiceImpl implements InterviewService {
 
         // 평가하지 않은 답변자 확인
         if (applicantRepository.existApplicantByInterviewTimeId(interviewTimeStateReq.getInterview_time_id())) {
-            new ExistApplicantException(user.getName() + "님! 아직 평가하지 않은 답변자가 존재합니다.");
+            throw new ExistApplicantException(user.getName() + "님! 아직 평가하지 않은 답변자가 존재합니다.");
         }
-
         // 인터뷰 시간에 따른 결과 수정 상태 완료로 변경
         InterviewTime interviewTime = interviewTimeRepository.findById(interviewTimeStateReq.getInterview_time_id()).orElseThrow(() -> new IllegalArgumentException("해당 인터뷰 공고에 따른 시간은 없습니다."));
         interviewTime.setModifyResultState(interviewTimeStateReq.getModify_result_state());
+
     }
 
     @Override
+    @Transactional
     public void updateEndToInterviewState(Long user_id, InterviewStateReq interviewStateReq) {
         User user = userRepository.findById(user_id).get();
+
+        // 평가 및 결과수정이 안된 인터뷰 시간이 있는지 확인
+        if (interviewTimeRepository.existInterviewTimeByInterviewId(interviewStateReq.getInterview_id())) {
+            throw new ExistInterviewTimeException(user.getName() + "님! 아직 평가 및 결과 수정이 안된 인터뷰 시간이 존재합니다.");
+        }
+
+        // 인터뷰 상태 완료로 변경
+        Interview interview = interviewRepository.findById(interviewStateReq.getInterview_id()).orElseThrow(() -> new IllegalArgumentException("해당 인터뷰 공고는 없습니다."));
+        interview.setInterviewState(interviewStateReq.getInterview_state());
     }
 
     /**

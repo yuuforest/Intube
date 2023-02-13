@@ -60,4 +60,15 @@ public class InterviewTimeRepositoryImpl implements InterviewTimeRepositoryCusto
 
         return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
     }
+
+    @Override
+    public Boolean existInterviewTimeByInterviewId(Long interview_id) {
+        Long fetchOne = jpaQueryFactory
+                .select(qInterviewTime.id)
+                .from(qInterviewTime)
+                .where(qInterviewTime.interview.id.eq(interview_id), qInterviewTime.modifyResultState.eq(1))
+                .fetchFirst(); // limit 1
+
+        return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
+    }
 }

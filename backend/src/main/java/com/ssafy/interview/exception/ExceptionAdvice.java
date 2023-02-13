@@ -5,10 +5,7 @@ import com.ssafy.interview.common.model.response.BaseResponseBody;
 import com.ssafy.interview.db.entitiy.interview.InterviewTime;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import com.ssafy.interview.exception.conference.ExistConferenceException;
-import com.ssafy.interview.exception.interview.ApplicantAndOwnerDuplicationException;
-import com.ssafy.interview.exception.interview.ApplicantDuplicationException;
-import com.ssafy.interview.exception.interview.ExistApplicantException;
-import com.ssafy.interview.exception.interview.InterviewTimeModifyResultDuplicationException;
+import com.ssafy.interview.exception.interview.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +61,7 @@ public class ExceptionAdvice {
             MethodArgumentNotValidException ex) {
 
         RestResponse restResponse = new RestResponse(false, // 1
-                "유효성 검사 실패 : " + ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+                ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST); // 2
     }
@@ -72,8 +69,14 @@ public class ExceptionAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e) {
         RestResponse restResponse = new RestResponse(false, // 1
-                "유효성 검사 실패 : " + e.getConstraintViolations().iterator().next().getMessage());
+                e.getConstraintViolations().iterator().next().getMessage());
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST); // 2
+    }
+
+    @ExceptionHandler(ExistInterviewTimeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ResponseEntity<? extends BaseResponseBody> existInterviewTimeException(ExistInterviewTimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-133, e.getMessage() + " 재확인바랍니다."));
     }
 }
