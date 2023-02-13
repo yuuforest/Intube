@@ -11,6 +11,9 @@
 //   let userName = "OpenVidu_User" + Math.floor(Math.random() * 100);
 //   return <div>VideoRoomComponents</div>;
 // }
+import QuestionLIst from "components/conference/QuestionLIst";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
@@ -18,6 +21,7 @@ import ChatComponent from "./chat/ChatComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import StreamComponent from "./stream/StreamComponent";
 import "./VideoRoomComponent.css";
+import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import OpenViduLayout from "./layout/openvidu-layout";
@@ -73,6 +77,9 @@ class VideoRoomComponent extends Component {
     if (props.positionId === 2) {
       this.role = "SUBSCRIBER";
     }
+
+    console.log("asa");
+    console.log(props.interviewId);
   }
 
   handleMicState() {
@@ -216,7 +223,7 @@ class VideoRoomComponent extends Component {
         });
       });
     }
-    localUser.setNickname(this.state.myUserName);
+    localUser.setNickname(this.props.userName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
@@ -321,7 +328,8 @@ class VideoRoomComponent extends Component {
 
   subscribeToStreamCreated() {
     this.state.session.on("streamCreated", (event) => {
-      const subscriber = this.state.session.subscribe(event.stream, undefined);
+      const subscriber = this.state.session.subscribe(event.stream);
+
       // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
@@ -339,13 +347,6 @@ class VideoRoomComponent extends Component {
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
       }
-    });
-    this.state.session.on("publisherStartSpeaking", (event) => {
-      console.log("User " + event.connection.connectionId + " start speaking");
-    });
-
-    this.state.session.on("publisherStopSpeaking", (event) => {
-      console.log("User " + event.connection.connectionId + " stop speaking");
     });
   }
 
@@ -628,51 +629,11 @@ class VideoRoomComponent extends Component {
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         />
-        <div id="layout" className="bounds2">
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="OT_root OT_publisher custom-class"
-              id="remoteUsers"
-            >
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-            </div>
-          ))}
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
-              >
-                <ChatComponent
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                />
-              </div>
-            )}
-        </div>
-        <div id="layout" className="bounds">
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                <StreamComponent
-                  user={localUser}
-                  handleNickname={this.nicknameChanged}
-                />
-              </div>
-            )}
-        </div>
-
-        <Card sx={{ minWidth: 275, mt: 2 }}>
+        <Card sx={{ minWidth: 275, mt: 10 }}>
           <CardContent
             sx={{
               textAlign: "center",
-              height: "40px",
+              height: "35px",
             }}
           >
             {localUser !== undefined &&
@@ -688,20 +649,96 @@ class VideoRoomComponent extends Component {
               )}
           </CardContent>
         </Card>
-        <Card sx={{ minWidth: 275, mt: 2 }}>
-          <CardContent sx={{}}>
+        <Grid container spacing={2} alignItems="flex-start">
+          <Grid item xs={8}>
+            <div id="layout" className="bounds">
+              {localUser !== undefined &&
+                localUser.getStreamManager() !== undefined && (
+                  <div
+                    className="OT_root OT_publisher custom-class"
+                    id="localUser"
+                  >
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                    />
+                  </div>
+                )}
+              {this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className="OT_root OT_publisher custom-class"
+                  id="remoteUsers"
+                >
+                  <StreamComponent
+                    user={sub}
+                    streamId={sub.streamManager.stream.streamId}
+                  />
+                </div>
+              ))}
+            </div>
             {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
-                <NowAnswer
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                  myAnswer={this.props.myAnswer}
-                />
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  style={chatDisplay}
+                >
+                  <ChatComponent
+                    user={localUser}
+                    chatDisplay={this.state.chatDisplay}
+                    close={this.toggleChat}
+                    messageReceived={this.checkNotification}
+                  />
+                </div>
               )}
-          </CardContent>
-        </Card>
+            <Paper
+              elevation={3}
+              sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
+            >
+              <Typography variant="h6" gutterBottom>
+                인터뷰 내용
+              </Typography>
+              <div className="paper-contents">
+                {localUser !== undefined &&
+                  localUser.getStreamManager() !== undefined && (
+                    <NowAnswer
+                      user={localUser}
+                      chatDisplay={this.state.chatDisplay}
+                      close={this.toggleChat}
+                      messageReceived={this.checkNotification}
+                      myAnswer={this.props.myAnswer}
+                    />
+                  )}
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <QuestionLIst
+              handleChangeQuestion={this.props.handleChangeQuestion}
+              interviewId={this.props.interviewId}
+              positionId={this.props.positionId}
+            />
+            <Paper
+              elevation={3}
+              sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
+            >
+              <Typography variant="h6" gutterBottom>
+                참여자 정보
+              </Typography>
+              <div className="paper-contents">
+                {this.state.subscribers.map((sub, i) => (
+                  <div key={i}>
+                    {sub.audioActive ? (
+                      <div> {sub.nickname} : 발언중</div>
+                    ) : (
+                      <div> {sub.nickname} :대기중</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -729,7 +766,10 @@ class VideoRoomComponent extends Component {
   async createSession(sessionId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "conference/sessions",
-      { customSessionId: sessionId },
+      {
+        customSessionId: sessionId,
+        recordingMode: "ALWAYS",
+      },
       {
         headers: { "Content-Type": "application/json" },
       }
@@ -743,9 +783,7 @@ class VideoRoomComponent extends Component {
         "conference/sessions/" +
         sessionId +
         "/connections",
-      {
-        role: this.role,
-      },
+      {},
       {
         headers: { "Content-Type": "application/json" },
       }

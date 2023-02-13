@@ -41,25 +41,26 @@ export default function InterviewListItemDetail(props) {
       content: props.interview.owner_name + "\n" + props.interview.owner_phone,
     },
   ];
-
+  const [userInfo, setUserInfo] = useState([]);
   const handleClose = () => {
     props.setOpen(false);
   };
 
   // 방입장
   const position = 2;
-  const interviewId = props.interview;
+  const interviewId = props.interview.id;
   const interviewTimeId = props.interview.interviewTimeRes.id;
   const [conferenceID, setConferenceID] = useState(0);
   const [meetingIn, setMeetingIn] = useState(false);
   const navigate = useNavigate();
   function onClickEnter(e) {
     navigate("/conference", {
-      state: { interviewId, interviewTimeId, position, conferenceID },
+      state: { userInfo, interviewId, interviewTimeId, position, conferenceID },
     });
   }
 
   useEffect(() => {
+    getUser();
     http
       .post(
         "/conference/in?interviewTimeID=" + props.interview.interviewTimeRes.id,
@@ -80,6 +81,22 @@ export default function InterviewListItemDetail(props) {
         setMeetingIn(false);
       });
   }, []);
+
+  const getUser = () => {
+    http
+      .get("/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("userInfo", response.data);
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <Dialog
