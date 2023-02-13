@@ -38,11 +38,9 @@ export default function Conference() {
   const storeResult = () => {
     instance
       .post(
-        "/conference/end?historyID=" +
-          localStorage.getItem("historyID") +
-          "&conferenceID=" +
-          conferenceID +
-          "&interviewTimeID=" +
+        "/result/create?interview_id=" +
+          interviewId +
+          "&interview_time_id=" +
           interviewTimeId,
         {},
         {
@@ -52,12 +50,13 @@ export default function Conference() {
         }
       )
       .then(() => {
-        localStorage.removeItem("historyID");
         instance
           .post(
-            "/result/create?interview_id=" +
-              interviewId +
-              "&interview_time_id=" +
+            "/conference/end?historyID=" +
+              localStorage.getItem("historyID") +
+              "&conferenceID=" +
+              conferenceID +
+              "&interviewTimeID=" +
               interviewTimeId,
             {},
             {
@@ -66,7 +65,9 @@ export default function Conference() {
               },
             }
           )
-          .then(() => {})
+          .then(() => {
+            localStorage.removeItem("historyID");
+          })
           .catch((error) => {
             console.error(error);
           });
