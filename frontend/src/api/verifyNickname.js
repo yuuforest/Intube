@@ -1,6 +1,9 @@
 import http from "api/Http";
+import swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 export async function VerifyNickname(nickname) {
+  const navigate = useNavigate();
   let params = {
     // email: "abcdq12345@naver.com",
     // number: "rqDsyUYU",
@@ -9,7 +12,7 @@ export async function VerifyNickname(nickname) {
   console.log(nickname);
   let test = await http
     .get(
-      "https://intube.store:8443/api/user/nickname",
+      "/user/nickname",
       { params },
       {
         headers: {
@@ -22,17 +25,30 @@ export async function VerifyNickname(nickname) {
       if (data.statusCode === 200) {
         localStorage.setItem("nicknameAuthorize", true);
         console.log(localStorage.getItem("nicknameAuthorize"));
-        alert("사용 가능한 닉네임입니다.");
+        swal.fire({
+          title: "",
+          text: "사용 가능한 닉네임입니다!",
+          icon: "success",
+        });
       }
     })
     .catch(e => {
       if (e.response.data.statusCode === 409) {
         localStorage.setItem("nicknameAuthorize", false);
-        alert("이미 있는 닉네임입니다.");
+        swal.fire({
+          title: "",
+          text: "이미 있는 닉네임입니다.",
+          icon: "error",
+        });
       }
       if (e.response.data.statusCode === 500) {
         localStorage.setItem("nicknameAuthorize", false);
-        alert("서버 오류");
+        swal.fire({
+          title: "서버오류",
+          text: "메인으로 이동합니다.",
+          icon: "error",
+        });
+        navigate("/");
       }
       console.log(e, "아오");
     });

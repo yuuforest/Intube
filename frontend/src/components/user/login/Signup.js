@@ -177,7 +177,14 @@ export default function SignUp() {
             })
             .catch(e => {
               if (e.response.data.statusCode === 409) {
-                alert("이미 가입된 이메일입니다.");
+                swal.fire({
+                  title: "",
+                  text: "이미 가입된 이메일입니다.",
+                  icon: "error",
+
+                  // confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                  // confirmButtonText: "메인으로 이동", // confirm 버튼 텍스트 지정
+                });
               }
             });
         } else {
@@ -386,13 +393,11 @@ export default function SignUp() {
 
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="introduction"
                   required
                   fullWidth
                   id="introduction"
                   label="introduction"
-                  autoFocus
                   multiline
                   onChange={formik.handleChange}
                   value={formik.values.introduction}

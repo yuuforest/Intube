@@ -46,8 +46,8 @@ instance.interceptors.response.use(
           { withCredentials: true }
         )
         .then(
-          ({ data }) => localStorage.setItem("accessToken", data.accessToken),
-          console.log("엑세스토큰 :", localStorage.getItem("accessToken"))
+          ({ data }) => localStorage.setItem("accessToken", data.accessToken)
+          // console.log("엑세스토큰 :", localStorage.getItem("accessToken"))
           // console.log(data)
         )
         .catch((e) => {

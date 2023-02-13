@@ -25,11 +25,11 @@ export default function QuestionModify() {
       .get("https://intube.store/openvidu/api/recordings/Session" + id, {
         headers: { Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU` },
       })
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
         setVideoURL(response.data.url);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   };

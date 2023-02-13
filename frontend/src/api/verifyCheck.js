@@ -11,16 +11,12 @@ export function EmailCheck(email, number) {
   console.log(email);
   console.log(number);
   http
-    .post(
-      "https://intube.store:8443/api/auth/check-email",
-      JSON.stringify(values),
-      {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-        },
-        withCredentials: true,
-      }
-    )
+    .post("/auth/check-email", JSON.stringify(values), {
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+      },
+      withCredentials: true,
+    })
     .then(({ data }) => {
       //   const navigate = useNavigate();
       if (data.statusCode === 200) {

@@ -139,7 +139,7 @@ export default function CheckPassword() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="비밀번호를 입력해주세요"
               type="password"
               id="password"
               onChange={formik.handleChange}

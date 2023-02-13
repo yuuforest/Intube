@@ -117,7 +117,7 @@ export default function SignIn() {
               <LockOutlinedIcon />
             </Avatar> */}
             <Typography component="h1" variant="h5">
-              LOG IN
+              로그인
             </Typography>
 
             <TextField
@@ -125,7 +125,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="이메일 주소"
               name="email"
               autoComplete="email"
               autoFocus
@@ -141,7 +141,7 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="비밀번호"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -164,7 +164,7 @@ export default function SignIn() {
                   variant="contained"
                   sx={{ mt: 2, mb: 2 }}
                 >
-                  LOG IN
+                  로그인
                 </Button>
               </Grid>
               <Grid item xs={4} sx={{ mt: 2, mb: 2 }}>
@@ -175,12 +175,12 @@ export default function SignIn() {
             <Grid container>
               <Grid item xs>
                 <Link href="/findUser" variant="body2">
-                  Forgot password?
+                  아이디/ 비밀번호 찾기
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"계정이 없으신가요? 회원가입하기"}
                 </Link>
               </Grid>
             </Grid>
