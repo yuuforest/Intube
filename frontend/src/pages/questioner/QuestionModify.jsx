@@ -26,7 +26,18 @@ export default function QuestionModify() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [content, setContent] = useState("내용")
+  const [content, setContent] = useState([])
+  const [comment, setComment] = useState("내용")
+  const questionList = content.map((x) => (
+    x.question_content === null?
+    <p
+    onClick={() => {setComment(x.result_content);}} key={x.id}
+    >INTRO</p>:
+    <p 
+    onClick={() => {setComment(x.result_content);}} key={x.id}
+    >
+      {x.question_content}</p>
+  ))
   const getVideo = () => {
     axios
       .get("https://intube.store/openvidu/api/recordings/Session" + id, {
@@ -52,6 +63,8 @@ export default function QuestionModify() {
     .then((response) => {
       console.log('데이터', response.data);
       setContent(response.data.conferenceResultRes)
+      setComment(response.data.conferenceResultRes[0].result_content)
+      
     })
     .catch((error) => {
       console.error(error);
@@ -95,15 +108,11 @@ export default function QuestionModify() {
             <Typography variant="h6" gutterBottom>
               인터뷰 질문
             </Typography>
-            <div>
-              {content.map((x) => {
-                <p>{x.question_content}</p>
-              })}
-            </div>
+            <div>{questionList}</div>
             <Typography variant="h6" gutterBottom>
               인터뷰 내용
             </Typography>
-            <div dangerouslySetInnerHTML={ {__html: content} }></div>
+            <div dangerouslySetInnerHTML={ {__html: comment} }></div>
           </Paper>
         </Grid>
       </Grid>
