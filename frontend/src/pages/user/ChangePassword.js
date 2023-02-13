@@ -13,6 +13,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import instance from "api/APIController";
 import { useNavigate } from "react-router";
+import swal from "sweetalert2";
 // import { useEffect, useState } from "react";
 // import http from "api/Http";
 
@@ -113,7 +114,11 @@ export default function ChangePassword() {
         })
         .then(values => {
           if (values.data.statusCode === 200) {
-            alert("비밀번호가 변경되었습니다. 다시 로그인 해주세요");
+            swal.fire(
+              "비밀번호가 변경되었습니다.",
+              "다시 로그인해주세요",
+              "success"
+            );
             localStorage.clear();
             navigate("/");
           }

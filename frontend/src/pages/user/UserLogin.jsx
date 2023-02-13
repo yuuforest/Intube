@@ -62,7 +62,7 @@ export default function SignIn() {
       http
         .post("/auth/login", JSON.stringify(values), {
           headers: {
-            "Access-Control-Allow-Origin": "https://intube.store:8443/api",
+            "Access-Control-Allow-Origin": "https://intube.store/api",
           },
           withCredentials: true,
         })
@@ -76,7 +76,7 @@ export default function SignIn() {
           }
         })
         .catch(e => {
-          if (e.response.data.statusCode === 401) {
+          if (e.response.data.statusCode === 400) {
             swal.fire("비밀번호가 틀렸습니다.", "", "error");
           }
           if (e.response.data.statusCode === 404) {

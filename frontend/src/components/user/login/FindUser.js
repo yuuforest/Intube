@@ -14,7 +14,7 @@ import { useFormik } from "formik";
 import http from "api/Http";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-// import EvaluatePerson from "components/user/login/EvaluatePerson";
+import swal from "sweetalert2";
 
 function Copyright(props) {
   return (
@@ -39,16 +39,6 @@ const theme = createTheme();
 export default function SignIn() {
   const navigate = useNavigate();
 
-  // // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
-  // const [modalOpen, setModalOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setModalOpen(true);
-  // };
-  // const closeModal = () => {
-  //   setModalOpen(false);
-  // };
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -57,8 +47,6 @@ export default function SignIn() {
     // validationSchema: validationSchema,
     onSubmit: response => {
       let values = {
-        // name: "지원석",
-        // email: "jos9404@naver.com",
         name: response.name,
         email: response.email,
       };
@@ -73,16 +61,17 @@ export default function SignIn() {
         .then(({ data }) => {
           if (data.statusCode === 200) {
             console.log(data);
-            alert(
-              "임시 비밀번호가 이메일로 전송되었습니다. 이메일 확인 바랍니다."
+            swal.fire(
+              "임시 비밀번호가 이메일로 전송되었습니다.",
+              "이메일을 확인해주세요",
+              "info"
             );
-
             navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
           }
         })
         .catch(e => {
           if (e.response.data.statusCode === 404) {
-            alert("등록된 회원이 아닙니다...");
+            swal.fire("", "등록된 회원이 아닙니다.", "error");
           }
           console.log(e);
         });
@@ -143,10 +132,7 @@ export default function SignIn() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
               아이디 / 비밀번호 찾기
             </Typography>
 
@@ -157,7 +143,7 @@ export default function SignIn() {
               required
               fullWidth
               id="name"
-              label="Name"
+              label="이름"
               autoFocus
               value={idName}
               onChange={nameChange}
@@ -165,7 +151,7 @@ export default function SignIn() {
             <TextField
               // margin="normal"
               name="phone"
-              label="phone"
+              label="휴대폰 번호"
               id="phone"
               required
               fullWidth
@@ -175,7 +161,7 @@ export default function SignIn() {
             />
             <Grid container>
               <Grid item xs={4}>
-                <Button type="submit" variant="contained" sx={{ mt: 1, mb: 2 }}>
+                <Button type="submit" variant="contained" sx={{ mt: 2, mb: 2 }}>
                   아이디 찾기
                 </Button>
               </Grid>
@@ -190,7 +176,7 @@ export default function SignIn() {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 2,
+              marginTop: 4,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -230,15 +216,6 @@ export default function SignIn() {
                   비밀번호 찾기
                 </Button>
               </Grid>
-              {/* <Grid item xs={4}>
-                <Button
-                  onClick={openModal}
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                >
-                  sweetalertTest
-                </Button>
-              </Grid> */}
             </Grid>
           </Box>
         </form>

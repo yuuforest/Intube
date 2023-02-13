@@ -126,20 +126,22 @@ export default function SignUp() {
         })
         .catch(e => {
           if (e.response.data.statusCode === 400) {
-            swal.fire("잘못된 비밀번호입니다.", "error");
+            swal.fire("", "잘못된 비밀번호입니다.", "error");
           }
           if (e.response.data.statusCode === 401) {
-            console.log("권한 없음. 다시 로그인해주세요");
+            swal.fire("", "권한 없음. 다시 로그인해주세요", "error");
             localStorage.clear();
             navigate("/"); // 에러페이지로 이동
           }
           if (e.response.data.statusCode === 403) {
             alert("403 Forbidden");
+            swal.fire("", "403 Forbidden", "error");
             localStorage.clear();
             navigate("/"); // 에러페이지로 이동
           }
           if (e.response.data.statusCode === 500) {
-            console.log("서버 에러. 다시 로그인해주세요");
+            swal.fire("", "서버 에러 다시 로그인 해주세요", "error");
+
             localStorage.clear();
             navigate("/"); // 에러페이지로 이동
           }
@@ -159,7 +161,7 @@ export default function SignUp() {
   //닉네임 변경하기 함수
   const nicknameCheck = () => {
     if (nickname === "") {
-      alert("닉네임을 기입해주세요!");
+      swal.fire("", "닉네임을 입력해주세요", "warning");
     } else {
       VerifyNickname(nickname);
     }
@@ -215,7 +217,7 @@ export default function SignUp() {
       })
       .catch(e => {
         if (e.response.data.statusCode === 400) {
-          alert("비밀번호가 틀렸습니다.");
+          swal.fire("", "비밀번호가 틀렸습니다", "warning");
         }
         console.log(e);
       });
@@ -275,7 +277,7 @@ export default function SignUp() {
                 justifyContent: "center",
               }}
             >
-              회원정보 수정
+              회원 정보 수정
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={3}></Grid>
@@ -313,7 +315,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   name="phone"
-                  label="phone"
+                  label="휴대폰 번호"
                   id="phone"
                   required
                   fullWidth
@@ -330,7 +332,7 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   name="email"
-                  label="email"
+                  label="이메일"
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}
@@ -347,7 +349,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="name"
-                  label="Name"
+                  label="이름"
                   onChange={formik.handleChange}
                   value={formik.values.name}
                   error={formik.touched.name && Boolean(formik.errors.name)}
@@ -360,7 +362,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="birth"
-                  label="birth"
+                  label="생년 - 월 - 일"
                   // autoFocus
                   onChange={formik.handleChange}
                   value={formik.values.birth}
@@ -393,7 +395,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControl>
                   <FormLabel id="demo-controlled-radio-buttons-group">
-                    Gender
+                    성별
                   </FormLabel>
                   <RadioGroup
                     row
@@ -405,12 +407,12 @@ export default function SignUp() {
                     <FormControlLabel
                       value="F"
                       control={<Radio />}
-                      label="Female"
+                      label="여"
                     />
                     <FormControlLabel
                       value="M"
                       control={<Radio />}
-                      label="Male"
+                      label="남"
                     />
                   </RadioGroup>
                 </FormControl>
@@ -422,7 +424,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="introduction"
-                  label="introduction"
+                  label="자기소개"
                   multiline
                   onChange={formik.handleChange}
                   value={formik.values.introduction}
@@ -460,13 +462,6 @@ export default function SignUp() {
             >
               회원탈퇴
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
           </form>
           <Grid item xs={12}></Grid>
         </Box>

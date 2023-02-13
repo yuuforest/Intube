@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router";
 import instance from "api/APIController";
+import swal from "sweetalert2";
 
 function Copyright(props) {
   return (
@@ -35,38 +36,48 @@ const theme = createTheme();
 
 export default function CheckPassword() {
   function getUserInfo() {
-    instance
-      .get("/user/me", {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          // Accept: "application/json",
-          // "Access-Control-Allow-Origin": "http://localhost:8080",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        withCredentials: true,
-      })
-      .then(({ data }) => {
-        console.log(data); // 토큰이 넘어올 것임
-        if (data.statusCode === 200) {
-          console.log("여기 회원정보있음.");
-          localStorage.setItem("email", data.email);
-          localStorage.setItem("nickname", data.nickname);
-          localStorage.setItem("introduction", data.introduction);
-          localStorage.setItem("gender", data.gender);
-          localStorage.setItem("phone", data.phone);
-          localStorage.setItem("name", data.name);
-          localStorage.setItem("birth", data.birth);
-          localStorage.setItem("profile_url", data.profile_url);
-        }
-      })
-      .catch(e => {
-        if (e.response.data.status === 401) {
-          console.log("토큰만료");
-        }
-        if (e.response.data.status === 403) {
-          console.log("권한 없음");
-        }
+    if (localStorage.getItem("accessToken") !== null) {
+      instance
+        .get("/user/me", {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            // Accept: "application/json",
+            // "Access-Control-Allow-Origin": "http://localhost:8080",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          withCredentials: true,
+        })
+        .then(({ data }) => {
+          console.log(data); // 토큰이 넘어올 것임
+          if (data.statusCode === 200) {
+            console.log("여기 회원정보있음.");
+            localStorage.setItem("email", data.email);
+            localStorage.setItem("nickname", data.nickname);
+            localStorage.setItem("introduction", data.introduction);
+            localStorage.setItem("gender", data.gender);
+            localStorage.setItem("phone", data.phone);
+            localStorage.setItem("name", data.name);
+            localStorage.setItem("birth", data.birth);
+            localStorage.setItem("profile_url", data.profile_url);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          if (e.response.data.status === 401) {
+            console.log("토큰만료");
+          }
+          if (e.response.data.status === 403) {
+            console.log("권한 없음");
+          }
+        });
+    } else {
+      swal.fire({
+        title: "",
+        text: "로그인 되지 않았습니다!",
+        icon: "error",
       });
+      navigate("/");
+    }
   }
 
   const navigate = useNavigate();

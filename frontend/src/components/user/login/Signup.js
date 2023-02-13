@@ -218,7 +218,7 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   name="email"
-                  label="Email"
+                  label="이메일"
                   value={email}
                   onChange={emailChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}
@@ -278,7 +278,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="비밀번호"
                   type="password"
                   id="password"
                   autoComplete="password"
@@ -296,7 +296,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="passwordConfirm"
-                  label="PasswordConfirm"
+                  label="비밀번호 확인"
                   type="password"
                   id="passwordConfirm"
                   onChange={formik.handleChange}
@@ -319,7 +319,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="name"
-                  label="Name"
+                  label="이름"
                   onChange={formik.handleChange}
                   value={formik.values.name}
                   error={formik.touched.name && Boolean(formik.errors.name)}
@@ -332,7 +332,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="birth"
-                  label="birth"
+                  label="생년 - 월 - 일"
                   // autoFocus
                   onChange={formik.handleChange}
                   value={formik.values.birth}
@@ -368,7 +368,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControl>
                   <FormLabel id="demo-controlled-radio-buttons-group">
-                    Gender
+                    성별(생물학적 성별)
                   </FormLabel>
                   <RadioGroup
                     row
@@ -380,12 +380,12 @@ export default function SignUp() {
                     <FormControlLabel
                       value="F"
                       control={<Radio />}
-                      label="Female"
+                      label="여"
                     />
                     <FormControlLabel
                       value="M"
                       control={<Radio />}
-                      label="Male"
+                      label="남"
                     />
                   </RadioGroup>
                 </FormControl>
@@ -397,7 +397,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="introduction"
-                  label="introduction"
+                  label="자기소개"
                   multiline
                   onChange={formik.handleChange}
                   value={formik.values.introduction}
@@ -418,12 +418,12 @@ export default function SignUp() {
               // disabled={!(formik.dirty && formik.isValid)}
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              회원 가입
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/user/login" variant="body2">
-                  Already have an account? Sign in
+                  계정이 있으신가요?? 로그인 하기
                 </Link>
               </Grid>
             </Grid>
