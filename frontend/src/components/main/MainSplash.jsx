@@ -24,7 +24,7 @@ export default function MainSplash() {
           <br />
           <span>
             여러분의 의견이 필요한 사람들에게 <br />
-            당신의 이야기를 들려주세요
+            당신의 이야기를 들려주세요.
           </span>
         </div>
         <div>
@@ -39,7 +39,7 @@ export default function MainSplash() {
           <br />
           <span>
             편하게 질문하세요. <br />
-            저희가 인터뷰 내용을 기록해 드릴께요
+            저희가 인터뷰 내용을 기록해 드릴게요.
           </span>
         </div>
         <div className="button">
