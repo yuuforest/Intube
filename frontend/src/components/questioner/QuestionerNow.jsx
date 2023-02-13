@@ -141,7 +141,7 @@ export default function QuestionerNow(props) {
       });
   };
 
-  const [conferenceID, setConferenceID] = useState([]);
+  // const [conferenceID, setConferenceID] = useState([]);
 
   const onClickEnter = (e) => {
     const interviewId = interviewList[questionindex].id;
@@ -157,15 +157,17 @@ export default function QuestionerNow(props) {
         }
       )
       .then((response) => {
-        setConferenceID(response.data.conferenceID);
+        const conferenceID = response.data.conferenceID
+        localStorage.setItem('historyID', response.data.historyID)
+        navigate("/conference", {
+          state: { userInfo, interviewId, interviewTimeId, position, conferenceID },
+        })
       })
       .catch((error) => {
         console.error(error);
       });
 
-    navigate("/conference", {
-      state: { interviewId, interviewTimeId, position, conferenceID, userInfo },
-    });
+ 
   };
 
   const openModal = (e, name, email, id) => {
