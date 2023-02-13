@@ -4,6 +4,7 @@ import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
 import com.ssafy.interview.api.response.result.ConferenceResultRes;
+import com.ssafy.interview.api.response.result.DialogDetailRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Conference;
@@ -166,6 +167,19 @@ public class ResultServiceImpl implements ResultService {
 
         // 해당 질문에 따른 결과 수정
         conferenceResult.updateConferenceResult(resultModifyReq.getResult_content());
+    }
+
+    @Override
+    public List<DialogDetailRes> searchDialogDetailRes(Long user_id, Long interview_id, Long interview_time_id) {
+        User user = userRepository.findById(user_id).get();
+
+        // 내가 작성한 인터뷰가 맞는지 여부 확인
+        equalOwnerIdAndUserId(user.getName(), user_id, interview_id);
+
+        Conference conference = conferenceRepository.findByInterviewTime_Id(interview_time_id).get();
+
+
+        return dialogRepository.findDialogDetailRes(conference.getId());
     }
 
     /**

@@ -4,6 +4,7 @@ package com.ssafy.interview.api.controller;
 import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
+import com.ssafy.interview.api.response.result.DialogDetailRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.api.service.conference.ResultService;
 import com.ssafy.interview.api.service.user.AuthService;
@@ -130,6 +131,22 @@ public class ResultController {
     public ResponseEntity<? extends BaseResponseBody> updateConferenceResult(@RequestBody ResultModifyReq resultModifyReq, @ApiIgnore Authentication authentication) {
         resultService.updateConferenceResult(resultModifyReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/search/dialog")
+    @ApiOperation(value = "conference result 수정하기 위해 불러오기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 409, message = "사용자 다름"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<List<DialogDetailRes>> searchDialogDetailRes(@RequestParam Long interview_id,
+                                                                       @RequestParam Long interview_time_id,
+                                                                       @ApiIgnore Authentication authentication) {
+        Long user_id = authService.getIdByAuthentication(authentication);
+
+        return ResponseEntity.status(200).body(resultService.searchDialogDetailRes(user_id, interview_id, interview_time_id));
     }
 
 }

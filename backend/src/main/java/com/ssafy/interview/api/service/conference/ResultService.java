@@ -4,6 +4,7 @@ import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
 import com.ssafy.interview.api.response.result.ConferenceResultRes;
+import com.ssafy.interview.api.response.result.DialogDetailRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 
 import java.util.List;
@@ -20,4 +21,5 @@ public interface ResultService {
     void createConferenceResult(Long user_id, Long interview_id, Long interview_time_id);
     ConferenceResultDetailRes searchConferenceResult(Long user_id, Long interview_id, Long interview_time_id);
     void updateConferenceResult(ResultModifyReq resultModifyReq);
+    List<DialogDetailRes> searchDialogDetailRes(Long user_id, Long interview_id, Long interview_time_id);
 }
