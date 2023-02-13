@@ -734,28 +734,28 @@ class VideoRoomComponent extends Component {
                   />
                 </div>
               )}
-            {this.role === "PUBLISHER" && (
-              <Paper
-                elevation={3}
-                sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
-              >
-                <Typography variant="h6" gutterBottom>
-                  인터뷰 내용
-                </Typography>
-                <div className="paper-contents">
-                  {localUser !== undefined &&
-                    localUser.getStreamManager() !== undefined && (
-                      <NowAnswer
-                        user={localUser}
-                        chatDisplay={this.state.chatDisplay}
-                        close={this.toggleChat}
-                        messageReceived={this.checkNotification}
-                        myAnswer={this.props.myAnswer}
-                      />
-                    )}
-                </div>
-              </Paper>
-            )}
+
+            <Paper
+              elevation={3}
+              sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
+            >
+              <Typography variant="h6" gutterBottom>
+                인터뷰 내용
+              </Typography>
+              <div className="paper-contents">
+                {localUser !== undefined &&
+                  localUser.getStreamManager() !== undefined && (
+                    <NowAnswer
+                      role={this.role}
+                      user={localUser}
+                      chatDisplay={this.state.chatDisplay}
+                      close={this.toggleChat}
+                      messageReceived={this.checkNotification}
+                      myAnswer={this.props.myAnswer}
+                    />
+                  )}
+              </div>
+            </Paper>
           </Grid>
           <Grid item xs={4}>
             <QuestionLIst
