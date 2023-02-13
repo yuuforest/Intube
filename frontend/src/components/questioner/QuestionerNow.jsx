@@ -132,7 +132,7 @@ export default function QuestionerNow(props) {
         const conferenceID = response.data.conferenceID
         localStorage.setItem('historyID', response.data.historyID)
         navigate("/conference", {
-          state: { interviewId, interviewTimeId, position, conferenceID },
+          state: { userInfo, interviewId, interviewTimeId, position, conferenceID },
         })
       })
       .catch((error) => {
