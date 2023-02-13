@@ -1,7 +1,6 @@
 .questioner {
   background-color: #f2f7ff;
-
-  height: 100vh;
+  overflow: hidden;
 }
 
 .question-modify {

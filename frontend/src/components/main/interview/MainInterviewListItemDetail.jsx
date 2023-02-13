@@ -13,7 +13,7 @@ import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
-
+import Swal from "sweetalert2";
 import InterviewTag from "components/common/InterviewTag";
 
 import "components/main/interview/MainInterviewListItem.css";
@@ -66,10 +66,19 @@ export default function MainInterviewListItemDetail(props) {
         }
       )
       .then((response) => {
-        alert("등록완료");
+        props.setOpen(false);
+        Swal.fire({
+          title: "신청이 완료되었습니다.",
+          text: "",
+          icon: "success",
+        });
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        Swal.fire({
+          title: error.response.data.message,
+          text: "",
+          icon: "error",
+        });
       });
   };
 
