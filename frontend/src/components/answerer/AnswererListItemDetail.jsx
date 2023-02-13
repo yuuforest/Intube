@@ -1,5 +1,5 @@
 import React from "react";
-import http from "api/Http";
+import instance from "api/APIController";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -61,7 +61,7 @@ export default function InterviewListItemDetail(props) {
 
   useEffect(() => {
     getUser();
-    http
+    instance
       .post(
         "/conference/in?interviewTimeID=" + props.interview.interviewTimeRes.id,
         {},
@@ -84,7 +84,7 @@ export default function InterviewListItemDetail(props) {
   }, []);
 
   const getUser = () => {
-    http
+    instance
       .get("/user/me", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

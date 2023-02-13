@@ -1,6 +1,9 @@
 .questioner {
+  height: 1600px;
   background-color: #f2f7ff;
-  overflow: hidden;
+}
+.questioner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
 .question-modify {

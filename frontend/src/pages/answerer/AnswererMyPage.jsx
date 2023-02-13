@@ -4,7 +4,7 @@ import CalendarComponent from "components/answerer/mypage/CalendarComponent";
 import Grid from "@mui/material/Grid";
 import CardList from "components/answerer/mypage/CardList";
 import Temperature from "components/answerer/mypage/Temperature";
-import http from "api/Http";
+import instance from "api/APIController";
 import Header from "components/common/Header";
 
 import "./AnswererMyPage.css";
@@ -37,28 +37,34 @@ export default function AnswererMyPage() {
     completeInfo: 3,
   };
 
-  const [calendarInfo, setCalendarInfo] = useState([{
-    applicant_state: 2,
-    apply_end_time: "2023-02-10 02:11",
-    apply_start_time: "2023-02-10 02:11",
-    category_name: "1:1",
-    description: "유제품 좋아하는 사람?",
-    download_expiration: null,
-    end_standard_age: 53,
-    estimated_time: "12",
-    gender: "M",
-    id: 39,
-    interviewTimeRes: {id: 31, interview_start_time: '2023-02-10 13:13', modifyResultState: 0},
-    interview_state: 5,
-    max_people: 12,
-    owner_email: "ssafy1@ssafy.com",
-    owner_id: 10,
-    owner_name: "영싸피",
-    owner_phone: "01022222222",
-    standard_point: 11,
-    start_standard_age: 20,
-    title: "유제품 맛테스트 조사",
-  }]);
+  const [calendarInfo, setCalendarInfo] = useState([
+    {
+      applicant_state: 2,
+      apply_end_time: "2023-02-10 02:11",
+      apply_start_time: "2023-02-10 02:11",
+      category_name: "1:1",
+      description: "유제품 좋아하는 사람?",
+      download_expiration: null,
+      end_standard_age: 53,
+      estimated_time: "12",
+      gender: "M",
+      id: 39,
+      interviewTimeRes: {
+        id: 31,
+        interview_start_time: "2023-02-10 13:13",
+        modifyResultState: 0,
+      },
+      interview_state: 5,
+      max_people: 12,
+      owner_email: "ssafy1@ssafy.com",
+      owner_id: 10,
+      owner_name: "영싸피",
+      owner_phone: "01022222222",
+      standard_point: 11,
+      start_standard_age: 20,
+      title: "유제품 맛테스트 조사",
+    },
+  ]);
   const date = new Date();
 
   // 나중에 정부 수정할 때
@@ -70,14 +76,13 @@ export default function AnswererMyPage() {
   const userIntro = userInfo.introduction;
 
   const infoInterview = () => {
-    http
+    instance
       .get("/user/interviewee/mypage", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
-
         setUserInfo(response.data);
         setCardInfo({
           match: response.data.conduct_interview_count,
