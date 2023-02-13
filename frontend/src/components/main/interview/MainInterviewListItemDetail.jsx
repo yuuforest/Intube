@@ -74,6 +74,7 @@ export default function MainInterviewListItemDetail(props) {
         });
       })
       .catch((error) => {
+        props.setOpen(false);
         Swal.fire({
           title: error.response.data.message,
           text: "",
