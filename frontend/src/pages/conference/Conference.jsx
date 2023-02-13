@@ -39,51 +39,50 @@ export default function Conference() {
   const storeResult = () => {
     if (positionId === 1) {
       http
-      .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
-      '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
-      {}, 
+      .post("/result/create?interview_id=" + interviewId + '&interview_time_id=' + interviewTimeId,
+      {},
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then(() => {
-        localStorage.removeItem('historyID')
         http
-          .post("/result/create?interview_id=" + interviewId + '&interview_time_id=' + interviewTimeId,
-          {},
+          .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
+          '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
+          {}, 
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
-          }
+          })
           .then(() => {
-            console.log('필립까지 완료')
+            localStorage.removeItem('historyID')
           })
           .catch((error) => {
             console.error(error)
           })
-          )
       })
       .catch((error) => {
-        console.error(error);
-      });
+        console.error(error)
+      }
+      )
     } else {
-      http
-      .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
-      '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
-      {}, 
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then(() => {
-        localStorage.removeItem('historyID')
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        http
+        .post("/conference/end?historyID=" + localStorage.getItem('historyID') + 
+        '&conferenceID=' +  conferenceID + '&interviewTimeID=' + interviewTimeId,
+        {}, 
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then(() => {
+          localStorage.removeItem('historyID')
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }
 
