@@ -662,7 +662,12 @@ class VideoRoomComponent extends Component {
               )}
           </CardContent>
         </Card>
-        <Grid container spacing={2} alignItems="flex-start">
+        <Grid
+          container
+          spacing={2}
+          alignItems="flex-start"
+          sx={{ backgroundColor: "#f2f7ff" }}
+        >
           <Grid item xs={8}>
             <div id="layout" className="bounds">
               {localUser !== undefined &&

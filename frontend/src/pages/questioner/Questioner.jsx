@@ -52,7 +52,7 @@ export default function Questioner() {
           </Box>
           <QuestionerAll value={value}></QuestionerAll>
           <QuestionerApply value={value}></QuestionerApply>
-          <QuestionerNow value={value}></QuestionerNow>
+          <QuestionerNow value={value} setValue={setValue}></QuestionerNow>
         </Grid>
       </Grid>
     </div>
