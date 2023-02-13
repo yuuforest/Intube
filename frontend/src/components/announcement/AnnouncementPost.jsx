@@ -137,7 +137,12 @@ export default function AnnouncementSteps(props) {
           })
           .catch((error) => {
             console.log(error);
-            alert("입력안한 정보가 있습니다");
+            Swal.fire({
+              title: "등록실패",
+              text: error.response.data.message,
+              icon: "error",
+            });
+            props.setValue(1);
           });
       })
       .catch((error) => {
