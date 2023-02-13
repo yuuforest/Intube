@@ -23,6 +23,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useState, useEffect } from "react";
 import Timer from "components/user/login/Timer";
+import swal from "sweetalert2";
 
 function Copyright(props) {
   return (
@@ -157,9 +158,22 @@ export default function SignUp() {
             })
             .then(values => {
               console.log(values);
-              alert("회원가입되었습니다.");
               localStorage.clear();
-              navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+              swal.fire({
+                title: "회원가입 되었습니다.",
+                text: "환영합니다!!😁😀",
+                icon: "success",
+
+                confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                confirmButtonText: "메인으로 이동", // confirm 버튼 텍스트 지정
+              });
+              // .then(result => {
+              //   // 만약 Promise리턴을 받으면,
+              //   if (result.isConfirmed) {
+              //     window.location.replace("/");
+              //   }
+              // });
+              navigate("/");
             })
             .catch(e => {
               if (e.response.data.statusCode === 409) {

@@ -22,7 +22,7 @@ import { useState, useEffect } from "react";
 import { VerifyNickname } from "api/verifyNickname";
 import { DeleteUser } from "components/user/login/DeleteUser";
 import swal from "sweetalert2";
-// import { Paper } from "@mui/material";
+import "./UserUpdate.css";
 
 function Copyright(props) {
   return (
@@ -102,7 +102,7 @@ export default function SignUp() {
         // password: userInfo,
         phone: response.phone,
       };
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
       instance
         .put("/user", JSON.stringify(values), {
           headers: {
@@ -267,15 +267,20 @@ export default function SignUp() {
           <form onSubmit={formik.handleSubmit}>
             <Typography
               component="h1"
-              variant="h5"
-              sx={{ mb: 2, display: "center" }}
+              variant="h4"
+              sx={{
+                mb: 2,
+                // border: "1px black solid",
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
               회원정보 수정
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={2}></Grid>
-              <Grid item xs={10}>
-                <img src={userImg} alt="왜안돼"></img>
+              <Grid item xs={3}></Grid>
+              <Grid item xs={9}>
+                <img className="userImg" src={userImg} alt="왜안돼"></img>
               </Grid>
               <Grid item xs={3}></Grid>
               <Grid item xs={9}>
@@ -312,7 +317,6 @@ export default function SignUp() {
                   id="phone"
                   required
                   fullWidth
-                  autoFocus
                   value={formik.values.phone}
                   onChange={formik.handleChange}
                   error={formik.touched.phone && Boolean(formik.errors.phone)}
