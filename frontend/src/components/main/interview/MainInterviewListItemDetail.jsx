@@ -121,7 +121,7 @@ export default function MainInterviewListItemDetail(props) {
                   {menu.title} :
                 </Typography>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={9} sx={{ my: 2 }}>
                 {menu.title === "인터뷰 시간" ? (
                   props.interview.applicant_state === 0 ? (
                     <Select

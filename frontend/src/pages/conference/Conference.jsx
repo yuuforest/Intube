@@ -20,7 +20,7 @@ export default function Conference() {
   const [questId, setQuestId] = useState(undefined);
   const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
 
-  const [micState, setMicState] = React.useState(true);
+  const [micState, setMicState] = React.useState(false);
   const handleMicState = () => {
     setMicState(!micState);
   };

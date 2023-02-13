@@ -1,4 +1,4 @@
 .announcement {
   background-color: #f2f7ff;
-  height: 100vh;
+  min-height: 100vh;
 }
