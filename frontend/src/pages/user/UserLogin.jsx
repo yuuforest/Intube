@@ -15,6 +15,7 @@ import { KAKAO_AUTH_URL } from "components/user/login/OAuth";
 import swal from "sweetalert2";
 import kakaoImg from "assets/kakaoLogin.png";
 import "./UserLogin.css";
+import Header from "components/common/Header";
 
 function Copyright(props) {
   return (
@@ -95,99 +96,104 @@ export default function SignIn() {
   }
 
   return (
-    <ThemeProvider className="back" theme={theme}>
-      <Container
-        className="contain"
-        component="main"
-        maxWidth="xs"
-        sx={{ mt: 10 }}
-      >
-        <form onSubmit={formik.handleSubmit}>
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              // border: "1px solid black",
-            }}
-          >
-            {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+    <div className="main">
+      <Header></Header>
+      <ThemeProvider className="back" theme={theme}>
+        <Container
+          className="contain"
+          component="main"
+          maxWidth="xs"
+          sx={{ mt: 10 }}
+        >
+          <form onSubmit={formik.handleSubmit}>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                // border: "1px solid black",
+              }}
+            >
+              {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar> */}
-            <Typography component="h1" variant="h5">
-              로그인
-            </Typography>
+              <Typography component="h1" variant="h5">
+                로그인
+              </Typography>
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="이메일 주소"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              // onBlur={formik.handleBlur}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              onBlur={formik.handleBlur}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="비밀번호"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            {/* <FormControlLabel
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="이메일 주소"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                onBlur={formik.handleBlur}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="비밀번호"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+              {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Grid container>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={4}>
-                <Button
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  sx={{ mt: 2, mb: 2 }}
-                >
-                  로그인
-                </Button>
+              <Grid container>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={4}>
+                  <Button
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 2, mb: 2 }}
+                  >
+                    로그인
+                  </Button>
+                </Grid>
+                <Grid item xs={4} sx={{ mt: 2, mb: 2 }}>
+                  <img src={kakaoImg} alt="d" onClick={kakaoLogin}></img>
+                </Grid>
+                <Grid item xs={2}></Grid>
               </Grid>
-              <Grid item xs={4} sx={{ mt: 2, mb: 2 }}>
-                <img src={kakaoImg} alt="d" onClick={kakaoLogin}></img>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="/findUser" variant="body2">
+                    아이디/ 비밀번호 찾기
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/signup" variant="body2">
+                    {"계정이 없으신가요? 회원가입하기"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item xs={2}></Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/findUser" variant="body2">
-                  아이디/ 비밀번호 찾기
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"계정이 없으신가요? 회원가입하기"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </form>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+            </Box>
+          </form>
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
+    </div>
   );
 }

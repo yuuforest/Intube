@@ -15,6 +15,7 @@ export function verifySend(email) {
     })
     .then(({ data }) => {
       if (data.statusCode === 200) {
+        localStorage.removeItem("emailAuthorize");
         swal.fire({
           title: "",
           text: "인증번호가 발송되었습니다. 메일을 확인해주세요",

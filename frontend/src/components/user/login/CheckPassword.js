@@ -13,6 +13,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router";
 import instance from "api/APIController";
 import swal from "sweetalert2";
+import Header from "components/common/Header";
 
 function Copyright(props) {
   return (
@@ -129,52 +130,57 @@ export default function CheckPassword() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <form onSubmit={formik.handleSubmit}>
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 15,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography component="h1" variant="h5">
-              비밀번호 확인
-            </Typography>
+    <div>
+      <Header></Header>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <form onSubmit={formik.handleSubmit}>
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 15,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography component="h1" variant="h5">
+                비밀번호 확인
+              </Typography>
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="비밀번호를 입력해주세요"
-              type="password"
-              id="password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            <Grid container>
-              <Grid item xs={4}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ mt: 2, mb: 2 }}
-                  onClick={getUserInfo}
-                >
-                  비밀번호 확인
-                </Button>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="비밀번호를 입력해주세요"
+                type="password"
+                id="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+              <Grid container>
+                <Grid item xs={4}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 2, mb: 2 }}
+                    onClick={getUserInfo}
+                  >
+                    비밀번호 확인
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
-        </form>
-        <Copyright sx={{ mt: 4, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+            </Box>
+          </form>
+          <Copyright sx={{ mt: 4, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
+    </div>
   );
 }

@@ -3,7 +3,6 @@ import swal from "sweetalert2";
 import { useNavigate } from "react-router";
 
 export async function VerifyNickname(nickname) {
-  const navigate = useNavigate();
   let params = {
     // email: "abcdq12345@naver.com",
     // number: "rqDsyUYU",
@@ -48,7 +47,7 @@ export async function VerifyNickname(nickname) {
           text: "메인으로 이동합니다.",
           icon: "error",
         });
-        navigate("/");
+        window.location.replace("/");
       }
       console.log(e, "아오");
     });
