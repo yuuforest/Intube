@@ -29,6 +29,7 @@ import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import NowQuestion from "components/conference/NowQuestion";
 import NowAnswer from "components/conference/NowAnswer";
+
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:8443/api/";
 
@@ -39,6 +40,7 @@ class VideoRoomComponent extends Component {
     this.layout = new OpenViduLayout();
     let sessionName = "Session" + props.interviewTimeId;
     let userName = props.userName;
+    const interviewId = props.interviewId;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -72,6 +74,7 @@ class VideoRoomComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
+    this.storeResult = this.storeResult.bind(this);
 
     this.role = "PUBLISHER";
     if (props.positionId === 2) {
@@ -80,6 +83,10 @@ class VideoRoomComponent extends Component {
 
     console.log("asa");
     console.log(props.interviewId);
+  }
+
+  storeResult() {
+    this.props.storeResult();
   }
 
   handleMicState() {
@@ -286,14 +293,37 @@ class VideoRoomComponent extends Component {
       this.props.leaveSession();
     }
 
+    // 질문자면 세션 종료
+    if (this.role === "PUBLISHER") {
+      axios
+        .delete(
+          "https://intube.store:443/openvidu/api/sessions/" +
+            "Session" +
+            this.props.interviewTimeId,
+          {
+            headers: {
+              Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
     this.navigate("/");
+    window.location.reload();
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
     this.setState({ localUser: localUser });
-    console.log(this.state.subscribers);
+    console.log(this.state);
+    console.log(localUser);
   }
 
   micStatusChanged() {
@@ -352,6 +382,26 @@ class VideoRoomComponent extends Component {
 
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
+
+    axios
+      .get(
+        "https://intube.store:443/openvidu/api/sessions/" +
+          "Session" +
+          this.props.interviewTimeId,
+        {
+          headers: {
+            Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        this.navigate("/");
+        window.location.reload();
+      });
+
     this.state.session.on("streamDestroyed", (event) => {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
@@ -624,6 +674,11 @@ class VideoRoomComponent extends Component {
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
           handleMicState={this.handleMicState}
+          // positionId={this.props.positionId}
+          // conferenceId={this.props.conferenceID}
+          // interviewTimeID={interviewTimeID}
+          // interviewId={interviewId}
+          storeResult={this.storeResult}
         />
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
@@ -649,7 +704,12 @@ class VideoRoomComponent extends Component {
               )}
           </CardContent>
         </Card>
-        <Grid container spacing={2} alignItems="flex-start">
+        <Grid
+          container
+          spacing={2}
+          alignItems="flex-start"
+          sx={{ backgroundColor: "#f2f7ff" }}
+        >
           <Grid item xs={8}>
             <div id="layout" className="bounds">
               {localUser !== undefined &&
@@ -731,7 +791,7 @@ class VideoRoomComponent extends Component {
                     {sub.audioActive ? (
                       <div> {sub.nickname} : 발언중</div>
                     ) : (
-                      <div> {sub.nickname} :대기중</div>
+                      <div> {sub.nickname} : 대기중</div>
                     )}
                   </div>
                 ))}
