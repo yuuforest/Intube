@@ -92,6 +92,17 @@ public class ApplicantRepositoryImpl implements ApplicantRepositoryCustom {
     }
 
     @Override
+    public Boolean existApplicantByInterviewTimeId(Long interview_time_id) {
+        Long fetchOne = jpaQueryFactory
+                .select(qApplicant.id)
+                .from(qApplicant)
+                .where(qApplicant.interviewTime.id.eq(interview_time_id), qApplicant.applicantState.eq(2))
+                .fetchFirst(); // limit 1
+
+        return fetchOne != null; // 1개가 있는지 없는지 판단 (없으면 null이라 null체크)
+    }
+
+    @Override
     public Boolean existApplicantByUserId(Long user_id, Long interview_time_id) {
         Long fetchOne = jpaQueryFactory
                 .select(qApplicant.id)

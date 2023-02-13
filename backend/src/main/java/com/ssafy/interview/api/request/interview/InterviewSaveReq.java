@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,30 +24,39 @@ import java.util.List;
 @Builder
 public class InterviewSaveReq {
     @ApiModelProperty(example = "1:1", name = "인터뷰 카테고리")
-    private String category_name;
+    @NotBlank(message = "인터뷰 카테고리을 확인해주세요.")
+    String category_name;
 
     @ApiModelProperty(example = "아닙니다", name = "인터뷰 제목")
+    @NotBlank(message = "인터뷰 제목을 확인해주세요.")
     String title;
 
     @ApiModelProperty(example = "설명입니다", name = "인터뷰 설명")
+    @NotBlank(message = "인터뷰 설명을 확인해주세요.")
     String description;
 
     @ApiModelProperty(example = "1시간", name = "인터뷰 진행 소요시간")
+    @NotBlank(message = "인터뷰 진행 소요시간을 확인해주세요.")
     String estimated_time;
 
     @ApiModelProperty(example = "10", name = "인터뷰 나이별 대상 start")
+    @NotNull(message = "인터뷰 최소 연령 조건을 확인해주세요.")
     int start_standard_age;
 
     @ApiModelProperty(example = "20", name = "인터뷰 나이별 대상 end")
+    @NotNull(message = "인터뷰 최대 연령 조건을 확인해주세요.")
     int end_standard_age;
 
     @ApiModelProperty(example = "M", name = "인터뷰 성별 대상")
+    @NotNull(message = "인터뷰 성별 대상을 확인해주세요.")
     char gender;
 
-    @ApiModelProperty(example = "20", name = "인터뷰 모집 최대인원")
+    @ApiModelProperty(example = "20", name = "인터뷰 모집 최대 인원")
+    @NotNull(message = "인터뷰 모집 최대 인원을 확인해주세요.")
     int max_people;
 
     @ApiModelProperty(example = "10000", name = "인터뷰 시 지급 포인트")
+    @NotNull(message = "인터뷰 시 지급 포인트를 확인해주세요.")
     int standard_point;
 
     @ApiModelProperty(example = "2023-01-30T11:00", name = "인터뷰 모집 마감 시감")

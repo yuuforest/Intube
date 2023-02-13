@@ -1,7 +1,9 @@
 package com.ssafy.interview.api.service.conference;
 
 import com.ssafy.interview.api.request.result.DialogModifyReq;
+import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
+import com.ssafy.interview.api.response.result.ConferenceResultRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public interface ResultService {
     void updateAllDialog(List<DialogModifyReq> dialogInfo);
 
     // conference 종료 시 conference result 생성
-    void createConferencResult(Long user_id, Long interview_id, Long interview_time_id);
-    ConferenceResultDetailRes searchConferencResult(Long user_id, Long interview_id, Long interview_time_id);
+    void createConferenceResult(Long user_id, Long interview_id, Long interview_time_id);
+    ConferenceResultDetailRes searchConferenceResult(Long user_id, Long interview_id, Long interview_time_id);
+    void updateConferenceResult(ResultModifyReq resultModifyReq);
 }

@@ -2,6 +2,7 @@ package com.ssafy.interview.api.controller;
 
 
 import com.ssafy.interview.api.request.result.DialogModifyReq;
+import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.api.service.conference.ResultService;
@@ -98,7 +99,7 @@ public class ResultController {
 
         Long user_id = authService.getIdByAuthentication(authentication);
 
-        resultService.createConferencResult(user_id, interview_id, interview_time_id);
+        resultService.createConferenceResult(user_id, interview_id, interview_time_id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
@@ -116,7 +117,19 @@ public class ResultController {
                                                                             @ApiIgnore Authentication authentication) {
         Long user_id = authService.getIdByAuthentication(authentication);
 
-        return ResponseEntity.status(200).body(resultService.searchConferencResult(user_id, interview_id, interview_time_id));
+        return ResponseEntity.status(200).body(resultService.searchConferenceResult(user_id, interview_id, interview_time_id));
+    }
+
+    @PutMapping("/modify")
+    @ApiOperation(value = "해당 결과 내용 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 403, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateConferenceResult(@RequestBody ResultModifyReq resultModifyReq, @ApiIgnore Authentication authentication) {
+        resultService.updateConferenceResult(resultModifyReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
 }

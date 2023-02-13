@@ -44,4 +44,9 @@ public class ConferenceResult extends BaseEntity {
         this.conference = conference;
         this.question = question;
     }
+
+
+    public void updateConferenceResult(String content) {
+        this.content = content;
+    }
 }
