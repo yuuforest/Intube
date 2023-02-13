@@ -5,6 +5,7 @@ import com.ssafy.interview.db.entitiy.conference.Conference;
 import com.ssafy.interview.db.entitiy.conference.ConferenceHistory;
 import com.ssafy.interview.db.entitiy.interview.Question;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public interface ConferenceService {
     void endConference(Long conferenceID);
     Optional<Conference> isConferenceByHost(Long interviewTimeID);
     Optional<Conference> isConferenceByUser(Long interviewTimeID);
+    LocalDateTime getStartTimeInConference(Long conferenceID);
 
     // [Conference History Table]
     ConferenceHistory createConferenceHistory(Long conferenceID, String userEmail, int action);

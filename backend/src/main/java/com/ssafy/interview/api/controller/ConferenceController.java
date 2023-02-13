@@ -244,4 +244,16 @@ public class ConferenceController {
         conferenceService.kickConferenceHistory(kickInfo);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
+
+    @PutMapping("/startInfo")
+    @ApiOperation(value = "Conference 시작 시간 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<String> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+        String time = conferenceService.getStartTimeInConference(conferenceID).toString().split("T")[1];
+        return ResponseEntity.status(200).body(time);
+    }
 }
