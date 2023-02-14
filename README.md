@@ -18,7 +18,7 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 <br/><br/>
 
 ## 사용한 기술
-![InTube_기술스텍](/uploads/39f7516d5facd81fd2aecb7e8fa27582/InTube_기술스텍.png)
+![InTube_기술스텍](/uploads/ba943b69aee619fadbcab95d34b89526/InTube_기술스텍.png)
 
 <br/><br/>
 
