@@ -75,8 +75,8 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(ExistInterviewTimeException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     protected ResponseEntity<? extends BaseResponseBody> existInterviewTimeException(ExistInterviewTimeException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BaseResponseBody.of(-133, e.getMessage() + " 재확인바랍니다."));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(BaseResponseBody.of(-113, e.getMessage() + " 재확인바랍니다."));
     }
 }
