@@ -157,7 +157,10 @@ public class ResultController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> deleteDialog(@RequestParam Long dialog_id, @ApiIgnore Authentication authentication) {
-        resultService.updateConferenceResult(resultModifyReq);
+        Long user_id = authService.getIdByAuthentication(authentication);
+
+        resultService.deleteDialog(dialog_id);
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
