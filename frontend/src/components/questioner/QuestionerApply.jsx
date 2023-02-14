@@ -16,6 +16,8 @@ import "components/questioner/QuestionerApply.css";
 
 export default function QuestionerApply(props) {
   const [questionindex, setQuestionIndex] = useState(0);
+  const [timeindex, setTimeindex] = useState(0);
+  const [timeid, setTimeid] = useState();
 
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
@@ -24,9 +26,6 @@ export default function QuestionerApply(props) {
     );
     setTimeindex(0);
   };
-
-  const [timeindex, setTimeindex] = useState(0);
-  const [timeid, setTimeid] = useState(-1);
 
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
@@ -40,9 +39,7 @@ export default function QuestionerApply(props) {
   const [interviewList, setInterviewList] = useState([]);
 
   useEffect(() => {
-    console.log("변경!");
     getInterviewList();
-    getAnswererList();
   }, [questionindex, timeindex, props.value]);
 
   const getInterviewList = () => {
@@ -57,10 +54,18 @@ export default function QuestionerApply(props) {
         }
       )
       .then((response) => {
-        console.log(response.data.content);
         setInterviewList(response.data.content);
-        if (timeid === -1) {
-          setTimeid(response.data.content[0].interviewTimeDetailResList[0].id);
+        if (response.data.content.length > 0) {
+          setTimeid(
+            response.data.content[questionindex].interviewTimeDetailResList[
+              timeindex
+            ].id
+          );
+          getAnswererList(
+            response.data.content[questionindex].interviewTimeDetailResList[
+              timeindex
+            ].id
+          );
         }
       })
       .catch((error) => {
@@ -70,9 +75,9 @@ export default function QuestionerApply(props) {
 
   const [AnsewererList, setAnsewererList] = useState([]);
 
-  const getAnswererList = () => {
+  const getAnswererList = (id) => {
     http
-      .get("/user/interviewer/" + timeid + "/manage-applicant", {
+      .get("/user/interviewer/" + id + "/manage-applicant", {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -88,6 +93,7 @@ export default function QuestionerApply(props) {
   };
 
   const acceptHandeler = (e) => {
+    console.log(e.target.value);
     http
       .put(
         "/user/interviewer/accept-applicant?applicant_id=" +
@@ -101,8 +107,8 @@ export default function QuestionerApply(props) {
           },
         }
       )
-      .then((response) => {
-        getAnswererList();
+      .then(() => {
+        getInterviewList();
       })
       .catch((error) => {
         console.error(error);

@@ -2,13 +2,21 @@
   text-align: center;
 }
 #root {
-  font-family: "yg-jalnan";
-}
-.MuiTypography-root {
   font-family: "GmarketSansMedium" !important;
 }
 
-.App-logo {
+.MuiTypography-root {
+  font-family: "GmarketSansMedium" !important;
+}
+.MuiButtonBase-root {
+  font-family: "GmarketSansMedium" !important;
+  font-weight: 300 !important;
+}
+.MuiChip-label {
+  font-family: "GmarketSansMedium" !important;
+  font-weight: 300 !important;
+}
+*/ .App-logo {
   height: 40vmin;
   pointer-events: none;
 }

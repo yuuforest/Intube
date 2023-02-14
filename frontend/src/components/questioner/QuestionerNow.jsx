@@ -14,11 +14,14 @@ import Avatar from "@mui/material/Avatar";
 import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import { useNavigate } from "react-router-dom";
 import EvaluatePerson from "components/questioner/EvaluatePerson";
+import Swal from "sweetalert2";
 
 export default function QuestionerNow(props) {
   const [questionindex, setQuestionIndex] = useState(0);
   const [timeindex, setTimeindex] = useState(0);
+
   const position = 1;
+
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
@@ -26,7 +29,14 @@ export default function QuestionerNow(props) {
     const interviewTimeId = timeid;
     console.log(link);
     navigate(link, {
-      state: { timeid, interviewList, questionindex, timeindex, interviewId, interviewTimeId},
+      state: {
+        timeid,
+        interviewList,
+        questionindex,
+        timeindex,
+        interviewId,
+        interviewTimeId,
+      },
     });
   }
 
@@ -43,7 +53,7 @@ export default function QuestionerNow(props) {
     setTimeindex(0);
   };
 
-  const [timeid, setTimeid] = useState(-1);
+  const [timeid, setTimeid] = useState();
 
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
@@ -58,7 +68,6 @@ export default function QuestionerNow(props) {
 
   useEffect(() => {
     getInterviewList();
-    getAnswererList();
     getUser();
   }, [questionindex, timeindex, props.value, modalOpen]);
 
@@ -93,9 +102,16 @@ export default function QuestionerNow(props) {
       .then((response) => {
         setInterviewList(response.data.content);
 
-        if (timeid === -1) {
-          setTimeid(interviewList[0].interviewTimeDetailResList[0].id);
-        }
+        setTimeid(
+          response.data.content[questionindex].interviewTimeDetailResList[
+            timeindex
+          ].id
+        );
+        getAnswererList(
+          response.data.content[questionindex].interviewTimeDetailResList[
+            timeindex
+          ].id
+        );
       })
       .catch((error) => {
         console.error(error);
@@ -104,16 +120,15 @@ export default function QuestionerNow(props) {
 
   const [AnsewererList, setAnsewererList] = useState([]);
 
-  const getAnswererList = () => {
+  const getAnswererList = (id) => {
     http
-      .get("/user/interviewer/" + timeid + "/manage-applicant", {
+      .get("/user/interviewer/" + id + "/manage-applicant", {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
-        console.log(response.data);
         setAnsewererList(response.data);
       })
       .catch((error) => {
@@ -124,10 +139,8 @@ export default function QuestionerNow(props) {
   const endInterview = () => {
     http
       .put(
-        "/interviews/interviewer/expired-interview?interview_id=" +
-          interviewList[questionindex].id +
-          "&interview_state=6",
-        {},
+        "/interviews/interviewer/finish-interview",
+        { interview_id: interviewList[questionindex].id, interview_state: 6 },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -139,11 +152,13 @@ export default function QuestionerNow(props) {
         props.setValue(0);
       })
       .catch((error) => {
-        console.error(error);
+        Swal.fire({
+          title: "에러",
+          text: error.response.data.message,
+          icon: "error",
+        });
       });
   };
-
-  // const [conferenceID, setConferenceID] = useState([]);
 
   const onClickEnter = (e) => {
     const interviewId = interviewList[questionindex].id;
@@ -203,6 +218,31 @@ export default function QuestionerNow(props) {
   };
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  // const [isConference, setIsConference]
+  const getConferenceId = () => {
+    http
+      .post(
+        "/conference/in?interviewTimeID=" + timeid,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("컨퍼런스 아이디", response.data.conferenceID);
+        // handlePage("", "/questioner/modify");
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "에러",
+          text: "아직 진행하지 않은 인터뷰 입니다.",
+          icon: "error",
+        });
+      });
   };
 
   return (
@@ -347,7 +387,7 @@ export default function QuestionerNow(props) {
               startIcon={<ContentPasteGoIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
               size="large"
-              onClick={(e) => handlePage(e, "/questioner/modify")}
+              onClick={getConferenceId}
             >
               인터뷰 결과 수정
             </Button>

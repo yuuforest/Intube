@@ -61,7 +61,14 @@ export default function MainInterviewListItem(props) {
   return (
     <div>
       <Card
-        sx={{ minHeight: 320, borderRadius: 3 }}
+        sx={{
+          height: 350,
+          borderRadius: 3,
+          "&:hover": {
+            transform: "scale(1.07)",
+            cursor: "pointer",
+          },
+        }}
         onClick={handleClickOpen()}
       >
         <CardContent>
@@ -72,10 +79,16 @@ export default function MainInterviewListItem(props) {
             variant="h5"
             component="div"
             className="title"
+            sx={{
+              fontWeight: "bold",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: "vertical",
+            }}
           >
-            <div className="interview-list-item-title">
-              {props.interview.title}
-            </div>
+            {props.interview.title}
           </Typography>
 
           <Divider />

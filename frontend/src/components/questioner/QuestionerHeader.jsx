@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "api/logout";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import PersonIcon from "@mui/icons-material/Person";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
@@ -217,12 +217,7 @@ export default function Header(props) {
                 </div>
 
                 <Divider />
-                <MenuItem onClick={(e) => handlePage(e, "/questioner/mypage")}>
-                  <ListItemIcon>
-                    <PersonIcon fontSize="small" />
-                  </ListItemIcon>
-                  마이페이지
-                </MenuItem>
+
                 <MenuItem onClick={(e) => handlePage(e, "/")}>
                   <ListItemIcon>
                     <SwitchAccountIcon fontSize="small" />
@@ -234,6 +229,13 @@ export default function Header(props) {
                     <Logout fontSize="small" />
                   </ListItemIcon>
                   로그아웃
+                </MenuItem>
+                <Divider />
+                <MenuItem sx={{ px: 2 }}>
+                  <Avatar sx={{ mr: 2 }}>
+                    <AttachMoneyIcon />
+                  </Avatar>
+                  {userInfo.point}
                 </MenuItem>
               </Menu>
             </React.Fragment>
