@@ -35,38 +35,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function ChangePassword() {
-  // const [userInfo, setUserInfo] = useState({ name: "" });
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
-  // const getUser = () => {
-  //   http
-  //     .get("/user/me", {
-  //       headers: {
-  //         "Content-type": "application/json;charset=UTF-8",
-  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //       },
-  //     })
-  //     .then(response => {
-  //       setUserInfo(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
-  // };
   const navigate = useNavigate();
 
   const validationSchema = yup.object({
     password: yup
       .string("비밀번호를 입력해주세요")
-      // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
-    // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
+      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
+      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
     newpassword: yup
       .string("비밀번호를 입력해주세요")
-      // .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
-      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다."),
-    // .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
+      .min(8, "숫자+영문자+특수문자로 8글자 이상 입력해주세요")
+      .matches(/[0-9]/, "비밀번호에 숫자가 포함되어야 합니다.")
+      .matches(/[^\w]/, "비밀번호에 특수문자가 포함되어야 합니다."),
 
     newpasswordConfirm: yup
       .string()
