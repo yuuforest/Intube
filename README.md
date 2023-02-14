@@ -1,4 +1,4 @@
-# 프로젝트명
+# 공통 프로젝트 : InTube
 > 간략한 프로젝트 소개 문구를 작성합니다.
 
 [![NPM Version][npm-image]][npm-url]
