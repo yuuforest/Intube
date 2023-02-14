@@ -32,6 +32,7 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 
 ### Swagger
 <p align="center">![Intube_Swagger](/uploads/340eec0d2c02545b318550fae9a43053/Intube_Swagger.png)</p>
+
 ### ERD
 <p align="center">![InTube_ERD](/uploads/33f21758b0630d83e1772a4a9103a31f/InTube_ERD.png)</p>
 
