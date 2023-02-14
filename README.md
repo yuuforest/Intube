@@ -1,11 +1,11 @@
 # 공통 프로젝트 : InTube
-> 간략한 프로젝트 소개 문구를 작성합니다.
+> 당신이 원하는 인터뷰를 자유롭게 진행하여 기록과 함께 결과를 공유해보세요. 
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
-한 두 문단으로 프로젝트 소개 글을 작성합니다.
+
 
 ![](../header.png)
 
