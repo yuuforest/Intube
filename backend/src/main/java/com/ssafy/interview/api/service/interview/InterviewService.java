@@ -47,9 +47,6 @@ public interface InterviewService {
     // 인터뷰 삭제하기
     void deleteInterview(String email, Long interview_id);
 
-    // 인터뷰 해당 시간에 따른 상태 완료로 변환
-    void updateModifyResultState(Long user_id, InterviewTimeStateReq interviewTimeStateReq);
-
     // 인터뷰 상태를 완료로 변환
     void updateEndToInterviewState(Long user_id, InterviewStateReq interviewStateReq);
 
