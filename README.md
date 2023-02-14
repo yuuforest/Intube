@@ -18,10 +18,13 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 <br/><br/>
 
 ## 사용한 기술
-![Blue_and_White_Project_Proposal_-_Presentation__1_](/uploads/7844da287aa88e0876157853f1519212/Blue_and_White_Project_Proposal_-_Presentation__1_.png)![Blue_and_White_Project_Proposal_-_Presentation](/uploads/e65214f8c704a275138b6ed86c96574b/Blue_and_White_Project_Proposal_-_Presentation.png)![Blue_and_White_Project_Proposal_-_Presentation__2_](/uploads/b1b8b838b9654edc5400d1f386c0aedc/Blue_and_White_Project_Proposal_-_Presentation__2_.png)![Blue_and_White_Project_Proposal_-_Presentation__3_](/uploads/54f182fb30dcde23452330ae04439481/Blue_and_White_Project_Proposal_-_Presentation__3_.png)
+![image](/uploads/c1f262b9b1d80a55eb9f404f4a4bf1b5/image.png)
+![image](/uploads/700c80164b59747cd0d05302c1956bcc/image.png)
 <br/><br/>
 
 ## 서비스 기능
+![Intube_Image_2](/uploads/a8015eda968fb8a5a030d9fe300e98c1/Intube_Image_2.png)
+
 
 <br/><br/>
 
