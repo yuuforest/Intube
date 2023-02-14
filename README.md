@@ -13,23 +13,23 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 
 <br/><br/>
 
-## 팀원 소개
+## 🚀 팀원 소개
 <p align="center"><img src= "/uploads/c0643e97c73f6aa7a5f256257f803347/InTube_팀원소개_1_.png"></p>
 <p align="center"><img src= "/uploads/df049f0cb8a42a8d22b9db8802dda676/InTube_팀원소개_2_.png"></p>
 
 <br/><br/>
 
-## 사용한 기술
+## ⚙ 사용한 기술
 <p align="center"><img src= "/uploads/ed5791c9713cbd79a9dfcf2ac08152ef/image.png"></p>
 
 <br/><br/>
 
-## 서비스 기능
+## 📝 서비스 기능
 <p align="center"><img src= "/uploads/a8015eda968fb8a5a030d9fe300e98c1/Intube_Image_2.png"></p>
 
 <br/><br/>
 
-## 프로젝트 구조
+## 💻 프로젝트 구조
 
 ### Swagger  
 <p align="center"><img src= "/uploads/340eec0d2c02545b318550fae9a43053/Intube_Swagger.png"></p>
@@ -39,7 +39,7 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 
 <br/><br/>
 
-## Overview
+## 📚 Overview
 
 <br/><br/>
 
