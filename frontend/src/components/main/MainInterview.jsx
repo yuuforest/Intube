@@ -5,7 +5,9 @@ import Pagination from "@mui/material/Pagination";
 import http from "api/Http";
 
 export default function MainInterview(props) {
-  const [selectedValue, setSelectedValue] = React.useState("");
+  const [selectedValue, setSelectedValue] = React.useState(
+    "apply_start_time,desc"
+  );
 
   const handleChangeRadio = (event) => {
     setSelectedValue(event.target.value);

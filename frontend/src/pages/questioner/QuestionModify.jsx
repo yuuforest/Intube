@@ -6,7 +6,16 @@ import ReactPlayer from "react-player/lazy";
 // import http from 'api/Http'
 
 import "pages/questioner/Questioner.css";
-import { Divider, Grid, Typography, Paper, Button } from "@mui/material";
+import {
+  Divider,
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  MenuItem,
+  MenuList,
+  TextField,
+} from "@mui/material";
 import instance from "api/APIController";
 
 export default function QuestionModify() {
@@ -19,35 +28,41 @@ export default function QuestionModify() {
   const timeindex = location.state.timeindex;
   const interview = interviewList[questionindex];
   const [videoURL, setVideoURL] = useState("");
+  const [result, setResult] = useState([]);
+  const [questionList, setQuestionList] = useState([]);
+
+  const [nowQuestion, setNowQuestion] = useState("");
   useEffect(() => {
     getVideo();
-    getScript();
+    getResult();
+    getQuestion();
+    // getScript();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [content, setContent] = useState([]);
-  const [comment, setComment] = useState("내용");
-  const questionList = content.map((x) =>
-    x.question_content === null ? (
-      <p
-        onClick={() => {
-          setComment(x.result_content);
-        }}
-        key={x.id}
-      >
-        INTRO
-      </p>
-    ) : (
-      <p
-        onClick={() => {
-          setComment(x.result_content);
-        }}
-        key={x.id}
-      >
-        {x.question_content}
-      </p>
-    )
-  );
+  // const [content, setContent] = useState([]);
+  // const [comment, setComment] = useState("내용");
+  // const questionList = content.map((x) =>
+  //   x.question_content === null ? (
+  //     <p
+  //       onClick={() => {
+  //         setComment(x.result_content);
+  //       }}
+  //       key={x.id}
+  //     >
+  //       INTRO
+  //     </p>
+  //   ) : (
+  //     <p
+  //       onClick={() => {
+  //         setComment(x.result_content);
+  //       }}
+  //       key={x.id}
+  //     >
+  //       {x.question_content}
+  //     </p>
+  //   )
+  // );
   const getVideo = () => {
     axios
       .get("https://intube.store:8443/openvidu/api/recordings/Session" + id, {
@@ -61,30 +76,98 @@ export default function QuestionModify() {
         console.error(error);
       });
   };
-
-  const getScript = () => {
+  const getResult = () => {
     instance
       .get(
-        "/result/search?interview_id=" +
+        "/result/search/dialog?interview_id=" +
           interviewId +
           "&interview_time_id=" +
           interviewTimeId,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "Content-type": "application/json;charset=UTF-8",
-          },
+          headers: { Authorization: `Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU` },
         }
       )
       .then((response) => {
-        console.log("데이터", response.data);
-        setContent(response.data.conferenceResultRes);
-        setComment(response.data.conferenceResultRes[0].result_content);
+        console.log("result", response.data);
+        setResult(response.data);
+
+        setResult((result) => {
+          let newCondition = [...result];
+          const time = result[0].timestamp.split(":");
+          const second = time[0] * 3600 + time[1] * 60 + time[2];
+          newCondition.forEach((condition) => {
+            const myTime = condition.timestamp.split(":");
+            const mySecond = myTime[0] * 3600 + myTime[1] * 60 + myTime[2];
+            condition.second = mySecond - second;
+          });
+          console.log(newCondition);
+          return newCondition;
+        });
       })
       .catch((error) => {
         console.error(error);
       });
   };
+  const getQuestion = () => {
+    instance
+      .get("/conference/question?interviewID=" + interviewId, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setQuestionList(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const handleNowQuestion = (e) => {
+    console.log(e.target.value);
+    setNowQuestion(e.target.value);
+  };
+  const setQuestion = (e, id) => {
+    setResult((result) => {
+      let newCondition = [...result];
+
+      newCondition.forEach((condition) => {
+        if (condition.id === id) condition.dialog_content = e.target.value;
+      });
+      return newCondition;
+    });
+  };
+
+  const [isPlaying, setIsPlaying] = React.useState(true);
+  const playerRef = React.useRef();
+
+  function changeTime(time) {
+    playerRef.current.seekTo(time, "seconds");
+    setIsPlaying(false);
+  }
+  // const getScript = () => {
+  //   instance
+  //     .get(
+  //       "/result/search?interview_id=" +
+  //         interviewId +
+  //         "&interview_time_id=" +
+  //         interviewTimeId,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //           "Content-type": "application/json;charset=UTF-8",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log("데이터", response.data);
+  //       setContent(response.data.conferenceResultRes);
+  //       setComment(response.data.conferenceResultRes[0].result_content);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   return (
     <div className="question-modify">
@@ -118,19 +201,79 @@ export default function QuestionModify() {
             url={videoURL}
             controls
             className="question-modify-video"
+            ref={playerRef}
           />
+          <Paper sx={{ mt: 3 }}>
+            <MenuList>
+              {questionList.map((question) => (
+                <MenuItem
+                  value={question.id}
+                  key={question.id}
+                  onClick={handleNowQuestion}
+                >
+                  {question.content}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Paper>
           <Paper elevation={3} sx={{ mt: 4, ml: 2 }}>
-            <Typography variant="h6" gutterBottom>
+            {/* <Typography variant="h6" gutterBottom>
               인터뷰 질문
             </Typography>
             <div>{questionList}</div>
             <Typography variant="h6" gutterBottom>
               인터뷰 내용
             </Typography>
-            <div dangerouslySetInnerHTML={{ __html: comment }}></div>
+            <div dangerouslySetInnerHTML={{ __html: comment }}></div> */}
+            {questionList.map(
+              (question) =>
+                question.id === nowQuestion && (
+                  <Typography key={question.id} variant="h6" sx={{ py: 3 }}>
+                    Q. {question.content}
+                  </Typography>
+                )
+            )}
+            {result.map(
+              (result) =>
+                result.question_id === nowQuestion && (
+                  <Grid container spacing={3} key={result.id}>
+                    <Grid item>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          ml: 3,
+                          mt: "3px",
+                          "&:hover": {
+                            color: "primary.dark",
+                            cursor: "pointer",
+                          },
+                        }}
+                        onClick={(e) => changeTime(result.second)}
+                        color="primary"
+                      >
+                        [{result.timestamp}] {result.user_name} :
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <TextField
+                        variant="standard"
+                        fullWidth
+                        value={result.dialog_content}
+                        sx={{
+                          mb: 2,
+                        }}
+                        multiline
+                        maxRows={4}
+                        onChange={(e) => setQuestion(e, result.id)}
+                      />
+                    </Grid>
+                  </Grid>
+                )
+            )}
           </Paper>
         </Grid>
       </Grid>
+
       <Button variant="outlined" sx={{ mt: 5 }}>
         인터뷰 결과 저장
       </Button>
