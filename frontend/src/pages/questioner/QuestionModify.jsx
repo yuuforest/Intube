@@ -94,10 +94,10 @@ export default function QuestionModify() {
         setResult((result) => {
           let newCondition = [...result];
           const time = result[0].timestamp.split(":");
-          const second = time[0] + time[1] * 60 + time[2] * 3600;
+          const second = time[0] * 3600 + time[1] * 60 + time[2];
           newCondition.forEach((condition) => {
             const myTime = condition.timestamp.split(":");
-            const mySecond = myTime[0] + myTime[1] * 60 + myTime[2] * 3600;
+            const mySecond = myTime[0] * 3600 + myTime[1] * 60 + myTime[2];
             condition.second = mySecond - second;
           });
           console.log(newCondition);
