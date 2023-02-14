@@ -37,7 +37,7 @@ export default function QuestionerAllListitem(props) {
           text: "",
           icon: "success",
         });
-        handlePage(e, "/questioner");
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);

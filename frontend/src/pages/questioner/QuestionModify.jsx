@@ -30,11 +30,10 @@ export default function QuestionModify() {
   const [videoURL, setVideoURL] = useState("");
   const [result, setResult] = useState([]);
   const [questionList, setQuestionList] = useState([]);
-
   const [nowQuestion, setNowQuestion] = useState("");
   useEffect(() => {
+    getStartTime();
     getVideo();
-    getResult();
     getQuestion();
     // getScript();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +75,7 @@ export default function QuestionModify() {
         console.error(error);
       });
   };
-  const getResult = () => {
+  const getResult = (startTime) => {
     instance
       .get(
         "/result/search/dialog?interview_id=" +
@@ -93,12 +92,22 @@ export default function QuestionModify() {
 
         setResult((result) => {
           let newCondition = [...result];
-          const time = result[0].timestamp.split(":");
-          const second = time[0] * 3600 + time[1] * 60 + time[2];
+          const time = startTime.split(" ")[1].split(":");
+
+          const second =
+            parseInt(time[0]) * 3600 +
+            parseInt(time[1]) * 60 +
+            parseInt(time[2]);
+
           newCondition.forEach((condition) => {
             const myTime = condition.timestamp.split(":");
-            const mySecond = myTime[0] * 3600 + myTime[1] * 60 + myTime[2];
-            condition.second = mySecond - second;
+            console.log("myTime", myTime);
+            const mySecond =
+              parseInt(myTime[0]) * 3600 +
+              parseInt(myTime[1]) * 60 +
+              parseInt(myTime[2]);
+            condition.second = mySecond - second - 2;
+            condition.time = changeSecond(mySecond - second - 2);
           });
           console.log(newCondition);
           return newCondition;
@@ -108,6 +117,19 @@ export default function QuestionModify() {
         console.error(error);
       });
   };
+  function changeSecond(seconds) {
+    var hour = parseInt(seconds / 3600);
+    var min = parseInt((seconds % 3600) / 60);
+    var sec = seconds % 60;
+
+    if (hour.toString().length === 1) hour = "0" + hour;
+
+    if (min.toString().length === 1) min = "0" + min;
+
+    if (sec.toString().length === 1) sec = "0" + sec;
+
+    return hour + ":" + min + ":" + sec;
+  }
   const getQuestion = () => {
     instance
       .get("/conference/question?interviewID=" + interviewId, {
@@ -123,9 +145,38 @@ export default function QuestionModify() {
         console.error(error);
       });
   };
+
+  const getStartTime = async () => {
+    await instance
+      .post(
+        "/conference/start?interviewTimeID=" + interviewTimeId,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("컨퍼런스 아이디", response.data.conferenceID);
+        instance
+          .get(
+            "/conference/startInfo?conferenceID=" + response.data.conferenceID
+          )
+          .then((res) => {
+            getResult(res.data);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleNowQuestion = (e) => {
     console.log(e.target.value);
     setNowQuestion(e.target.value);
+    setIsAll(false);
+    setIntro(false);
   };
   const setQuestion = (e, id) => {
     setResult((result) => {
@@ -143,7 +194,6 @@ export default function QuestionModify() {
 
   function changeTime(time) {
     playerRef.current.seekTo(time, "seconds");
-    setIsPlaying(false);
   }
   // const getScript = () => {
   //   instance
@@ -169,6 +219,16 @@ export default function QuestionModify() {
   //     });
   // };
 
+  const [isAll, setIsAll] = useState(true);
+  const handleAll = () => {
+    setIsAll(true);
+    setIntro(false);
+  };
+  const [isIntro, setIntro] = useState(false);
+  const handleIntro = () => {
+    setIntro(true);
+    setIsAll(false);
+  };
   return (
     <div className="question-modify">
       <QuestionerHeader></QuestionerHeader>
@@ -205,37 +265,41 @@ export default function QuestionModify() {
           />
           <Paper sx={{ mt: 3 }}>
             <MenuList>
-              {questionList.map((question) => (
+              <MenuItem onClick={handleAll}>전체보기</MenuItem>
+              <MenuItem onClick={handleIntro}>Intro</MenuItem>
+              {questionList.map((question, index) => (
                 <MenuItem
                   value={question.id}
                   key={question.id}
                   onClick={handleNowQuestion}
                 >
-                  {question.content}
+                  Q{index + 1}. {question.content}
                 </MenuItem>
               ))}
             </MenuList>
           </Paper>
           <Paper elevation={3} sx={{ mt: 4, ml: 2 }}>
-            {/* <Typography variant="h6" gutterBottom>
-              인터뷰 질문
-            </Typography>
-            <div>{questionList}</div>
-            <Typography variant="h6" gutterBottom>
-              인터뷰 내용
-            </Typography>
-            <div dangerouslySetInnerHTML={{ __html: comment }}></div> */}
-            {questionList.map(
-              (question) =>
-                question.id === nowQuestion && (
-                  <Typography key={question.id} variant="h6" sx={{ py: 3 }}>
-                    Q. {question.content}
-                  </Typography>
-                )
+            {isIntro ? (
+              <Typography variant="h6" sx={{ py: 3 }}>
+                Intro
+              </Typography>
+            ) : isAll ? (
+              <Typography variant="h6" sx={{ py: 3 }}>
+                전체보기
+              </Typography>
+            ) : (
+              questionList.map(
+                (question) =>
+                  question.id === nowQuestion && (
+                    <Typography key={question.id} variant="h6" sx={{ py: 3 }}>
+                      Q. {question.content}
+                    </Typography>
+                  )
+              )
             )}
-            {result.map(
-              (result) =>
-                result.question_id === nowQuestion && (
+            {result.map((result) =>
+              isIntro ? (
+                result.question_id === null && (
                   <Grid container spacing={3} key={result.id}>
                     <Grid item>
                       <Typography
@@ -251,7 +315,7 @@ export default function QuestionModify() {
                         onClick={(e) => changeTime(result.second)}
                         color="primary"
                       >
-                        [{result.timestamp}] {result.user_name} :
+                        [{result.time}] {result.user_name} :
                       </Typography>
                     </Grid>
                     <Grid item xs={9}>
@@ -269,6 +333,75 @@ export default function QuestionModify() {
                     </Grid>
                   </Grid>
                 )
+              ) : isAll ? (
+                <Grid container spacing={3} key={result.id}>
+                  <Grid item>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        ml: 3,
+                        mt: "3px",
+                        "&:hover": {
+                          color: "primary.dark",
+                          cursor: "pointer",
+                        },
+                      }}
+                      onClick={(e) => changeTime(result.second)}
+                      color="primary"
+                    >
+                      [{result.time}] {result.user_name} :
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <TextField
+                      variant="standard"
+                      fullWidth
+                      value={result.dialog_content}
+                      sx={{
+                        mb: 2,
+                      }}
+                      multiline
+                      maxRows={4}
+                      onChange={(e) => setQuestion(e, result.id)}
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                result.question_id === nowQuestion && (
+                  <Grid container spacing={3} key={result.id}>
+                    <Grid item>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          ml: 3,
+                          mt: "3px",
+                          "&:hover": {
+                            color: "primary.dark",
+                            cursor: "pointer",
+                          },
+                        }}
+                        onClick={(e) => changeTime(result.second)}
+                        color="primary"
+                      >
+                        [{result.time}] {result.user_name} :
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <TextField
+                        variant="standard"
+                        fullWidth
+                        value={result.dialog_content}
+                        sx={{
+                          mb: 2,
+                        }}
+                        multiline
+                        maxRows={4}
+                        onChange={(e) => setQuestion(e, result.id)}
+                      />
+                    </Grid>
+                  </Grid>
+                )
+              )
             )}
           </Paper>
         </Grid>
