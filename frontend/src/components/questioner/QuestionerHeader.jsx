@@ -132,15 +132,15 @@ export default function Header(props) {
               >
                 <Button
                   startIcon={<VideoFileOutlinedIcon />}
-                  variant="outlined"
+                  variant="contained"
                   onClick={(e) => handlePage(e, "/questioner")}
-                  sx={{ mr: 5 }}
+                  sx={{ mr: 3 }}
                 >
                   인터뷰 관리
                 </Button>
 
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   startIcon={<VideoCallOutlinedIcon />}
                   onClick={(e) => handlePage(e, "/announcement")}
                 >

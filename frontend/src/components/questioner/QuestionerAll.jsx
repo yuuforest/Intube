@@ -16,6 +16,12 @@ export default function Questioner(props) {
     word: "",
   });
 
+  const [selectedValue, setSelectedValue] = React.useState("");
+
+  const handleChangeRadio = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
   const [totalPage, setTotalPage] = useState(0);
 
   const [page, setPage] = useState(0);
@@ -34,15 +40,19 @@ export default function Questioner(props) {
   useEffect(() => {
     getInterviewList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchCondition, page]);
+  }, [searchCondition, page, selectedValue]);
 
   const getInterviewList = () => {
     http
-      .post("/user/interviewer?page=" + page, JSON.stringify(searchCondition), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "/user/interviewer?page=" + page + "&sort=" + selectedValue,
+        JSON.stringify(searchCondition),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((response) => {
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
@@ -69,9 +79,31 @@ export default function Questioner(props) {
           <option value={6}>완료</option>
         </NativeSelect>
         <Box sx={{ flexGrow: 1 }} />
-        <Button variant="text">등록일순</Button>
-        <Button variant="text">마감순</Button>
-        <Button variant="text">포인트순</Button>
+
+        <Button
+          value="apply_start_time,desc"
+          variant="text"
+          onClick={handleChangeRadio}
+          sx={{ my: 3, ml: 27 }}
+        >
+          등록순
+        </Button>
+        <Button
+          value="end_start_time,desc"
+          variant="text"
+          onClick={handleChangeRadio}
+          sx={{ my: 3, ml: 1 }}
+        >
+          마감순
+        </Button>
+        <Button
+          value="standard_point,desc"
+          variant="text"
+          onClick={handleChangeRadio}
+          sx={{ my: 3, ml: 1 }}
+        >
+          포인트순
+        </Button>
       </Stack>
       <QuestionerAllList
         interviewList={interviewList}

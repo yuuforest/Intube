@@ -36,71 +36,45 @@ export default function Conference() {
   const dispatch = useDispatch();
 
   const storeResult = () => {
-    if (positionId === 1) {
-      instance
-        .post(
-          "/result/create?interview_id=" +
-            interviewId +
-            "&interview_time_id=" +
-            interviewTimeId,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        )
-        .then(() => {
-          instance
-            .post(
-              "/conference/end?historyID=" +
-                localStorage.getItem("historyID") +
-                "&conferenceID=" +
-                conferenceID +
-                "&interviewTimeID=" +
-                interviewTimeId,
-              {},
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                    "accessToken"
-                  )}`,
-                },
-              }
-            )
-            .then(() => {
-              localStorage.removeItem("historyID");
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      instance
-        .post(
-          "/conference/end?historyID=" +
-            localStorage.getItem("historyID") +
-            "&conferenceID=" +
-            conferenceID +
-            "&interviewTimeID=" +
-            interviewTimeId,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        )
-        .then(() => {
-          localStorage.removeItem("historyID");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    instance
+      .post(
+        "/result/create?interview_id=" +
+          interviewId +
+          "&interview_time_id=" +
+          interviewTimeId,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then(() => {
+        instance
+          .post(
+            "/conference/end?historyID=" +
+              localStorage.getItem("historyID") +
+              "&conferenceID=" +
+              conferenceID +
+              "&interviewTimeID=" +
+              interviewTimeId,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          )
+          .then(() => {
+            localStorage.removeItem("historyID");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
