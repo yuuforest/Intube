@@ -221,27 +221,12 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
-    public void updateModifyResultState(Long user_id, InterviewTimeStateReq interviewTimeStateReq) {
-        User user = userRepository.findById(user_id).get();
-
-        // 평가하지 않은 답변자 확인
-        if (applicantRepository.existApplicantByInterviewTimeId(interviewTimeStateReq.getInterview_time_id())) {
-            throw new ExistApplicantException(user.getName() + "님! 아직 평가하지 않은 답변자가 존재합니다.");
-        }
-        // 인터뷰 시간에 따른 결과 수정 상태 완료로 변경
-        InterviewTime interviewTime = interviewTimeRepository.findById(interviewTimeStateReq.getInterview_time_id()).orElseThrow(() -> new IllegalArgumentException("해당 인터뷰 공고에 따른 시간은 없습니다."));
-        interviewTime.setModifyResultState(interviewTimeStateReq.getModify_result_state());
-
-    }
-
-    @Override
-    @Transactional
     public void updateEndToInterviewState(Long user_id, InterviewStateReq interviewStateReq) {
         User user = userRepository.findById(user_id).get();
 
         // 평가 및 결과수정이 안된 인터뷰 시간이 있는지 확인
         if (interviewTimeRepository.existInterviewTimeByInterviewId(interviewStateReq.getInterview_id())) {
-            throw new ExistInterviewTimeException(user.getName() + "님! 아직 평가 및 결과 수정이 안된 인터뷰 시간이 존재합니다.");
+            throw new ExistInterviewTimeException(user.getName() + "님! 아직 평가 완료가 안된 답변자가 존재합니다.");
         }
 
         // 인터뷰 상태 완료로 변경

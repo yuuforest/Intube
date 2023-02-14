@@ -29,7 +29,7 @@ public class InterviewTime extends BaseEntity {
     Date interview_start_time;
 
     @Builder.Default()
-    @Column(name = "modify_result_state") // 0 : 진행 전 / 1 : 진행 후 결과 수정 전 / 2 : All 완료(결과 수정 완료)
+    @Column(name = "modify_result_state") // 0 : 진행 전 / 1 : 진행 완료
     int modifyResultState = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
