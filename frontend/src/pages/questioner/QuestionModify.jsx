@@ -3,6 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import QuestionerHeader from "components/questioner/QuestionerHeader";
 import ReactPlayer from "react-player/lazy";
+import Swal from "sweetalert2";
 // import http from 'api/Http'
 
 import "pages/questioner/Questioner.css";
@@ -229,6 +230,25 @@ export default function QuestionModify() {
     setIntro(true);
     setIsAll(false);
   };
+
+  const saveResult = () => {
+    instance
+      .put("/result/modify/all", JSON.stringify(result), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        Swal.fire({
+          title: "저장이 완료되었습니다.",
+          text: "",
+          icon: "success",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <div className="question-modify">
       <QuestionerHeader></QuestionerHeader>
@@ -407,7 +427,7 @@ export default function QuestionModify() {
         </Grid>
       </Grid>
 
-      <Button variant="outlined" sx={{ mt: 5 }}>
+      <Button variant="outlined" sx={{ mt: 5 }} onClick={saveResult}>
         인터뷰 결과 저장
       </Button>
     </div>

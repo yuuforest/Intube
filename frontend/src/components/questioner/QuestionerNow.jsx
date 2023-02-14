@@ -234,7 +234,7 @@ export default function QuestionerNow(props) {
       )
       .then((response) => {
         console.log("컨퍼런스 아이디", response.data.conferenceID);
-        // handlePage("", "/questioner/modify");
+        handlePage("", "/questioner/modify");
       })
       .catch((error) => {
         Swal.fire({
