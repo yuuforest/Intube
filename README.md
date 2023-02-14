@@ -9,34 +9,33 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 인터뷰어가 되어 내가 만든 인터뷰를 진행하고, 진행 결과를 자유롭게 수정하여 공유할 수 있습니다.  
 또는 인터뷰이가 되어 내가 원하는 인터뷰를 신청해 포인트를 지급받아 소소한 재미를 느끼실 수 있습니다.
 <br/><br/>
-<p align="center">![Intube_Image_1](/uploads/aa5704650b97f9dd74ec9acef8f78f78/Intube_Image_1.png)</p>
+<p align="center"><img src= "/uploads/aa5704650b97f9dd74ec9acef8f78f78/Intube_Image_1.png"></p>
 
 <br/><br/>
 
 ## 팀원 소개
-<p align="center">![InTube_팀원소개_1_](/uploads/c0643e97c73f6aa7a5f256257f803347/InTube_팀원소개_1_.png)</p>
-<p align="center">![InTube_팀원소개_2_](/uploads/df049f0cb8a42a8d22b9db8802dda676/InTube_팀원소개_2_.png)</p>
+<p align="center"><img src= "/uploads/c0643e97c73f6aa7a5f256257f803347/InTube_팀원소개_1_.png"></p>
+<p align="center"><img src= "/uploads/df049f0cb8a42a8d22b9db8802dda676/InTube_팀원소개_2_.png"></p>
 
 <br/><br/>
 
 ## 사용한 기술
-<p align="center">![image](/uploads/ed5791c9713cbd79a9dfcf2ac08152ef/image.png)</p>
+<p align="center"><img src= "/uploads/ed5791c9713cbd79a9dfcf2ac08152ef/image.png"></p>
 
 <br/><br/>
 
 ## 서비스 기능
-<p align="center">![Intube_Image_2](/uploads/a8015eda968fb8a5a030d9fe300e98c1/Intube_Image_2.png)</p>
-
+<p align="center"><img src= "/uploads/a8015eda968fb8a5a030d9fe300e98c1/Intube_Image_2.png"></p>
 
 <br/><br/>
 
 ## 프로젝트 구조
 
 ### Swagger  
-<p align="center">![Intube_Swagger](/uploads/340eec0d2c02545b318550fae9a43053/Intube_Swagger.png)</p>
+<p align="center"><img src= "/uploads/340eec0d2c02545b318550fae9a43053/Intube_Swagger.png"></p>
 
 ### ERD  
-<p align="center">![InTube_ERD](/uploads/33f21758b0630d83e1772a4a9103a31f/InTube_ERD.png)</p>
+<p align="center"><img src= "/uploads/33f21758b0630d83e1772a4a9103a31f/InTube_ERD.png"></p>
 
 <br/><br/>
 
