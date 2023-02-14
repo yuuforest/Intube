@@ -237,7 +237,7 @@ export default function SignUp() {
         },
       })
       .then(response => {
-        console.log(response.data.profile_url);
+        // console.log(response.data.profile_url);
         // const profile = response.data.profile_url.substr(8);
         // console.log(profile);
         setUserImg(
@@ -376,7 +376,7 @@ export default function SignUp() {
                   name="nickname"
                   fullWidth
                   id="nickname"
-                  label="닉네임"
+                  label="변경하고 싶은 닉네임"
                   // autoFocus
                   onChange={nicknameChange}
                   value={nickname}

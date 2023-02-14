@@ -1,6 +1,5 @@
 import axios from "axios";
-// import { useNavigate } from "react-router";
-
+import swal from "sweetalert2";
 const instance = axios.create({
   baseURL: "https://intube.store/api",
   headers: {
@@ -30,8 +29,11 @@ instance.interceptors.response.use(
     // const navigate = useNavigate();
     console.log(error);
     if (error.response.data.message === "Invalid Password") {
-      // "Invalid Password"
-      alert("비밀번호 오류");
+      swal.fire({
+        title: "",
+        text: "비밀번호 오류!",
+        icon: "error",
+      });
     }
     if (error.response.status === 401) {
       console.log("액세스토큰 만료 RefreshToken가져오는 작업");
@@ -50,7 +52,7 @@ instance.interceptors.response.use(
           // console.log("엑세스토큰 :", localStorage.getItem("accessToken"))
           // console.log(data)
         )
-        .catch((e) => {
+        .catch(e => {
           if (e.response.data.statusCode === 401) {
             // navigate("/");
             localStorage.clear();

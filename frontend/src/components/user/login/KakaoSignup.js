@@ -114,14 +114,6 @@ export default function SignUp() {
           phone: response.phone,
           isEmailAuthorized: 1,
           isKakao: 1,
-          // birth: "1994-04-26",
-          // email: "jos9404@naver.com",
-          // gender: "M",
-          // introduction: "안녕하세요 저는 착한 사람입니다.",
-          // name: "지원석",
-          // nickname: "커플600일차",
-          // password: "1234",
-          // phone: "01099130059",
         };
         // alert(JSON.stringify(values, null, 2));
         http
@@ -133,10 +125,6 @@ export default function SignUp() {
           })
           .then(values => {
             if (values.data.statusCode === 200) {
-              // const ACCESS_TOKEN = values.data.accessToken;
-
-              // localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
-              // localStorage.getItem("token");
               localStorage.clear();
               alert("회원가입 되었습니다.");
               navigate("/"); // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)

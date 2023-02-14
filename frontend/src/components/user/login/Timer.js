@@ -21,13 +21,14 @@ const Timer = () => {
 
   useEffect(() => {
     if (time > 0) {
-      if (localStorage.getItem("emailAuthorize")) {
-      } else {
-        const timer = setInterval(() => {
+      const timer = setInterval(() => {
+        if (localStorage.getItem("emailAuthorize")) {
+          // console.log("notihgn");
+        } else {
           setTime(prev => prev - 1);
-        }, 1000);
-        return () => clearInterval(timer);
-      }
+        }
+      }, 1000);
+      return () => clearInterval(timer);
     }
   }, [time]);
   return (

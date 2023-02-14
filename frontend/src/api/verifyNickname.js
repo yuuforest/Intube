@@ -1,6 +1,5 @@
 import http from "api/Http";
 import swal from "sweetalert2";
-import { useNavigate } from "react-router";
 
 export async function VerifyNickname(nickname) {
   let params = {
