@@ -60,7 +60,10 @@ export default function MainInterviewListItem(props) {
 
   return (
     <div>
-      <Card sx={{ minHeight: 340 }} onClick={handleClickOpen()}>
+      <Card
+        sx={{ minHeight: 320, borderRadius: 3 }}
+        onClick={handleClickOpen()}
+      >
         <CardContent>
           <InterviewTag interview={props.interview}></InterviewTag>
           <Typography

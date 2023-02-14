@@ -42,7 +42,10 @@ export default function MainInterviewListItemDetail(props) {
     { title: "지급 포인트", content: props.interview.standard_point },
     {
       title: "담당자",
-      content: props.interview.owner_name + "\n" + props.interview.owner_phone,
+      content:
+        props.interview.owner_name +
+        " / 문의전화 : " +
+        props.interview.owner_phone,
     },
   ];
 

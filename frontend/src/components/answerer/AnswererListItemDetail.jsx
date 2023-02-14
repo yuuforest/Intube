@@ -73,7 +73,7 @@ export default function InterviewListItemDetail(props) {
         }
       )
       .then((response) => {
-        console.log("컨퍼런스 아이디", response.data.conferenceID);
+        // console.log("컨퍼런스 아이디", response.data.conferenceID);
         localStorage.setItem("historyID", response.data.historyID);
         setConferenceID(response.data.conferenceID);
         setMeetingIn(true);
@@ -92,7 +92,6 @@ export default function InterviewListItemDetail(props) {
         },
       })
       .then((response) => {
-        console.log("userInfo", response.data);
         setUserInfo(response.data);
       })
       .catch((error) => {
