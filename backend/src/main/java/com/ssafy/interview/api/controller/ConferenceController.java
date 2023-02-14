@@ -23,6 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -246,6 +247,18 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
+//    @GetMapping("/startInfo")
+//    @ApiOperation(value = "Conference 시작 시간 조회")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<LocalDateTime> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+//        LocalDateTime time = conferenceService.getStartTimeInConference(conferenceID);
+//        return ResponseEntity.status(200).body(time);
+//    }
+
     @GetMapping("/startInfo")
     @ApiOperation(value = "Conference 시작 시간 조회")
     @ApiResponses({
@@ -253,8 +266,9 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<LocalDateTime> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
-        LocalDateTime time = conferenceService.getStartTimeInConference(conferenceID);
+    public ResponseEntity<String> getStartTimeInConference(@RequestParam(value = "conferenceID") Long conferenceID) {
+        String time = conferenceService.getStartTimeInConference(conferenceID)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return ResponseEntity.status(200).body(time);
     }
 }
