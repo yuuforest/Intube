@@ -15,6 +15,7 @@ export function verifySend(email) {
     })
     .then(({ data }) => {
       if (data.statusCode === 200) {
+        // localStorage.setItem("emailAuthorize", false);
         localStorage.removeItem("emailAuthorize");
         swal.fire({
           title: "",
@@ -25,6 +26,7 @@ export function verifySend(email) {
     })
     .catch(e => {
       if (e.response.data.statusCode === 400) {
+        localStorage.setItem("emailAuthorize", false);
         swal.fire({
           title: "",
           text: "이메일 형식이 아닙니다.",
@@ -32,6 +34,7 @@ export function verifySend(email) {
         });
       }
       if (e.response.data.statusCode === 409) {
+        localStorage.setItem("emailAuthorize", false);
         swal.fire({
           title: "",
           text: "이미 가입된 이메일입니다.",
