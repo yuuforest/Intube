@@ -77,8 +77,11 @@ public class ResultController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestBody List<DialogModifyReq> dialogInfo) {
+    public ResponseEntity<? extends BaseResponseBody> updateAllDialog(@RequestBody List<DialogModifyReq> dialogInfo, @ApiIgnore Authentication authentication) {
+        Long user_id = authService.getIdByAuthentication(authentication);
+
         resultService.updateAllDialog(dialogInfo);
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
