@@ -87,14 +87,11 @@ public class InterviewController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> applyAvataInterview(@RequestBody ApplicantForAvataSaveReq applicantForAvataSaveReq,
+    public ResponseEntity<Long> applyAvataInterview(@RequestBody ApplicantForAvataSaveReq applicantForAvataSaveReq,
                                                                           @ApiIgnore Authentication authentication) {
         Long user_id = authService.getIdByAuthentication(authentication);
 
-        //유저 Id, applicantForAvataSaveReq로 해당 인터뷰를 신청하는 코드
-        interviewService.applyAvataInterview(user_id, applicantForAvataSaveReq);
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body(interviewService.applyAvataInterview(user_id, applicantForAvataSaveReq));
     }
 
     @PostMapping("/search")

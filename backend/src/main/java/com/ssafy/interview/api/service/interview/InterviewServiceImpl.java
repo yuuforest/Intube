@@ -150,7 +150,7 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
-    public void applyAvataInterview(Long user_id, ApplicantForAvataSaveReq applicantForAvataSaveReq) {
+    public Long applyAvataInterview(Long user_id, ApplicantForAvataSaveReq applicantForAvataSaveReq) {
         User user = userRepository.findById(user_id).get();
         Interview interview = interviewRepository.findById(applicantForAvataSaveReq.getInterview_id()).get();
 
@@ -167,6 +167,8 @@ public class InterviewServiceImpl implements InterviewService {
         // 신청자 생성
         Applicant applicant = applicantRepository.save(Applicant.builder().user(user).interviewTime(interviewTime).build());
         applicant.setApplicantState(applicantForAvataSaveReq.getApplicant_state());
+        Long interview_time_id = interviewTime.getId();
+        return interview_time_id;
     }
 
     @Override
