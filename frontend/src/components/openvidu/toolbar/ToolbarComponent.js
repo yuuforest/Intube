@@ -130,18 +130,25 @@ export default class ToolbarComponent extends Component {
                 발언 시작
               </Button>
             )}
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navCamButton"
-              onClick={this.camStatusChanged}
-            >
-              {localUser !== undefined && localUser.isVideoActive() ? (
-                <Videocam />
-              ) : (
-                <VideocamOff color="secondary" />
-              )}
-            </IconButton>
+            {localUser !== undefined && localUser.isVideoActive() ? (
+              <Button
+                color="inherit"
+                variant="outlined"
+                onClick={this.camStatusChanged}
+                startIcon={<Videocam />}
+              >
+                화면 가리기
+              </Button>
+            ) : (
+              <Button
+                color="inherit"
+                variant="outlined"
+                onClick={this.camStatusChanged}
+                startIcon={<VideocamOff />}
+              >
+                화면 보이기
+              </Button>
+            )}
 
             <Button
               color="inherit"

@@ -55,8 +55,26 @@ export default function InterviewListItemDetail(props) {
   const [meetingIn, setMeetingIn] = useState(false);
   const navigate = useNavigate();
   function onClickEnter(e) {
-    navigate("/conference", {
-      state: { userInfo, interviewId, interviewTimeId, position, conferenceID },
+    Swal.fire({
+      title: "초상권자 개인정보 수집 동의 안내",
+      text: "개인정보 수집 및 이용 : 본 인터뷰는 영상이 녹화되는 인터뷰입니다. 녹화된 영상은 인터뷰 결과 확인 목적 외의 다른 목적으로 사용되지 않습니다. ",
+      showDenyButton: true,
+      confirmButtonText: "동의",
+      denyButtonText: "동의하지 않음",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/conference", {
+          state: {
+            userInfo,
+            interviewId,
+            interviewTimeId,
+            position,
+            conferenceID,
+          },
+        });
+      } else if (result.isDenied) {
+        Swal.fire("네", "", "info");
+      }
     });
   }
 
@@ -98,6 +116,7 @@ export default function InterviewListItemDetail(props) {
         console.error(error);
       });
   };
+
   const handleDelete = () => {
     props.setOpen(false);
     Swal.fire({
@@ -115,11 +134,12 @@ export default function InterviewListItemDetail(props) {
             },
           })
           .then((response) => {
-            props.getInterviewList();
             Swal.fire({
               title: "취소완료",
               text: "",
               icon: "success",
+            }).then(() => {
+              window.location.reload();
             });
           })
           .catch((error) => {

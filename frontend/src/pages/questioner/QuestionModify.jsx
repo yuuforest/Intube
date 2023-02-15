@@ -95,7 +95,7 @@ export default function QuestionModify() {
         setResult((result) => {
           let newCondition = [...result];
           const time = startTime.split(" ")[1].split(":");
-
+          console.log("시작시간", startTime);
           const second =
             parseInt(time[0]) * 3600 +
             parseInt(time[1]) * 60 +
@@ -111,7 +111,7 @@ export default function QuestionModify() {
             condition.second = mySecond - second - 2;
             condition.time = changeSecond(mySecond - second - 2);
           });
-          console.log(newCondition);
+
           return newCondition;
         });
       })
@@ -297,6 +297,10 @@ export default function QuestionModify() {
             className="question-modify-video"
             ref={playerRef}
           />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item>
           <Paper sx={{ mt: 3 }}>
             <MenuList>
               <MenuItem onClick={handleAll}>전체보기</MenuItem>
@@ -312,7 +316,9 @@ export default function QuestionModify() {
               ))}
             </MenuList>
           </Paper>
-          <Paper elevation={3} sx={{ mt: 4, ml: 2 }}>
+        </Grid>
+        <Grid item xs={8}>
+          <Paper elevation={3} sx={{ my: 4, ml: 2 }}>
             {isIntro ? (
               <Typography variant="h6" sx={{ py: 3 }}>
                 Intro
