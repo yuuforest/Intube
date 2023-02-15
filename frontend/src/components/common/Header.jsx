@@ -34,7 +34,7 @@ export default function Header(props) {
 
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) getUser();
-  }, []);
+  }, localStorage);
   const getUser = () => {
     http
       .get("/user/me", {
@@ -191,7 +191,6 @@ export default function Header(props) {
                 >
                   <Avatar
                     sx={{ width: 42, height: 42 }}
-                    alt="profile"
                     src={
                       "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
                       userInfo.profile_url

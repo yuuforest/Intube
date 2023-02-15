@@ -24,7 +24,7 @@ export default function Questioner(props) {
 
   const [totalPage, setTotalPage] = useState(0);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const handleChangePage = (event, value) => {
     setPage(value);
   };
@@ -54,6 +54,7 @@ export default function Questioner(props) {
         }
       )
       .then((response) => {
+        console.log(response.data);
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
       })

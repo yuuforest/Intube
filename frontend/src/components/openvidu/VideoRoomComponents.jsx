@@ -15,6 +15,7 @@ import QuestionLIst from "components/conference/QuestionLIst";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import http from "api/Http";
 import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
 import ChatComponent from "./chat/ChatComponent";
@@ -29,7 +30,7 @@ import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import NowQuestion from "components/conference/NowQuestion";
 import NowAnswer from "components/conference/NowAnswer";
-
+import Logo from "assets/avatajang.png";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:443/api/";
 
@@ -53,6 +54,8 @@ class VideoRoomComponent extends Component {
       currentVideoDevice: undefined,
       isRecord: false,
       recordId: "",
+      questionList: [],
+      questionNum: 0,
     };
 
     this.navigate = this.props.navigate;
@@ -80,9 +83,6 @@ class VideoRoomComponent extends Component {
     if (props.positionId === 2) {
       this.role = "SUBSCRIBER";
     }
-
-    console.log("asa");
-    console.log(props.interviewId);
   }
 
   storeResult() {
@@ -147,6 +147,22 @@ class VideoRoomComponent extends Component {
         await this.connectToSession();
       }
     );
+
+    http
+      .get("/conference/question?interviewID=" + this.props.interviewId, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("질문리스트", response.data);
+        this.setState({
+          questionList: response.data,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   async connectToSession() {
@@ -310,14 +326,13 @@ class VideoRoomComponent extends Component {
         )
         .then((response) => {
           console.log(response);
+          this.navigate("/");
+          window.location.reload();
         })
         .catch((error) => {
           console.error(error);
         });
     }
-
-    this.navigate("/");
-    window.location.reload();
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -329,6 +344,21 @@ class VideoRoomComponent extends Component {
   }
 
   micStatusChanged() {
+    if (!localUser.isAudioActive() && this.props.isAvata) {
+      console.log("질문", this.state.questionList[this.state.questionNum]);
+      console.log(this.props.setQuestionState);
+      if (this.state.questionList[this.state.questionNum] === undefined) {
+        this.props.setQuestionState({
+          question: "인터뷰가 종료되었습니다. 종료버튼을 눌러주세요😎",
+          id: 0,
+        });
+      }
+      this.props.setQuestionState({
+        question: this.state.questionList[this.state.questionNum].content,
+        id: this.state.questionList[this.state.questionNum].id,
+      });
+      this.setState({ questionNum: this.state.questionNum + 1 });
+    }
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
@@ -659,6 +689,7 @@ class VideoRoomComponent extends Component {
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
           handleMicState={this.handleMicState}
+          handleChangeQuestion={this.props.handleChangeQuestion}
           // positionId={this.props.positionId}
           // conferenceId={this.props.conferenceID}
           // interviewTimeID={interviewTimeID}
@@ -697,6 +728,9 @@ class VideoRoomComponent extends Component {
         >
           <Grid item xs={8}>
             <div id="layout" className="bounds">
+              {this.props.isAvata && (
+                <img src={Logo} alt="logo" width="130px" />
+              )}
               {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div
@@ -754,6 +788,7 @@ class VideoRoomComponent extends Component {
                       close={this.toggleChat}
                       messageReceived={this.checkNotification}
                       myAnswer={this.props.myAnswer}
+                      isAvata={this.props.isAvata}
                     />
                   )}
               </div>

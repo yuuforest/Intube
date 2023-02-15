@@ -103,7 +103,6 @@ export default function InterviewListItemDetail(props) {
     Swal.fire({
       title: "정말로 취소 하시겠습니까?",
       showDenyButton: true,
-      showCancelButton: true,
       confirmButtonText: "예",
       denyButtonText: "아니오",
     }).then((result) => {

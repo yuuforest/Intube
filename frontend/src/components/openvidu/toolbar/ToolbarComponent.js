@@ -3,7 +3,7 @@ import "./ToolbarComponent.css";
 
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-
+import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
@@ -20,7 +20,6 @@ import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import IconButton from "@mui/material/IconButton";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // import http from "api/Http";
-
 
 // import { connect } from 'react-redux';
 // import * as actions from 'redux/actions/stateChange';
@@ -143,48 +142,31 @@ export default class ToolbarComponent extends Component {
                 <VideocamOff color="secondary" />
               )}
             </IconButton>
-            <IconButton
+
+            <Button
               color="inherit"
-              className="navButton"
-              onClick={this.screenShare}
+              variant="outlined"
+              onClick={() => {
+                Swal.fire({
+                  title: "인터뷰를 종료하시겠습니까?",
+                  showDenyButton: true,
+                  confirmButtonText: "예",
+                  denyButtonText: "아니오",
+                  icon: "question",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    await this.storeResult();
+                    this.leaveSession();
+                  } else if (result.isDenied) {
+                    Swal.fire("네", "", "info");
+                  }
+                });
+              }}
+              startIcon={<PowerSettingsNew />}
             >
-              {localUser !== undefined && localUser.isScreenShareActive() ? (
-                <PictureInPicture />
-              ) : (
-                <ScreenShare />
-              )}
-            </IconButton>
-            {localUser !== undefined && localUser.isScreenShareActive() && (
-              <IconButton onClick={this.stopScreenShare} id="navScreenButton">
-                <StopScreenShare color="secondary" />
-              </IconButton>
-            )}
-            <IconButton
-              color={this.state.record}
-              className="navButton"
-              onClick={this.switchCamera}
-            >
-              <FiberManualRecordIcon />
-            </IconButton>
-            <IconButton
-              color="inherit"
-              className="navButton"
-              onClick={this.toggleFullscreen}
-            >
-              {localUser !== undefined && this.state.fullscreen ? (
-                <FullscreenExit />
-              ) : (
-                <Fullscreen />
-              )}
-            </IconButton>
-            <IconButton
-              color="secondary"
-              className="navButton"
-              onClick={() => {this.leaveSession(); this.storeResult();}}
-              id="navLeaveButton"
-            >
-              <PowerSettingsNew />
-            </IconButton>
+              인터뷰 종료
+            </Button>
+
             <IconButton
               color="inherit"
               onClick={this.toggleChat}

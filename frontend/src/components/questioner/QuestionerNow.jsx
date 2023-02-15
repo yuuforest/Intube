@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import http from "api/Http";
-import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -11,9 +11,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
-import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import { useNavigate } from "react-router-dom";
 import EvaluatePerson from "components/questioner/EvaluatePerson";
+import VideoFileOutlinedIcon from "@mui/icons-material/VideoFileOutlined";
+import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import Swal from "sweetalert2";
 
 export default function QuestionerNow(props) {
@@ -45,10 +46,16 @@ export default function QuestionerNow(props) {
   const [evalname, setevalname] = useState(false);
   const [evalemail, setevalemail] = useState(false);
 
+  const [isEndInterview, setIsEndInterview] = useState(-1);
+
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
     setTimeid(
       interviewList[event.target.value].interviewTimeDetailResList[0].id
+    );
+    setIsEndInterview(
+      interviewList[event.target.value].interviewTimeDetailResList[0]
+        .modifyResultState
     );
     setTimeindex(0);
   };
@@ -61,6 +68,11 @@ export default function QuestionerNow(props) {
       interviewList[questionindex].interviewTimeDetailResList[
         event.target.value
       ].id
+    );
+    setIsEndInterview(
+      interviewList[questionindex].interviewTimeDetailResList[
+        event.target.value
+      ].modifyResultState
     );
   };
 
@@ -100,12 +112,18 @@ export default function QuestionerNow(props) {
         }
       )
       .then((response) => {
+        console.log("interview", response.data.content);
         setInterviewList(response.data.content);
 
         setTimeid(
           response.data.content[questionindex].interviewTimeDetailResList[
             timeindex
           ].id
+        );
+        setIsEndInterview(
+          response.data.content[questionindex].interviewTimeDetailResList[
+            timeindex
+          ].modifyResultState
         );
         getAnswererList(
           response.data.content[questionindex].interviewTimeDetailResList[
@@ -114,7 +132,7 @@ export default function QuestionerNow(props) {
         );
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -137,27 +155,49 @@ export default function QuestionerNow(props) {
   };
 
   const endInterview = () => {
-    http
-      .put(
-        "/interviews/interviewer/finish-interview",
-        { interview_id: interviewList[questionindex].id, interview_state: 6 },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        alert(response.data.message);
-        props.setValue(0);
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "에러",
-          text: error.response.data.message,
-          icon: "error",
-        });
-      });
+    Swal.fire({
+      title: "인터뷰를 마감하시겠습니까?",
+      text: "인터뷰를 마감하시면 더이상 결과를 수정할 수 없습니다.",
+      footer: "마감인터뷰 : " + interviewList[questionindex].title,
+      showDenyButton: true,
+      confirmButtonText: "예",
+      denyButtonText: "아니오",
+      icon: "question",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed && isEndInterview === 1) {
+        http
+          .put(
+            "/interviews/interviewer/finish-interview",
+            JSON.stringify({
+              interview_id: interviewList[questionindex].id,
+              interview_state: 6,
+            }),
+            {
+              headers: {
+                "Content-type": "application/json;charset=UTF-8",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          )
+          .then((response) => {
+            Swal.fire({
+              title: "마감완료",
+              text: interviewList[questionindex].title + "를 마감했습니다",
+              icon: "success",
+            });
+            props.setValue(0);
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (result.isDenied) {
+        Swal.fire("네", "", "info");
+      } else {
+        Swal.fire("아직 진행하지 않은 인터뷰 입니다", "", "error");
+      }
+    });
   };
 
   const onClickEnter = (e) => {
@@ -192,29 +232,37 @@ export default function QuestionerNow(props) {
   };
 
   const openModal = (e, name, email, id) => {
-    setevalname(name);
-    setevalemail(email);
-    setModalOpen(true);
+    if (isEndInterview === 1) {
+      setevalname(name);
+      setevalemail(email);
+      setModalOpen(true);
 
-    http
-      .put(
-        "/user/interviewer/accept-applicant?applicant_id=" +
-          id +
-          "&applicant_state=3",
-        {},
-        {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error(error);
+      http
+        .put(
+          "/user/interviewer/accept-applicant?applicant_id=" +
+            id +
+            "&applicant_state=3",
+          {},
+          {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      Swal.fire({
+        title: "에러",
+        text: "아직 진행하지 않은 인터뷰 입니다.",
+        icon: "error",
       });
+    }
   };
   const closeModal = () => {
     setModalOpen(false);
@@ -222,27 +270,15 @@ export default function QuestionerNow(props) {
 
   // const [isConference, setIsConference]
   const getConferenceId = () => {
-    http
-      .post(
-        "/conference/in?interviewTimeID=" + timeid,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("컨퍼런스 아이디", response.data.conferenceID);
-        handlePage("", "/questioner/modify");
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "에러",
-          text: "아직 진행하지 않은 인터뷰 입니다.",
-          icon: "error",
-        });
+    if (isEndInterview === 1) {
+      handlePage("", "/questioner/modify");
+    } else {
+      Swal.fire({
+        title: "에러",
+        text: "아직 진행하지 않은 인터뷰 입니다." + isEndInterview,
+        icon: "error",
       });
+    }
   };
 
   return (
@@ -279,12 +315,12 @@ export default function QuestionerNow(props) {
           </FormControl>
           <Button
             variant="outlined"
-            startIcon={<ContentPasteGoIcon />}
+            startIcon={<TaskOutlinedIcon />}
             sx={{ backgroundColor: "white", float: "right" }}
             size="large"
             onClick={endInterview}
           >
-            인터뷰 완료
+            인터뷰 마감
           </Button>
           <div className="question-list">
             <List>
@@ -374,7 +410,7 @@ export default function QuestionerNow(props) {
             </List>
             <Button
               variant="outlined"
-              startIcon={<VideocamIcon />}
+              startIcon={<VideocamOutlinedIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
               size="large"
               onClick={onClickEnter}
@@ -384,7 +420,7 @@ export default function QuestionerNow(props) {
 
             <Button
               variant="outlined"
-              startIcon={<ContentPasteGoIcon />}
+              startIcon={<VideoFileOutlinedIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
               size="large"
               onClick={getConferenceId}

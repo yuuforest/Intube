@@ -44,10 +44,6 @@ export default function Questioner() {
                 label="인터뷰 진행"
                 sx={{ minWidth: 1 / 8, fontSize: 18, fontWeight: "bold" }}
               />
-              <Tab
-                label="인터뷰 관리"
-                sx={{ minWidth: 1 / 8, fontSize: 18, fontWeight: "bold" }}
-              />
             </Tabs>
           </Box>
           <QuestionerAll value={value}></QuestionerAll>

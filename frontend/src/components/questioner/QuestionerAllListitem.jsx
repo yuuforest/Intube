@@ -16,66 +16,101 @@ export default function QuestionerAllListitem(props) {
     console.log(link);
     navigate(link);
   }
+  const onClickResult = (e, timeid, timeindex, interview) => {
+    navigate("/questioner/result", {
+      state: {
+        timeid,
+        timeindex,
+        interview,
+      },
+    });
+  };
+
   const onClickDeadline = (e) => {
-    http
-      .put(
-        "/interviews/interviewer/expired-interview?interview_id=" +
-          props.interview.id +
-          "&interview_state=" +
-          (props.interview.interview_state + 1),
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        props.getInterviewList();
-        Swal.fire({
-          title: "마감완료",
-          text: "",
-          icon: "success",
-        });
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    Swal.fire({
+      title: "인터뷰 신청을 마감하시겠습니까?",
+      text: "인터뷰를 마감하시면 더이상 참가자를 받을 수 없습니다.",
+      showDenyButton: true,
+      confirmButtonText: "예",
+      denyButtonText: "아니오",
+      icon: "question",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        http
+          .put(
+            "/interviews/interviewer/expired-interview?interview_id=" +
+              props.interview.id +
+              "&interview_state=" +
+              (props.interview.interview_state + 1),
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          )
+          .then((response) => {
+            props.getInterviewList();
+            Swal.fire({
+              title: "마감완료",
+              text: "",
+              icon: "success",
+            });
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (result.isDenied) {
+        Swal.fire("네", "", "info");
+      }
+    });
   };
   const onClickBack = (e) => {
-    http
-      .put(
-        "/interviews/interviewer/expired-interview?interview_id=" +
-          props.interview.id +
-          "&interview_state=" +
-          (props.interview.interview_state - 1),
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((response) => {
-        props.getInterviewList();
-        Swal.fire({
-          title: "수정완료",
-          text: "",
-          icon: "success",
-        });
-        handlePage(e, "/questioner");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    Swal.fire({
+      title: "정말로 수정하시겠습니까?",
+      showDenyButton: true,
+      confirmButtonText: "수정",
+      denyButtonText: `취소`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        http
+          .put(
+            "/interviews/interviewer/expired-interview?interview_id=" +
+              props.interview.id +
+              "&interview_state=" +
+              (props.interview.interview_state - 1),
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          )
+          .then((response) => {
+            props.getInterviewList();
+            Swal.fire({
+              title: "수정완료",
+              text: "",
+              icon: "success",
+            });
+            handlePage(e, "/questioner");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (result.isDenied) {
+        Swal.fire("취소되었습니다", "", "info");
+      }
+    });
   };
 
   const onClickDelete = (e) => {
     Swal.fire({
       title: "정말로 삭제하시겠습니까?",
       showDenyButton: true,
-      showCancelButton: true,
       confirmButtonText: "삭제",
       denyButtonText: `취소`,
     }).then((result) => {
@@ -230,15 +265,39 @@ export default function QuestionerAllListitem(props) {
         <Grid container spacing={2} justifyContent="space-evenly">
           <Grid item sx={{ width: "72.5px" }}></Grid>
           <Grid item xs={5}>
-            {props.interview.interviewTimeDetailResList.map((time) => (
-              <div key={time.id}>
-                <div>
-                  {time.interview_start_time} 합격 :{" "}
-                  {time.apply_applicant_count} 대기 :{" "}
-                  {time.wait_applicant_count}
+            {props.interview.interview_state === 6 &&
+              props.interview.interviewTimeDetailResList.map((time, index) => (
+                <div key={time.id}>
+                  <Typography
+                    variant="subtitle1"
+                    onClick={(e) =>
+                      onClickResult(e, time.id, index, props.interview)
+                    }
+                    sx={{
+                      "&:hover": {
+                        color: "primary.dark",
+                        cursor: "pointer",
+                      },
+                    }}
+                  >
+                    {time.interview_start_time} 인터뷰 결과
+                  </Typography>
                 </div>
-              </div>
-            ))}
+              ))}
+            {props.interview.interview_state === 4 &&
+              props.interview.category_name !== "AVATA" &&
+              props.interview.interviewTimeDetailResList.map((time) => (
+                <div key={time.id}>
+                  <div>
+                    {time.interview_start_time} 인터뷰 지원자 현황 /
+                    <span>
+                      {" "}
+                      합격 : {time.apply_applicant_count} 대기 :{" "}
+                      {time.wait_applicant_count}
+                    </span>
+                  </div>
+                </div>
+              ))}
           </Grid>
           <Grid item xs={5}></Grid>
         </Grid>

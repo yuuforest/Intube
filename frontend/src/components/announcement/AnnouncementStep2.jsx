@@ -27,7 +27,7 @@ export default function AnnouncementStep2(props) {
   const [estimatedTime, setEstimatedTime] = React.useState("");
   const [age, setAge] = React.useState([20, 40]);
   const [gender, setGender] = React.useState("");
-  const [maxPeople, setMaxPeople] = React.useState(0);
+  const [maxPeople, setMaxPeople] = React.useState(1);
   const [point, setPoint] = React.useState("");
   const [calcPoint, setCalcPoint] = React.useState(0);
   const [title, setTitle] = React.useState(props.interview.title);
@@ -163,7 +163,6 @@ export default function AnnouncementStep2(props) {
         error={title === "" ? true : false}
         helperText={title === "" && "필수 입력 입니다."}
       />
-
       <Typography variant="h5" gutterBottom sx={{ mb: 0, float: "left" }}>
         공고 입력
       </Typography>
@@ -196,7 +195,6 @@ export default function AnnouncementStep2(props) {
         </Grid>
       </Grid>
       <Divider sx={{ my: 3 }} />
-
       <Grid
         container
         alignItems="center"
@@ -269,76 +267,87 @@ export default function AnnouncementStep2(props) {
         </Grid>
       </Grid>
       <Divider sx={{ my: 3 }} />
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-        sx={{ ml: 1 }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h6" gutterBottom>
-            진행 시간
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          {interviewTime.map((time, index) => (
-            <div key={index}>
+      {props.interview.category_name !== "AVATA" && (
+        <div>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="center"
+            spacing={2}
+            sx={{ ml: 1 }}
+          >
+            <Grid item xs={3}>
+              <Typography variant="h6" gutterBottom>
+                진행 시간
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              {interviewTime.map((time, index) => (
+                <div key={index}>
+                  <OutlinedInput
+                    type="datetime-local"
+                    sx={{ width: "80%", mb: 2 }}
+                    value={time.value}
+                    onChange={(e) => handleChange(e, time.id)}
+                  />
+                  {index === interviewTime.length - 1 ? (
+                    <IconButton
+                      aria-label="add"
+                      sx={{ ml: 2 }}
+                      onClick={(e) => onClickAddTime(e, time.id)}
+                    >
+                      <ControlPointIcon />
+                    </IconButton>
+                  ) : index === 0 ? (
+                    <span></span>
+                  ) : (
+                    <IconButton
+                      sx={{ ml: 2 }}
+                      onClick={(e) => onClickDeleteTime(e, time.id)}
+                    >
+                      <RemoveCircleOutlineIcon />
+                    </IconButton>
+                  )}
+                </div>
+              ))}
+            </Grid>
+          </Grid>
+          <Divider sx={{ my: 3 }} />
+        </div>
+      )}
+      {props.interview.category_name === "1:N" && (
+        <div>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="center"
+            spacing={2}
+            sx={{ ml: 1 }}
+          >
+            <Grid item xs={3}>
+              <Typography variant="h6" gutterBottom>
+                모집 인원
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
               <OutlinedInput
-                type="datetime-local"
-                sx={{ width: "80%", mb: 2 }}
-                value={time.value}
-                onChange={(e) => handleChange(e, time.id)}
+                endAdornment={
+                  <InputAdornment position="end">명</InputAdornment>
+                }
+                type="number"
+                id="number-input"
+                sx={{ width: "80%" }}
+                value={maxPeople}
+                onChange={maxPeopleHandeler}
+                error={point === "" ? true : false}
+                helperText={point === "" && "필수 입력 입니다."}
               />
-              {index === interviewTime.length - 1 ? (
-                <IconButton
-                  aria-label="add"
-                  sx={{ ml: 2 }}
-                  onClick={(e) => onClickAddTime(e, time.id)}
-                >
-                  <ControlPointIcon />
-                </IconButton>
-              ) : index === 0 ? (
-                <span></span>
-              ) : (
-                <IconButton
-                  sx={{ ml: 2 }}
-                  onClick={(e) => onClickDeleteTime(e, time.id)}
-                >
-                  <RemoveCircleOutlineIcon />
-                </IconButton>
-              )}
-            </div>
-          ))}
-        </Grid>
-      </Grid>
-      <Divider sx={{ my: 3 }} />
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-        sx={{ ml: 1 }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h6" gutterBottom>
-            모집 인원
-          </Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <OutlinedInput
-            endAdornment={<InputAdornment position="end">명</InputAdornment>}
-            type="number"
-            id="number-input"
-            sx={{ width: "80%" }}
-            value={maxPeople}
-            onChange={maxPeopleHandeler}
-            error={point === "" ? true : false}
-            helperText={point === "" && "필수 입력 입니다."}
-          />
-        </Grid>
-      </Grid>
-      <Divider sx={{ my: 3 }} />
+            </Grid>
+          </Grid>
+          <Divider sx={{ my: 3 }} />
+        </div>
+      )}
+
       <Grid
         container
         alignItems="center"
