@@ -9,5 +9,9 @@
     position: absolute;
     /* border: solid black 1px; */
     top: 0.8em;
-    left: 0.3em;
+    left: 0.65em;
+}
+
+input{
+    font-family: "GmarketSansMedium" !important;
 }
