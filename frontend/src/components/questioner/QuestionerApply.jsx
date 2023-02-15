@@ -128,6 +128,25 @@ export default function QuestionerApply(props) {
         console.error(error);
       });
   };
+  const deleteHandeler = (e) => {
+    console.log(e.target.value);
+    http
+      .delete(
+        "/user/interviewer/refuse-applicant?applicant_id=" + e.target.value,
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then(() => {
+        getInterviewList();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div hidden={props.value !== 1}>
@@ -254,7 +273,12 @@ export default function QuestionerApply(props) {
                             >
                               합격
                             </Button>
-                            <Button variant="outlined" sx={{ ml: 2 }}>
+                            <Button
+                              variant="outlined"
+                              sx={{ ml: 2 }}
+                              value={answerer.id}
+                              onClick={deleteHandeler}
+                            >
                               불합격
                             </Button>
                           </div>
