@@ -16,7 +16,7 @@ export default function MainInterview(props) {
   const [interviewList, setInterviewList] = useState([]);
 
   const [totalPage, setTotalPage] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     getInterview();
