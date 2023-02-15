@@ -363,14 +363,14 @@ export default function QuestionerNow(props) {
                     >
                       <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Avatar
-                          sx={{ height: 82, width: 82, margin: "auto" }}
+                          sx={{ height: 64, width: 64, float: "left", mr: 2 }}
                           alt="profile"
                           src={
                             "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
                             answerer.profile_url
                           }
                         />
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{ mt: 1 }}>
                           {answerer.name}
                         </Typography>
                         <Typography variant="subtitle2">
@@ -385,7 +385,10 @@ export default function QuestionerNow(props) {
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "center" }}>
                         <Typography variant="subtitle2" gutterBottom>
-                          {answerer.temperature}
+                          {Math.round(
+                            (answerer.temperature + Number.EPSILON) * 100
+                          ) / 100}
+                          ℃
                         </Typography>
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "center" }}>

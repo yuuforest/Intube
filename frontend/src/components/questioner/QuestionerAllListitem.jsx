@@ -206,31 +206,6 @@ export default function QuestionerAllListitem(props) {
                     |
                   </Typography>
                   <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    sx={{
-                      color: "rgba(0, 0, 0, 0.5)",
-                      mt: 2,
-                      mr: 2,
-                      float: "right",
-                    }}
-                    onClick={onClickBack}
-                  >
-                    수정
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    sx={{
-                      color: "rgba(0, 0, 0, 0.5)",
-                      mt: 2,
-                      mr: 2,
-                      float: "right",
-                    }}
-                  >
-                    |
-                  </Typography>
-                  <Typography
                     onClick={onClickDelete}
                     variant="subtitle1"
                     gutterBottom

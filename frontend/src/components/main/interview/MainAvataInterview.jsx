@@ -114,9 +114,9 @@ export default function MainAvataInterview(props) {
             "/interviews/apply/avata",
             JSON.stringify({
               interview_id: props.interview.id,
-              interview_start_time: new Date().setHours(
-                new Date().getHours + 1
-              ),
+              interview_start_time: new Date(
+                new Date().setHours(new Date().getHours() + 9)
+              ).toISOString(),
               applicant_state: 2,
             }),
             {
@@ -130,6 +130,11 @@ export default function MainAvataInterview(props) {
             onClickEnter(response.data);
           })
           .catch((error) => {
+            console.log(
+              new Date(
+                new Date().setHours(new Date().getHours() + 9)
+              ).toISOString()
+            );
             Swal.fire(error.response.data.message, "", "error");
           });
       } else if (result.isDenied) {

@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Checkbox from "@mui/material/Checkbox";
 import http from "api/Http";
-
+import Swal from "sweetalert2";
 import "components/questioner/QuestionerApply.css";
 
 export default function QuestionerApply(props) {
@@ -107,12 +107,40 @@ export default function QuestionerApply(props) {
   };
 
   const acceptHandeler = (e) => {
-    console.log(e.target.value);
+    if (applyNum < interviewList[questionindex].max_people) {
+      http
+        .put(
+          "/user/interviewer/accept-applicant?applicant_id=" +
+            e.target.value +
+            "&applicant_state=2",
+          {},
+          {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        )
+        .then(() => {
+          getInterviewList();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      Swal.fire({
+        title: "에러",
+        text: "모집인원을 초과했습니다.",
+        icon: "error",
+      });
+    }
+  };
+  const resetHandeler = (e) => {
     http
       .put(
         "/user/interviewer/accept-applicant?applicant_id=" +
           e.target.value +
-          "&applicant_state=2",
+          "&applicant_state=1",
         {},
         {
           headers: {
@@ -129,7 +157,6 @@ export default function QuestionerApply(props) {
       });
   };
   const deleteHandeler = (e) => {
-    console.log(e.target.value);
     http
       .delete(
         "/user/interviewer/refuse-applicant?applicant_id=" + e.target.value,
@@ -238,14 +265,14 @@ export default function QuestionerApply(props) {
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Avatar
-                          sx={{ height: 82, width: 82, margin: "auto" }}
+                          sx={{ height: 64, width: 64, float: "left", mr: 2 }}
                           alt="profile"
                           src={
                             "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
                             answerer.profile_url
                           }
                         />
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" sx={{ mt: 1 }}>
                           {answerer.name}
                         </Typography>
                         <Typography variant="subtitle2">
@@ -260,7 +287,10 @@ export default function QuestionerApply(props) {
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "center" }}>
                         <Typography variant="subtitle2" gutterBottom>
-                          {answerer.temperature}
+                          {Math.round(
+                            (answerer.temperature + Number.EPSILON) * 100
+                          ) / 100}
+                          ℃
                         </Typography>
                       </Grid>
                       <Grid item xs={2} sx={{ textAlign: "center" }}>
@@ -283,9 +313,19 @@ export default function QuestionerApply(props) {
                             </Button>
                           </div>
                         ) : (
-                          <Button variant="outlined" value={answerer.id}>
-                            합격
-                          </Button>
+                          <div>
+                            <Button variant="contained" value={answerer.id}>
+                              합격
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              value={answerer.id}
+                              onClick={resetHandeler}
+                              sx={{ ml: 2 }}
+                            >
+                              취소
+                            </Button>
+                          </div>
                         )}
                       </Grid>
                     </Grid>
