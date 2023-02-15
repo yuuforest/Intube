@@ -32,8 +32,8 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 ## 💻 프로젝트 구조
 
 ### Swagger  
-
-<p align="center"><img src= "/uploads/340eec0d2c02545b318550fae9a43053/Intube_Swagger.png"></p>
+  
+<p align="center"><img src= "/uploads/340eec0d2c02545b318550fae9a43053/Intube_Swagger.png"></p>  
 
 ### ERD 
 
