@@ -80,8 +80,8 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
 //                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
                 .where(findDoneId.isEmpty() ? qInterview.isNull() : qInterview.id.in(findDoneId))
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
                 .fetch();
 
         int i = 0;
@@ -107,7 +107,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
                 .select(qInterview)
                 .from(qInterview)
 //                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), interviewStateEq(interviewState));
+                .where(wordEq(word), qInterview.user.id.eq(user_id), interviewStateEq(interviewState));
 
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
