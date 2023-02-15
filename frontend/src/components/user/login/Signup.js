@@ -92,9 +92,9 @@ export default function SignUp() {
       .min(2, "2글자 이상의 닉네임을 입력해주세요"),
     birth: yup
       .string("Enter your password")
-      .length(10, "ex) 2000-01-01")
+      .length(8, "ex) 20000101")
       .matches(
-        /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+        /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/,
         "올바른 형식이 아닙니다."
       ),
     phone: yup
@@ -129,8 +129,15 @@ export default function SignUp() {
     onSubmit: response => {
       if (localStorage.getItem("nicknameAuthorize")) {
         if (localStorage.getItem("emailAuthorize")) {
+          let birthAdd =
+            response.birth.substring(0, 4) +
+            "-" +
+            response.birth.substring(4, 6) +
+            "-" +
+            response.birth.substring(6);
+
           let values = {
-            birth: response.birth,
+            birth: birthAdd,
             email: email,
             // email: response.email,
             gender: response.gender,
@@ -244,7 +251,7 @@ export default function SignUp() {
                 </Button>
               </Grid>
 
-              <Grid item xs={7}>
+              <Grid item xs={6.5}>
                 {emailSecret ? (
                   <TextField
                     fullWidth
@@ -258,7 +265,7 @@ export default function SignUp() {
                   false
                 )}
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2.5}>
                 {emailSecret ? timeRender ? <Timer /> : false : false}
               </Grid>
               <Grid item xs={3}>
@@ -335,7 +342,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="birth"
-                  label="생년 - 월 - 일"
+                  label="생년월일"
                   // autoFocus
                   onChange={formik.handleChange}
                   value={formik.values.birth}
@@ -393,7 +400,21 @@ export default function SignUp() {
                   </RadioGroup>
                 </FormControl>
               </Grid>
-
+              <Grid item xs={12}>
+                <TextField
+                  name="phone"
+                  required
+                  fullWidth
+                  id="phone"
+                  label="휴대폰 번호"
+                  // autoFocus
+                  onChange={formik.handleChange}
+                  value={formik.values.phone}
+                  error={formik.touched.phone && Boolean(formik.errors.phone)}
+                  helperText={formik.touched.phone && formik.errors.phone}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="introduction"
