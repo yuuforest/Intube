@@ -35,6 +35,9 @@ public interface InterviewService {
     // 인터뷰 신청하기
     void applyInterview(String email, Long interview_time_id);
 
+    // 아바타 인터뷰 신청하기
+    Long applyAvataInterview(Long user_id, ApplicantForAvataSaveReq applicantForAvataSaveReq);
+
     // 인터뷰 신청 취소하기
     void deleteApplicant(String email, Long interview_time_id);
 
