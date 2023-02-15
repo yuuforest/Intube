@@ -10,6 +10,9 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Header from "components/common/Header";
 import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import "./AnswererMyPage.css";
 
@@ -143,9 +146,19 @@ export default function AnswererMyPage() {
             </Grid>
             <Grid item xs={12}>
               <CardList cardInfo={cardInfo} routeInfo={routeInfo} />
+              <Tooltip title="참가한 인터뷰의 질문자가 평가한 내용을 바탕으로 온도가 내려가거나 올라갑니다.😝">
+                <IconButton
+                  aria-label="delete"
+                  size="large"
+                  sx={{ float: "right", mt: 1 }}
+                >
+                  <InfoOutlinedIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
               <Typography variant="h4" sx={{ my: 3, color: "#10316B" }}>
                 인터뷰 온도
               </Typography>
+
               <Box
                 sx={{
                   width: userInfo.temperature + "%",
@@ -153,7 +166,9 @@ export default function AnswererMyPage() {
                   height: 10,
                 }}
               >
-                {userInfo.temperature}℃
+                {Math.round((userInfo.temperature + Number.EPSILON) * 100) /
+                  100}
+                ℃
               </Box>
               <Box
                 sx={{

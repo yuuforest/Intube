@@ -23,7 +23,17 @@ export default function InterviewListItem(props) {
 
   return (
     <div>
-      <Card sx={{ minHeight: 340 }} onClick={handleClickOpen()}>
+      <Card
+        sx={{
+          minHeight: 340,
+          "&:hover": {
+            transform: "scale(1.07)",
+            cursor: "pointer",
+            background: "rgba(0,0,0,0.03)",
+          },
+        }}
+        onClick={handleClickOpen()}
+      >
         <CardContent>
           <InterviewListItemTag
             interview={props.interview}

@@ -116,6 +116,7 @@ export default function Questioner(props) {
         onChange={handleChangePage}
         page={page}
         color="primary"
+        sx={{ mt: 2 }}
       />
     </div>
   );

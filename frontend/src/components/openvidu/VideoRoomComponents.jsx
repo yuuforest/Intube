@@ -332,6 +332,9 @@ class VideoRoomComponent extends Component {
         .catch((error) => {
           console.error(error);
         });
+    } else {
+      this.navigate("/");
+      window.location.reload();
     }
   }
   camStatusChanged() {
