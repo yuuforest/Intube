@@ -284,13 +284,7 @@ public class UserController {
         }
 
         try {
-            if (pointInfo.getKey() == 1) {
-                // 증가
-                userService.updatePoint(pointInfo.getEmail(), pointInfo.getPoint());
-            } else {
-                // 감소
-                userService.updatePoint(pointInfo.getEmail(), -1 * pointInfo.getPoint());
-            }
+            userService.updatePoint(pointInfo);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Value"));
         }
@@ -317,13 +311,7 @@ public class UserController {
         }
 
         try {
-            if (temperatureInfo.getKey() == 1) {
-                // 증가
-                userService.updateTemperature(temperatureInfo.getEmail(), temperatureInfo.getTemperature());
-            } else {
-                // 감소
-                userService.updateTemperature(temperatureInfo.getEmail(), -1 * temperatureInfo.getTemperature());
-            }
+            userService.updateTemperature(temperatureInfo);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Invalid Value"));
         }

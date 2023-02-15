@@ -1,7 +1,9 @@
 package com.ssafy.interview.api.service.user;
 
 import com.ssafy.interview.api.request.user.UserModifyPutReq;
+import com.ssafy.interview.api.request.user.UserPointPutReq;
 import com.ssafy.interview.api.request.user.UserRegisterPostReq;
+import com.ssafy.interview.api.request.user.UserTemperaturePutReq;
 import com.ssafy.interview.api.response.user.ApplicantDetailRes;
 import com.ssafy.interview.api.response.user.IntervieweeRes;
 import com.ssafy.interview.api.response.user.InterviewerRes;
@@ -31,7 +33,7 @@ public interface UserService {
 	Optional<User> findByNickname(String nickname);
 	Optional<User> findEmail(String name, String phone);
 	Optional<User> findPassword(String name, String email);
-	void updatePoint(String email, int point) throws Exception;
-	void updateTemperature(String email, double temperature) throws Exception;
+	void updatePoint(UserPointPutReq pointInfo) throws Exception;
+	void updateTemperature(UserTemperaturePutReq temperatureInfo) throws Exception;
 	void updateIsKakao(String email) throws Exception;
 }

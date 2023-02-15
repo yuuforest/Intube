@@ -3,7 +3,9 @@ package com.ssafy.interview.api.service.user;
 
 import com.querydsl.core.Tuple;
 import com.ssafy.interview.api.request.user.UserModifyPutReq;
+import com.ssafy.interview.api.request.user.UserPointPutReq;
 import com.ssafy.interview.api.request.user.UserRegisterPostReq;
+import com.ssafy.interview.api.request.user.UserTemperaturePutReq;
 import com.ssafy.interview.api.response.interview.InterviewDetailApplicantRes;
 import com.ssafy.interview.api.response.user.ApplicantDetailRes;
 import com.ssafy.interview.api.response.user.IntervieweeRes;
@@ -193,18 +195,34 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updatePoint(String email, int point) throws Exception {
-        User user = userRepository.findByEmail(email).get();
-        if ((user.getPoint() + point) < 0 || point < 0)
+    public void updatePoint(UserPointPutReq pointInfo) throws Exception {
+        int point = 0;
+        if (pointInfo.getPoint() < 0)
+            throw new Exception("400");
+        if (pointInfo.getKey() == 1) {
+            point = pointInfo.getPoint();
+        } else {
+            point = -1 * pointInfo.getPoint();
+        }
+        User user = userRepository.findByEmail(pointInfo.getEmail()).get();
+        if ((user.getPoint() + point) < 0)
             throw new Exception("400");
         user.setPoint(user.getPoint() + point);
     }
 
     @Transactional
     @Override
-    public void updateTemperature(String email, double temperature) throws Exception {
-        User user = userRepository.findByEmail(email).get();
-        if ((user.getTemperature() + temperature) < 0 || (user.getTemperature() + temperature) > 100 || temperature < 0)
+    public void updateTemperature(UserTemperaturePutReq temperatureInfo) throws Exception {
+        double temperature = 0;
+        if (temperatureInfo.getTemperature() < 0)
+            throw new Exception("400");
+        if (temperatureInfo.getKey() == 1) {
+            temperature = temperatureInfo.getTemperature();
+        } else {
+            temperature = -1 * temperatureInfo.getTemperature();
+        }
+        User user = userRepository.findByEmail(temperatureInfo.getEmail()).get();
+        if ((user.getTemperature() + temperature) < 0 || (user.getTemperature() + temperature) > 100)
             throw new Exception("400");
         user.setTemperature(user.getTemperature() + temperature);
     }
