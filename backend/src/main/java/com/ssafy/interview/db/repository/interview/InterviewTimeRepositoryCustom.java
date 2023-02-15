@@ -46,4 +46,13 @@ public interface InterviewTimeRepositoryCustom { // 인터뷰 생성 Method
      * @return 검색 결과
      */
     Boolean existInterviewTimeByInterviewId(Long interview_id);
+
+    /**
+     * 인터뷰 시간 중 아직 평가나 결과 수정이 안된 시간이 있는지 확인
+     *
+     * @param user_id      유저 Id
+     * @param interview_id 인터뷰 Id
+     * @return 검색 결과
+     */
+    Boolean existInterviewTimeByUserAndInterviewId(Long user_id, Long interview_id);
 }

@@ -150,6 +150,27 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
+    public void applyAvataInterview(Long user_id, ApplicantForAvataSaveReq applicantForAvataSaveReq) {
+        User user = userRepository.findById(user_id).get();
+        Interview interview = interviewRepository.findById(applicantForAvataSaveReq.getInterview_id()).get();
+
+        // 신청여부 중복 체크 - 인터뷰 작성자와 동일인인 경우
+        DuplicateApplicantUserId(user.getName(), user.getId(), applicantForAvataSaveReq.getInterview_id());
+
+        // 신청여부 중복 체크 - 이미 신청한 경우
+        DuplicateInterviewTime(user.getName(), user.getId(), applicantForAvataSaveReq.getInterview_id());
+
+        // 시간 생성
+        InterviewTime interviewTime = interviewTimeRepository.save(InterviewTime.builder().interview_start_time(applicantForAvataSaveReq.getInterview_start_time())
+                .interview(interview).build());
+
+        // 신청자 생성
+        Applicant applicant = applicantRepository.save(Applicant.builder().user(user).interviewTime(interviewTime).build());
+        applicant.setApplicantState(applicantForAvataSaveReq.getApplicant_state());
+    }
+
+    @Override
+    @Transactional
     public void deleteApplicant(String email, Long interview_time_id) {
         User user = userRepository.findByEmail(email).get();
 
@@ -243,6 +264,19 @@ public class InterviewServiceImpl implements InterviewService {
      */
     private void DuplicateApplicantId(String name, Long user_id, Long interview_time_id) {
         if (applicantRepository.existApplicantByUserId(user_id, interview_time_id)) {
+            throw new ApplicantDuplicationException(name + "님");
+        }
+    }
+
+    /**
+     * 아바타 인터뷰 신청여부 중복확인 - 이미 신청한 경우
+     *
+     * @param name         로그인한 유저 이름
+     * @param user_id      중복검사 할 로그인 Id
+     * @param interview_id 중복검사 할 인터뷰 Id
+     */
+    private void DuplicateInterviewTime(String name, Long user_id, Long interview_id) {
+        if (interviewTimeRepository.existInterviewTimeByUserAndInterviewId(user_id, interview_id)) {
             throw new ApplicantDuplicationException(name + "님");
         }
     }
