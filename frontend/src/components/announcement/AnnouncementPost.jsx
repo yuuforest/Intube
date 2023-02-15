@@ -41,10 +41,15 @@ export default function AnnouncementSteps(props) {
     standard_point: "",
     interviewTimeList: [],
     applicant_state: "0",
-    apply_end_time: new Date().toISOString() + 1,
-    download_expiration: "",
+    apply_end_time: new Date(
+      new Date().setDate(new Date().getDate() + 7)
+    ).toISOString(),
+    download_expiration: new Date(
+      new Date().setDate(new Date().getDate() + 7)
+    ).toISOString(),
     questionList: [],
   });
+
   const [needPoint, setNeedPoint] = React.useState();
 
   const step1Handeler = (e, data) => {

@@ -114,7 +114,9 @@ export default function MainAvataInterview(props) {
             "/interviews/apply/avata",
             JSON.stringify({
               interview_id: props.interview.id,
-              interview_start_time: new Date(),
+              interview_start_time: new Date().setHours(
+                new Date().getHours + 1
+              ),
               applicant_state: 2,
             }),
             {

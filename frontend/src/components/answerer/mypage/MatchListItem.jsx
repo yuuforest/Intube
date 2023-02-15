@@ -24,7 +24,6 @@ export default function MatchListItem(props) {
           <Typography variant="subtitle1" sx={{ my: 1 }}>
             {props.interview.interviewTimeRes.interview_start_time.slice(11)}
           </Typography>
-          <Divider></Divider>
         </Grid>
         <Grid item xs={5}>
           <Button variant="text" sx={{ float: "right" }}>
@@ -33,7 +32,8 @@ export default function MatchListItem(props) {
           <Typography variant="subtitle1" sx={{ my: 1 }}>
             {props.interview.title}
           </Typography>
-
+        </Grid>
+        <Grid item xs={7}>
           <Divider></Divider>
         </Grid>
       </Grid>
