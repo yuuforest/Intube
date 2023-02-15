@@ -37,7 +37,7 @@ InTube는 1:1, 1:N 인터뷰 서비스를 제공하는 WebRTC 기반 Web 플렛�
 
 ### ERD 
 
-<center><img src= "/uploads/33f21758b0630d83e1772a4a9103a31f/InTube_ERD.png"></center>
+<img src= "/uploads/33f21758b0630d83e1772a4a9103a31f/InTube_ERD.png" align="center">
 
 <br/><br/>
 
