@@ -38,9 +38,11 @@ export default function Conference() {
   const storeResult = () => {
     instance
       .post(
-        "/result/create?interview_id=" +
-          interviewId +
-          "&interview_time_id=" +
+        "/conference/end?historyID=" +
+          localStorage.getItem("historyID") +
+          "&conferenceID=" +
+          conferenceID +
+          "&interviewTimeID=" +
           interviewTimeId,
         {},
         {
@@ -50,27 +52,7 @@ export default function Conference() {
         }
       )
       .then(() => {
-        instance
-          .post(
-            "/conference/end?historyID=" +
-              localStorage.getItem("historyID") +
-              "&conferenceID=" +
-              conferenceID +
-              "&interviewTimeID=" +
-              interviewTimeId,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          )
-          .then(() => {
-            localStorage.removeItem("historyID");
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        localStorage.removeItem("historyID");
       })
       .catch((error) => {
         console.error(error);
