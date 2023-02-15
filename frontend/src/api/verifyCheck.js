@@ -24,7 +24,7 @@ export function EmailCheck(email, number) {
         localStorage.setItem("emailAuthorize", true);
       }
     })
-    .catch(e => {
+    .catch((e) => {
       if (e.response.data.statusCode === 401) {
         // localStorage.setItem("emailAuthorize", false);
         alert("인증 오류");

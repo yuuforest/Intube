@@ -68,6 +68,7 @@ export default class NowQuestion extends Component {
           (data, i) =>
             i === this.state.messageList.length - 1 && (
               <Typography
+                key={i}
                 variant="h4"
                 gutterBottom
                 sx={{

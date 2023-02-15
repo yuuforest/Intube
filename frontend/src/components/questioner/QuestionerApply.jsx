@@ -18,11 +18,15 @@ export default function QuestionerApply(props) {
   const [questionindex, setQuestionIndex] = useState(0);
   const [timeindex, setTimeindex] = useState(0);
   const [timeid, setTimeid] = useState();
-
+  const [applyNum, setApplyNum] = useState(0);
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
     setTimeid(
       interviewList[event.target.value].interviewTimeDetailResList[0].id
+    );
+    setApplyNum(
+      interviewList[event.target.value].interviewTimeDetailResList[0]
+        .apply_applicant_count
     );
     setTimeindex(0);
   };
@@ -33,6 +37,11 @@ export default function QuestionerApply(props) {
       interviewList[questionindex].interviewTimeDetailResList[
         event.target.value
       ].id
+    );
+    setApplyNum(
+      interviewList[questionindex].interviewTimeDetailResList[
+        event.target.value
+      ].apply_applicant_count
     );
   };
 
@@ -60,6 +69,11 @@ export default function QuestionerApply(props) {
             response.data.content[questionindex].interviewTimeDetailResList[
               timeindex
             ].id
+          );
+          setApplyNum(
+            response.data.content[questionindex].interviewTimeDetailResList[
+              timeindex
+            ].apply_applicant_count
           );
           getAnswererList(
             response.data.content[questionindex].interviewTimeDetailResList[
@@ -149,6 +163,14 @@ export default function QuestionerApply(props) {
             </Select>
           </FormControl>
           <div className="question-list">
+            <Typography
+              variant="subtitle2"
+              gutterBottom
+              sx={{ float: "right" }}
+            >
+              모집인원 : {applyNum}/{interviewList[questionindex].max_people}
+            </Typography>
+
             <List>
               <ListItem>
                 <Grid

@@ -4,15 +4,29 @@ import Typography from "@mui/material/Typography";
 export default class NowQuestion extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      messageList: [],
-      answer: "",
-      name: "",
-    };
+    if (props.isAvata) {
+      this.state = {
+        messageList: [
+          {
+            answer:
+              "안녕하세요 아바타인터뷰의 진행을 맡은 예주장입니다. 발언시작 버튼을 누르면 질문이 나옵니다😉",
+            name: "아바타",
+          },
+        ],
+        answer: "",
+        name: "",
+      };
+    } else {
+      this.state = {
+        messageList: [],
+        answer: "",
+        name: "",
+      };
+    }
+
     this.chatScroll = React.createRef();
     this.sendAnswer = this.sendAnswer.bind(this);
 
-    console.log("dddd");
     console.log(props.myAnswer.answer);
   }
 

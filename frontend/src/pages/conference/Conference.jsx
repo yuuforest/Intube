@@ -17,6 +17,7 @@ export default function Conference() {
   const interviewTimeId = location.state.interviewTimeId;
   const positionId = location.state.position;
   const conferenceID = location.state.conferenceID;
+  const isAvata = location.state.isAvata;
   const [questId, setQuestId] = useState(undefined);
   const [myAnswer, setMyAnswer] = useState({ name: "", answer: "" });
 
@@ -29,6 +30,7 @@ export default function Conference() {
     id: "",
   });
   const handleChangeQuestion = (item) => (event) => {
+    console.log("item", item);
     setState({ ...state, question: item.content, id: item.id });
   };
   const navigate = useNavigate();
@@ -51,11 +53,12 @@ export default function Conference() {
           },
         }
       )
-      .then(() => {
+      .then((response) => {
+        console.log("정상", response);
         localStorage.removeItem("historyID");
       })
       .catch((error) => {
-        console.error(error);
+        console.error("에러", error);
       });
   };
 
@@ -77,9 +80,11 @@ export default function Conference() {
             myAnswer={myAnswer}
             positionId={positionId}
             interviewId={interviewId}
+            setQuestionState={setState}
             handleChangeQuestion={handleChangeQuestion}
             conferenceId={conferenceID}
             storeResult={storeResult}
+            isAvata={isAvata}
           ></VideoRoomComponents>
         </Grid>
       </Grid>

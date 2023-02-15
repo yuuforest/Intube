@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import instance from "api/APIController";
+import http from "api/Http";
 import AnnouncementStep4 from "./AnnouncementStep4";
 import AnnouncementStep1 from "./AnnouncementStep1";
 import AnnouncementStep2 from "./AnnouncementStep2";
@@ -15,7 +15,7 @@ export default function AnnouncementSteps(props) {
     getUser();
   }, []);
   const getUser = () => {
-    instance
+    http
       .get("/user/me", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -102,7 +102,8 @@ export default function AnnouncementSteps(props) {
   };
 
   const step4Handeler = () => {
-    instance
+    console.log(interview);
+    http
       .put(
         "/user/point",
         JSON.stringify({
@@ -118,13 +119,13 @@ export default function AnnouncementSteps(props) {
         }
       )
       .then(() => {
-        instance
+        http
           .post("/interviews", JSON.stringify(interview), {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           })
-          .then(() => {
+          .then((response) => {
             Swal.fire({
               title: "공고가 등록되었습니다",
               text: "",
@@ -136,7 +137,6 @@ export default function AnnouncementSteps(props) {
             navigate("/");
           })
           .catch((error) => {
-            console.log(error);
             Swal.fire({
               title: "등록실패",
               text: error.response.data.message,

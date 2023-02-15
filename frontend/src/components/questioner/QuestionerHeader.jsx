@@ -15,8 +15,8 @@ import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import Logout from "@mui/icons-material/Logout";
-import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
-import VideoFileOutlinedIcon from "@mui/icons-material/VideoFileOutlined";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
+import FolderCopyIcon from "@mui/icons-material/FolderCopy";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -131,7 +131,7 @@ export default function Header(props) {
                 }}
               >
                 <Button
-                  startIcon={<VideoFileOutlinedIcon />}
+                  startIcon={<FolderCopyIcon />}
                   variant="contained"
                   onClick={(e) => handlePage(e, "/questioner")}
                   sx={{ mr: 3 }}
@@ -141,7 +141,7 @@ export default function Header(props) {
 
                 <Button
                   variant="contained"
-                  startIcon={<VideoCallOutlinedIcon />}
+                  startIcon={<VideoCallIcon />}
                   onClick={(e) => handlePage(e, "/announcement")}
                 >
                   공고 만들기
