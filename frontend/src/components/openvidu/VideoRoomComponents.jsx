@@ -797,32 +797,34 @@ class VideoRoomComponent extends Component {
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={4}>
-            <QuestionLIst
-              handleChangeQuestion={this.props.handleChangeQuestion}
-              interviewId={this.props.interviewId}
-              positionId={this.props.positionId}
-            />
-            <Paper
-              elevation={3}
-              sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
-            >
-              <Typography variant="h6" gutterBottom>
-                참여자 정보
-              </Typography>
-              <div className="paper-contents">
-                {this.state.subscribers.map((sub, i) => (
-                  <div key={i}>
-                    {sub.audioActive ? (
-                      <div> {sub.nickname} : 발언중</div>
-                    ) : (
-                      <div> {sub.nickname} : 대기중</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </Paper>
-          </Grid>
+          {!this.props.isAvata && (
+            <Grid item xs={4}>
+              <QuestionLIst
+                handleChangeQuestion={this.props.handleChangeQuestion}
+                interviewId={this.props.interviewId}
+                positionId={this.props.positionId}
+              />
+              <Paper
+                elevation={3}
+                sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
+              >
+                <Typography variant="h6" gutterBottom>
+                  참여자 정보
+                </Typography>
+                <div className="paper-contents">
+                  {this.state.subscribers.map((sub, i) => (
+                    <div key={i}>
+                      {sub.audioActive ? (
+                        <div> {sub.nickname} : 발언중</div>
+                      ) : (
+                        <div> {sub.nickname} : 대기중</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </Paper>
+            </Grid>
+          )}
         </Grid>
       </div>
     );

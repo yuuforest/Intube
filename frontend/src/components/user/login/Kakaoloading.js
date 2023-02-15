@@ -17,7 +17,7 @@ const Kakaoloading = () => {
       method: "GET",
       url: `/auth/kakao/callback?code=${code}`,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res); // 토큰이 넘어올 것임
 
         if (res.data.statusCode === 200) {
@@ -50,7 +50,7 @@ const Kakaoloading = () => {
           alert("회원가입 창으로 이동합니다.");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("소셜로그인 에러", err);
         window.alert("로그인에 실패하였습니다.");
         navigate("/user/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
@@ -63,7 +63,7 @@ const Kakaoloading = () => {
   //     await dispatch(userActions.kakaoLogIn(code));
   //   }, []);
 
-  return <h1>로딩중입니다.</h1>;
+  return;
 };
 
 export default Kakaoloading;
