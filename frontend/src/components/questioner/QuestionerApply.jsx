@@ -218,9 +218,14 @@ export default function QuestionerApply(props) {
                         </Typography>
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "left" }}>
-                        <Avatar sx={{ float: "left", mr: 2 }}>
-                          {answerer.email[0]}
-                        </Avatar>
+                        <Avatar
+                          sx={{ height: 82, width: 82, margin: "auto" }}
+                          alt="profile"
+                          src={
+                            "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
+                            answerer.profile_url
+                          }
+                        />
                         <Typography variant="subtitle1">
                           {answerer.name}
                         </Typography>
