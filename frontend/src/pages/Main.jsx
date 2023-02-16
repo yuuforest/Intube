@@ -12,9 +12,8 @@ export default function Main() {
   const handleChangeWord = (event) => {
     let newCondition = { ...searchCondition };
     newCondition.word = event.target.value;
-    setSearchCondition({
-      newCondition,
-    });
+    setSearchCondition(newCondition);
+    console.log(newCondition);
   };
   const handleChangeCategroy = (event) => {
     let newCondition = { ...searchCondition };

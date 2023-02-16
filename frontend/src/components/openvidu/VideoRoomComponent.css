@@ -65,8 +65,8 @@
 /*modify*/
 .bounds {
   position: relative;
-  height: 388px;
-  min-width: 500px !important;
+  height: 380px;
+  min-width: 490px !important;
   width: 100%;
   border: 6px solid #847b7b;
   border-radius: 10px;
