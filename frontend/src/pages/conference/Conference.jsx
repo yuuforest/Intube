@@ -9,10 +9,13 @@ import {
   // micState
 } from "store/counter/micSlice.js";
 import instance from "api/APIController";
+import ConferenceInfo from "components/conference/ConferenceInfo";
+import "pages/conference/Conference.css";
 
 export default function Conference() {
   const location = useLocation();
   const userInfo = location.state.userInfo;
+  const interview = location.state.interview;
   const interviewId = location.state.interviewId;
   const interviewTimeId = location.state.interviewTimeId;
   const positionId = location.state.position;
@@ -30,9 +33,11 @@ export default function Conference() {
     id: "",
   });
   const handleChangeQuestion = (item) => (event) => {
-    console.log("item", item);
-    setState({ ...state, question: item.content, id: item.id });
+    setIsCheck(!isCheck);
+    if (!isCheck) setState({ ...state, question: item.content, id: item.id });
   };
+  const [isCheck, setIsCheck] = useState(false);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -66,10 +71,20 @@ export default function Conference() {
     dispatch(setMic());
   }, [micState, dispatch]);
 
+  // Dialog
+  const [open, setOpen] = React.useState(false);
+  const toggleInfo = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+  };
+
   return (
     <div className="conference">
       <Grid container spacing={2} justifyContent="space-between">
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{ backgroundColor: "#F2F7FF" }}>
           <VideoRoomComponents
             interviewTimeId={interviewTimeId}
             userName={userInfo.name}
@@ -85,6 +100,7 @@ export default function Conference() {
             conferenceId={conferenceID}
             storeResult={storeResult}
             isAvata={isAvata}
+            toggleInfo={toggleInfo}
           ></VideoRoomComponents>
         </Grid>
       </Grid>
@@ -103,6 +119,13 @@ export default function Conference() {
           ></AnswerWrite>
         </Grid>
       </Grid>
+
+      <ConferenceInfo
+        open={open}
+        onClose={handleClose}
+        interviewId={interviewId}
+        interview={interview}
+      />
     </div>
   );
 }

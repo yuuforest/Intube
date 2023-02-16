@@ -5,6 +5,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Box from "@mui/material/Box";
 import QuestionerTag from "components/questioner/QuestionerTag";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -240,38 +241,68 @@ export default function QuestionerAllListitem(props) {
         <Grid container spacing={2} justifyContent="space-evenly">
           <Grid item sx={{ width: "72.5px" }}></Grid>
           <Grid item xs={5}>
-            {props.interview.interview_state === 6 &&
-              props.interview.interviewTimeDetailResList.map((time, index) => (
-                <div key={time.id}>
-                  <Typography
-                    variant="subtitle1"
-                    onClick={(e) =>
-                      onClickResult(e, time.id, index, props.interview)
-                    }
-                    sx={{
-                      "&:hover": {
-                        color: "primary.dark",
-                        cursor: "pointer",
-                      },
-                    }}
-                  >
-                    {time.interview_start_time} 인터뷰 결과
-                  </Typography>
-                </div>
-              ))}
             {props.interview.interview_state === 4 &&
               props.interview.category_name !== "AVATA" &&
-              props.interview.interviewTimeDetailResList.map((time) => (
-                <div key={time.id}>
-                  <div>
-                    {time.interview_start_time} 인터뷰 지원자 현황 /
-                    <span>
-                      {" "}
-                      합격 : {time.apply_applicant_count} 대기 :{" "}
-                      {time.wait_applicant_count}
-                    </span>
-                  </div>
-                </div>
+              props.interview.interviewTimeDetailResList.map((time, index) => (
+                <Box
+                  key={time.id}
+                  onClick={(e) => {
+                    props.setValue(1);
+                    props.setSelectId(props.interview.id);
+                    props.setSelectTimeIndex(index);
+                  }}
+                  sx={{
+                    "&:hover": {
+                      color: "primary.dark",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  {time.interview_start_time} 인터뷰 지원자 현황 /
+                  <span>
+                    {" "}
+                    합격 : {time.apply_applicant_count} 대기 :{" "}
+                    {time.wait_applicant_count}
+                  </span>
+                </Box>
+              ))}
+            {props.interview.interview_state === 5 &&
+              props.interview.interviewTimeDetailResList.map((time, index) => (
+                <Typography
+                  variant="subtitle1"
+                  key={time.id}
+                  onClick={(e) => {
+                    props.setValue(2);
+                    props.setSelectId(props.interview.id);
+                    props.setSelectTimeIndex(index);
+                  }}
+                  sx={{
+                    "&:hover": {
+                      color: "primary.dark",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  {time.interview_start_time} 인터뷰 진행
+                </Typography>
+              ))}
+            {props.interview.interview_state === 6 &&
+              props.interview.interviewTimeDetailResList.map((time, index) => (
+                <Typography
+                  variant="subtitle1"
+                  key={time.id}
+                  onClick={(e) =>
+                    onClickResult(e, time.id, index, props.interview)
+                  }
+                  sx={{
+                    "&:hover": {
+                      color: "primary.dark",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  {time.interview_start_time} 인터뷰 결과
+                </Typography>
               ))}
           </Grid>
           <Grid item xs={5}></Grid>

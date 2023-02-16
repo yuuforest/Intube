@@ -49,6 +49,7 @@ export default function InterviewListItemDetail(props) {
 
   // 방입장
   const position = 2;
+  const interview = props.interview;
   const interviewId = props.interview.id;
   const interviewTimeId = props.interview.interviewTimeRes.id;
   const [conferenceID, setConferenceID] = useState(0);
@@ -70,6 +71,7 @@ export default function InterviewListItemDetail(props) {
             interviewTimeId,
             position,
             conferenceID,
+            interview,
           },
         });
       } else if (result.isDenied) {

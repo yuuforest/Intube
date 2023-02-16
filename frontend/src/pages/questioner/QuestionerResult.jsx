@@ -5,6 +5,7 @@ import ReactPlayer from "react-player/lazy";
 import instance from "api/APIController";
 import "pages/questioner/Questioner.css";
 import * as xlsx from "xlsx/xlsx.mjs";
+import QuestionerHeader from "components/questioner/QuestionerHeader";
 import Logo from "assets/excel.png";
 import {
   Divider,
@@ -247,6 +248,7 @@ export default function QuestionerResult(props) {
   };
   return (
     <div className="question-modify">
+      <QuestionerHeader></QuestionerHeader>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={8}>
           <Typography

@@ -10,7 +10,10 @@ export default function QuestionerAllList(props) {
           <QuestionerAllListitem
             interview={interview}
             index={index}
+            setValue={props.setValue}
             getInterviewList={props.getInterviewList}
+            setSelectId={props.setSelectId}
+            setSelectTimeIndex={props.setSelectTimeIndex}
           />
         </div>
       ))}

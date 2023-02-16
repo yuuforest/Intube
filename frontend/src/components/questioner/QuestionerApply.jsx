@@ -17,13 +17,12 @@ import "components/questioner/QuestionerApply.css";
 export default function QuestionerApply(props) {
   const [questionindex, setQuestionIndex] = useState(0);
   const [timeindex, setTimeindex] = useState(0);
-  const [timeid, setTimeid] = useState();
+
   const [applyNum, setApplyNum] = useState(0);
+
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
-    setTimeid(
-      interviewList[event.target.value].interviewTimeDetailResList[0].id
-    );
+
     setApplyNum(
       interviewList[event.target.value].interviewTimeDetailResList[0]
         .apply_applicant_count
@@ -33,11 +32,7 @@ export default function QuestionerApply(props) {
 
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
-    setTimeid(
-      interviewList[questionindex].interviewTimeDetailResList[
-        event.target.value
-      ].id
-    );
+
     setApplyNum(
       interviewList[questionindex].interviewTimeDetailResList[
         event.target.value
@@ -50,6 +45,20 @@ export default function QuestionerApply(props) {
   useEffect(() => {
     getInterviewList();
   }, [questionindex, timeindex, props.value]);
+
+  useEffect(() => {
+    getInterviewList();
+    interviewList.forEach((interview, index) => {
+      if (interview.id === props.selectId) {
+        setQuestionIndex(index);
+        setApplyNum(
+          interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
+            .apply_applicant_count
+        );
+        setTimeindex(props.selectTimeIndex);
+      }
+    });
+  }, [props.selectTimeIndex, props.selectId]);
 
   const getInterviewList = () => {
     http
@@ -65,11 +74,6 @@ export default function QuestionerApply(props) {
       .then((response) => {
         setInterviewList(response.data.content);
         if (response.data.content.length > 0) {
-          setTimeid(
-            response.data.content[questionindex].interviewTimeDetailResList[
-              timeindex
-            ].id
-          );
           setApplyNum(
             response.data.content[questionindex].interviewTimeDetailResList[
               timeindex
@@ -280,7 +284,7 @@ export default function QuestionerApply(props) {
                           {answerer.gender}
                         </Typography>
                       </Grid>
-                      <Grid item xs={3} sx={{ textAlign: "center" }}>
+                      <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Typography variant="subtitle2" gutterBottom>
                           {answerer.introduction}
                         </Typography>

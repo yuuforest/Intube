@@ -18,16 +18,17 @@ import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import Swal from "sweetalert2";
 
 export default function QuestionerNow(props) {
-  const [questionindex, setQuestionIndex] = useState(0);
-  const [timeindex, setTimeindex] = useState(0);
-
   const position = 1;
 
+  const [timeid, setTimeid] = useState();
+  const [questionindex, setQuestionIndex] = useState(0);
+  const [timeindex, setTimeindex] = useState(0);
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
     const interviewId = interviewList[questionindex].id;
     const interviewTimeId = timeid;
+
     console.log(link);
     navigate(link, {
       state: {
@@ -60,8 +61,6 @@ export default function QuestionerNow(props) {
     setTimeindex(0);
   };
 
-  const [timeid, setTimeid] = useState();
-
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
     setTimeid(
@@ -82,7 +81,23 @@ export default function QuestionerNow(props) {
     getInterviewList();
     getUser();
   }, [questionindex, timeindex, props.value, modalOpen]);
-
+  useEffect(() => {
+    getInterviewList();
+    interviewList.forEach((interview, index) => {
+      if (interview.id === props.selectId) {
+        setQuestionIndex(index);
+        setTimeid(
+          interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
+            .id
+        );
+        setIsEndInterview(
+          interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
+            .modifyResultState
+        );
+        setTimeindex(props.selectTimeIndex);
+      }
+    });
+  }, [props.selectTimeIndex, props.selectId]);
   const [userInfo, setUserInfo] = useState([]);
   const getUser = () => {
     http
@@ -201,6 +216,7 @@ export default function QuestionerNow(props) {
   };
 
   const onClickEnter = (e) => {
+    const interview = interviewList[questionindex];
     const interviewId = interviewList[questionindex].id;
     const interviewTimeId = timeid;
     http
@@ -223,6 +239,7 @@ export default function QuestionerNow(props) {
             interviewTimeId,
             position,
             conferenceID,
+            interview,
           },
         });
       })
@@ -378,7 +395,7 @@ export default function QuestionerNow(props) {
                           {answerer.gender}
                         </Typography>
                       </Grid>
-                      <Grid item xs={3} sx={{ textAlign: "center" }}>
+                      <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Typography variant="subtitle2" gutterBottom>
                           {answerer.introduction}
                         </Typography>
