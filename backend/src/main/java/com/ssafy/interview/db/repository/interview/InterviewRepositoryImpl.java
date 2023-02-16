@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -39,15 +40,14 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
     QInterviewCategory qInterviewCategory = QInterviewCategory.interviewCategory;
 
     @Override
-    public Page<InterviewLoadRes> findInterviewByCategory(String categoryName, String word, Pageable pageable) {
+    public Page<InterviewLoadRes> findInterviewByCategory(Long user_id, String categoryName, String word, Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
 
         List<InterviewLoadRes> content = jpaQueryFactory
                 .select(new QInterviewLoadRes(qInterview))
                 .from(qInterview)
-                .leftJoin(qInterview.interviewTimeList, qInterviewTime)
-                .leftJoin(qInterviewTime.applicantList, qApplicant)
-                .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4), qApplicant.applicantState.isNull())
+//                .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4), qApplicant.user.id.isNull().or(qApplicant.user.id.ne(user_id)))
+                .where(wordEq(word), categoryEq(categoryName), interviewStateEq(4), qInterview.user.id.ne(user_id))
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -56,9 +56,7 @@ public class InterviewRepositoryImpl implements InterviewRepositoryCustom {
         JPAQuery<Interview> countQuery = jpaQueryFactory
                 .select(qInterview)
                 .from(qInterview)
-//                .leftJoin(qInterview.interviewCategory, qInterviewCategory)
-                .where(wordEq(word), categoryEq(categoryName), qInterview.interviewState.eq(4));
-
+                .where(wordEq(word), categoryEq(categoryName), interviewStateEq(4), qInterview.user.id.ne(user_id));
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
     }

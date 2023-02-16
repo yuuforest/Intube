@@ -24,7 +24,7 @@ public interface InterviewRepositoryCustom { // 인터뷰 생성 Method
      * @param pageable     페이지 정보
      * @return 검색 결과
      */
-    Page<InterviewLoadRes> findInterviewByCategory(String categoryName, String word, Pageable pageable);
+    Page<InterviewLoadRes> findInterviewByCategory(Long user_id, String categoryName, String word, Pageable pageable);
 
     /**
      * 질문자가 작성한 인터뷰 공고 상태별 조회
