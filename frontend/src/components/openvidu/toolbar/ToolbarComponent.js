@@ -18,6 +18,7 @@ import Tooltip from "@mui/material/Tooltip";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import IconButton from "@mui/material/IconButton";
+import InfoIcon from "@mui/icons-material/Info";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // import http from "api/Http";
 
@@ -38,6 +39,7 @@ export default class ToolbarComponent extends Component {
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+    this.toggleInfo = this.toggleInfo.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
     this.storeResult = this.storeResult.bind(this);
     this.storeResult = this.storeResult.bind(this);
@@ -84,6 +86,10 @@ export default class ToolbarComponent extends Component {
 
   toggleChat() {
     this.props.toggleChat();
+  }
+
+  toggleInfo() {
+    this.props.toggleInfo();
   }
 
   render() {
@@ -182,6 +188,15 @@ export default class ToolbarComponent extends Component {
               {this.props.showNotification && <div id="point" className="" />}
               <Tooltip title="Chat">
                 <QuestionAnswer />
+              </Tooltip>
+            </IconButton>
+            <IconButton
+              color="inherit"
+              id="navInfoButton"
+              onClick={this.toggleInfo}
+            >
+              <Tooltip title="인터뷰 정보">
+                <InfoIcon />
               </Tooltip>
             </IconButton>
           </div>

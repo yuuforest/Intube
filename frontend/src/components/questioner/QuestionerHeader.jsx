@@ -222,7 +222,7 @@ export default function Header(props) {
                   <ListItemIcon>
                     <SwitchAccountIcon fontSize="small" />
                   </ListItemIcon>
-                  사용자 전환
+                  답변자 전환
                 </MenuItem>
                 <MenuItem onClick={logoutApi}>
                   <ListItemIcon>

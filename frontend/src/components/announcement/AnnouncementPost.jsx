@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import http from "api/Http";
+import instance from "api/APIController";
 import AnnouncementStep4 from "./AnnouncementStep4";
 import AnnouncementStep1 from "./AnnouncementStep1";
 import AnnouncementStep2 from "./AnnouncementStep2";
@@ -15,7 +15,7 @@ export default function AnnouncementSteps(props) {
     getUser();
   }, []);
   const getUser = () => {
-    http
+    instance
       .get("/user/me", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -108,7 +108,7 @@ export default function AnnouncementSteps(props) {
 
   const step4Handeler = () => {
     console.log(interview);
-    http
+    instance
       .put(
         "/user/point",
         JSON.stringify({
@@ -124,7 +124,7 @@ export default function AnnouncementSteps(props) {
         }
       )
       .then(() => {
-        http
+        instance
           .post("/interviews", JSON.stringify(interview), {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

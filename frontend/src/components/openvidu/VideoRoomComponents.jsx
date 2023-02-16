@@ -31,6 +31,7 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 import NowQuestion from "components/conference/NowQuestion";
 import NowAnswer from "components/conference/NowAnswer";
 import Logo from "assets/avatajang.png";
+import { Divider } from "@mui/material";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:443/api/";
 
@@ -74,6 +75,7 @@ class VideoRoomComponent extends Component {
     this.stopScreenShare = this.stopScreenShare.bind(this);
     this.closeDialogExtension = this.closeDialogExtension.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+    this.toggleInfo = this.toggleInfo.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
@@ -650,6 +652,9 @@ class VideoRoomComponent extends Component {
     }
     this.updateLayout();
   }
+  toggleInfo() {
+    this.props.toggleInfo();
+  }
 
   checkNotification(event) {
     this.setState({
@@ -691,6 +696,7 @@ class VideoRoomComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          toggleInfo={this.toggleInfo}
           handleMicState={this.handleMicState}
           handleChangeQuestion={this.props.handleChangeQuestion}
           // positionId={this.props.positionId}
@@ -726,7 +732,7 @@ class VideoRoomComponent extends Component {
         <Grid
           container
           spacing={2}
-          alignItems="flex-start"
+          alignItems="flex-center"
           sx={{ backgroundColor: "#f2f7ff" }}
         >
           <Grid item xs={8}>
@@ -778,9 +784,10 @@ class VideoRoomComponent extends Component {
               elevation={3}
               sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
             >
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ pt: 2, ml: 2 }}>
                 인터뷰 내용
               </Typography>
+              <Divider />
               <div className="paper-contents">
                 {localUser !== undefined &&
                   localUser.getStreamManager() !== undefined && (
@@ -808,9 +815,10 @@ class VideoRoomComponent extends Component {
                 elevation={3}
                 sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
               >
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom sx={{ pt: 2, ml: 2 }}>
                   참여자 정보
                 </Typography>
+                <Divider />
                 <div className="paper-contents">
                   {this.state.subscribers.map((sub, i) => (
                     <div key={i}>

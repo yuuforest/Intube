@@ -107,8 +107,11 @@ export default function Questioner(props) {
         </Button>
       </Stack>
       <QuestionerAllList
+        setValue={props.setValue}
         interviewList={interviewList}
         getInterviewList={getInterviewList}
+        setSelectId={props.setSelectId}
+        setSelectTimeIndex={props.setSelectTimeIndex}
       ></QuestionerAllList>
 
       <Pagination

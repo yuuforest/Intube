@@ -37,33 +37,10 @@ export default function QuestionModify() {
     getStartTime();
     getVideo();
     getQuestion();
-    // getScript();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const [content, setContent] = useState([]);
-  // const [comment, setComment] = useState("내용");
-  // const questionList = content.map((x) =>
-  //   x.question_content === null ? (
-  //     <p
-  //       onClick={() => {
-  //         setComment(x.result_content);
-  //       }}
-  //       key={x.id}
-  //     >
-  //       INTRO
-  //     </p>
-  //   ) : (
-  //     <p
-  //       onClick={() => {
-  //         setComment(x.result_content);
-  //       }}
-  //       key={x.id}
-  //     >
-  //       {x.question_content}
-  //     </p>
-  //   )
-  // );
   const getVideo = () => {
     axios
       .get("https://intube.store:8443/openvidu/api/recordings/Session" + id, {
@@ -191,37 +168,12 @@ export default function QuestionModify() {
     });
   };
 
-  // const [isPlaying, setIsPlaying] = React.useState(true);
   const playerRef = React.useRef();
 
   function changeTime(time) {
     playerRef.current.seekTo(time, "seconds");
   }
-  // const getScript = () => {
-  //   instance
-  //     .get(
-  //       "/result/search?interview_id=" +
-  //         interviewId +
-  //         "&interview_time_id=" +
-  //         interviewTimeId,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //           "Content-type": "application/json;charset=UTF-8",
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log("데이터", response.data);
-  //       setContent(response.data.conferenceResultRes);
-  //       setComment(response.data.conferenceResultRes[0].result_content);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
 
-  // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
     console.log(link);
@@ -255,8 +207,9 @@ export default function QuestionModify() {
           title: "저장이 완료되었습니다.",
           text: "",
           icon: "success",
+        }).then(() => {
+          handlePage("", "/questioner");
         });
-        handlePage("", "/questioner");
       })
       .catch((error) => {
         console.error(error);

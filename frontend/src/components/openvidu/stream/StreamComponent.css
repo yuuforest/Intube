@@ -9,10 +9,6 @@
   color: black;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 #closeButton {
   position: absolute;
   top: -3px;

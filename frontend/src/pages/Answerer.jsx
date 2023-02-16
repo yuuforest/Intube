@@ -42,12 +42,16 @@ export default function Answerer() {
   const [interviewList, setInterviewList] = useState([]);
   const getInterview = (searchCondition) => {
     http
-      .post("/user/interviewee", JSON.stringify(searchCondition), {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "/user/interviewee?page=" + page + "&sort=" + selectedValue,
+        JSON.stringify(searchCondition),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((response) => {
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);

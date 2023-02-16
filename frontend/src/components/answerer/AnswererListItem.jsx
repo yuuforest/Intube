@@ -14,6 +14,7 @@ import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
 import AnswererListItemDetail from "components/answerer/AnswererListItemDetail";
 import InterviewListItemTag from "components/common/InterviewTag";
 import "components/main/interview/MainInterviewListItem.css";
+import "components/answerer/AnswererList.css";
 
 export default function InterviewListItem(props) {
   const [open, setOpen] = React.useState(false);

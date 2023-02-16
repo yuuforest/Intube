@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import "pages/questioner/Questioner.css";
 import Typography from "@mui/material/Typography";
@@ -12,11 +12,15 @@ import QuestionerApply from "components/questioner/QuestionerApply";
 import QuestionerNow from "components/questioner/QuestionerNow";
 
 export default function Questioner() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const [selectId, setSelectId] = useState(0);
+  const [selectTimeIndex, setSelectTimeIndex] = useState(0);
+
   return (
     <div className="questioner">
       <QuestionerHeader></QuestionerHeader>
@@ -46,9 +50,23 @@ export default function Questioner() {
               />
             </Tabs>
           </Box>
-          <QuestionerAll value={value}></QuestionerAll>
-          <QuestionerApply value={value}></QuestionerApply>
-          <QuestionerNow value={value} setValue={setValue}></QuestionerNow>
+          <QuestionerAll
+            value={value}
+            setValue={setValue}
+            setSelectId={setSelectId}
+            setSelectTimeIndex={setSelectTimeIndex}
+          ></QuestionerAll>
+          <QuestionerApply
+            value={value}
+            selectId={selectId}
+            selectTimeIndex={selectTimeIndex}
+          ></QuestionerApply>
+          <QuestionerNow
+            value={value}
+            setValue={setValue}
+            selectId={selectId}
+            selectTimeIndex={selectTimeIndex}
+          ></QuestionerNow>
         </Grid>
       </Grid>
     </div>
