@@ -63,28 +63,3 @@
     **3. 발언 시 Speech To Text 기능으로 내가 말한 내용을 실시간 텍스트로 확인할 수 있다.**  
     **4. 아바타 진행 시 답변자는 질문을 자유롭게 클릭하여 인터뷰를 진행할 수 있다.**<br>
 <p align="center"><img src= "/uploads/4dd0c540498062cb90ddbc6770123723/인터뷰_진행.gif" height="400px" width="800px"></p><br><br>
-
-<br/><br/>
-
-## 업데이트 내역
-
-* 23.2.14
-    * 수정: 문서 업데이트 (README.md)
-
-<br/><br/>
-
-## 기여 방법
-
-1. (<https://lab.ssafy.com/s08-webmobile1-sub2/S08P12A303.git>)을 포크합니다.
-2. (`git checkout -b feature/기능명`) 명령어로 새 브랜치를 만드세요.
-3. (`git commit -am 'Add some 기능명'`) 명령어로 커밋하세요.
-4. (`git push origin feature/기능명`) 명령어로 브랜치에 푸시하세요. 
-5. 풀리퀘스트를 보내주세요.
-
-<!-- Markdown link & img dfn's -->
-[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/datadog-metrics
-[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
-[wiki]: https://github.com/yourname/yourproject/wiki
