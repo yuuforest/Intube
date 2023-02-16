@@ -81,6 +81,7 @@ export default function QuestionModify() {
             const myTime = new Date(
               startTime.split(" ")[0] + "T" + condition.timestamp
             );
+            console.log(myTime);
             console.log((myTime - time) / 1000);
             condition.second = (myTime - time - 6000) / 1000;
             condition.time = changeSecond((myTime - time - 6000) / 1000);
