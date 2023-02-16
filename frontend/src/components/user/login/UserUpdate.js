@@ -56,9 +56,9 @@ export default function SignUp() {
       .min(2, "2글자 이상의 닉네임을 입력해주세요"),
     birth: yup
       .string("Enter your password")
-      .length(10, "ex) 2000-04-04")
+      .length(8, "ex) 20000404")
       .matches(
-        /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+        /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/,
         "올바른 형식이 아닙니다."
       ),
     phone: yup.string("Enter your password"),
@@ -76,7 +76,9 @@ export default function SignUp() {
   const BEFORE_INTRODUCTION = localStorage.getItem("introduction");
   const BEFORE_NAME = localStorage.getItem("name");
   const BEFORE_PHONE = localStorage.getItem("phone");
-  const BEFORE_BIRTH = localStorage.getItem("birth");
+  const birth = localStorage.getItem("birth");
+  const BEFORE_BIRTH =
+    birth.substring(0, 4) + birth.substring(5, 7) + birth.substring(8);
   const BEFORE_GENDER = localStorage.getItem("gender");
 
   const formik = useFormik({
@@ -89,11 +91,18 @@ export default function SignUp() {
       birth: BEFORE_BIRTH,
       email: BEFORE_EMAIL,
     },
+    enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: response => {
+      let birthAdd =
+        response.birth.substring(0, 4) +
+        "-" +
+        response.birth.substring(4, 6) +
+        "-" +
+        response.birth.substring(6);
       const nicknameLast = nickname !== "" ? nickname : BEFORE_NICKNAME;
       let values = {
-        birth: response.birth,
+        birth: birthAdd,
         email: response.email,
         gender: response.gender,
         introduction: response.introduction,
@@ -155,7 +164,6 @@ export default function SignUp() {
     setImg(event.target.files[0]);
     console.log(userImg);
   };
-
   const [nickname, setNickname] = useState("");
   const nicknameChange = ({ target: { value } }) => setNickname(value);
   //닉네임 변경하기 함수
@@ -198,26 +206,21 @@ export default function SignUp() {
               text: "메인으로 이동하시겠습니까?",
               icon: "success",
 
-              showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
               confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
-              cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
               confirmButtonText: "메인으로 이동", // confirm 버튼 텍스트 지정
-              cancelButtonText: "계속 진행하기", // cancel 버튼 텍스트 지정
 
               // reverseButtons: true, // 버튼 순서 거꾸로
             })
             .then(result => {
-              // 만약 Promise리턴을 받으면,
               if (result.isConfirmed) {
-                // 만약 모달창에서 confirm 버튼을 눌렀다면
                 navigate("/"); // 에러페이지로 이동
               }
             });
         }
       })
       .catch(e => {
-        if (e.response.data.statusCode === 400) {
-          swal.fire("", "비밀번호가 틀렸습니다", "warning");
+        if (e.response.data.status === 400) {
+          swal.fire("", "파일을 선택해주세요", "warning");
         }
         console.log(e);
       });
@@ -227,9 +230,9 @@ export default function SignUp() {
   const [userImg, setUserImg] = useState({ name: "" });
   useEffect(() => {
     getUser();
-  }, [setUserImg]);
+  }, [userImg]);
+
   const getUser = async () => {
-    // const data =
     await http
       .get("/user/me", {
         headers: {
@@ -237,9 +240,6 @@ export default function SignUp() {
         },
       })
       .then(response => {
-        // console.log(response.data.profile_url);
-        // const profile = response.data.profile_url.substr(8);
-        // console.log(profile);
         setUserImg(
           `https://303-intube.s3.ap-northeast-2.amazonaws.com/${response.data.profile_url}`
         );
@@ -250,6 +250,7 @@ export default function SignUp() {
         }
       });
   };
+
   function deleteUser() {
     DeleteUser();
   }
@@ -312,10 +313,15 @@ export default function SignUp() {
                   비밀번호 변경
                 </Button>
               </Grid>
+              <Grid item xs={12} sx={{ ml: 1, mb: -2 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  휴대폰 번호
+                </FormLabel>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="phone"
-                  label="휴대폰 번호"
+                  // label="휴대폰 번호"
                   id="phone"
                   required
                   fullWidth
@@ -326,13 +332,17 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
-
+              <Grid item xs={12} sx={{ ml: 1, mb: -2 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  이메일
+                </FormLabel>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   id="email"
                   name="email"
-                  label="이메일"
+                  // label="이메일"
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}
@@ -342,19 +352,28 @@ export default function SignUp() {
                   disabled
                 />
               </Grid>
-
+              <Grid item xs={12} sx={{ ml: 1, mb: -2 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  이름
+                </FormLabel>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="name"
                   required
                   fullWidth
                   id="name"
-                  label="이름"
+                  // label="이름"
                   onChange={formik.handleChange}
                   value={formik.values.name}
                   error={formik.touched.name && Boolean(formik.errors.name)}
                   helperText={formik.touched.name && formik.errors.name}
                 />
+              </Grid>
+              <Grid item xs={12} sx={{ ml: 1, mb: -2 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  생년월일
+                </FormLabel>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -362,7 +381,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="birth"
-                  label="생년 - 월 - 일"
+                  // label="생년월일"
                   // autoFocus
                   onChange={formik.handleChange}
                   value={formik.values.birth}
@@ -371,12 +390,18 @@ export default function SignUp() {
                   onBlur={formik.handleBlur}
                 />
               </Grid>
+              <Grid item xs={12} sx={{ ml: 1, mb: -2 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  닉네임
+                </FormLabel>
+              </Grid>
+
               <Grid item xs={10}>
                 <TextField
                   name="nickname"
                   fullWidth
                   id="nickname"
-                  label="변경하고 싶은 닉네임"
+                  // label="변경하고 싶은 닉네임"
                   // autoFocus
                   onChange={nicknameChange}
                   value={nickname}
@@ -392,7 +417,7 @@ export default function SignUp() {
                   중복확인
                 </Button>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ ml: 1 }}>
                 <FormControl>
                   <FormLabel id="demo-controlled-radio-buttons-group">
                     성별
@@ -417,6 +442,11 @@ export default function SignUp() {
                   </RadioGroup>
                 </FormControl>
               </Grid>
+              <Grid item xs={12} sx={{ ml: 1, mb: -2 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  자기소개
+                </FormLabel>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -424,7 +454,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="introduction"
-                  label="자기소개"
+                  // label="자기소개"
                   multiline
                   onChange={formik.handleChange}
                   value={formik.values.introduction}
