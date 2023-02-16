@@ -153,7 +153,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         Dialog dialog = new Dialog();
         dialog.setConference(conferenceRepository.findById(questionInfo.getConferenceID()).get());
         dialog.setQuestion(questionRepository.findById(questionInfo.getQuestionID()).get());
-        dialog.setTimestamp(questionInfo.getTimestamp());
         dialog.setUser(null);
         dialog.setContent(null);
         dialogRepository.save(dialog);
@@ -172,7 +171,6 @@ public class ConferenceServiceImpl implements ConferenceService {
             now.setQuestion(questionRepository.findById(dialogInfo.getQuestionID()).get());
         }
         now.setContent(dialogInfo.getContent());
-        now.setTimestamp(dialogInfo.getTimestamp());
         dialogRepository.save(now);
     }
 

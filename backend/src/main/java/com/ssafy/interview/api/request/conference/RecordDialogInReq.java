@@ -16,6 +16,4 @@ public class RecordDialogInReq {
     Long questionID;
     @ApiModelProperty(name = "발언 내용")
     String content;
-    @ApiModelProperty(name = "Conference 중 질문 시작 시간")
-    String timestamp;
 }

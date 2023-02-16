@@ -3,7 +3,6 @@ package com.ssafy.interview.api.service.conference;
 import com.ssafy.interview.api.request.result.DialogModifyReq;
 import com.ssafy.interview.api.request.result.ResultModifyReq;
 import com.ssafy.interview.api.response.result.ConferenceResultDetailRes;
-import com.ssafy.interview.api.response.result.ConferenceResultRes;
 import com.ssafy.interview.api.response.result.DialogDetailRes;
 import com.ssafy.interview.api.response.result.DialogRes;
 import com.ssafy.interview.db.entitiy.User;
@@ -53,7 +52,7 @@ public class ResultServiceImpl implements ResultService {
                     .conferenceID(dialog.getConference().getId())
                     .questionID(questionId)
                     .content(dialog.getContent())
-                    .timestamp(dialog.getTimestamp())
+//                    .timestamp(dialog.getTimestamp())
                     .build());
         }
         // Group By Question ID
@@ -72,7 +71,6 @@ public class ResultServiceImpl implements ResultService {
                     .conferenceID(dialog.getConference().getId())
                     .questionID(questionId)
                     .content(dialog.getContent())
-                    .timestamp(dialog.getTimestamp())
                     .build());
         }
         return res;
