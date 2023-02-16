@@ -1,0 +1,17 @@
+.timer{
+    position: relative;
+    border: solid darkgray 1px;
+    height: 55px;
+    border-radius: 3px;
+}
+
+.picker{
+    position: absolute;
+    /* border: solid black 1px; */
+    top: 0.8em;
+    left: 0.65em;
+}
+
+input{
+    font-family: "GmarketSansMedium" !important;
+}

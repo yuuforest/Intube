@@ -1,0 +1,14 @@
+.questioner {
+  min-height: 100vh;
+  background-color: #f2f7ff;
+}
+.questioner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.question-modify {
+  text-align: center;
+}
+.question-modify-video {
+  margin: auto;
+}

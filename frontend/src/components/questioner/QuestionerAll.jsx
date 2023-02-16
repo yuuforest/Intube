@@ -1,0 +1,126 @@
+import React, { useState, useEffect } from "react";
+import http from "api/Http";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import QuestionerAllList from "components/questioner/QuestionerAllList";
+import Pagination from "@mui/material/Pagination";
+import NativeSelect from "@mui/material/NativeSelect";
+import Box from "@mui/material/Box";
+
+import "pages/questioner/Questioner.css";
+
+export default function Questioner(props) {
+  const [interviewList, setInterviewList] = useState([]);
+  const [searchCondition, setSearchCondition] = useState({
+    interview_state: 0,
+    word: "",
+  });
+
+  const [selectedValue, setSelectedValue] = React.useState("");
+
+  const handleChangeRadio = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
+  const [totalPage, setTotalPage] = useState(0);
+
+  const [page, setPage] = useState(1);
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
+  const handleChangeState = (event) => {
+    console.log(event.target.value);
+    setSearchCondition({
+      interview_state: event.target.value,
+      word: "",
+    });
+  };
+
+  useEffect(() => {
+    getInterviewList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchCondition, page, selectedValue]);
+
+  const getInterviewList = () => {
+    http
+      .post(
+        "/user/interviewer?page=" + page + "&sort=" + selectedValue,
+        JSON.stringify(searchCondition),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setInterviewList(response.data.content);
+        setTotalPage(response.data.totalPages);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  return (
+    <div hidden={props.value !== 0}>
+      <Stack spacing={2} direction="row">
+        <NativeSelect
+          defaultValue={0}
+          inputProps={{
+            name: "interview_state",
+          }}
+          sx={{ mx: 1, mb: 1, width: 1 / 8 }}
+          onChange={handleChangeState}
+        >
+          <option value={0}>공고 전체</option>
+          <option value={4}>모집중</option>
+          <option value={5}>진행중</option>
+          <option value={6}>완료</option>
+        </NativeSelect>
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Button
+          value="apply_start_time,desc"
+          variant="text"
+          onClick={handleChangeRadio}
+          sx={{ my: 3, ml: 27 }}
+        >
+          등록순
+        </Button>
+        <Button
+          value="end_start_time,desc"
+          variant="text"
+          onClick={handleChangeRadio}
+          sx={{ my: 3, ml: 1 }}
+        >
+          마감순
+        </Button>
+        <Button
+          value="standard_point,desc"
+          variant="text"
+          onClick={handleChangeRadio}
+          sx={{ my: 3, ml: 1 }}
+        >
+          포인트순
+        </Button>
+      </Stack>
+      <QuestionerAllList
+        setValue={props.setValue}
+        interviewList={interviewList}
+        getInterviewList={getInterviewList}
+        setSelectId={props.setSelectId}
+        setSelectTimeIndex={props.setSelectTimeIndex}
+      ></QuestionerAllList>
+
+      <Pagination
+        count={totalPage}
+        onChange={handleChangePage}
+        page={page}
+        color="primary"
+        sx={{ mt: 2 }}
+      />
+    </div>
+  );
+}

@@ -1,0 +1,12 @@
+.interviewList {
+  text-align: center;
+}
+.MuiPagination-ul {
+  justify-content: center;
+}
+.pagination {
+  margin-top: 32px;
+}
+.MuiAlert-icon {
+  font-size: 50px !important;
+}

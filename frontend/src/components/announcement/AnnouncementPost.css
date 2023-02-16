@@ -1,0 +1,29 @@
+.announcement-select {
+  margin-top: 100px;
+}
+
+.announcement-write {
+  background-color: white;
+  border-radius: 25px;
+  padding: 50px;
+}
+.announcement-apply {
+  background-color: white;
+  border-radius: 25px;
+  padding: 50px;
+}
+#title-input {
+  text-align: center;
+}
+
+#number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.post {
+  background-color: #f2f7ff;
+  border-radius: 25px;
+  width: 70%;
+  margin: auto;
+}

@@ -1,0 +1,93 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+html, body {
+    margin : 0;
+    height: 100%;
+} 
+.main{
+    height:100%;
+    /* border: 1px solid black; */
+}
+
+.first{
+    /* border: 1px solid black; */
+    height: 92vh;
+    /* display: flex; */
+    position: relative;
+    background-color: #f2f7ff;
+}
+.second{
+    /* border: 1px solid black; */
+    height: 100vh;
+    position: relative;
+}
+
+.first .picture1
+{
+    height: 45vh;
+    width: 54vh;
+    left: 65%;
+    top: 20%;
+    position: absolute;
+    border-radius: 3%;
+    box-shadow: 3px 3px 3px gray;
+    /* border: 1px solid black; */
+}
+.first .picture2
+{
+    height: 45vh;
+    width: 54vh;
+    left: 43%;
+    top: 25%;
+    position: absolute;
+    border-radius: 3%;
+    box-shadow: 3px 3px 3px gray;
+    /* border: 1px solid black; */
+}
+
+.first .text{
+    position: absolute;
+    /* border: 1px solid black; */
+    top: 35%;
+    left: 10%;
+    font-size: 150%;
+    padding:1rem
+}
+
+.second .text{
+    position: absolute;
+    /* border: 1px solid black; */
+    top: 28%;
+    left: 60%;
+    font-size: 150%;
+    padding:1rem
+}
+.second .button{
+    position: absolute;
+    /* border: 1px solid black; */
+    top: 50%;
+    left: 60%;
+    font-size: 150%;
+    padding:1rem    
+}
+.second .picture1
+{
+    height: 45vh;
+    left: 10%;
+    top: 20%;
+    position: absolute;
+    border-radius: 3%;
+    /* border: 1px solid black; */
+    box-shadow: 3px 3px 3px gray;
+}
+
+.title{
+    font-size: 2rem;
+    font-weight: 9 00;
+}
+
+
+

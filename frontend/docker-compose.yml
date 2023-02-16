@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  application:
+    build: .
+    ports:
+      - 3030:3030
+    restart: always
