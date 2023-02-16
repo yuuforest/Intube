@@ -36,7 +36,7 @@ public class DialogDetailRes {
     String dialog_content;
 
     @ApiModelProperty(name="기록 시간")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     LocalDateTime timestamp;
 
     @QueryProjection
