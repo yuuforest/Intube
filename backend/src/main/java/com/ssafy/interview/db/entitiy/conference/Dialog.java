@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ import javax.persistence.*;
 public class Dialog extends BaseEntity {
 
     String content;
-    String timestamp;
+    LocalDateTime timestamp = LocalDateTime.now();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

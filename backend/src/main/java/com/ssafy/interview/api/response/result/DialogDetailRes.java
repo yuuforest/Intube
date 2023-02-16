@@ -2,12 +2,13 @@ package com.ssafy.interview.api.response.result;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.interview.db.entitiy.User;
-import com.ssafy.interview.db.entitiy.conference.ConferenceResult;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
 import com.ssafy.interview.db.entitiy.interview.Question;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -34,7 +35,7 @@ public class DialogDetailRes {
     String dialog_content;
 
     @ApiModelProperty(name="기록 시간")
-    String timestamp;
+    LocalDateTime timestamp;
 
     @QueryProjection
     public DialogDetailRes(Dialog dialog, Question question, User user) {

@@ -14,6 +14,4 @@ public class RecordQuestionInReq {
     Long conferenceID;
     @ApiModelProperty(name = "Question ID")
     Long questionID;
-    @ApiModelProperty(name = "Conference 중 질문 시작 시간")
-    String timestamp;
 }
