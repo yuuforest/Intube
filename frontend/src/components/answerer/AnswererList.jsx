@@ -20,7 +20,13 @@ export default function AnswererList(props) {
               severity="error"
               sx={{
                 justifyContent: "center",
+                pt: 10,
                 margin: "auto",
+                mt: "25vh",
+                width: 500,
+                height: 130,
+                fontWeight: "bold",
+                fontSize: "30px",
               }}
             >
               검색결과가 없습니다
