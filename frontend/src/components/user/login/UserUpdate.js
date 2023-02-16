@@ -93,7 +93,7 @@ export default function SignUp() {
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
-    onSubmit: response => {
+    onSubmit: (response) => {
       let birthAdd =
         response.birth.substring(0, 4) +
         "-" +
@@ -121,7 +121,7 @@ export default function SignUp() {
           },
           withCredentials: true,
         })
-        .then(values => {
+        .then((values) => {
           console.log(values);
           if (values.data.statusCode === 200) {
             swal.fire(
@@ -133,7 +133,7 @@ export default function SignUp() {
             navigate("/");
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (e.response.data.statusCode === 400) {
             swal.fire("", "잘못된 비밀번호입니다.", "error");
           }
@@ -159,7 +159,7 @@ export default function SignUp() {
   });
   const [image, setImg] = useState("");
 
-  const onChangeImg = async event => {
+  const onChangeImg = async (event) => {
     event.preventDefault();
     setImg(event.target.files[0]);
     console.log(userImg);
@@ -211,14 +211,14 @@ export default function SignUp() {
 
               // reverseButtons: true, // 버튼 순서 거꾸로
             })
-            .then(result => {
+            .then((result) => {
               if (result.isConfirmed) {
                 navigate("/"); // 에러페이지로 이동
               }
             });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         if (e.response.data.status === 400) {
           swal.fire("", "파일을 선택해주세요", "warning");
         }
@@ -239,12 +239,12 @@ export default function SignUp() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
-      .then(response => {
+      .then((response) => {
         setUserImg(
           `https://303-intube.s3.ap-northeast-2.amazonaws.com/${response.data.profile_url}`
         );
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.status === 401) {
           console.log("엑세스 토큰 없음~");
         }
