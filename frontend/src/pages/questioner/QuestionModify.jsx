@@ -82,8 +82,8 @@ export default function QuestionModify() {
               startTime.split(" ")[0] + "T" + condition.timestamp
             );
             console.log((myTime - time) / 1000);
-            condition.second = (myTime - time - 6000) / 1000;
-            condition.time = changeSecond((myTime - time - 7000) / 1000);
+            condition.second = (myTime - time - 5500) / 1000;
+            condition.time = changeSecond((myTime - time - 5500) / 1000);
           });
 
           return newCondition;
