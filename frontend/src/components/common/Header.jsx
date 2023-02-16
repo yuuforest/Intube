@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import http from "api/Http";
 import { useNavigate } from "react-router-dom";
 import { logout } from "api/logout";
-import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PersonIcon from "@mui/icons-material/Person";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import Logo from "assets/logo.png";
 import Avatar from "@mui/material/Avatar";
@@ -26,7 +27,7 @@ import Paper from "@mui/material/Paper";
 import Drawer from "@mui/material/Drawer";
 import Sidebar from "components/common/Sidebar";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-
+import Swal from "sweetalert2";
 import "components/common/Header.css";
 
 export default function Header(props) {
@@ -34,7 +35,7 @@ export default function Header(props) {
 
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) getUser();
-  }, []);
+  }, localStorage);
   const getUser = () => {
     http
       .get("/user/me", {
@@ -55,7 +56,24 @@ export default function Header(props) {
     left: false,
   });
   const toggleDrawer = (open) => (event) => {
-    setState({ ...state, left: open });
+    if (localStorage.getItem("accessToken") !== null) {
+      setState({ ...state, left: open });
+    } else {
+      Swal.fire({
+        title: "로그인이 필요합니다",
+        showDenyButton: true,
+        confirmButtonText: "로그인하기",
+        denyButtonText: `회원가입하기`,
+        icon: "error",
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          handlePage("", "user/login");
+        } else if (result.isDenied) {
+          handlePage("", "/signup");
+        }
+      });
+    }
   };
 
   // 페이지 이동
@@ -121,40 +139,41 @@ export default function Header(props) {
           onClick={(e) => handlePage(e, "/")}
         />
         <Box sx={{ flexGrow: 1 }} />
-        {props.handleChangeWord !== undefined && (
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 400,
-            }}
-          >
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Interview"
-              inputProps={{ "aria-label": "search google maps" }}
-              onChange={props.handleChangeWord}
-            />
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          </Paper>
-        )}
+        {props.handleChangeWord !== undefined &&
+          localStorage.getItem("accessToken") != null && (
+            <Paper
+              component="form"
+              sx={{
+                p: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+                width: 400,
+              }}
+            >
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Search Interview"
+                inputProps={{ "aria-label": "search google maps" }}
+                onChange={props.handleChangeWord}
+              />
+              <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+                <SearchIcon />
+              </IconButton>
+            </Paper>
+          )}
         <Box sx={{ flexGrow: 1 }} />
         {/* ------ 로그인 전 -------- */}
         {/* Object.keys(userInfo).length */}
         {localStorage.getItem("accessToken") === null && (
-          <IconButton
-            edge="start"
+          <Button
+            variant="outlined"
             size="large"
-            color="inherit"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, borderRadius: 10 }}
             onClick={(e) => handlePage(e, "/user/login")}
+            startIcon={<AccountCircleIcon />}
           >
-            <LoginOutlinedIcon />
-          </IconButton>
+            로그인
+          </Button>
         )}
         {/* ------ 로그인 후 -------- */}
 
@@ -191,7 +210,6 @@ export default function Header(props) {
                 >
                   <Avatar
                     sx={{ width: 42, height: 42 }}
-                    alt="profile"
                     src={
                       "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
                       userInfo.profile_url
@@ -250,7 +268,7 @@ export default function Header(props) {
               </div>
 
               <Divider />
-              <MenuItem onClick={(e) => handlePage(e, "answerer/mypage")}>
+              <MenuItem onClick={(e) => handlePage(e, "/answerer/mypage")}>
                 <ListItemIcon>
                   <PersonIcon fontSize="small" />
                 </ListItemIcon>
@@ -260,7 +278,7 @@ export default function Header(props) {
                 <ListItemIcon>
                   <SwitchAccountIcon fontSize="small" />
                 </ListItemIcon>
-                사용자 전환
+                질문자 전환
               </MenuItem>
               <MenuItem onClick={logoutApi}>
                 <ListItemIcon>

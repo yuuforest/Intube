@@ -1,20 +1,24 @@
 import MainInterview from "components/main/MainInterview";
 import MainSplash from "components/main/MainSplash";
-import React from "react";
+import React, { useState } from "react";
 
 import Header from "components/common/Header";
 
 export default function Main() {
-  const [searchCondition, setSearchCondition] = React.useState({
+  const [searchCondition, setSearchCondition] = useState({
     category_name: "",
     word: "",
   });
-  const handleChangeWord = event => {
-    console.log(event.target.value);
-    setSearchCondition({
-      category_name: "",
-      word: event.target.value,
-    });
+  const handleChangeWord = (event) => {
+    let newCondition = { ...searchCondition };
+    newCondition.word = event.target.value;
+    setSearchCondition(newCondition);
+    console.log(newCondition);
+  };
+  const handleChangeCategroy = (event) => {
+    let newCondition = { ...searchCondition };
+    newCondition.category_name = event.target.value;
+    setSearchCondition(newCondition);
   };
   return (
     <div className="main">
@@ -22,7 +26,10 @@ export default function Main() {
       {localStorage.getItem("accessToken") === null ? (
         <MainSplash></MainSplash>
       ) : (
-        <MainInterview searchCondition={searchCondition}></MainInterview>
+        <MainInterview
+          searchCondition={searchCondition}
+          handleChangeCategroy={handleChangeCategroy}
+        ></MainInterview>
       )}
     </div>
   );

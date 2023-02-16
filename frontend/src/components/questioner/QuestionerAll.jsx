@@ -24,7 +24,7 @@ export default function Questioner(props) {
 
   const [totalPage, setTotalPage] = useState(0);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const handleChangePage = (event, value) => {
     setPage(value);
   };
@@ -54,6 +54,7 @@ export default function Questioner(props) {
         }
       )
       .then((response) => {
+        console.log(response.data);
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
       })
@@ -106,8 +107,11 @@ export default function Questioner(props) {
         </Button>
       </Stack>
       <QuestionerAllList
+        setValue={props.setValue}
         interviewList={interviewList}
         getInterviewList={getInterviewList}
+        setSelectId={props.setSelectId}
+        setSelectTimeIndex={props.setSelectTimeIndex}
       ></QuestionerAllList>
 
       <Pagination
@@ -115,6 +119,7 @@ export default function Questioner(props) {
         onChange={handleChangePage}
         page={page}
         color="primary"
+        sx={{ mt: 2 }}
       />
     </div>
   );

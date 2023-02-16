@@ -9,8 +9,12 @@
   min-width: 400px !important;
 }
 .paper-contents {
-  height: 300px;
+  padding-left: 10px;
+  height: 280px;
   overflow: scroll;
+}
+.paper-contents::-webkit-scrollbar {
+  display: block; /* Chrome, Safari, Opera*/
 }
 .toolbar {
   min-height: 40px !important;
@@ -61,8 +65,8 @@
 /*modify*/
 .bounds {
   position: relative;
-  height: 400px;
-  min-width: 500px !important;
+  height: 380px;
+  min-width: 490px !important;
   width: 100%;
   border: 6px solid #847b7b;
   border-radius: 10px;

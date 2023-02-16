@@ -42,12 +42,16 @@ export default function Answerer() {
   const [interviewList, setInterviewList] = useState([]);
   const getInterview = (searchCondition) => {
     http
-      .post("/user/interviewee", JSON.stringify(searchCondition), {
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
+      .post(
+        "/user/interviewee?page=" + page + "&sort=" + selectedValue,
+        JSON.stringify(searchCondition),
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((response) => {
         setInterviewList(response.data.content);
         setTotalPage(response.data.totalPages);
@@ -63,15 +67,13 @@ export default function Answerer() {
       <div className="main-interview-check">
         <Button
           value="apply_start_time,desc"
-          variant="outlined"
           onClick={handleChangeRadio}
-          sx={{ mt: 3, ml: 27 }}
+          sx={{ mt: 3, ml: "80vw" }}
         >
           등록순
         </Button>
         <Button
           value="end_start_time,desc"
-          variant="outlined"
           onClick={handleChangeRadio}
           sx={{ mt: 3, ml: 1 }}
         >
@@ -79,7 +81,6 @@ export default function Answerer() {
         </Button>
         <Button
           value="standard_point,desc"
-          variant="outlined"
           onClick={handleChangeRadio}
           sx={{ mt: 3, ml: 1 }}
         >

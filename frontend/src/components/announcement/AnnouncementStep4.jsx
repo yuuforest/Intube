@@ -59,7 +59,7 @@ export default function AnnouncementStep4(props) {
                     <Grid item xs={3}>
                       <p>{menu.title} : </p>
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xs={9} sx={{ my: 2 }}>
                       {menu.title === "인터뷰 시간" ? (
                         props.interview.interviewTimeList.map((time) => (
                           <p key={time.id}>

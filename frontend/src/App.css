@@ -4,7 +4,12 @@
 #root {
   font-family: "GmarketSansMedium" !important;
 }
-
+.MuiInputBase-input {
+  font-family: "GmarketSansMedium" !important;
+}
+.MuiOutlinedInput-notchedOutline {
+  font-family: "GmarketSansMedium" !important;
+}
 .MuiTypography-root {
   font-family: "GmarketSansMedium" !important;
 }

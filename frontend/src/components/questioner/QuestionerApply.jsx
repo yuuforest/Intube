@@ -11,28 +11,32 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Checkbox from "@mui/material/Checkbox";
 import http from "api/Http";
-
+import Swal from "sweetalert2";
 import "components/questioner/QuestionerApply.css";
 
 export default function QuestionerApply(props) {
   const [questionindex, setQuestionIndex] = useState(0);
   const [timeindex, setTimeindex] = useState(0);
-  const [timeid, setTimeid] = useState();
+
+  const [applyNum, setApplyNum] = useState(0);
 
   const handleChangeQuestionIndex = (event) => {
     setQuestionIndex(event.target.value);
-    setTimeid(
-      interviewList[event.target.value].interviewTimeDetailResList[0].id
+
+    setApplyNum(
+      interviewList[event.target.value].interviewTimeDetailResList[0]
+        .apply_applicant_count
     );
     setTimeindex(0);
   };
 
   const handleChangeTimeindex = (event, id) => {
     setTimeindex(event.target.value);
-    setTimeid(
+
+    setApplyNum(
       interviewList[questionindex].interviewTimeDetailResList[
         event.target.value
-      ].id
+      ].apply_applicant_count
     );
   };
 
@@ -41,6 +45,20 @@ export default function QuestionerApply(props) {
   useEffect(() => {
     getInterviewList();
   }, [questionindex, timeindex, props.value]);
+
+  useEffect(() => {
+    getInterviewList();
+    interviewList.forEach((interview, index) => {
+      if (interview.id === props.selectId) {
+        setQuestionIndex(index);
+        setApplyNum(
+          interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
+            .apply_applicant_count
+        );
+        setTimeindex(props.selectTimeIndex);
+      }
+    });
+  }, [props.selectTimeIndex, props.selectId]);
 
   const getInterviewList = () => {
     http
@@ -56,10 +74,10 @@ export default function QuestionerApply(props) {
       .then((response) => {
         setInterviewList(response.data.content);
         if (response.data.content.length > 0) {
-          setTimeid(
+          setApplyNum(
             response.data.content[questionindex].interviewTimeDetailResList[
               timeindex
-            ].id
+            ].apply_applicant_count
           );
           getAnswererList(
             response.data.content[questionindex].interviewTimeDetailResList[
@@ -93,13 +111,59 @@ export default function QuestionerApply(props) {
   };
 
   const acceptHandeler = (e) => {
-    console.log(e.target.value);
+    if (applyNum < interviewList[questionindex].max_people) {
+      http
+        .put(
+          "/user/interviewer/accept-applicant?applicant_id=" +
+            e.target.value +
+            "&applicant_state=2",
+          {},
+          {
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        )
+        .then(() => {
+          getInterviewList();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      Swal.fire({
+        title: "에러",
+        text: "모집인원을 초과했습니다.",
+        icon: "error",
+      });
+    }
+  };
+  const resetHandeler = (e) => {
     http
       .put(
         "/user/interviewer/accept-applicant?applicant_id=" +
           e.target.value +
-          "&applicant_state=2",
+          "&applicant_state=1",
         {},
+        {
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then(() => {
+        getInterviewList();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const deleteHandeler = (e) => {
+    http
+      .delete(
+        "/user/interviewer/refuse-applicant?applicant_id=" + e.target.value,
         {
           headers: {
             "Content-type": "application/json;charset=UTF-8",
@@ -149,6 +213,14 @@ export default function QuestionerApply(props) {
             </Select>
           </FormControl>
           <div className="question-list">
+            <Typography
+              variant="subtitle2"
+              gutterBottom
+              sx={{ float: "right" }}
+            >
+              모집인원 : {applyNum}/{interviewList[questionindex].max_people}
+            </Typography>
+
             <List>
               <ListItem>
                 <Grid
@@ -196,10 +268,15 @@ export default function QuestionerApply(props) {
                         </Typography>
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "left" }}>
-                        <Avatar sx={{ float: "left", mr: 2 }}>
-                          {answerer.email[0]}
-                        </Avatar>
-                        <Typography variant="subtitle1">
+                        <Avatar
+                          sx={{ height: 64, width: 64, float: "left", mr: 2 }}
+                          alt="profile"
+                          src={
+                            "https://303-intube.s3.ap-northeast-2.amazonaws.com/" +
+                            answerer.profile_url
+                          }
+                        />
+                        <Typography variant="subtitle1" sx={{ mt: 1 }}>
                           {answerer.name}
                         </Typography>
                         <Typography variant="subtitle2">
@@ -207,14 +284,17 @@ export default function QuestionerApply(props) {
                           {answerer.gender}
                         </Typography>
                       </Grid>
-                      <Grid item xs={3} sx={{ textAlign: "center" }}>
+                      <Grid item xs={3} sx={{ textAlign: "left" }}>
                         <Typography variant="subtitle2" gutterBottom>
                           {answerer.introduction}
                         </Typography>
                       </Grid>
                       <Grid item xs={3} sx={{ textAlign: "center" }}>
                         <Typography variant="subtitle2" gutterBottom>
-                          {answerer.temperature}
+                          {Math.round(
+                            (answerer.temperature + Number.EPSILON) * 100
+                          ) / 100}
+                          ℃
                         </Typography>
                       </Grid>
                       <Grid item xs={2} sx={{ textAlign: "center" }}>
@@ -227,14 +307,29 @@ export default function QuestionerApply(props) {
                             >
                               합격
                             </Button>
-                            <Button variant="outlined" sx={{ ml: 2 }}>
+                            <Button
+                              variant="outlined"
+                              sx={{ ml: 2 }}
+                              value={answerer.id}
+                              onClick={deleteHandeler}
+                            >
                               불합격
                             </Button>
                           </div>
                         ) : (
-                          <Button variant="outlined" value={answerer.id}>
-                            합격
-                          </Button>
+                          <div>
+                            <Button variant="contained" value={answerer.id}>
+                              합격
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              value={answerer.id}
+                              onClick={resetHandeler}
+                              sx={{ ml: 2 }}
+                            >
+                              취소
+                            </Button>
+                          </div>
                         )}
                       </Grid>
                     </Grid>

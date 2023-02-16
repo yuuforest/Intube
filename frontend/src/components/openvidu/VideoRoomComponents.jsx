@@ -15,6 +15,7 @@ import QuestionLIst from "components/conference/QuestionLIst";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import http from "api/Http";
 import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
 import ChatComponent from "./chat/ChatComponent";
@@ -29,7 +30,8 @@ import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import NowQuestion from "components/conference/NowQuestion";
 import NowAnswer from "components/conference/NowAnswer";
-
+import Logo from "assets/avatajang.png";
+import { Divider } from "@mui/material";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://intube.store:443/api/";
 
@@ -53,6 +55,8 @@ class VideoRoomComponent extends Component {
       currentVideoDevice: undefined,
       isRecord: false,
       recordId: "",
+      questionList: [],
+      questionNum: 0,
     };
 
     this.navigate = this.props.navigate;
@@ -71,6 +75,7 @@ class VideoRoomComponent extends Component {
     this.stopScreenShare = this.stopScreenShare.bind(this);
     this.closeDialogExtension = this.closeDialogExtension.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
+    this.toggleInfo = this.toggleInfo.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.handleMicState = this.handleMicState.bind(this);
@@ -80,9 +85,6 @@ class VideoRoomComponent extends Component {
     if (props.positionId === 2) {
       this.role = "SUBSCRIBER";
     }
-
-    console.log("asa");
-    console.log(props.interviewId);
   }
 
   storeResult() {
@@ -147,6 +149,22 @@ class VideoRoomComponent extends Component {
         await this.connectToSession();
       }
     );
+
+    http
+      .get("/conference/question?interviewID=" + this.props.interviewId, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("질문리스트", response.data);
+        this.setState({
+          questionList: response.data,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   async connectToSession() {
@@ -310,14 +328,16 @@ class VideoRoomComponent extends Component {
         )
         .then((response) => {
           console.log(response);
+          this.navigate("/questioner");
+          window.location.reload();
         })
         .catch((error) => {
           console.error(error);
         });
+    } else {
+      this.navigate("/");
+      window.location.reload();
     }
-
-    this.navigate("/");
-    window.location.reload();
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -329,6 +349,21 @@ class VideoRoomComponent extends Component {
   }
 
   micStatusChanged() {
+    if (!localUser.isAudioActive() && this.props.isAvata) {
+      console.log("질문", this.state.questionList[this.state.questionNum]);
+      console.log(this.props.setQuestionState);
+      if (this.state.questionList[this.state.questionNum] === undefined) {
+        this.props.setQuestionState({
+          question: "인터뷰가 종료되었습니다. 종료버튼을 눌러주세요😎",
+          id: 0,
+        });
+      }
+      this.props.setQuestionState({
+        question: this.state.questionList[this.state.questionNum].content,
+        id: this.state.questionList[this.state.questionNum].id,
+      });
+      this.setState({ questionNum: this.state.questionNum + 1 });
+    }
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
@@ -617,6 +652,9 @@ class VideoRoomComponent extends Component {
     }
     this.updateLayout();
   }
+  toggleInfo() {
+    this.props.toggleInfo();
+  }
 
   checkNotification(event) {
     this.setState({
@@ -658,7 +696,9 @@ class VideoRoomComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          toggleInfo={this.toggleInfo}
           handleMicState={this.handleMicState}
+          handleChangeQuestion={this.props.handleChangeQuestion}
           // positionId={this.props.positionId}
           // conferenceId={this.props.conferenceID}
           // interviewTimeID={interviewTimeID}
@@ -692,11 +732,15 @@ class VideoRoomComponent extends Component {
         <Grid
           container
           spacing={2}
-          alignItems="flex-start"
+          alignItems="flex-center"
+          justifyContent="center"
           sx={{ backgroundColor: "#f2f7ff" }}
         >
           <Grid item xs={8}>
             <div id="layout" className="bounds">
+              {this.props.isAvata && (
+                <img src={Logo} alt="logo" width="130px" />
+              )}
               {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div
@@ -741,9 +785,10 @@ class VideoRoomComponent extends Component {
               elevation={3}
               sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
             >
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ pt: 2, ml: 2 }}>
                 인터뷰 내용
               </Typography>
+              <Divider />
               <div className="paper-contents">
                 {localUser !== undefined &&
                   localUser.getStreamManager() !== undefined && (
@@ -754,37 +799,41 @@ class VideoRoomComponent extends Component {
                       close={this.toggleChat}
                       messageReceived={this.checkNotification}
                       myAnswer={this.props.myAnswer}
+                      isAvata={this.props.isAvata}
                     />
                   )}
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={4}>
-            <QuestionLIst
-              handleChangeQuestion={this.props.handleChangeQuestion}
-              interviewId={this.props.interviewId}
-              positionId={this.props.positionId}
-            />
-            <Paper
-              elevation={3}
-              sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
-            >
-              <Typography variant="h6" gutterBottom>
-                참여자 정보
-              </Typography>
-              <div className="paper-contents">
-                {this.state.subscribers.map((sub, i) => (
-                  <div key={i}>
-                    {sub.audioActive ? (
-                      <div> {sub.nickname} : 발언중</div>
-                    ) : (
-                      <div> {sub.nickname} : 대기중</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </Paper>
-          </Grid>
+          {!this.props.isAvata && (
+            <Grid item xs={4}>
+              <QuestionLIst
+                handleChangeQuestion={this.props.handleChangeQuestion}
+                interviewId={this.props.interviewId}
+                positionId={this.props.positionId}
+              />
+              <Paper
+                elevation={3}
+                sx={{ minWidth: 275, mt: 4, ml: 2, height: 320 }}
+              >
+                <Typography variant="h6" gutterBottom sx={{ pt: 2, ml: 2 }}>
+                  참여자 정보
+                </Typography>
+                <Divider />
+                <div className="paper-contents">
+                  {this.state.subscribers.map((sub, i) => (
+                    <div key={i}>
+                      {sub.audioActive ? (
+                        <div> {sub.nickname} : 발언중</div>
+                      ) : (
+                        <div> {sub.nickname} : 대기중</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </Paper>
+            </Grid>
+          )}
         </Grid>
       </div>
     );

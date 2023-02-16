@@ -1,6 +1,6 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
-import { blue, red, green, purple, yellow } from "@mui/material/colors";
+import { blue, red, green, purple, yellow, cyan } from "@mui/material/colors";
 
 export default function QusetionerTag(props) {
   return (
@@ -49,6 +49,18 @@ export default function QusetionerTag(props) {
             mt: "20px",
             background: green[100],
             color: green[900],
+          }}
+          color="primary"
+        />
+      )}
+      {props.category_name === "AVATA" && (
+        <Chip
+          label="아바타인터뷰"
+          size="small"
+          sx={{
+            mt: "20px",
+            background: cyan[100],
+            color: cyan[900],
           }}
           color="primary"
         />

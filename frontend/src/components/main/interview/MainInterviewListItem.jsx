@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import http from "api/Http";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -12,8 +12,9 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ContentPasteRoundedIcon from "@mui/icons-material/ContentPasteRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import PaidRoundedIcon from "@mui/icons-material/PaidRounded";
-
+import Swal from "sweetalert2";
 import MainInterviewListItemDetail from "components/main/interview/MainInterviewListItemDetail";
+import MainAvataInterview from "components/main/interview/MainAvataInterview";
 import InterviewTag from "components/common/InterviewTag";
 
 import "components/main/interview/MainInterviewListItem.css";
@@ -41,8 +42,28 @@ export default function MainInterviewListItem(props) {
     owner_phone: "",
     applicant_state: "",
   });
-
-  const handleClickOpen = () => () => {
+  const [InterviewAvata, setInterviewAvata] = useState({
+    id: "",
+    category_name: "",
+    title: "",
+    description: "",
+    estimated_time: "",
+    start_standard_age: "",
+    end_standard_age: "",
+    gender: "",
+    max_people: "",
+    standard_point: "",
+    apply_start_time: "",
+    apply_end_time: "",
+    download_expiration: "",
+    owner_id: "",
+    owner_email: "",
+    owner_name: "",
+    owner_phone: "",
+    applicant_state: "",
+  });
+  const [openAvata, setOpenAvata] = React.useState(false);
+  const handleClickOpen = () => {
     http
       .get("/interviews/search/" + props.interview.id, {
         headers: {
@@ -50,12 +71,26 @@ export default function MainInterviewListItem(props) {
         },
       })
       .then((response) => {
-        setInterview(response.data);
+        console.log(response.data);
+        if (response.data.applicant_state === 1) {
+          Swal.fire({
+            title: "이미 신청한 인터뷰입니다.",
+            text: "",
+            icon: "warning",
+          });
+        } else {
+          if (props.interview.category_name !== "AVATA") {
+            setInterview(response.data);
+            setOpen(true);
+          } else {
+            setInterviewAvata(response.data);
+            setOpenAvata(true);
+          }
+        }
       })
       .catch((error) => {
         console.error(error);
       });
-    setOpen(true);
   };
 
   return (
@@ -67,9 +102,10 @@ export default function MainInterviewListItem(props) {
           "&:hover": {
             transform: "scale(1.07)",
             cursor: "pointer",
+            background: "rgba(0,0,0,0.03)",
           },
         }}
-        onClick={handleClickOpen()}
+        onClick={handleClickOpen}
       >
         <CardContent>
           <InterviewTag interview={props.interview}></InterviewTag>
@@ -139,6 +175,11 @@ export default function MainInterviewListItem(props) {
         setOpen={setOpen}
         interview={interview}
       />
+      <MainAvataInterview
+        open={openAvata}
+        setOpen={setOpenAvata}
+        interview={InterviewAvata}
+      ></MainAvataInterview>
     </div>
   );
 }
