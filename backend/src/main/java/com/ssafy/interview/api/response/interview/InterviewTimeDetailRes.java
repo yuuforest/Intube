@@ -1,0 +1,41 @@
+package com.ssafy.interview.api.response.interview;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryProjection;
+import com.ssafy.interview.db.entitiy.interview.Interview;
+import com.ssafy.interview.db.entitiy.interview.InterviewTime;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
+/**
+ * 인터뷰 전체 정보 조회 API ([GET] /) 요청에 대한 응답값 정의.
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ApiModel("InterviewTimeDetailRes")
+public class InterviewTimeDetailRes extends InterviewTimeRes {
+
+    @ApiModelProperty(name = "apply_applicant_count")
+    Long wait_applicant_count;
+
+    @ApiModelProperty(name = "apply_applicant_count")
+    Long apply_applicant_count;
+
+    @ApiModelProperty(name = "modify_result_state")
+    int modifyResultState;
+
+    @QueryProjection
+    public InterviewTimeDetailRes(InterviewTime interviewTime, Long wait_applicant_count, Long apply_applicant_count) {
+        this.id = interviewTime.getId();
+        this.interview_start_time = interviewTime.getInterview_start_time();
+        this.modifyResultState = interviewTime.getModifyResultState();
+        this.wait_applicant_count = wait_applicant_count;
+        this.apply_applicant_count = apply_applicant_count;
+    }
+}
