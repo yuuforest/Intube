@@ -115,7 +115,7 @@ export default function QuestionerNow(props) {
         );
         setTimeCheck(
           interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
-            .id
+            .interview_start_time
         );
         setIsEndInterview(
           interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
