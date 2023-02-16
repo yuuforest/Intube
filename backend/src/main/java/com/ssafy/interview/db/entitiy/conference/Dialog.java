@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 public class Dialog extends BaseEntity {
 
     String content;
-    LocalDateTime timestamp = LocalDateTime.now();
+    LocalTime timestamp = LocalTime.now();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

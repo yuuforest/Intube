@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -36,8 +37,8 @@ public class DialogDetailRes {
     String dialog_content;
 
     @ApiModelProperty(name="기록 시간")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    LocalDateTime timestamp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
+    LocalTime timestamp;
 
     @QueryProjection
     public DialogDetailRes(Dialog dialog, Question question, User user) {
