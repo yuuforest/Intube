@@ -49,8 +49,8 @@ public class InterviewServiceImpl implements InterviewService {
 
     // 인터뷰 전체 및 카테고리별 조회
     @Override
-    public Page<InterviewLoadRes> findInterviewByCategory(InterviewSearchReq interviewSearchReq, Pageable pageable) {
-        return interviewRepository.findInterviewByCategory(interviewSearchReq.getCategory_name(), interviewSearchReq.getWord(), pageable);
+    public Page<InterviewLoadRes> findInterviewByCategory(Long user_id, InterviewSearchReq interviewSearchReq, Pageable pageable) {
+        return interviewRepository.findInterviewByCategory(user_id, interviewSearchReq.getCategory_name(), interviewSearchReq.getWord(), pageable);
     }
 
     // 인터뷰 상태별 조회
