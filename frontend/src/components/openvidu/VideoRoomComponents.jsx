@@ -328,7 +328,7 @@ class VideoRoomComponent extends Component {
         )
         .then((response) => {
           console.log(response);
-          this.navigate("/");
+          this.navigate("/questioner");
           window.location.reload();
         })
         .catch((error) => {
@@ -733,6 +733,7 @@ class VideoRoomComponent extends Component {
           container
           spacing={2}
           alignItems="flex-center"
+          justifyContent="center"
           sx={{ backgroundColor: "#f2f7ff" }}
         >
           <Grid item xs={8}>

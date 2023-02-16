@@ -67,15 +67,13 @@ export default function Answerer() {
       <div className="main-interview-check">
         <Button
           value="apply_start_time,desc"
-          variant="outlined"
           onClick={handleChangeRadio}
-          sx={{ mt: 3, ml: 27 }}
+          sx={{ mt: 3, ml: "80vw" }}
         >
           등록순
         </Button>
         <Button
           value="end_start_time,desc"
-          variant="outlined"
           onClick={handleChangeRadio}
           sx={{ mt: 3, ml: 1 }}
         >
@@ -83,7 +81,6 @@ export default function Answerer() {
         </Button>
         <Button
           value="standard_point,desc"
-          variant="outlined"
           onClick={handleChangeRadio}
           sx={{ mt: 3, ml: 1 }}
         >

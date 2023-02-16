@@ -468,7 +468,7 @@ export default function QuestionerNow(props) {
                 </div>
               ))}
             </List>
-            {-diffHour > 0 ? (
+            {/* {-diffHour > 0 ? (
               <Button variant="contained" sx={{ m: 3 }} size="large">
                 {-diffDay}일 {-diffHour}시간 남았음
               </Button>
@@ -482,8 +482,8 @@ export default function QuestionerNow(props) {
               >
                 인터뷰 방만들기
               </Button>
-            )}
-            {/* <Button
+            )} */}
+            <Button
               variant="outlined"
               startIcon={<VideocamOutlinedIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
@@ -491,7 +491,7 @@ export default function QuestionerNow(props) {
               onClick={onClickEnter}
             >
               인터뷰 방만들기
-            </Button> */}
+            </Button>
             <Button
               variant="outlined"
               startIcon={<VideoFileOutlinedIcon />}

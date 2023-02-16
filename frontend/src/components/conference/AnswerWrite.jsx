@@ -30,7 +30,7 @@ export default function AnswerWrite(props) {
     conferenceID: conferId,
     questionID: questId,
     content: transcript,
-    timestamp: currentTime,
+    // timestamp: currentTime,
   };
 
   useEffect(() => {
