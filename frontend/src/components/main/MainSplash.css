@@ -32,7 +32,8 @@ html, body {
     left: 65%;
     top: 20%;
     position: absolute;
-    border-radius: 1%;
+    border-radius: 3%;
+    box-shadow: 3px 3px 3px gray;
     /* border: 1px solid black; */
 }
 .first .picture2
@@ -42,7 +43,8 @@ html, body {
     left: 43%;
     top: 25%;
     position: absolute;
-    border-radius: 1%;
+    border-radius: 3%;
+    box-shadow: 3px 3px 3px gray;
     /* border: 1px solid black; */
 }
 
@@ -77,8 +79,14 @@ html, body {
     left: 10%;
     top: 20%;
     position: absolute;
-    border-radius: 1%;
+    border-radius: 3%;
     /* border: 1px solid black; */
+    box-shadow: 3px 3px 3px gray;
+}
+
+.title{
+    font-size: 2rem;
+    font-weight: 9 00;
 }
 
 

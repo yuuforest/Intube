@@ -19,7 +19,7 @@ export default function MainSplash() {
     <div className="main">
       <div className="first">
         <div className="text">
-          <span>당신이 필요한 인터뷰</span>
+          <span className="title">당신이 필요한 인터뷰</span>
           <br />
           <br />
           <span>
@@ -34,7 +34,7 @@ export default function MainSplash() {
       </div>
       <div className="second">
         <div className="text">
-          <span>당신이 편한 인터뷰</span>
+          <span className="title">당신이 편한 인터뷰</span>
           <br />
           <br />
           <span>
