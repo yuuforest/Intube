@@ -250,6 +250,7 @@ export default function QuestionerAllListitem(props) {
                     props.setValue(1);
                     props.setSelectId(props.interview.id);
                     props.setSelectTimeIndex(index);
+                    window.scrollTo(0, 0);
                   }}
                   sx={{
                     "&:hover": {
@@ -275,6 +276,7 @@ export default function QuestionerAllListitem(props) {
                     props.setValue(2);
                     props.setSelectId(props.interview.id);
                     props.setSelectTimeIndex(index);
+                    window.scrollTo(0, 0);
                   }}
                   sx={{
                     "&:hover": {

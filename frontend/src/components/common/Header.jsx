@@ -268,7 +268,7 @@ export default function Header(props) {
               </div>
 
               <Divider />
-              <MenuItem onClick={(e) => handlePage(e, "answerer/mypage")}>
+              <MenuItem onClick={(e) => handlePage(e, "/answerer/mypage")}>
                 <ListItemIcon>
                   <PersonIcon fontSize="small" />
                 </ListItemIcon>
@@ -278,7 +278,7 @@ export default function Header(props) {
                 <ListItemIcon>
                   <SwitchAccountIcon fontSize="small" />
                 </ListItemIcon>
-                사용자 전환
+                질문자 전환
               </MenuItem>
               <MenuItem onClick={logoutApi}>
                 <ListItemIcon>

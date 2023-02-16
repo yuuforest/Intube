@@ -7,20 +7,20 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import http from "api/Http";
 
-const EvalPerson = props => {
+const EvalPerson = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close, header, name, email } = props;
 
   const [Honest, setHonest] = useState("");
-  const setHonestChange = event => {
+  const setHonestChange = (event) => {
     setHonest(event.target.value);
   };
   const [Ontime, setOntime] = useState("");
-  const setOntimeChange = event => {
+  const setOntimeChange = (event) => {
     setOntime(event.target.value);
   };
   const [NextChance, setNextChance] = useState("");
-  const setNextChanceChange = event => {
+  const setNextChanceChange = (event) => {
     setNextChance(event.target.value);
   };
 
@@ -38,9 +38,14 @@ const EvalPerson = props => {
       temperature: temperature,
       key: key,
     };
+    let point = {
+      email: email,
+      point: props.point,
+      key: 1,
+    };
     try {
       const response = await http.put("/user/temperature", data);
-      console.log(response);
+      const getpoint = await http.put("/user/temperature", point);
     } catch {}
   };
 

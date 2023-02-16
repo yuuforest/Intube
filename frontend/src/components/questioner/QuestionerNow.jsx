@@ -9,6 +9,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import EventIcon from "@mui/icons-material/Event";
 import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +24,16 @@ export default function QuestionerNow(props) {
   const [timeid, setTimeid] = useState();
   const [questionindex, setQuestionIndex] = useState(0);
   const [timeindex, setTimeindex] = useState(0);
+
+  const [timeCheck, setTimeCheck] = useState("");
+
+  const diff =
+    new Date(timeCheck.split(" ")[0] + "T" + timeCheck.split(" ")[1]) -
+    new Date();
+  console.log(diff);
+  const diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const diffHour = Math.floor((diff / (1000 * 60 * 60)) % 24);
+
   // 페이지 이동
   const navigate = useNavigate();
   function handlePage(e, link) {
@@ -46,6 +57,7 @@ export default function QuestionerNow(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [evalname, setevalname] = useState(false);
   const [evalemail, setevalemail] = useState(false);
+  const [evalpoint, setevalpoint] = useState(0);
 
   const [isEndInterview, setIsEndInterview] = useState(-1);
 
@@ -54,11 +66,16 @@ export default function QuestionerNow(props) {
     setTimeid(
       interviewList[event.target.value].interviewTimeDetailResList[0].id
     );
+    setTimeCheck(
+      interviewList[event.target.value].interviewTimeDetailResList[0]
+        .interview_start_time
+    );
     setIsEndInterview(
       interviewList[event.target.value].interviewTimeDetailResList[0]
         .modifyResultState
     );
     setTimeindex(0);
+    setevalpoint(interviewList[event.target.value].point);
   };
 
   const handleChangeTimeindex = (event, id) => {
@@ -68,11 +85,17 @@ export default function QuestionerNow(props) {
         event.target.value
       ].id
     );
+    setTimeCheck(
+      interviewList[questionindex].interviewTimeDetailResList[
+        event.target.value
+      ].interview_start_time
+    );
     setIsEndInterview(
       interviewList[questionindex].interviewTimeDetailResList[
         event.target.value
       ].modifyResultState
     );
+    setevalpoint(interviewList[questionindex].point);
   };
 
   const [interviewList, setInterviewList] = useState([]);
@@ -90,11 +113,16 @@ export default function QuestionerNow(props) {
           interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
             .id
         );
+        setTimeCheck(
+          interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
+            .id
+        );
         setIsEndInterview(
           interviewList[index].interviewTimeDetailResList[props.selectTimeIndex]
             .modifyResultState
         );
         setTimeindex(props.selectTimeIndex);
+        setevalpoint(interviewList[index].point);
       }
     });
   }, [props.selectTimeIndex, props.selectId]);
@@ -135,6 +163,11 @@ export default function QuestionerNow(props) {
             timeindex
           ].id
         );
+        setTimeCheck(
+          response.data.content[questionindex].interviewTimeDetailResList[
+            timeindex
+          ].interview_start_time
+        );
         setIsEndInterview(
           response.data.content[questionindex].interviewTimeDetailResList[
             timeindex
@@ -145,6 +178,7 @@ export default function QuestionerNow(props) {
             timeindex
           ].id
         );
+        setevalpoint(response.data.content[questionindex].point);
       })
       .catch((error) => {
         // console.error(error);
@@ -206,11 +240,12 @@ export default function QuestionerNow(props) {
           })
           .catch((error) => {
             console.error(error);
+            Swal.fire("완료하지 않은 평가가 있습니다", "error");
           });
       } else if (result.isDenied) {
         Swal.fire("네", "", "info");
       } else {
-        Swal.fire("아직 진행하지 않은 인터뷰 입니다", "", "error");
+        Swal.fire("아직 진행하지 않은 인터뷰 입니다", "error");
       }
     });
   };
@@ -292,7 +327,7 @@ export default function QuestionerNow(props) {
     } else {
       Swal.fire({
         title: "에러",
-        text: "아직 진행하지 않은 인터뷰 입니다." + isEndInterview,
+        text: "아직 진행하지 않은 인터뷰 입니다.",
         icon: "error",
       });
     }
@@ -433,7 +468,22 @@ export default function QuestionerNow(props) {
                 </div>
               ))}
             </List>
-            <Button
+            {-diffHour > 0 ? (
+              <Button variant="contained" sx={{ m: 3 }} size="large">
+                {-diffDay}일 {-diffHour}시간 남았음
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                startIcon={<VideocamOutlinedIcon />}
+                sx={{ backgroundColor: "white", m: 3 }}
+                size="large"
+                onClick={onClickEnter}
+              >
+                인터뷰 방만들기
+              </Button>
+            )}
+            {/* <Button
               variant="outlined"
               startIcon={<VideocamOutlinedIcon />}
               sx={{ backgroundColor: "white", m: 3 }}
@@ -441,8 +491,7 @@ export default function QuestionerNow(props) {
               onClick={onClickEnter}
             >
               인터뷰 방만들기
-            </Button>
-
+            </Button> */}
             <Button
               variant="outlined"
               startIcon={<VideoFileOutlinedIcon />}
@@ -465,6 +514,7 @@ export default function QuestionerNow(props) {
           name={evalname}
           email={evalemail}
           setModalOpen={setModalOpen}
+          point={evalpoint}
         >
           {/* // EvalPerson.js <main> {props.children} </main>에 내용이입력된다. 리액트 함수형 모달  */}
           이건 안나오는 부분
