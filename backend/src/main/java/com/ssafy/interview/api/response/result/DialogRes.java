@@ -1,10 +1,13 @@
 package com.ssafy.interview.api.response.result;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -28,6 +31,7 @@ public class DialogRes {
     String content;
 
     @ApiModelProperty(name="기록 시간")
-    String timestamp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
+    LocalDateTime timestamp;
 
 }
