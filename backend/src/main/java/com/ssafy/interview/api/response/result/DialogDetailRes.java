@@ -1,5 +1,6 @@
 package com.ssafy.interview.api.response.result;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.interview.db.entitiy.User;
 import com.ssafy.interview.db.entitiy.conference.Dialog;
@@ -35,12 +36,14 @@ public class DialogDetailRes {
     String dialog_content;
 
     @ApiModelProperty(name="기록 시간")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     LocalDateTime timestamp;
 
     @QueryProjection
     public DialogDetailRes(Dialog dialog, Question question, User user) {
         this.id = dialog.getId();
         this.dialog_content = dialog.getContent();
+        System.out.println(dialog.getTimestamp());
         this.timestamp = dialog.getTimestamp();
         this.conference_id = dialog.getConference().getId();
         if (question != null) {
