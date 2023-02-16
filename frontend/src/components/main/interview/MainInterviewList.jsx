@@ -3,7 +3,6 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 //
 import MainInterviewListItem from "components/main/interview/MainInterviewListItem";
 //
@@ -25,7 +24,13 @@ export default function MainInterviewList(props) {
               severity="error"
               sx={{
                 justifyContent: "center",
+                pt: 10,
                 margin: "auto",
+                mt: "25vh",
+                width: 500,
+                height: 130,
+                fontWeight: "bold",
+                fontSize: "30px",
               }}
             >
               검색결과가 없습니다

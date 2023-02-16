@@ -21,6 +21,7 @@ export default function MainAvataInterview(props) {
   console.log(props.interview);
 
   const onClickEnter = (id) => {
+    const interview = props.interview;
     const interviewId = props.interview.id;
     const interviewTimeId = id;
     const position = 1;
@@ -46,6 +47,7 @@ export default function MainAvataInterview(props) {
             position,
             conferenceID,
             isAvata,
+            interview,
           },
         });
       })

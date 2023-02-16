@@ -3,6 +3,7 @@ import MainInterviewList from "components/main/interview/MainInterviewList";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import http from "api/Http";
+import { Grid } from "@mui/material";
 
 export default function MainInterview(props) {
   const [selectedValue, setSelectedValue] = React.useState(
@@ -49,32 +50,81 @@ export default function MainInterview(props) {
   };
   return (
     <div className="main-interview">
-      <div className="main-interview-check">
-        <Button
-          value="apply_start_time,desc"
-          variant="outlined"
-          onClick={handleChangeRadio}
-          sx={{ my: 3, ml: 27 }}
-        >
-          등록순
-        </Button>
-        <Button
-          value="end_start_time,desc"
-          variant="outlined"
-          onClick={handleChangeRadio}
-          sx={{ my: 3, ml: 1 }}
-        >
-          마감순
-        </Button>
-        <Button
-          value="standard_point,desc"
-          variant="outlined"
-          onClick={handleChangeRadio}
-          sx={{ my: 3, ml: 1 }}
-        >
-          포인트순
-        </Button>
-      </div>
+      <Grid container justifyContent="space-between" sx={{ px: "10vw" }}>
+        <Grid item>
+          <Button
+            value=""
+            variant={
+              props.searchCondition.category_name === ""
+                ? "contained"
+                : "outlined"
+            }
+            onClick={props.handleChangeCategroy}
+            sx={{ my: 3 }}
+          >
+            전체
+          </Button>
+          <Button
+            value="1:1"
+            variant={
+              props.searchCondition.category_name === "1:1"
+                ? "contained"
+                : "outlined"
+            }
+            onClick={props.handleChangeCategroy}
+            sx={{ my: 3, ml: 1 }}
+          >
+            1:1
+          </Button>
+          <Button
+            value="1:N"
+            variant={
+              props.searchCondition.category_name === "1:N"
+                ? "contained"
+                : "outlined"
+            }
+            onClick={props.handleChangeCategroy}
+            sx={{ my: 3, ml: 1 }}
+          >
+            1:N
+          </Button>
+          <Button
+            value="AVATA"
+            variant={
+              props.searchCondition.category_name === "AVATA"
+                ? "contained"
+                : "outlined"
+            }
+            onClick={props.handleChangeCategroy}
+            sx={{ my: 3, ml: 1 }}
+          >
+            아바타
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            value="apply_start_time,desc"
+            onClick={handleChangeRadio}
+            sx={{ my: 3, ml: 1 }}
+          >
+            등록순
+          </Button>
+          <Button
+            value="end_start_time,desc"
+            onClick={handleChangeRadio}
+            sx={{ my: 3, ml: 1 }}
+          >
+            마감순
+          </Button>
+          <Button
+            value="standard_point,desc"
+            onClick={handleChangeRadio}
+            sx={{ my: 3, ml: 1 }}
+          >
+            포인트순
+          </Button>
+        </Grid>
+      </Grid>
 
       <MainInterviewList interviewList={interviewList}></MainInterviewList>
       {interviewList.length > 0 && (

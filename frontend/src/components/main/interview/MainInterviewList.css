@@ -7,3 +7,6 @@
 .pagination {
   margin-top: 32px;
 }
+.MuiAlert-icon {
+  font-size: 50px !important;
+}
