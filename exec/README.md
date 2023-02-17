@@ -14,7 +14,7 @@
 <p align="center"><img src= "/uploads/af92abe8e1196172bd581687fab4a621/마이페이지.gif" height="400px" width="800px"></p><br>
 
 ### 메인페이지 및 공고찾기
-> **메인페이지와 상당 공고찾기 버튼을 통해 현재 모집 중인 인터뷰들을 등록, 마감, 포인트 순으로 조회하는 기능을 제공합니다.**
+> **메인페이지와 상단 공고찾기 버튼을 통해 현재 모집 중인 인터뷰들을 등록, 마감, 포인트 순으로 조회하는 기능을 제공합니다.**
 
 <p align="center"><img src= "/uploads/0be297088839792486ffa9a1c392828b/InTube_메인페이지_스킨.png"></p>
 <p align="center"><img src= "/uploads/dc538be30c488b1f2e37ceb31437eca2/InTube_인터뷰_찾기_스킨.png"></p>
