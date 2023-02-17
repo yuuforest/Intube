@@ -93,24 +93,22 @@ export default function QuestionerResult(props) {
 
         setResult((result) => {
           let newCondition = [...result];
-          const time = startTime.split(" ")[1].split(":");
+          console.log(startTime.split(" ")[0] + "T" + startTime.split(" ")[1]);
+          const time = new Date(
+            startTime.split(" ")[0] + "T" + startTime.split(" ")[1]
+          );
 
-          const second =
-            parseInt(time[0]) * 3600 +
-            parseInt(time[1]) * 60 +
-            parseInt(time[2]);
-
+          console.log(time);
           newCondition.forEach((condition) => {
-            const myTime = condition.timestamp.split(":");
-            console.log("myTime", myTime);
-            const mySecond =
-              parseInt(myTime[0]) * 3600 +
-              parseInt(myTime[1]) * 60 +
-              parseInt(myTime[2]);
-            condition.second = mySecond - second - 2;
-            condition.time = changeSecond(mySecond - second - 2);
+            const myTime = new Date(
+              startTime.split(" ")[0] + "T" + condition.timestamp
+            );
+            console.log(myTime);
+            console.log((myTime - time) / 1000);
+            condition.second = (myTime - time - 6000) / 1000;
+            condition.time = changeSecond((myTime - time - 6000) / 1000);
           });
-          console.log(newCondition);
+
           return newCondition;
         });
       })
