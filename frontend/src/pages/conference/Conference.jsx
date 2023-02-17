@@ -33,10 +33,8 @@ export default function Conference() {
     id: "",
   });
   const handleChangeQuestion = (item) => (event) => {
-    setIsCheck(!isCheck);
-    if (!isCheck) setState({ ...state, question: item.content, id: item.id });
+    setState({ ...state, question: item.content, id: item.id });
   };
-  const [isCheck, setIsCheck] = useState(false);
 
   const navigate = useNavigate();
 
