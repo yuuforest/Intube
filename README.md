@@ -28,13 +28,17 @@ InTube는 1:1, 1:N, 아바타(AVATA) 인터뷰 서비스를 제공하는 WebRTC 
 
 <img src= ".\Documents\images\inTube_로그인.png">
 
+<br>
+
 ### 📺 마이페이지
 ```
 회원 정보와 내가 신청한, 매칭된, 완료한 인터뷰의 수를 조회할 수 있으며, 
 캘린더를 확인해 매칭된 인터뷰 정보를 날짜에 맞게 확인할 수 있는 기능을 제공합니다.
 ```
 
-<img src= ".\Documents\images\intube_마이페이지.gif" height="400px" width="800px"><br>
+<img src= ".\Documents\images\intube_마이페이지.gif" height="400px" width="800px">
+
+<br>
 
 ### 📺 메인페이지 및 공고찾기
 ```
@@ -45,6 +49,7 @@ InTube는 1:1, 1:N, 아바타(AVATA) 인터뷰 서비스를 제공하는 WebRTC 
 <img src= ".\Documents\images\intube_메인.png">
 <img src= ".\Documents\images\intube_공고찾기.png">
 
+<br>
 
 ### 📺 질문자
 #### 공고 생성
@@ -81,7 +86,9 @@ InTube는 1:1, 1:N, 아바타(AVATA) 인터뷰 서비스를 제공하는 WebRTC 
     3. 모든 시간의 인터뷰 진행이 종료되고 평가 및 결과 수정까지 완료되었으면 
        상단 우측에 인터뷰 마감을 클릭하여 인터뷰 상태를 완료로 변경할 수 있다.
 ```
-<img src= ".\Documents\images\intube_인터뷰진행.gif" height="400px" width="800px"><br>
+<img src= ".\Documents\images\intube_인터뷰진행.gif" height="400px" width="800px">
+
+<br>
 
 ### 📺 답변자
 #### 인터뷰 신청
@@ -96,7 +103,9 @@ InTube는 1:1, 1:N, 아바타(AVATA) 인터뷰 서비스를 제공하는 WebRTC 
 상단 좌측 버튼을 클릭해 내가 신청한, 매칭된, 완료된 인터뷰들을 조회할 수 있으며 각각 기능들을 제공합니다.
 ```
 
-<img src= ".\Documents\images\intube_인터뷰조회.gif" height="400px" width="800px"><br>
+<img src= ".\Documents\images\intube_인터뷰조회.gif" height="400px" width="800px">
+
+<br>
 
 ### 📺 인터뷰 진행(공통)
 ```
@@ -107,7 +116,7 @@ InTube는 1:1, 1:N, 아바타(AVATA) 인터뷰 서비스를 제공하는 WebRTC 
     4. 아바타 진행 시 답변자는 질문을 자유롭게 클릭하여 인터뷰를 진행할 수 있다.
 ```
 
-<img src= ".\Documents\images\intube_인터뷰.gif" height="400px" width="800px"><br><br>
+<img src= ".\Documents\images\intube_인터뷰.gif" height="400px" width="800px">
 
 <br/><br/>
 
